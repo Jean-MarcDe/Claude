@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Further Reading</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a reference manual — slim sticky masthead, numbered concept spine,
+   one 68ch reading column, figures breaking out wider than the text. */
+:root{
+  --paper:#f2f5f7; --surface:#ffffff; --surface-2:#e8edf1; --surface-3:#dde4ea;
+  --ink:#111a21; --ink-soft:#54626e; --ink-faint:#7c8995;
+  --rule:#d1d9e0; --rule-strong:#b2bfc9;
+  --accent:#07697b; --accent-soft:#dbedf0;
+  --practice:#8d4a0c; --practice-soft:#f6ebdf;
+  --danger:#9c2328; --danger-soft:#f7e5e5;
+  --ok:#1d6540; --ok-soft:#e0efe7;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --col:68ch; --wide:1100px;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0b1014; --surface:#131b21; --surface-2:#1b242c; --surface-3:#243039;
+  --ink:#e3eaf0; --ink-soft:#93a2af; --ink-faint:#74848f;
+  --rule:#27343d; --rule-strong:#3a4b56;
+  --accent:#4ec2d6; --accent-soft:#0e2f37;
+  --practice:#dd9a55; --practice-soft:#33240f;
+  --danger:#e4888b; --danger-soft:#381c1e;
+  --ok:#64bf92; --ok-soft:#122d1d;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0b1014; --surface:#131b21; --surface-2:#1b242c; --surface-3:#243039;
+  --ink:#e3eaf0; --ink-soft:#93a2af; --ink-faint:#74848f;
+  --rule:#27343d; --rule-strong:#3a4b56;
+  --accent:#4ec2d6; --accent-soft:#0e2f37;
+  --practice:#dd9a55; --practice-soft:#33240f;
+  --danger:#e4888b; --danger-soft:#381c1e;
+  --ok:#64bf92; --ok-soft:#122d1d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:18px;line-height:1.62;
+  -webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
+img{max-width:100%}
+[hidden]{display:none!important}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--surface)}
+
+/* ---- masthead ---- */
+.masthead{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;
+  background:var(--surface);border-bottom:1px solid var(--rule)}
+.masthead__in{max-width:var(--wide);margin:0 auto;display:flex;flex-wrap:wrap;
+  align-items:baseline;gap:4px 18px;
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.masthead__mark{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:-.01em;margin-right:auto}
+.masthead__mark a{color:inherit;text-decoration:none}
+.masthead nav{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--display);font-size:12.5px}
+.masthead nav a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px}
+.masthead nav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.masthead nav a[aria-current]{color:var(--ink);border-bottom-color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+
+/* ---- shells ---- */
+.wrap{max-width:var(--col);margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wide{max-width:var(--wide);margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(26px,4.5vw,46px)}
+section+section{border-top:1px solid var(--rule)}
+.module{scroll-margin-top:72px}
+.concept{scroll-margin-top:72px;padding-top:.6em}
+
+/* ---- type ---- */
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.14;
+  letter-spacing:-.018em;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,6.5vw,52px)}
+h2{font-size:clamp(25px,4vw,34px);margin-bottom:.45em}
+h3{font-size:21px;margin:0 0 .35em;letter-spacing:-.012em}
+h4{font-size:15.5px;margin:1.5em 0 .3em;font-weight:600;font-family:var(--display)}
+p{margin:0 0 1.05em}
+p:last-child{margin-bottom:0}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2.5px}
+strong,b{font-weight:600}
+.lede{font-size:clamp(19px,2.4vw,22px);line-height:1.5;color:var(--ink-soft)}
+.eyebrow{font-family:var(--display);font-size:11.5px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 .9em}
+.cnum{font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--accent);
+  display:block;margin-bottom:.25em;letter-spacing:.02em}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);line-height:1.7}
+code{font-family:var(--mono);font-size:.855em;background:var(--surface-2);
+  padding:.1em .34em;border-radius:3px;word-break:break-word}
+pre{font-family:var(--mono);font-size:13px;line-height:1.56;background:var(--surface);
+  border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0}
+pre code{background:none;padding:0;font-size:inherit;white-space:pre}
+ul,ol{margin:0 0 1.05em;padding-left:1.35em}
+li{margin-bottom:.35em}
+li>ul,li>ol{margin-top:.35em;margin-bottom:.4em}
+dl{margin:1.1em 0}
+dt{font-family:var(--display);font-weight:600;font-size:16px;margin-top:.9em}
+dd{margin:.1em 0 0;color:var(--ink-soft);font-size:16.5px}
+
+/* ---- callouts ---- */
+.callout{border-radius:5px;padding:14px 18px;margin:1.4em 0;font-size:16.5px;line-height:1.56}
+.callout>*:last-child{margin-bottom:0}
+.callout__tag{display:block;font-family:var(--display);font-size:11px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;margin-bottom:.45em}
+.c-key{background:var(--accent-soft);border-left:3px solid var(--accent)}
+.c-key .callout__tag{color:var(--accent)}
+.c-bridge{background:var(--practice-soft);border-left:3px solid var(--practice)}
+.c-bridge .callout__tag{color:var(--practice)}
+.c-bridge a{color:var(--practice)}
+.c-warn{background:var(--danger-soft);border-left:3px solid var(--danger)}
+.c-warn .callout__tag{color:var(--danger)}
+.c-do{background:var(--ok-soft);border-left:3px solid var(--ok)}
+.c-do .callout__tag{color:var(--ok)}
+.c-note{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--rule-strong)}
+.c-note .callout__tag{color:var(--ink-faint)}
+
+/* ---- figures & diagrams ---- */
+figure{margin:1.8em 0;max-width:var(--wide)}
+.fig-wide{margin-left:calc(50% - min(50vw - 16px, var(--wide)/2));width:min(100vw - 32px, var(--wide))}
+.dgm{display:block;width:100%;max-width:100%;height:auto;color:var(--ink);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:6px}
+figcaption{font-family:var(--display);font-size:13px;line-height:1.5;color:var(--ink-soft);
+  margin-top:.65em;max-width:74ch}
+figcaption b{color:var(--ink);font-weight:600}
+.dgm text{font-family:var(--display);font-size:12px;font-weight:500;fill:currentColor}
+.dgm .t-sm{font-size:10.5px;fill:var(--ink-soft);font-weight:400}
+.dgm .t-xs{font-size:9.5px;fill:var(--ink-faint);font-weight:400}
+.dgm .t-ttl{font-size:10.5px;font-weight:600;letter-spacing:.1em;fill:var(--ink-faint)}
+.dgm .t-mono{font-family:var(--mono);font-size:11px;font-weight:400}
+.dgm .t-ac{fill:var(--accent);font-weight:600}
+.dgm .t-dg{fill:var(--danger);font-weight:600}
+.dgm .box{fill:var(--surface);stroke:var(--rule-strong);stroke-width:1.25}
+.dgm .chip{fill:var(--surface-2);stroke:var(--rule-strong);stroke-width:1}
+.dgm .plain{fill:var(--surface-3);stroke:none}
+.dgm .hl{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.dgm .warn{fill:var(--danger-soft);stroke:var(--danger);stroke-width:1.25}
+.dgm .good{fill:var(--ok-soft);stroke:var(--ok);stroke-width:1.25}
+.dgm .flow{stroke:currentColor;stroke-width:1.25;fill:none}
+.dgm .flow-a{stroke:var(--accent);stroke-width:1.5;fill:none}
+.dgm .flow-d{stroke:var(--danger);stroke-width:1.5;fill:none}
+.dgm .dash{stroke-dasharray:5 4}
+.dgm .head{fill:currentColor;stroke:none}
+.dgm .head-a{fill:var(--accent);stroke:none}
+.dgm .head-d{fill:var(--danger);stroke:none}
+.dgm .cell{stroke:var(--surface);stroke-width:2}
+.dgm .axis{stroke:var(--rule-strong);stroke-width:1}
+
+/* ---- token chips ---- */
+.tokens{display:flex;flex-wrap:wrap;gap:3px;margin:0;font-family:var(--mono);font-size:14px;line-height:1.3}
+.tokens span{padding:3px 5px;border-radius:3px;background:var(--surface-2);white-space:pre}
+.tokens span:nth-child(odd){background:var(--accent-soft)}
+.tokens--ids span{background:var(--surface-2);color:var(--ink-soft);font-size:12px}
+.tokens--ids span:nth-child(odd){background:var(--surface-3)}
+
+/* ---- bar charts (single series, magnitude) ---- */
+.bars{margin:1.3em 0;display:grid;gap:5px}
+.bars__ttl{font-family:var(--display);font-size:13px;font-weight:600;color:var(--ink);margin-bottom:.5em}
+.bar{display:grid;grid-template-columns:minmax(72px,auto) 1fr minmax(44px,auto);
+  gap:10px;align-items:center;font-size:14px}
+.bar__k{font-family:var(--mono);font-size:12.5px;background:none;padding:0;color:var(--ink);
+  white-space:pre;overflow:hidden;text-overflow:ellipsis}
+.bar__t{background:var(--surface-2);border-radius:3px;height:16px;min-width:0;overflow:hidden}
+.bar__t i{display:block;height:100%;background:var(--accent);
+  border-radius:0 3px 3px 0;min-width:2px}
+.bar--mute .bar__t i{background:var(--rule-strong)}
+.bar__v{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;
+  color:var(--ink-soft);text-align:right}
+.smalls{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:18px;margin:1.4em 0}
+.smalls .bars{margin:0}
+
+/* ---- context budget bar ---- */
+.budget{margin:1.4em 0}
+.budget__bar{display:flex;gap:2px;height:34px;border-radius:4px;overflow:hidden;background:var(--surface-2)}
+.budget__seg{min-width:3px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10.5px;color:#fff;overflow:hidden;white-space:nowrap}
+.budget__key{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:.7em;
+  font-family:var(--display);font-size:12.5px;color:var(--ink-soft)}
+.budget__key span{display:flex;align-items:center;gap:6px}
+.budget__key i{width:11px;height:11px;border-radius:2px;flex:none}
+
+/* ---- tiers ---- */
+.tiers{display:grid;gap:10px;margin:1.4em 0}
+.tier{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;background:var(--surface);
+  border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.tier__n{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:500}
+.tier__c{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);
+  grid-column:2;margin-top:.15em}
+.tier h4{margin:0;grid-column:2;font-size:16px}
+.tier p{grid-column:2;margin:.25em 0 0;font-size:15.5px;color:var(--ink-soft);line-height:1.5}
+
+/* ---- tables ---- */
+.tblw{overflow-x:auto;margin:1.5em 0;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--display);font-size:11.5px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-faint)}
+tbody tr:last-child td{border-bottom:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---- toc ---- */
+.toc{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;margin:1.6em 0}
+.toc h2{font-size:14px;font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 .8em;font-weight:600}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.toc ol ol{margin:.4em 0 .3em;padding-left:0;gap:3px}
+.toc a{text-decoration:none;color:var(--ink);font-family:var(--display);font-size:15.5px;font-weight:600}
+.toc a:hover{color:var(--accent)}
+.toc ol ol a{font-weight:400;font-size:14.5px;color:var(--ink-soft);font-family:var(--body)}
+.toc__n{font-family:var(--mono);font-size:12px;color:var(--accent);margin-right:8px}
+
+/* ---- jump ---- */
+.jump{display:flex;flex-wrap:wrap;gap:12px;margin-top:2em}
+.jump a{flex:1 1 220px;min-width:0;background:var(--surface);border:1px solid var(--rule);
+  border-radius:6px;padding:15px 18px;text-decoration:none;color:var(--ink);display:block}
+.jump a:hover{border-color:var(--accent)}
+.jump span{display:block;font-family:var(--display);font-size:11px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.3em}
+.jump b{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em}
+
+footer{border-top:1px solid var(--rule);padding-block:28px;background:var(--surface)}
+footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin:0 0 .4em}
+
+@media (max-width:640px){
+  body{font-size:17px}
+  .bar{grid-template-columns:minmax(56px,auto) 1fr minmax(40px,auto);gap:8px}
+  .tier{grid-template-columns:1fr}
+  .tier h4,.tier p,.tier__c{grid-column:1}
+}
+@media print{
+  :root{--paper:#fff;--surface:#fff;--surface-2:#f1f1f1;--surface-3:#e6e6e6;
+    --ink:#000;--ink-soft:#333;--ink-faint:#555;--rule:#bbb;--rule-strong:#888}
+  .masthead,.jump,.toc{display:none}
+  body{font-size:10.5pt}
+  section{padding-block:12pt}
+  h2{break-after:avoid}
+  figure,.callout,.tblw,.tier,.bars{break-inside:avoid}
+  a{color:#000;text-decoration:none}
+}
+
+/* ---- resources page ---- */
+.reslist{display:grid;gap:12px;margin:1.4em 0}
+.res{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:15px 18px}
+.res__t{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em;
+  margin:0 0 .2em;line-height:1.25}
+.res__t a{text-decoration:none;color:var(--ink);border-bottom:1px solid var(--accent)}
+.res__t a:hover{color:var(--accent)}
+.res__m{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);
+  margin:0 0 .55em;line-height:1.5}
+.res p{font-size:16px;line-height:1.5;margin:0 0 .5em;color:var(--ink-soft)}
+.res p:last-child{margin-bottom:0}
+.res p b{color:var(--ink)}
+.res__why{font-size:15.5px}
+.res__why::before{content:"Use it when: ";font-family:var(--display);font-size:12px;
+  font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.pill{display:inline-block;font-family:var(--display);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:3px;
+  background:var(--surface-2);color:var(--ink-soft);vertical-align:1px}
+.pill--1{background:var(--ok-soft);color:var(--ok)}
+.pill--2{background:var(--accent-soft);color:var(--accent)}
+.pill--3{background:var(--practice-soft);color:var(--practice)}
+.path-steps{counter-reset:ps;list-style:none;padding-left:0;margin:1.4em 0}
+.path-steps li{counter-increment:ps;position:relative;padding-left:2.4em;margin-bottom:.8em}
+.path-steps li::before{content:counter(ps);position:absolute;left:0;top:.1em;
+  width:1.7em;height:1.7em;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+  font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__in">
+    <span class="masthead__mark"><a href="index.html">Tokens&nbsp;to&nbsp;Pull&nbsp;Requests</a></span>
+    <nav aria-label="Course sections">
+      <a href="index.html">Overview</a>
+      <a href="part-1-theory.html">Part One &middot; Theory</a>
+      <a href="part-2-practice.html">Part Two &middot; Practice</a>
+      <a href="resources.html" aria-current="page">Further reading</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Further reading</p>
+    <h1>Where to go deeper</h1>
+    <p class="lede">Curated rather than comprehensive. Every entry says what it uniquely gives
+    you that the others do not, and which module it extends &mdash; so you can go deep on one
+    concept without committing to a course.</p>
+    <p class="meta">
+      Difficulty: <span class="pill pill--1">gentle</span>
+      <span class="pill pill--2">solid</span>
+      <span class="pill pill--3">demanding</span><br>
+      If a link has moved, search the title &mdash; everything here is well known enough to find.
+    </p>
+
+    <div class="callout c-key">
+      <span class="callout__tag">If you do only one thing</span>
+      <p>Watch <b>3Blue1Brown's neural-network and transformer chapters</b> (about three hours
+      total). It is the best explanation of this material in any medium, and it covers Modules 1,
+      3 and 4 with visualisations no text can match. If you have six hours, add Karpathy's
+      <i>Deep Dive into LLMs like ChatGPT</i> afterwards.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>A suggested path</h2>
+    <p>Four routes, depending on how far you want to go. Each builds on the one above it.</p>
+    <ol class="path-steps">
+      <li><b>Intuition (3&ndash;4 hours).</b> 3Blue1Brown's chapters on neural networks and
+      transformers, then play with the Transformer Explainer and a tokeniser for twenty minutes.
+      You will understand Part One properly.</li>
+      <li><b>Working knowledge (10&ndash;12 hours).</b> Add Karpathy's <i>Deep Dive into LLMs</i>
+      and <i>Let's build the GPT Tokenizer</i>, Jay Alammar's <i>Illustrated Transformer</i>, and
+      Anthropic's <i>Building effective agents</i>. Enough to make good architectural decisions.</li>
+      <li><b>Build one (30&ndash;40 hours).</b> Karpathy's <i>Neural Networks: Zero to Hero</i>
+      end to end, writing the code. Nothing else produces the same depth of understanding, and
+      the final lecture builds a working GPT.</li>
+      <li><b>Research depth (a term).</b> Stanford CS336, the Hugging Face LLM course, and the
+      papers section. For people who will train or fine-tune models rather than use them.</li>
+    </ol>
+  </div>
+</section>
+
+
+<section id="visual">
+  <div class="wrap">
+    <h2>Visual intuition</h2>
+    <p>Start here, whatever your background. These build the mental pictures that make everything
+    else readable.</p>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://www.3blue1brown.com/topics/neural-networks">Neural networks &amp; transformers</a></p>
+        <p class="res__m">3Blue1Brown (Grant Sanderson) · video series, 7 chapters · ~3 h · <span class="pill pill--1">gentle</span></p>
+        <p>The best mathematical exposition on the internet, and not a close contest. Chapters 1–4
+        build neural networks, gradient descent and backpropagation from nothing; chapters 5–7
+        cover transformers, attention and how an LLM stores facts. The animations make the
+        <b>geometry</b> of these ideas visible — what a gradient actually is, what attention
+        actually moves — in a way that no amount of prose achieves.</p>
+        <p class="res__why">You want Modules 1, 3 and 4 to click rather than merely make sense.
+        Watch chapter 6 on attention immediately after reading our 3.2.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://bbycroft.net/llm">LLM Visualization</a></p>
+        <p class="res__m">Brendan Bycroft · interactive 3D walkthrough · 30–60 min · <span class="pill pill--2">solid</span></p>
+        <p>A navigable 3D model of a working GPT, from input tokens to output logits. You walk
+        through every layer, every attention head and every matrix multiply required to produce
+        <b>one single token</b>. Covers nanoGPT up to GPT-3 scale.</p>
+        <p class="res__why">Our figure in 3.5 showed you the shape of a forward pass. This shows
+        you its actual size, which is the thing diagrams cannot convey.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://poloclub.github.io/transformer-explainer/">Transformer Explainer</a></p>
+        <p class="res__m">Georgia Tech Polo Club · interactive tool · 20 min · <span class="pill pill--1">gentle</span></p>
+        <p>Runs a real GPT-2 live in your browser. Type a prefix and watch the attention weights
+        and the next-token distribution change as you type. The temperature slider is right there,
+        and moving it is the fastest way to internalise 4.3.</p>
+        <p class="res__why">Lab 2 uses this directly. Also the single best thing to put on a
+        screen when explaining temperature to a sceptical colleague.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a></p>
+        <p class="res__m">Jay Alammar · article · 45 min · <span class="pill pill--2">solid</span></p>
+        <p>The canonical written explanation of the transformer architecture, and the piece that
+        taught a generation of engineers what queries, keys and values are. Diagrams at every step,
+        with the matrix shapes made explicit. His <i>Illustrated GPT-2</i> and
+        <i>Illustrated Word2vec</i> are the natural follow-ups for generation and embeddings.</p>
+        <p class="res__why">You want 3.3 in more depth, with the actual tensor shapes rather than
+        boxes.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://ig.ft.com/generative-ai/">Generative AI exists because of the transformer</a></p>
+        <p class="res__m">Financial Times · scroll-driven visual explainer · 15 min · <span class="pill pill--1">gentle</span></p>
+        <p>A beautifully made visual walkthrough of tokens, embeddings and attention aimed at an
+        intelligent non-technical reader.</p>
+        <p class="res__why">You need to explain this to a manager, a board, or anyone who will not
+        watch three hours of video. The best thing to send them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="build">
+  <div class="wrap">
+    <h2>Build one yourself</h2>
+    <p>The highest-return material here if you are willing to write the code. Nothing else
+    produces the same confidence.</p>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://karpathy.ai/zero-to-hero.html">Neural Networks: Zero to Hero</a></p>
+        <p class="res__m">Andrej Karpathy · video course with code · ~25 h to watch, 40 h to do · <span class="pill pill--3">demanding</span></p>
+        <p>Builds neural networks from a single scalar derivative up to a working GPT, writing
+        every line. Lecture one implements backpropagation from scratch — after it, Module 1.6
+        stops being a metaphor. The series ends with a transformer language model you trained
+        yourself. Free, and better than most paid courses.</p>
+        <p class="res__why">You will make technical decisions about this stuff for years, and want
+        the kind of understanding that only comes from having implemented it. Do the exercises; the
+        value is in the typing.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://www.youtube.com/watch?v=kCc8FmEb1nY">Let's build GPT: from scratch, in code, spelled out</a></p>
+        <p class="res__m">Andrej Karpathy · video · 2 h · <span class="pill pill--3">demanding</span></p>
+        <p>The transformer lecture from Zero to Hero, and it stands alone if you already know
+        neural-network basics. Two hours from a bigram model to a working attention-based language
+        model, with every design decision explained as it is made.</p>
+        <p class="res__why">You want Module 3 in code, in one sitting, without the full course.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://www.youtube.com/watch?v=zduSFxRajkE">Let's build the GPT Tokenizer</a></p>
+        <p class="res__m">Andrej Karpathy · video · 2 h · <span class="pill pill--2">solid</span></p>
+        <p>Byte-pair encoding implemented from scratch, and a tour of everything tokenisation
+        breaks: arithmetic, spelling, non-English languages, trailing whitespace, YAML versus JSON
+        token efficiency. The definitive treatment of the subject.</p>
+        <p class="res__why">Module 2.5 convinced you that tokenisation matters and you want to know
+        exactly why. The most directly <b>practically useful</b> two hours on this page.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://github.com/karpathy/nanoGPT">nanoGPT</a></p>
+        <p class="res__m">Andrej Karpathy · code repository · <span class="pill pill--3">demanding</span></p>
+        <p>A complete, readable GPT training and inference implementation in a few hundred lines.
+        The repository to read when you want to see how little code the architecture actually is.</p>
+        <p class="res__why">You learn by reading implementations rather than explanations.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://github.com/rasbt/LLMs-from-scratch">Build a Large Language Model (From Scratch)</a></p>
+        <p class="res__m">Sebastian Raschka · book + code repository · <span class="pill pill--3">demanding</span></p>
+        <p>The book-form counterpart to Karpathy's videos: tokeniser, attention, pre-training,
+        fine-tuning and instruction tuning, each implemented step by step with the reasoning
+        written out. The repository is free and usable on its own.</p>
+        <p class="res__why">You prefer reading to video, or want something you can work through at
+        your own pace with a team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="deep">
+  <div class="wrap">
+    <h2>Depth on specific concepts</h2>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://www.youtube.com/watch?v=7xTGNNLPyMI">Deep Dive into LLMs like ChatGPT</a></p>
+        <p class="res__m">Andrej Karpathy · video · 3.5 h · <span class="pill pill--2">solid</span></p>
+        <p>The whole pipeline for a general audience: pre-training, tokenisation, inference,
+        supervised fine-tuning, RLHF, hallucination, reasoning models, and why models are bad at
+        spelling and arithmetic. No code required. If Part One worked for you, this is the natural
+        next three hours — it covers the same ground more slowly and adds the post-training
+        detail our Module 5.1 compresses.</p>
+        <p class="res__why">You want one authoritative long-form treatment of everything in Part
+        One. Probably the best single video on this page.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://www.youtube.com/watch?v=EWvNQjAaOHw">How I use LLMs</a></p>
+        <p class="res__m">Andrej Karpathy · video · 2 h · <span class="pill pill--1">gentle</span></p>
+        <p>The practical companion: how someone who understands the internals actually works with
+        these tools day to day, including where he does not trust them. Unusually honest about
+        failure modes.</p>
+        <p class="res__why">You want the practitioner's view that Part Two's Module 10 compresses
+        into a table.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a></p>
+        <p class="res__m">Anthropic engineering · article · 30 min · <span class="pill pill--2">solid</span></p>
+        <p>The clearest writing on agent design patterns from people who build them: when a simple
+        loop beats a framework, the distinction between workflows and agents, and the recurring
+        argument that <b>most problems labelled &ldquo;agentic&rdquo; are better solved with
+        fewer moving parts</b>.</p>
+        <p class="res__why">Extends Module 5.9. Read it before you adopt an agent framework, and
+        again before you write your own.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://arxiv.org/abs/2307.03172">Lost in the Middle: How Language Models Use Long Contexts</a></p>
+        <p class="res__m">Liu et al. · paper · 40 min · <span class="pill pill--2">solid</span></p>
+        <p>The study behind the claim in Module 4.7. Measures retrieval accuracy as a function of
+        where the relevant information sits in the context, and finds a pronounced U-shape —
+        strong at the start and end, markedly worse in the middle.</p>
+        <p class="res__why">Someone asks for evidence that context position matters, or you want
+        to know how large the effect actually is.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://transformer-circuits.pub/">Transformer Circuits</a></p>
+        <p class="res__m">Anthropic interpretability team · ongoing research publication · <span class="pill pill--3">demanding</span></p>
+        <p>What is actually happening inside these models, investigated empirically: induction
+        heads, superposition, features and the mapping of interpretable concepts inside a
+        production model. Demanding, and the most intellectually interesting material on this page.</p>
+        <p class="res__why">You find &ldquo;we cannot read the parameters&rdquo; unsatisfying and
+        want to know how far people have got.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://lilianweng.github.io/">Lil'Log</a></p>
+        <p class="res__m">Lilian Weng · technical blog · <span class="pill pill--3">demanding</span></p>
+        <p>Long, rigorous surveys of specific topics — agents, hallucination, reasoning,
+        reinforcement learning from human feedback, prompt engineering. Each post is effectively a
+        literature review with the maths intact.</p>
+        <p class="res__why">You need the state of research on one topic and want citations rather
+        than opinions.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://hamel.dev/">Hamel Husain on evals</a></p>
+        <p class="res__m">Hamel Husain · blog, article series · 1 h · <span class="pill pill--2">solid</span></p>
+        <p>The practical treatment of evaluation that Module 5.13 only gestures at: how to build an
+        eval set, where LLM-as-judge works and where it misleads, and why error analysis beats
+        dashboards. Written from consulting experience rather than theory.</p>
+        <p class="res__why">You are about to build anything on a model and want to know whether it
+        works.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <h2>Interactive tools</h2>
+    <p>Things to poke at rather than read. Two of the labs use these.</p>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://tiktokenizer.vercel.app/">Tiktokenizer</a></p>
+        <p class="res__m">web tool · <span class="pill pill--1">gentle</span></p>
+        <p>Paste text, pick a model's tokeniser, see the token boundaries and the ids. Supports
+        many vocabularies so you can compare how differently they split the same string.</p>
+        <p class="res__why"><b>Lab 1.</b> Also the fastest way to settle an argument about what
+        your instruction file costs.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://platform.openai.com/tokenizer">OpenAI Tokenizer</a></p>
+        <p class="res__m">web tool · <span class="pill pill--1">gentle</span></p>
+        <p>Simpler alternative for the same job. Shows the token count and a coloured split.</p>
+        <p class="res__why">Lab 1, if Tiktokenizer is unavailable.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></p>
+        <p class="res__m">specification and documentation · <span class="pill pill--2">solid</span></p>
+        <p>The protocol itself: how tools, resources and prompts are described, and how servers
+        and clients negotiate. Worth skimming before you install an MCP server, because the
+        security properties in Module 5.12 are much more obvious once you have seen the wire
+        format.</p>
+        <p class="res__why">You are evaluating or writing an MCP server.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="wrap">
+    <h2>Security</h2>
+    <p>This section dates faster than any other. Treat each entry as a live source to follow
+    rather than a document to read once.</p>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://simonwillison.net/tags/prompt-injection/">Prompt injection — the running archive</a></p>
+        <p class="res__m">Simon Willison · continuously updated blog tag · <span class="pill pill--2">solid</span></p>
+        <p>Willison coined the term in 2022 and has documented essentially every development
+        since. This tag is the definitive record: real attacks, failed defences, and consistently
+        clear-eyed analysis of why the easy mitigations do not work. Start with
+        <a href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/">The lethal
+        trifecta</a>, which is the framing used in Module 6.4.</p>
+        <p class="res__why">You own security for anything agentic. This is the one subscription on
+        this page you should genuinely keep up with.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM Applications</a></p>
+        <p class="res__m">OWASP GenAI Security Project · reference · 1 h · <span class="pill pill--2">solid</span></p>
+        <p>The standard vulnerability taxonomy for LLM systems — prompt injection, insecure output
+        handling, supply chain, excessive agency, and the rest — with mitigations per category. The
+        project also publishes material specifically on agentic threats.</p>
+        <p class="res__why">You need a recognised framework to structure a threat model or a
+        security review. Maps closely onto our Module 6.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://atlas.mitre.org/">MITRE ATLAS</a></p>
+        <p class="res__m">MITRE · adversarial technique knowledge base · <span class="pill pill--3">demanding</span></p>
+        <p>ATT&amp;CK for machine-learning systems: tactics and techniques against AI, with
+        documented real-world case studies.</p>
+        <p class="res__why">Your security team already works in ATT&amp;CK terms and wants the AI
+        equivalent.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework</a></p>
+        <p class="res__m">NIST · framework · <span class="pill pill--3">demanding</span></p>
+        <p>The governance-side counterpart: a structured approach to identifying and managing AI
+        risk, increasingly referenced in procurement and regulatory contexts.</p>
+        <p class="res__why">You need to demonstrate a governance posture to auditors, customers or
+        a regulator rather than to engineers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="github">
+  <div class="wrap">
+    <h2>GitHub Copilot — the authoritative sources</h2>
+    <div class="callout c-warn" style="margin-top:1em">
+      <span class="callout__tag">Important</span>
+      <p>Part Two names files and features as they stood in October 2026. <b>These are the only
+      sources you should trust for current specifics</b> — file paths, precedence rules, model
+      availability, plan boundaries and the coverage gaps in content exclusion all move. Check
+      here before you standardise anything across an organisation.</p>
+    </div>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://docs.github.com/en/copilot">GitHub Copilot documentation</a></p>
+        <p class="res__m">GitHub · official documentation · <span class="pill pill--1">gentle</span></p>
+        <p>The source of truth. The pages that matter most for this course: the customization
+        cheat sheet (which lists every instruction, prompt, agent and skill file with its path and
+        precedence), adding repository custom instructions, the supported-models reference, and the
+        enterprise sections on policies, content exclusion and audit.</p>
+        <p class="res__why">Before configuring anything in Module 9, and before quoting any
+        specific from Part Two to a colleague.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://github.blog/changelog/">GitHub Changelog</a></p>
+        <p class="res__m">GitHub · continuously updated · <span class="pill pill--1">gentle</span></p>
+        <p>Every shipped change, dated. The only reliable way to know what is new, what moved and
+        what has been renamed — which happens often enough to matter.</p>
+        <p class="res__why">Monthly, if you own this area. Filter for Copilot.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/">How to write a great agents.md</a></p>
+        <p class="res__m">GitHub engineering · article · 20 min · <span class="pill pill--1">gentle</span></p>
+        <p>GitHub's analysis of more than 2,500 repositories with agent instruction files. The
+        finding that vagueness is the dominant failure mode, and the recommendation to state
+        explicit boundaries, are the evidence base for our Module 9.3.</p>
+        <p class="res__why">Immediately before writing your first instruction file. Read it
+        alongside 9.3 — we add the token-budget reasoning it leaves implicit.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://github.com/github/awesome-copilot">Awesome GitHub Copilot customisations</a></p>
+        <p class="res__m">community collection · <span class="pill pill--1">gentle</span></p>
+        <p>Community-contributed instruction files, prompt files, custom agents and skills,
+        organised by language and framework. Quality varies considerably.</p>
+        <p class="res__why">You want a starting point for your stack. <b>Read anything you take
+        from here before committing it</b> — these files are prompt text with repository-wide
+        influence (Module 6.5), and &ldquo;found on the internet&rdquo; is not a review.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://skills.github.com/">GitHub Skills</a></p>
+        <p class="res__m">GitHub · hands-on exercises · 1–2 h each · <span class="pill pill--1">gentle</span></p>
+        <p>Short guided exercises that run in a real repository, including several on Copilot. Good
+        for teams that learn by doing rather than reading.</p>
+        <p class="res__why">You are running enablement for people who want a guided first hour
+        rather than a document.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="courses">
+  <div class="wrap">
+    <h2>Courses and textbooks</h2>
+    <p>For a term's worth of study, or to fill in the formal background.</p>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://huggingface.co/learn/llm-course">Hugging Face LLM Course</a></p>
+        <p class="res__m">Hugging Face · free online course · 20–30 h · <span class="pill pill--2">solid</span></p>
+        <p>Transformers from a practitioner's angle: tokenisers, the model APIs, fine-tuning,
+        datasets, and deployment. Runnable notebooks throughout. The most directly applicable
+        course here if you intend to work with open models.</p>
+        <p class="res__why">You will fine-tune, deploy or evaluate models rather than only consume
+        an API.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://cs336.stanford.edu/">Stanford CS336 — Language Modeling from Scratch</a></p>
+        <p class="res__m">Stanford · full course, materials public · a term · <span class="pill pill--3">demanding</span></p>
+        <p>Builds a language model end to end at research level: tokenisation, architecture,
+        training at scale, systems and efficiency, alignment. Lectures and assignments are
+        publicly available.</p>
+        <p class="res__why">You want graduate-level depth and are prepared to do the
+        assignments.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://web.stanford.edu/~jurafsky/slp3/">Speech and Language Processing</a></p>
+        <p class="res__m">Jurafsky &amp; Martin · textbook, free draft · reference · <span class="pill pill--2">solid</span></p>
+        <p>The standard NLP textbook, kept current with chapters on transformers, large language
+        models and alignment. Rigorous, readable, and genuinely useful as a reference rather than
+        only as a course text.</p>
+        <p class="res__why">You want the field's own framing of a concept, with the history and
+        the maths.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://developers.google.com/machine-learning/crash-course">Machine Learning Crash Course</a></p>
+        <p class="res__m">Google · interactive course · 15 h · <span class="pill pill--1">gentle</span></p>
+        <p>The fundamentals underneath Module 1 — loss, gradient descent, overfitting,
+        generalisation, validation — with interactive exercises. Not LLM-specific, which is the
+        point.</p>
+        <p class="res__why">Module 1 went too fast and you want the proper grounding before
+        continuing.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://microsoft.github.io/generative-ai-for-beginners/">Generative AI for Beginners</a></p>
+        <p class="res__m">Microsoft · 21-lesson course · 20 h · <span class="pill pill--1">gentle</span></p>
+        <p>Practical, project-based lessons on building with generative models — prompting, RAG,
+        agents, evaluation, security. Shallower than the others and broader in coverage.</p>
+        <p class="res__why">You are running a study group for people who want to build something
+        small each week.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="papers">
+  <div class="wrap">
+    <h2>The papers worth reading directly</h2>
+    <p>Most papers are better read through someone's explanation. These four repay reading in the
+    original.</p>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a></p>
+        <p class="res__m">Vaswani et al., 2017 · paper · 1 h · <span class="pill pill--3">demanding</span></p>
+        <p>The transformer paper. Eight pages, and every model in this course is a descendant.
+        Worth reading in the original partly for the content and partly to see how modest the
+        framing was — it presents itself as a better machine-translation architecture. Pair it with
+        <a href="https://nlp.seas.harvard.edu/annotated-transformer/">The Annotated
+        Transformer</a>, which reproduces it line by line with working code.</p>
+        <p class="res__why">After Module 3, to see the primary source. The Annotated Transformer
+        makes it tractable.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://arxiv.org/abs/2203.02155">Training language models to follow instructions with human feedback</a></p>
+        <p class="res__m">Ouyang et al., 2022 · paper · 1 h · <span class="pill pill--3">demanding</span></p>
+        <p>The InstructGPT paper: how RLHF turns a base model into something that answers
+        questions. The direct source for Module 5.1, and the reason chat assistants exist as
+        products.</p>
+        <p class="res__why">You want to understand post-training properly rather than as a
+        summary.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://arxiv.org/abs/2201.11903">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a></p>
+        <p class="res__m">Wei et al., 2022 · paper · 45 min · <span class="pill pill--2">solid</span></p>
+        <p>The paper that established that asking a model to show its working substantially
+        improves multi-step accuracy. The origin of everything in Module 5.5, and a good example
+        of how simple a field-changing result can be.</p>
+        <p class="res__why">You want the evidence behind reasoning models.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">The Bitter Lesson</a></p>
+        <p class="res__m">Rich Sutton, 2019 · essay · 10 min · <span class="pill pill--1">gentle</span></p>
+        <p>One page, written before any of this, arguing that general methods which scale with
+        computation reliably defeat methods built on human-encoded knowledge. It explains why the
+        transformer won on parallelisability (Module 3.1) rather than on linguistic insight, and it
+        is the most useful ten minutes of reading on this page.</p>
+        <p class="res__why">You want the strategic frame for why the field went this way. Read it
+        on a train.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="current">
+  <div class="wrap">
+    <h2>Staying current without drowning</h2>
+    <p>The volume of AI content is enormous and most of it is noise. A deliberately short list.</p>
+    <ul>
+      <li><b><a href="https://simonwillison.net/">Simon Willison's blog</a></b> — the single best
+      filter. High volume but consistently substantive, with an unusually good record of calling
+      out hype.</li>
+      <li><b><a href="https://github.blog/changelog/">GitHub Changelog</a></b> — for the product
+      surface in Part Two. Filter for Copilot and skim monthly.</li>
+      <li><b>Your vendors' engineering blogs</b> — Anthropic, OpenAI and Google publish genuinely
+      useful technical material alongside the marketing. The engineering posts are worth it; the
+      announcement posts rarely are.</li>
+      <li><b>Model and API release notes</b> — the only reliable notice that behaviour you depend
+      on has changed. Worth an alert if you have anything in production.</li>
+    </ul>
+    <div class="callout c-do">
+      <span class="callout__tag">A filter that works</span>
+      <p>Before spending time on any new technique, ask which mechanism from Part One it exploits.
+      Most &ldquo;prompt engineering secrets&rdquo; reduce to putting better information in the
+      context, giving the model a way to check itself, or spending more tokens on thinking. If you
+      cannot place a claim against one of those, it is probably noise — and if you can, you
+      usually already know whether it will help your case.</p>
+    </div>
+
+    <div class="jump">
+      <a href="part-1-theory.html"><span>Back to</span><b>Part One · How the machine works →</b></a>
+      <a href="part-2-practice.html"><span>Back to</span><b>Part Two · Copilot in the enterprise →</b></a>
+      <a href="index.html"><span>Back to</span><b>Course overview →</b></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Tokens to Pull Requests</b> &middot; Further reading</p>
+    <p class="meta">Links compiled October 2026. The foundational material is stable; the
+    documentation and security sections change continuously, so treat those as entry points
+    rather than snapshots.</p>
+  </div>
+</footer>
+</body>
+</html>

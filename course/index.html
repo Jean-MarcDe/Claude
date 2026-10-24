@@ -1,0 +1,506 @@
+<title>Tokens to Pull Requests</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a reference manual — slim sticky masthead, numbered module spine,
+   one 68ch reading column, figures breaking out wider than the text. */
+:root{
+  --paper:#f2f5f7; --surface:#ffffff; --surface-2:#e8edf1; --surface-3:#dde4ea;
+  --ink:#111a21; --ink-soft:#54626e; --ink-faint:#7c8995;
+  --rule:#d1d9e0; --rule-strong:#b2bfc9;
+  --accent:#07697b; --accent-soft:#dbedf0;
+  --practice:#8d4a0c; --practice-soft:#f6ebdf;
+  --danger:#9c2328; --danger-soft:#f7e5e5;
+  --ok:#1d6540; --ok-soft:#e0efe7;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --col:68ch; --wide:1100px;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0b1014; --surface:#131b21; --surface-2:#1b242c; --surface-3:#243039;
+  --ink:#e3eaf0; --ink-soft:#93a2af; --ink-faint:#74848f;
+  --rule:#27343d; --rule-strong:#3a4b56;
+  --accent:#4ec2d6; --accent-soft:#0e2f37;
+  --practice:#dd9a55; --practice-soft:#33240f;
+  --danger:#e4888b; --danger-soft:#381c1e;
+  --ok:#64bf92; --ok-soft:#122d1d;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0b1014; --surface:#131b21; --surface-2:#1b242c; --surface-3:#243039;
+  --ink:#e3eaf0; --ink-soft:#93a2af; --ink-faint:#74848f;
+  --rule:#27343d; --rule-strong:#3a4b56;
+  --accent:#4ec2d6; --accent-soft:#0e2f37;
+  --practice:#dd9a55; --practice-soft:#33240f;
+  --danger:#e4888b; --danger-soft:#381c1e;
+  --ok:#64bf92; --ok-soft:#122d1d;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:18px;line-height:1.62;
+  -webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--surface)}
+
+/* ---- masthead ---- */
+.masthead{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;
+  background:var(--surface);border-bottom:1px solid var(--rule)}
+.masthead__in{max-width:var(--wide);margin:0 auto;display:flex;flex-wrap:wrap;
+  align-items:baseline;gap:4px 18px;
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.masthead__mark{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:-.01em;margin-right:auto}
+.masthead nav{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--display);font-size:12.5px}
+.masthead nav a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px}
+.masthead nav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.masthead nav a[aria-current]{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* ---- shells ---- */
+.wrap{max-width:var(--col);margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wide{max-width:var(--wide);margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{display:flex;flex-direction:column;gap:0}
+section{padding-block:clamp(28px,5vw,52px)}
+section+section{border-top:1px solid var(--rule)}
+
+/* ---- type ---- */
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.14;
+  letter-spacing:-.018em;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,7vw,58px)}
+h2{font-size:clamp(25px,4vw,34px);margin-bottom:.5em}
+h3{font-size:20px;margin:1.9em 0 .4em;letter-spacing:-.01em}
+h4{font-size:15px;margin:1.5em 0 .3em;font-weight:600}
+p{margin:0 0 1.05em}
+p:last-child{margin-bottom:0}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2.5px}
+strong{font-weight:600}
+.lede{font-size:clamp(19px,2.4vw,22px);line-height:1.5;color:var(--ink-soft)}
+.eyebrow{font-family:var(--display);font-size:11.5px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 .9em}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--ink-faint);line-height:1.7}
+code{font-family:var(--mono);font-size:.855em;background:var(--surface-2);
+  padding:.1em .34em;border-radius:3px;word-break:break-word}
+pre{font-family:var(--mono);font-size:13px;line-height:1.56;background:var(--surface);
+  border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:4px;padding:14px 16px;overflow-x:auto;margin:1.2em 0}
+pre code{background:none;padding:0;font-size:inherit}
+ul,ol{margin:0 0 1.05em;padding-left:1.35em}
+li{margin-bottom:.35em}
+li>ul,li>ol{margin-top:.35em;margin-bottom:.4em}
+hr{border:0;border-top:1px solid var(--rule);margin:2em 0}
+
+/* ---- cards & callouts ---- */
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 20px}
+.callout{border-radius:5px;padding:14px 18px;margin:1.4em 0;font-size:16.5px;line-height:1.56}
+.callout>*:last-child{margin-bottom:0}
+.callout__tag{display:block;font-family:var(--display);font-size:11px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;margin-bottom:.45em}
+.c-key{background:var(--accent-soft);border-left:3px solid var(--accent)}
+.c-key .callout__tag{color:var(--accent)}
+.c-bridge{background:var(--practice-soft);border-left:3px solid var(--practice)}
+.c-bridge .callout__tag{color:var(--practice)}
+.c-warn{background:var(--danger-soft);border-left:3px solid var(--danger)}
+.c-warn .callout__tag{color:var(--danger)}
+.c-do{background:var(--ok-soft);border-left:3px solid var(--ok)}
+.c-do .callout__tag{color:var(--ok)}
+
+/* ---- figures & diagrams ---- */
+figure{margin:1.8em 0;max-width:var(--wide)}
+.fig-wide{margin-left:calc(50% - min(50vw - 16px, var(--wide)/2));width:min(100vw - 32px, var(--wide))}
+.dgm{display:block;width:100%;max-width:100%;height:auto;color:var(--ink);
+  background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:6px}
+figcaption{font-family:var(--display);font-size:13px;line-height:1.5;color:var(--ink-soft);
+  margin-top:.65em;max-width:72ch}
+figcaption b{color:var(--ink);font-weight:600}
+.dgm text{font-family:var(--display);font-size:12px;font-weight:500;fill:currentColor}
+.dgm .t-sm{font-size:10.5px;fill:var(--ink-soft);font-weight:400}
+.dgm .t-ttl{font-size:10.5px;font-weight:600;letter-spacing:.1em;fill:var(--ink-faint)}
+.dgm .t-mono{font-family:var(--mono);font-size:11px;font-weight:400}
+.dgm .t-ac{fill:var(--accent);font-weight:600}
+.dgm .box{fill:var(--surface);stroke:var(--rule-strong);stroke-width:1.25}
+.dgm .chip{fill:var(--surface-2);stroke:var(--rule-strong);stroke-width:1}
+.dgm .hl{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.dgm .warn{fill:var(--danger-soft);stroke:var(--danger);stroke-width:1.25}
+.dgm .flow{stroke:currentColor;stroke-width:1.25;fill:none}
+.dgm .flow-a{stroke:var(--accent);stroke-width:1.5;fill:none}
+.dgm .dash{stroke-dasharray:5 4}
+.dgm .head{fill:currentColor;stroke:none}
+.dgm .head-a{fill:var(--accent);stroke:none}
+
+/* ---- syllabus ---- */
+.modgrid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.mod{background:var(--surface);padding:16px 18px;display:grid;grid-template-columns:2.6em 1fr;gap:0 14px;align-items:baseline}
+.mod__n{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.mod__t{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em;margin:0}
+.mod__c{grid-column:2;font-size:15px;color:var(--ink-soft);margin:.3em 0 0;line-height:1.5}
+.mod--p .mod__n{color:var(--practice)}
+
+/* ---- tables ---- */
+.tblw{overflow-x:auto;margin:1.5em 0;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:min-content}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--display);font-size:11.5px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td code{white-space:nowrap}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---- path cards ---- */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:1.6em 0}
+.path{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px 18px}
+.path h4{margin:0 0 .25em;font-size:16px;font-weight:600;font-family:var(--display)}
+.path .dur{font-family:var(--mono);font-size:11.5px;color:var(--accent);display:block;margin-bottom:.5em}
+.path p{font-size:15px;line-height:1.5;color:var(--ink-soft);margin:0}
+
+/* ---- next/prev ---- */
+.jump{display:flex;flex-wrap:wrap;gap:12px;margin-top:2em}
+.jump a{flex:1 1 220px;min-width:0;background:var(--surface);border:1px solid var(--rule);
+  border-radius:6px;padding:15px 18px;text-decoration:none;color:var(--ink);display:block}
+.jump a:hover{border-color:var(--accent)}
+.jump span{display:block;font-family:var(--display);font-size:11px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.3em}
+.jump b{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em}
+
+footer{border-top:1px solid var(--rule);padding-block:28px;background:var(--surface)}
+footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin:0 0 .4em}
+
+@media (max-width:640px){
+  body{font-size:17px}
+  .mod{grid-template-columns:1fr}
+  .mod__n{margin-bottom:.2em}
+  .mod__c{grid-column:1}
+}
+@media print{
+  :root{--paper:#fff;--surface:#fff;--surface-2:#f2f2f2;--ink:#000;--ink-soft:#333;--rule:#bbb}
+  .masthead,.jump{display:none}
+  body{font-size:11pt}
+  section{break-inside:auto;padding-block:14pt}
+  figure,.callout,.card,.tblw{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="masthead">
+  <div class="masthead__in">
+    <span class="masthead__mark">Tokens&nbsp;to&nbsp;Pull&nbsp;Requests</span>
+    <nav aria-label="Course sections">
+      <a href="index.html" aria-current="page">Overview</a>
+      <a href="part-1-theory.html">Part One · Theory</a>
+      <a href="part-2-practice.html">Part Two · Practice</a>
+      <a href="resources.html">Further reading</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">A two-part course for software teams</p>
+    <h1>Tokens to Pull&nbsp;Requests</h1>
+    <p class="lede">Part One explains how a modern language model actually works, from gradient
+    descent to agents. Part Two spends that understanding inside GitHub Enterprise — on instruction
+    files, prompts, code review, coding agents and the governance around them.</p>
+    <p class="meta">
+      Two parts&nbsp;· 14 modules&nbsp;· 20 figures&nbsp;· 8 labs<br>
+      Reading time ≈ 4 hours&nbsp;· Full workshop ≈ 2 days<br>
+      Audience: engineers, tech leads and platform owners. No maths beyond school algebra.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Why the theory comes first</h2>
+    <p>Most teams learn AI tooling as a list of tricks: add this file, say
+    &ldquo;think step by step&rdquo;, pick that model. The tricks work until they
+    don't, and then nobody can say why — because the tricks were never connected to
+    a mechanism.</p>
+    <p>Almost every practical rule in Part Two is a direct consequence of something
+    mechanical in Part One. Instruction files have to be short because they compete with
+    your code for a fixed token budget. A coding agent needs a green test suite because
+    the loop has no other error signal. You cannot sanitise your way out of prompt
+    injection because the model reads instructions and data through the same channel.
+    None of that is memorisable as a tip. All of it is obvious once you can see the
+    machine.</p>
+    <p>So Part One builds the machine, and every concept block ends with a
+    <b>bridge</b> marker pointing at the practice it determines. Part Two points back.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wide">
+    <h2 style="max-width:var(--col);margin-left:auto;margin-right:auto">The whole course in one picture</h2>
+    <figure>
+      <svg class="dgm" viewBox="0 0 960 624" role="img"
+        aria-label="Three nested layers: training runs once and writes the parameters; the parameters are then read-only; a harness wraps an inference loop that turns context into one token at a time and appends it back to the context.">
+
+        <!-- ===== BAND 1 : TRAINING ===== -->
+        <rect class="box" x="28" y="26" width="896" height="152" rx="6"/>
+        <text class="t-ttl" x="48" y="50">TRAINING · ONCE, AT ENORMOUS COST</text>
+
+        <rect class="chip" x="52"  y="62" width="152" height="48" rx="4"/>
+        <text x="128" y="85" text-anchor="middle">Text corpus</text>
+        <text class="t-sm" x="128" y="99" text-anchor="middle">~10¹³ tokens</text>
+
+        <line class="flow" x1="206" y1="86" x2="218" y2="86"/>
+        <polygon class="head" points="218,82 226,86 218,90"/>
+
+        <rect class="chip" x="226" y="62" width="152" height="48" rx="4"/>
+        <text x="302" y="85" text-anchor="middle">Forward pass</text>
+        <text class="t-sm" x="302" y="99" text-anchor="middle">predict next token</text>
+
+        <line class="flow" x1="380" y1="86" x2="392" y2="86"/>
+        <polygon class="head" points="392,82 400,86 392,90"/>
+
+        <rect class="chip" x="400" y="62" width="152" height="48" rx="4"/>
+        <text x="476" y="85" text-anchor="middle">Loss</text>
+        <text class="t-sm" x="476" y="99" text-anchor="middle">how wrong was it?</text>
+
+        <line class="flow" x1="554" y1="86" x2="566" y2="86"/>
+        <polygon class="head" points="566,82 574,86 566,90"/>
+
+        <rect class="chip" x="574" y="62" width="152" height="48" rx="4"/>
+        <text x="650" y="85" text-anchor="middle">Backpropagation</text>
+        <text class="t-sm" x="650" y="99" text-anchor="middle">blame each weight</text>
+
+        <line class="flow" x1="728" y1="86" x2="740" y2="86"/>
+        <polygon class="head" points="740,82 748,86 740,90"/>
+
+        <rect class="chip" x="748" y="62" width="152" height="48" rx="4"/>
+        <text x="824" y="85" text-anchor="middle">Update weights</text>
+        <text class="t-sm" x="824" y="99" text-anchor="middle">gradient descent</text>
+
+        <!-- training loop back -->
+        <polyline class="flow" points="824,110 824,134 310,134 310,114"/>
+        <polygon class="head" points="306,114 310,106 314,114"/>
+        <text class="t-sm" x="567" y="150" text-anchor="middle">repeat for every batch, millions of times</text>
+
+        <!-- arrow down to parameters -->
+        <line class="flow" x1="476" y1="178" x2="476" y2="198"/>
+        <polygon class="head" points="472,198 476,206 480,198"/>
+        <text class="t-sm" x="490" y="194">writes the weights, once</text>
+
+        <!-- ===== BAND 2 : PARAMETERS ===== -->
+        <rect class="box" x="28" y="208" width="896" height="58" rx="6"/>
+        <text x="476" y="233" text-anchor="middle">PARAMETERS — a few hundred billion fixed numbers</text>
+        <text class="t-sm" x="476" y="251" text-anchor="middle">the entire &ldquo;knowledge&rdquo; of the model; nothing is added here when you use it</text>
+
+        <line class="flow" x1="476" y1="266" x2="476" y2="288"/>
+        <polygon class="head" points="472,288 476,296 480,288"/>
+        <text class="t-sm" x="490" y="284">read-only while you use it</text>
+
+        <!-- ===== BAND 3 : HARNESS ===== -->
+        <rect class="box dash" x="28" y="298" width="896" height="300" rx="6"/>
+        <text class="t-ttl" x="48" y="322">HARNESS · THE PROGRAM YOU ACTUALLY TALK TO</text>
+
+        <rect class="chip" x="60"  y="332" width="196" height="40" rx="4"/>
+        <text class="t-sm" x="158" y="357" text-anchor="middle">System prompt</text>
+        <rect class="chip" x="272" y="332" width="196" height="40" rx="4"/>
+        <text class="t-sm" x="370" y="357" text-anchor="middle">Conversation history</text>
+        <rect class="chip" x="484" y="332" width="196" height="40" rx="4"/>
+        <text class="t-sm" x="582" y="357" text-anchor="middle">Retrieved files</text>
+        <rect class="chip" x="696" y="332" width="196" height="40" rx="4"/>
+        <text class="t-sm" x="794" y="357" text-anchor="middle">Tool results</text>
+
+        <line class="flow" x1="158" y1="372" x2="158" y2="388"/><polygon class="head" points="154,388 158,396 162,388"/>
+        <line class="flow" x1="370" y1="372" x2="370" y2="388"/><polygon class="head" points="366,388 370,396 374,388"/>
+        <line class="flow" x1="582" y1="372" x2="582" y2="388"/><polygon class="head" points="578,388 582,396 586,388"/>
+        <line class="flow" x1="794" y1="372" x2="794" y2="388"/><polygon class="head" points="790,388 794,396 798,388"/>
+
+        <!-- inference loop -->
+        <rect class="hl" x="60" y="398" width="832" height="176" rx="5"/>
+        <text class="t-ttl" x="78" y="421">INFERENCE LOOP · ONE TOKEN PER PASS</text>
+
+        <rect class="box" x="71"  y="430" width="146" height="46" rx="4"/>
+        <text class="t-sm" x="144" y="458" text-anchor="middle">Tokenise</text>
+        <line class="flow-a" x1="219" y1="453" x2="229" y2="453"/><polygon class="head-a" points="229,449 237,453 229,457"/>
+
+        <rect class="box" x="237" y="430" width="146" height="46" rx="4"/>
+        <text class="t-sm" x="310" y="458" text-anchor="middle">Embed</text>
+        <line class="flow-a" x1="385" y1="453" x2="395" y2="453"/><polygon class="head-a" points="395,449 403,453 395,457"/>
+
+        <rect class="box" x="403" y="430" width="146" height="46" rx="4"/>
+        <text class="t-sm" x="476" y="450" text-anchor="middle">Transformer blocks</text>
+        <text class="t-sm" x="476" y="465" text-anchor="middle">(attention)</text>
+        <line class="flow-a" x1="551" y1="453" x2="561" y2="453"/><polygon class="head-a" points="561,449 569,453 561,457"/>
+
+        <rect class="box" x="569" y="430" width="146" height="46" rx="4"/>
+        <text class="t-sm" x="642" y="450" text-anchor="middle">Probability over</text>
+        <text class="t-sm" x="642" y="465" text-anchor="middle">every token</text>
+        <line class="flow-a" x1="717" y1="453" x2="727" y2="453"/><polygon class="head-a" points="727,449 735,453 727,457"/>
+
+        <rect class="box" x="735" y="430" width="146" height="46" rx="4"/>
+        <text class="t-sm" x="808" y="450" text-anchor="middle">Sample one</text>
+        <text class="t-sm" x="808" y="465" text-anchor="middle">(temperature)</text>
+
+        <!-- loop back -->
+        <polyline class="flow-a" points="808,476 808,502 144,502 144,480"/>
+        <polygon class="head-a" points="140,480 144,472 148,480"/>
+        <text class="t-sm" x="476" y="520" text-anchor="middle">append the sampled token to the context, then run the whole thing again</text>
+        <text class="t-sm" x="476" y="552" text-anchor="middle">the model is stateless — every pass re-reads the entire context from scratch</text>
+      </svg>
+      <figcaption>Three layers, and the whole of Part One. <b>Training</b> runs once and
+      writes a fixed set of numbers. <b>Inference</b> reads those numbers and produces exactly
+      one token per pass, then appends it and runs again — everything that looks like memory,
+      reasoning or agency is this loop plus the text in the context. The <b>harness</b> is the
+      ordinary software that decides what goes into the context and what to do with what comes
+      out. Part Two is almost entirely about that outer layer: in GitHub Enterprise, the harness
+      is what you get to configure.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Part One · How the machine works</h2>
+    <p>Seven modules, built in dependency order. Each concept block closes with the practice
+    it determines.</p>
+  </div>
+  <div class="wide" style="margin-top:1.4em">
+    <div class="modgrid">
+      <div class="mod"><span class="mod__n">1</span><h3 class="mod__t">Learning instead of programming</h3>
+        <p class="mod__c">Machine learning vs traditional software · neural networks · parameters ·
+        training and loss · gradient descent · backpropagation · inference · overfitting and generalisation</p></div>
+      <div class="mod"><span class="mod__n">2</span><h3 class="mod__t">Turning text into numbers</h3>
+        <p class="mod__c">Tokenisation · vocabularies and BPE · encoding · embeddings and vector space ·
+        positional information · <b>how your choice of human language changes cost and quality</b></p></div>
+      <div class="mod"><span class="mod__n">3</span><h3 class="mod__t">The transformer</h3>
+        <p class="mod__c">What transformers solved · attention as a soft lookup · queries, keys and values ·
+        multi-head attention · the residual stream · a full forward pass · why language modelling scales</p></div>
+      <div class="mod"><span class="mod__n">4</span><h3 class="mod__t">Generating text</h3>
+        <p class="mod__c">Next-token prediction · logits and probability · temperature · top-k and top-p ·
+        seeds and determinism · autoregression · the context window · hallucination</p></div>
+      <div class="mod"><span class="mod__n">5</span><h3 class="mod__t">From model to product</h3>
+        <p class="mod__c">Post-training and instruction tuning · chat as a text format · the harness ·
+        reasoning and test-time compute · prompting, visible and hidden · system prompts and custom
+        instructions · tools · agents · skills · retrieval · MCP · evaluation</p></div>
+      <div class="mod"><span class="mod__n">6</span><h3 class="mod__t">Security</h3>
+        <p class="mod__c">The trust boundary · prompt injection, direct and indirect · jailbreaking ·
+        the lethal trifecta · exfiltration channels · tool and supply-chain poisoning · insecure
+        generated code · defence in depth</p></div>
+      <div class="mod"><span class="mod__n">7</span><h3 class="mod__t">Honest limits</h3>
+        <p class="mod__c">What the mechanism makes easy and what it makes impossible · the jagged
+        frontier · the cost model · when not to use a model at all</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Part Two · Copilot in the enterprise</h2>
+    <p>The same mechanics, now with your repositories, your reviewers and your compliance
+    obligations attached.</p>
+  </div>
+  <div class="wide" style="margin-top:1.4em">
+    <div class="modgrid">
+      <div class="mod mod--p"><span class="mod__n">8</span><h3 class="mod__t">The surface area</h3>
+        <p class="mod__c">Every place a model touches GitHub — completions, chat, CLI, code review,
+        coding agent, Spaces, Actions · what Business and Enterprise plans add · who owns what</p></div>
+      <div class="mod mod--p"><span class="mod__n">9</span><h3 class="mod__t">Context engineering in a repository</h3>
+        <p class="mod__c">The instruction layers and their precedence · <code>copilot-instructions.md</code>,
+        <code>*.instructions.md</code>, <code>AGENTS.md</code> · what makes a good instruction file ·
+        Spaces as curated grounding · making a repo legible to a model</p></div>
+      <div class="mod mod--p"><span class="mod__n">10</span><h3 class="mod__t">Prompting that holds up</h3>
+        <p class="mod__c">Prompt anatomy for code · which surface for which task · prompt files,
+        custom agents and skills · choosing a model · which human language to write in · context hygiene</p></div>
+      <div class="mod mod--p"><span class="mod__n">11</span><h3 class="mod__t">Review, agents and the PR workflow</h3>
+        <p class="mod__c">Copilot code review · shaping a task an agent can finish · why the agent needs
+        a green build · reviewing AI-written code · MCP servers with least privilege</p></div>
+      <div class="mod mod--p"><span class="mod__n">12</span><h3 class="mod__t">Security and governance</h3>
+        <p class="mod__c">Policies, content exclusion and its gaps · audit and metrics · injection through
+        issues and pull requests · least-privilege tokens · the controls that actually hold</p></div>
+      <div class="mod mod--p"><span class="mod__n">13</span><h3 class="mod__t">Rolling it out</h3>
+        <p class="mod__c">A 30/60/90 plan · enablement that works · metrics worth tracking and vanity
+        metrics to ignore · writing your team's conventions down</p></div>
+      <div class="mod mod--p"><span class="mod__n">14</span><h3 class="mod__t">Labs</h3>
+        <p class="mod__c">Eight exercises, each tied back to a module — tokeniser measurement,
+        temperature, instruction-file A/B, prompt files, agent task shaping, a benign injection
+        red-team, and an AI-code review pass</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The bridge</h2>
+    <p>This table is the spine of the course. Read it now as a promise, and again at the
+    end as a summary.</p>
+  </div>
+  <div class="wide">
+    <div class="tblw">
+      <table>
+        <thead><tr><th>Mechanism (Part One)</th><th>Consequence you can act on (Part Two)</th></tr></thead>
+        <tbody>
+          <tr><td>The context window is a fixed token budget</td><td>Instruction files compete with your source code. Short and specific beats thorough.</td></tr>
+          <tr><td>Tokenisation is tuned for English and for code</td><td>The same instruction costs 1.5–2&times; more tokens in German or Japanese. Write durable repo instructions in English.</td></tr>
+          <tr><td>Attention degrades over long contexts</td><td>Start a fresh session per task instead of one long thread. Put the important constraint last.</td></tr>
+          <tr><td>The model is stateless; the harness re-sends everything</td><td>&ldquo;It forgot&rdquo; is almost always a context-assembly problem, not a model problem.</td></tr>
+          <tr><td>Output is sampled from a probability distribution</td><td>Two identical prompts can give different answers. Never treat a single run as evidence.</td></tr>
+          <tr><td>Hallucination is the normal behaviour of a likelihood machine</td><td>Ground every factual claim in retrieved context, and verify APIs against the actual package.</td></tr>
+          <tr><td>The model has one input channel for instructions and data</td><td>A pull-request comment is executable input. Treat all repository content as untrusted.</td></tr>
+          <tr><td>An agent loop only improves if it gets a signal</td><td>Fast, reliable tests and a runnable build are the single biggest agent accelerant.</td></tr>
+          <tr><td>Tools are requests the harness executes, not model capabilities</td><td>Security lives in the harness and the token scope, never in the prompt.</td></tr>
+          <tr><td>Reasoning spends tokens to buy accuracy</td><td>Match model and thinking budget to task difficulty, not to habit.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>How to run it</h2>
+    <p>The material is one thing; the format is yours. Four that work:</p>
+    <div class="paths">
+      <div class="path"><h4>Skim</h4><span class="dur">2 hours · solo</span>
+        <p>Read the concept map, every <b>key idea</b> callout in Part One, then all of Part Two.
+        Enough to stop making the common mistakes.</p></div>
+      <div class="path"><h4>Workshop</h4><span class="dur">2 days · 6–20 people</span>
+        <p>Day one: Modules 1–7 with the labs in Module 14 interleaved. Day two: Part Two against
+        your own repository. Finish by writing your real instruction files together.</p></div>
+      <div class="path"><h4>Study group</h4><span class="dur">6 weeks · 1 hour weekly</span>
+        <p>One module pair per week, one lab per week, one volunteer presenting. Slowest but it
+        sticks best, and the discussion is where the real objections surface.</p></div>
+      <div class="path"><h4>Reference</h4><span class="dur">ongoing</span>
+        <p>Keep it in the repo. When someone asks why an instruction file must be short, send
+        the Module 4 anchor rather than the answer.</p></div>
+    </div>
+    <h3>What you need</h3>
+    <ul>
+      <li><b>For Part One:</b> nothing. No maths beyond school algebra, no Python. Every figure is
+      self-contained.</li>
+      <li><b>For Part Two:</b> a GitHub repository you can push branches to, and Copilot enabled on
+      it. A Business or Enterprise plan for the governance sections in Module 12 — read them anyway
+      if you are on an individual plan, because they tell you what your organisation cannot
+      currently see.</li>
+      <li><b>For the labs:</b> a browser. Two labs are more interesting with a terminal.</li>
+    </ul>
+    <div class="callout c-key">
+      <span class="callout__tag">Before you start</span>
+      <p>Part Two names specific files, features and model versions. Those move faster than any
+      document can. Treat every name as a pointer to GitHub's own documentation rather than as a
+      fact with a shelf life, and check anything you are about to standardise on. The mechanics in
+      Part One have not changed since 2017 and are not about to.</p>
+    </div>
+    <div class="jump">
+      <a href="part-1-theory.html"><span>Start here</span><b>Part One · How the machine works →</b></a>
+      <a href="part-2-practice.html"><span>Then</span><b>Part Two · Copilot in the enterprise →</b></a>
+      <a href="resources.html"><span>Alongside</span><b>Further reading →</b></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Tokens to Pull Requests</b> — a two-part course on modern AI and its use inside GitHub Enterprise.</p>
+    <p class="meta">Part One is mechanism and does not expire. Part Two describes a product surface
+    that changes monthly; verify specifics against GitHub's documentation before you standardise.
+    Compiled October 2026.</p>
+  </div>
+</footer>
