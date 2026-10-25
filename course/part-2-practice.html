@@ -231,6 +231,33 @@ tbody tr:last-child td{border-bottom:0}
 footer{border-top:1px solid var(--rule);padding-block:28px;background:var(--surface)}
 footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin:0 0 .4em}
 
+
+/* ---- mathematics ---- */
+var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04em;letter-spacing:.01em}
+.eq{margin:1.25em 0;padding:13px 18px;background:var(--surface);border:1px solid var(--rule);
+  border-radius:5px;font-size:17.5px;line-height:1.75;text-align:center;overflow-x:auto}
+.eq var{font-size:1.06em}
+.eq .note{display:block;font-family:var(--display);font-size:12.5px;color:var(--ink-faint);
+  margin-top:.45em;text-align:center}
+.calc{font-family:var(--mono);font-size:13px;line-height:1.72;background:var(--surface);
+  border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:4px;
+  padding:13px 16px;overflow-x:auto;margin:1.25em 0;white-space:pre}
+.calc b{color:var(--accent);font-weight:500}
+/* ---- inline exercises ---- */
+.ex{margin:1.5em 0;padding:15px 18px;background:var(--surface);border:1px solid var(--rule-strong);
+  border-radius:5px}
+.ex__h{font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--practice);margin:0 0 .5em}
+.ex p{font-size:16.5px;margin:0 0 .6em}
+.ex p:last-child{margin-bottom:0}
+.ex details{margin-top:.5em;border-top:1px solid var(--rule);padding-top:.55em}
+.ex summary{font-family:var(--display);font-size:13px;font-weight:600;color:var(--accent);
+  cursor:pointer;list-style:none}
+.ex summary::-webkit-details-marker{display:none}
+.ex summary::before{content:"▸ ";font-size:11px}
+.ex details[open] summary::before{content:"▾ "}
+.ex details p{font-size:16px;color:var(--ink-soft);margin-top:.5em}
+
 @media (max-width:640px){
   body{font-size:17px}
   .bar{grid-template-columns:minmax(56px,auto) 1fr minmax(40px,auto);gap:8px}
