@@ -299,13 +299,14 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
     <p class="lede">Seven modules, in dependency order. By the end you should be able to
     explain — to a sceptical colleague, without hand-waving — what a language model is doing
     when it writes your code, and why it fails the way it does.</p>
-    <p class="meta">Modules 1–7&nbsp;· ≈2.5 hours reading&nbsp;· 17 figures</p>
+    <p class="meta">Modules 1–7&nbsp;· ≈3.5 hours reading&nbsp;· 14 diagrams&nbsp;· 11 exercises</p>
     <div class="callout c-note">
       <span class="callout__tag">How to read this</span>
-      <p>Numbered blocks are concepts. Teal <b>key idea</b> boxes are the sentence to remember.
-      Rust-coloured <b>bridge</b> boxes point at the Part Two practice that the concept determines —
-      they are the reason the theory is here at all. Skip nothing in Modules 2 and 4; those two do
-      most of the work.</p>
+      <p>Modules are numbered and build in order; later ones assume earlier ones. Three worked
+      examples run through the course and are introduced where they first appear — a neuron
+      learning logical AND in Module 1, one sentence carried through Modules 2 to 4, and a payment
+      function from Module 5 onward. Exercises sit beside the explanation they test and carry
+      expected answers. Skip nothing in Modules 2 and 4; those two do most of the work.</p>
     </div>
     <nav class="toc" aria-label="Contents">
       <h2>Contents</h2>
@@ -350,11 +351,11 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
             <li><a href="#c-context">4.7 Context</a></li>
             <li><a href="#c-hallucination">4.8 Hallucination</a></li>
           </ol></li>
-        <li><a href="#m5"><span class="toc__n">5</span>From model to product</a>
+        <li><a href="#m5"><span class="toc__n">5</span>From model to system</a>
           <ol>
             <li><a href="#c-posttraining">5.1 Post-training</a></li>
             <li><a href="#c-chat">5.2 Chat is a text format</a></li>
-            <li><a href="#c-chatbots">5.3 Chatbots and the illusion of memory</a></li>
+            <li><a href="#c-chatbots">5.3 Chatbots and the appearance of memory</a></li>
             <li><a href="#c-harness">5.4 The harness</a></li>
             <li><a href="#c-reasoning">5.5 Reasoning</a></li>
             <li><a href="#c-prompting">5.6 Prompting, visible and hidden</a></li>
@@ -368,7 +369,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
           </ol></li>
         <li><a href="#m6"><span class="toc__n">6</span>Security</a>
           <ol>
-            <li><a href="#c-trust">6.1 The trust boundary that isn't there</a></li>
+            <li><a href="#c-trust">6.1 The trust boundary that is not there</a></li>
             <li><a href="#c-injection">6.2 Prompt injection</a></li>
             <li><a href="#c-jailbreak">6.3 Jailbreaking is a different problem</a></li>
             <li><a href="#c-trifecta">6.4 The lethal trifecta</a></li>
@@ -712,7 +713,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       consequential hyperparameter in practice. Too small and the parameters crawl, exhausting the
       compute budget before reaching anything useful. Too large and each step overshoots the valley
       it was aiming at, so the loss oscillates or diverges. Real training also differs from the
-      above in one respect worth naming: the gradient is estimated from a small random sample of
+      above in one respect: the gradient is estimated from a small random sample of
       the data — a <b>batch</b> — rather than from the whole dataset, because the full computation
       is unaffordable. This is <b>stochastic</b> gradient descent, and the noise it introduces
       turns out to help, by shaking the search out of poor local minima it would otherwise settle
@@ -886,8 +887,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       do more of it. Credit and blame have been assigned through the network without anyone
       specifying how.</p>
       <p>Two properties of this procedure explain things that come up much later. First, the
-      backward pass needs the activations computed on the way forward, which is why training
-      requires far more memory than inference and why memory, rather than arithmetic, is often the
+      backward pass needs the activations computed on the way forward, so training requires far more memory than inference and why memory, rather than arithmetic, is often the
       binding constraint on model size. Second, the recursion multiplies a factor at every layer,
       so over many layers those factors compound: if they are consistently below one the gradient
       decays towards nothing, and if consistently above one it explodes. Both failure modes
@@ -1143,7 +1143,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       </figure>
       <p>Three properties of this scheme have consequences that recur throughout the course.
       Frequency determines granularity, so text resembling the training sample is represented
-      compactly and unusual text is not. The space before a word is part of the token, which is why
+      compactly and unusual text is not. The space before a word is part of the token, so
       <code>&nbsp;run</code> and <code>run</code> are different entries with different identifiers,
       and why a prompt ending in a stray space sometimes behaves oddly. And the model has no access
       to the characters inside a token: if <code>strawberry</code> arrives as two or three units,
@@ -1183,9 +1183,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       like a participant in a conversation. Module 5.2 returns to this.</p>
       <p>What encoding does not do is supply meaning. Token 13046 is not larger than, better than,
       or more related to token 13047 than to token 976. The integers are arbitrary labels and any
-      numerical relationship between them is an accident of the merge order. This is worth stating
-      explicitly because the next step is the one that introduces structure, and it is easy to
-      attribute that structure to the wrong stage.</p>
+      numerical relationship between them is an accident of the merge order. The next step is the one that introduces structure, and it is easy to attribute that structure to the wrong stage.</p>
     </div>
 
     <div class="concept" id="c-embedding">
@@ -1815,8 +1813,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       <h3>Why language was the right target</h3>
       <p>Nothing in the architecture is specific to language. The same design now drives models of
       images, audio, video and protein structure. But language was where it first produced
-      something that felt like a change in kind, and the reasons are worth stating because they
-      bound what these systems are good for.</p>
+      something that felt like a change in kind, and the reasons bound what these systems are good for.</p>
       <p>The decisive factor is the one from Module 1.9: text supplies its own labels, in
       effectively unlimited quantity. No other modality had a comparable supply of self-labelling
       data when this architecture arrived. Beyond availability, written language is an unusually
@@ -1824,8 +1821,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       code together with the documentation explaining it — so a system forced to model text at
       scale is forced to model a great deal of the structure that produced it. And language serves
       as a universal interface: translation, summarisation, classification, question answering and
-      code generation all reduce to the same operation of continuing a sequence plausibly, which is
-      why one model now does work that previously required a dozen specialised systems.</p>
+      code generation all reduce to the same operation of continuing a sequence plausibly, so one model now does work that previously required a dozen specialised systems.</p>
       <p>The limits of this argument deserve equal weight, and the course will lean on them
       repeatedly. The training objective rewards assigning high probability to the token that
       actually followed. Being correct is strongly correlated with that, because correct
@@ -1984,8 +1980,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
           <p>About seven times in ten draws. For the second part, 0.668<sup>200</sup> is
           approximately 10<sup>−35</sup> — effectively zero. The point is that even a model that is
           individually confident at each step will almost certainly deviate from its own top choice
-          somewhere in a long generation, which is why two runs of the same prompt diverge and why
-          the divergence usually appears partway through rather than at the start.</p>
+          somewhere in a long generation. That is where divergence between two runs of one prompt comes from, and why it usually appears partway through rather than at the start.</p>
         </details>
       </div>
     </div>
@@ -2012,8 +2007,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       the mechanism behind every instruction to return only a function body and behind structured
       output modes generally.</p>
       <p>None of these live in the model. All of them are a few dozen lines in the serving code
-      that sits between the distribution and your screen, which is why the same model exposed
-      through two products can behave noticeably differently.</p>
+      that sits between the distribution and your screen, so the same model exposed through two products can behave noticeably differently.</p>
     </div>
 
     <div class="concept" id="c-seeds">
@@ -2250,141 +2244,145 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
 <section id="m5" class="module">
   <div class="wrap">
     <p class="eyebrow">Module 5</p>
-    <h2>From model to product</h2>
-    <p class="lede">Everything in Modules 1–4 describes a text-completion engine. Nothing so far
-    explains a chatbot, an agent, or a tool call. This module builds the layers that turn one into
-    the other — and almost all of them are ordinary software you can configure.</p>
+    <h2>From model to system</h2>
+    <p class="lede">Modules 1 to 4 describe a function that maps a token sequence to a probability
+    distribution. Nothing in them explains a chatbot, a tool call, or an agent that opens a pull
+    request. This module builds the layers that turn one into the other, and almost all of them
+    are ordinary software you can inspect and configure.</p>
+    <p>A second example joins the course here and runs through the remainder of it, including all
+    of Part Two. A small Python service charges a payment card:</p>
+    <pre><code># payments/charge.py
+def charge(card_token: str, amount_cents: int) -&gt; ChargeResult:
+    resp = gateway.post("/charges", {"token": card_token, "amount": amount_cents})
+    if resp.status != 200:
+        raise GatewayError(resp.body)
+    return ChargeResult(id=resp.body["id"], status="captured")</code></pre>
+    <p>The request is: <i>add retry logic to <code>charge()</code></i>. It is a realistic request,
+    it sounds simple, and it is underspecified in a way that matters. Retrying a charge that may
+    already have succeeded can bill the customer twice, and avoiding that requires an idempotency
+    key the gateway supports and the current code does not send. A model asked this question will
+    produce fluent, well-formatted, confident code. Whether that code double-charges depends
+    entirely on what else was in its context.</p>
   </div>
 
   <div class="wrap">
     <div class="concept" id="c-posttraining">
       <span class="cnum">5.1</span>
       <h3>Post-training</h3>
-      <p>A model straight out of pre-training is a <b>base model</b>, and it is not what you have
-      used. Ask a base model &ldquo;What is the capital of France?&rdquo; and a very reasonable
-      completion is &ldquo;What is the capital of Germany? What is the capital of Spain?&rdquo; —
-      because your text looks like the start of a quiz, and quizzes continue with more questions.
-      It is excellent at continuing text and has no concept of being asked something.</p>
-      <p>Post-training fixes that in two stages.</p>
-      <p><b>Supervised fine-tuning.</b> Continue training on a curated set of example
-      conversations — instruction followed by a good response — written or vetted by people. Same
-      loss, same gradient descent, much smaller and much cleaner data. This teaches the format:
-      when text looks like a request, the likely continuation is a helpful answer.</p>
-      <p><b>Preference training.</b> Generate several candidate responses, have humans or a model
-      rank them, and train against that signal. Variants carry names like RLHF (reinforcement
-      learning from human feedback), RLAIF, and DPO. This is where tone, helpfulness, refusal
-      behaviour and format discipline are installed — and where sycophancy gets installed too, as
-      an unintended consequence of optimising for what raters approved of.</p>
-      <p>Post-training is a thin layer on top of a vast pre-trained base, and three practical
-      facts follow:</p>
-      <ul>
-        <li>The knowledge is from pre-training. Post-training shapes behaviour, not facts.</li>
-        <li>Two models with the same base and different post-training feel like different
-        products. This is much of what distinguishes vendors.</li>
-        <li>Safety behaviour is trained behaviour, not an enforced constraint. It is a strong
-        statistical tendency, which is exactly why jailbreaks exist — see <a href="#c-jailbreak">6.3</a>.</li>
-      </ul>
-      <p>Increasingly, this stage also includes reinforcement learning against verifiable outcomes
-      — did the code compile, did the tests pass, was the proof valid — which is where much of the
-      recent jump in coding and reasoning ability has come from. Note what that implies: models are
-      being trained specifically to succeed in loops with checkable feedback. If you want strong
-      performance, give them one.</p>
+      <p>A model as Modules 1 to 4 describe it is a <b>base model</b>, and it is not what you have
+      used. Base models continue text. Given <i>What is the capital of France?</i> a perfectly good
+      continuation is <i>What is the capital of Germany? What is the capital of Spain?</i>, because
+      the input resembles the opening of a quiz and quizzes continue with further questions. The
+      model is excellent at its objective and has no notion of having been asked something.</p>
+      <p>Converting it into something that answers requires further training, in two stages that
+      do different jobs. <b>Supervised fine-tuning</b> continues the same gradient-descent
+      procedure on a curated set of example conversations — an instruction paired with a good
+      response — written or vetted by people. The data is vastly smaller and much cleaner than the
+      pretraining corpus, and what it teaches is a format: when text takes the shape of a request,
+      the likely continuation is a helpful answer rather than more requests.</p>
+      <p><b>Preference-based post-training</b> then refines behaviour using comparisons rather than
+      demonstrations. The model generates several candidate responses, humans or a trained
+      stand-in rank them, and the model is updated towards the preferred ones. The techniques carry
+      names such as RLHF, RLAIF and DPO and differ in their optimisation details. What they install
+      is tone, helpfulness, format discipline and refusal behaviour — and, as an acknowledged side
+      effect, a tendency towards sycophancy, because responses that agreed with the rater were
+      rated more highly.</p>
+      <p>Three consequences are worth carrying forward. Knowledge comes from pretraining;
+      post-training shapes behaviour rather than adding facts. Two models built on the same base
+      with different post-training feel like different products, which is much of what distinguishes
+      vendors. And safety behaviour is trained disposition rather than enforced constraint — a strong statistical tendency rather than a wall, as Module 6.3 discusses.</p>
+      <p>Increasingly this stage also includes reinforcement learning against automatically
+      verifiable outcomes: did the code compile, did the tests pass, was the proof valid. Much of
+      the recent improvement in coding and mathematical performance traces to it. The implication
+      for practice is direct and underappreciated — these systems are now explicitly optimised to
+      operate in loops that provide checkable feedback, so providing one is working with the grain
+      rather than against it.</p>
     </div>
 
     <div class="concept" id="c-chat">
       <span class="cnum">5.2</span>
       <h3>Chat is a text format</h3>
-      <p>There is no chat feature in a transformer. A conversation is a single string, formatted
-      with special tokens that mark speaker turns, and post-training taught the model to respect
-      those markers. Here is roughly what your three-message conversation actually looks like when
-      it reaches the model:</p>
+      <p>There is no conversation feature in a transformer. A conversation is a single string,
+      marked up with the special tokens of Module 2.2, which post-training taught the model to
+      respect. Our payment request, after two turns, reaches the model looking approximately like
+      this:</p>
       <pre><code>&lt;|system|&gt;
 You are a coding assistant for the Acme payments service.
-Prefer Result types over exceptions. Never log card numbers.
+Money is always decimal in minor units. Never log a card number.
 &lt;|end|&gt;
 &lt;|user|&gt;
-Add retry logic to the charge handler.
+Add retry logic to charge().
 &lt;|end|&gt;
 &lt;|assistant|&gt;
-I'll add exponential backoff. Which failures should be retried —
-network errors only, or 5xx responses too?
+Which failures should be retried — network errors only, or 5xx responses too?
 &lt;|end|&gt;
 &lt;|user|&gt;
 Both, but never retry a 402.
 &lt;|end|&gt;
-&lt;|assistant|&gt;
-</code></pre>
-      <p>That is the entire input. The model's job is unchanged from Module 4: continue this text.
-      It continues it after the final <code>&lt;|assistant|&gt;</code> marker, which is why the
-      next thing it writes is the assistant's reply.</p>
-      <p>Several apparent mysteries dissolve here:</p>
-      <ul>
-        <li><b>The system prompt is not privileged.</b> It is text, earlier in the same string,
-        which post-training taught the model to weight heavily. That is a trained tendency, not an
-        access-control boundary — the foundation of Module 6.</li>
-        <li><b>Roles are a convention.</b> <code>system</code>, <code>user</code> and
-        <code>assistant</code> are delimiters the model learned to interpret. Nothing enforces
-        them at the architecture level.</li>
-        <li><b>Your whole history is re-sent.</b> Every turn, the entire transcript goes back in.
-        This is the real cost model of a long conversation.</li>
-      </ul>
+&lt;|assistant|&gt;</code></pre>
+      <p>That is the entire input, and the model's task is unchanged from Module 4: continue this
+      text. It continues after the final marker, so the next thing produced is the
+      assistant's reply.</p>
+      <p>Several apparent mysteries dissolve at this point. The system prompt is not privileged; it
+      is text positioned earlier in the same string, which post-training taught the model to weight
+      heavily. That is a learned disposition, not an access-control boundary, and the distinction
+      is the foundation of Module 6. The roles are a convention — delimiters the model learned to
+      interpret — with nothing in the architecture enforcing them. And the entire transcript is
+      re-sent on every turn, which is the real cost model of a long conversation.</p>
     </div>
 
     <div class="concept" id="c-chatbots">
       <span class="cnum">5.3</span>
-      <h3>Chatbots and the illusion of memory</h3>
-      <p>A chatbot is now fully explained: a loop that keeps a transcript, appends your message,
-      formats the whole thing with role markers, runs generation until the end-of-turn token,
+      <h3>Chatbots and the appearance of memory</h3>
+      <p>A chatbot is now fully explained. It is a loop that keeps a transcript, appends your
+      message, formats the whole thing with role markers, generates until the end-of-turn token,
       appends the result, and waits.</p>
-      <p>The model is stateless. The transcript is state, and it lives in the application. So:</p>
-      <ul>
-        <li><b>&ldquo;It remembered what I said earlier&rdquo;</b> — the application re-sent it.</li>
-        <li><b>&ldquo;It forgot what I said earlier&rdquo;</b> — the application stopped sending
-        it, usually because the transcript hit the context limit and something was dropped or
-        summarised. Almost every &ldquo;the model forgot&rdquo; complaint is a context-management
-        bug in the harness, not a model weakness.</li>
-        <li><b>&ldquo;It learned my preferences&rdquo;</b> — a memory feature wrote a note to a
-        store and the application now prepends it. The parameters are untouched.</li>
-      </ul>
-      <p>When a conversation gets too long, harnesses handle it in one of a few ways: drop the
-      oldest turns, summarise the early history into a short note, or retrieve only the relevant
-      parts. Each loses something, and knowing which one your tool uses explains a lot of its
-      behaviour at the edges.</p>
+      <p>The model holds no state; the transcript is state, and it lives in the application. So
+      when a system appears to remember something you said earlier, the application re-sent it.
+      When it appears to forget, the application stopped sending it — usually because the
+      transcript exceeded the window and something was dropped or summarised. When it appears to
+      have learned your preferences, a memory feature wrote a note to a store and now prepends it.
+      The parameters are untouched in all three cases, and most complaints that a model forgot
+      something are properly complaints about context management in the surrounding software.</p>
+      <p>How that management is done differs between products and explains much of their behaviour
+      at the edges. Dropping the oldest turns loses early constraints silently. Summarising the
+      early history preserves the gist and discards specifics. Retrieving only the relevant parts
+      of a long transcript works well when retrieval works and fails invisibly when it does
+      not.</p>
     </div>
 
     <div class="concept" id="c-harness">
       <span class="cnum">5.4</span>
       <h3>The harness</h3>
-      <p>The harness is the program around the model, and it is the most under-appreciated concept
-      in this course. When you use Copilot, Claude Code, ChatGPT or a CLI agent, almost everything
-      that distinguishes the experience is the harness. The model is a component in it.</p>
-      <p>A harness decides:</p>
-      <ul>
-        <li><b>What goes into the context</b> — which files, which history, which instructions,
-        which retrieved snippets, in what order, truncated how</li>
-        <li><b>What the model is told it can do</b> — the tool definitions, their descriptions
-        and schemas</li>
-        <li><b>What happens to the output</b> — parsing tool calls, executing them, validating
-        results, retrying failures, enforcing stop conditions</li>
-        <li><b>What the user sees</b> — streaming, diffs, approval prompts, citations</li>
-        <li><b>What is forbidden</b> — permissions, allowlists, sandboxes, secret redaction</li>
-      </ul>
-      <p>Two harnesses wrapping the identical model produce wildly different products. This is why
-      &ldquo;which model is best&rdquo; is usually the wrong question for a coding tool: the
-      context assembly and the tool loop matter at least as much as the weights, and they are the
-      part that is being iterated on fastest.</p>
-      <p>It is also where your leverage is. You cannot change the parameters. You can change what
-      the harness feeds them — and a well-configured harness around a mid-tier model beats a
-      badly-configured one around a frontier model on most real tasks.</p>
+      <p>The <b>harness</b> is the program surrounding the model, and it is the most consequential
+      component that popular accounts leave out. When you use a coding assistant, nearly everything
+      that distinguishes the experience is the harness; the model is one component inside it.</p>
+      <p>Concretely, the harness decides what enters the context — which files, how much history,
+      which instructions, which retrieved passages, in what order, truncated how. It decides what
+      the model is told it can do, by supplying tool definitions. It decides what happens to the
+      output: parsing tool requests, checking permissions, executing them, validating results,
+      retrying failures, and determining when to stop. And it decides what is forbidden, through
+      allowlists, sandboxes and credential scoping.</p>
+      <p>Two harnesses wrapping the same model produce noticeably different products, so asking which model is best is usually the wrong question about a coding tool. It is also
+      where your leverage lies. You cannot change the parameters, but the harness is configurable,
+      and a well-configured harness around a mid-tier model outperforms a poorly configured one
+      around a frontier model on most real work.</p>
+      <p>Return to the payment example to see what this means concretely. Asked to add retry logic
+      with nothing else in the context, the model has only its training distribution to draw on,
+      and the most probable retry code in that distribution is a simple loop with exponential
+      backoff — which is exactly what makes double-charging possible. The model is not being
+      careless. It has not been shown the gateway's documentation, has not seen whether an
+      idempotency helper already exists in the repository, and has no way to discover either. Every
+      remaining section of this module is a mechanism for putting one of those missing things in
+      front of it.</p>
     </div>
 
     <figure class="fig-wide">
       <svg class="dgm" viewBox="0 0 960 400" role="img"
-        aria-label="The harness surrounds the model: it gathers instructions, history, retrieved files and tool results into a context, calls the model, then parses the output, either executing a requested tool and looping back or returning a final answer to the user. Permissions and validation sit on the execution path.">
+        aria-label="The harness surrounds the model: it assembles instructions, history, retrieved files and tool results into a context, calls the model, then parses the output, either returning text to the user or executing a requested tool after a permission check and looping back.">
         <rect class="box dash" x="24" y="30" width="912" height="344" rx="6"/>
-        <text class="t-ttl" x="44" y="54">HARNESS · ORDINARY SOFTWARE, AND WHERE ALL YOUR LEVERAGE IS</text>
+        <text class="t-ttl" x="44" y="54">HARNESS · ORDINARY SOFTWARE, AND WHERE THE LEVERAGE IS</text>
 
-        <!-- context sources -->
         <text class="t-ttl" x="44" y="80">CONTEXT ASSEMBLY</text>
         <rect class="chip" x="44" y="90" width="150" height="30" rx="3"/><text class="t-xs" x="119" y="110" text-anchor="middle">System prompt</text>
         <rect class="chip" x="44" y="126" width="150" height="30" rx="3"/><text class="t-xs" x="119" y="146" text-anchor="middle">Repo instructions</text>
@@ -2417,13 +2415,11 @@ Both, but never retry a 402.
         <text class="t-sm" x="631" y="170" text-anchor="middle">Parse output</text>
         <text class="t-xs" x="631" y="186" text-anchor="middle">text, or a tool call?</text>
 
-        <!-- branch: answer -->
         <polyline class="flow-a" points="698,160 740,160 740,106"/>
         <polygon class="head-a" points="736,106 740,98 744,106"/>
         <rect class="good" x="666" y="66" width="148" height="32" rx="3"/>
-        <text class="t-xs" x="740" y="86" text-anchor="middle">plain text → to the user</text>
+        <text class="t-xs" x="740" y="86" text-anchor="middle">text → to the user</text>
 
-        <!-- branch: tool -->
         <polyline class="flow-a" points="698,192 740,192 740,238"/>
         <polygon class="head-a" points="736,238 740,246 744,238"/>
         <rect class="warn" x="666" y="246" width="148" height="34" rx="3"/>
@@ -2434,243 +2430,195 @@ Both, but never retry a 402.
         <polygon class="head-a" points="115,266 119,258 123,266"/>
         <text class="t-ac" x="430" y="348" text-anchor="middle">the result is appended to the context and the model is called again — this is the agent loop</text>
 
-        <text class="t-sm" x="832" y="160">Two harnesses</text>
-        <text class="t-sm" x="832" y="176">around the same</text>
-        <text class="t-sm" x="832" y="192">model are two</text>
-        <text class="t-sm" x="832" y="208">different products.</text>
+        <text class="t-sm" x="832" y="162">The model occupies</text>
+        <text class="t-sm" x="832" y="178">one box. Everything</text>
+        <text class="t-sm" x="832" y="194">else is software you</text>
+        <text class="t-sm" x="832" y="210">can configure.</text>
       </svg>
-      <figcaption>The model occupies one box. Everything else — which files were chosen, how the
-      context was truncated, whether a tool call was permitted, what happens on failure — is
-      conventional software written by the tool vendor and configured by you. <b>Security lives on
-      the orange path, not in the prompt</b>, and the loop at the bottom is the whole of
-      agency.</figcaption>
+      <figcaption>Which files were selected, how the context was truncated, whether a tool call was
+      permitted, what happens on failure — all of it is conventional software written by the tool
+      vendor and configured by you. Security lives on the orange path rather than in the prompt,
+      and the return arrow at the bottom is the whole of what will later be called agency.</figcaption>
     </figure>
 
     <div class="concept" id="c-reasoning">
       <span class="cnum">5.5</span>
       <h3>Reasoning</h3>
-      <p>The original observation was almost embarrassing in its simplicity: ask a model to
-      &ldquo;think step by step&rdquo; and accuracy on multi-step problems improves substantially.</p>
-      <p>The mechanism follows directly from Module 4. A model produces one token per forward pass,
-      with a fixed amount of computation per pass. Demanding an immediate answer to a problem
-      requiring five inferential steps asks for all five to be compressed into a single pass. Let
-      it write the intermediate steps and each one becomes context for the next — the working is
-      externalised into the token stream, and the model can attend to its own earlier conclusions.
-      Chain of thought buys depth by spending length.</p>
-      <p>Modern reasoning models have this trained in rather than prompted. They generate a long
-      internal monologue — often hidden or summarised in the UI — exploring approaches, checking
-      work and backtracking, before emitting a final answer. The relevant term is <b>test-time
-      compute</b>: accuracy now scales with how much thinking you are willing to pay for at
-      inference, not only with model size.</p>
-      <p>Three practical notes:</p>
-      <ul>
-        <li><b>Reasoning tokens are billed and consume the window.</b> A hard problem may spend
-        thousands of tokens thinking. That is the trade: tokens for accuracy.</li>
-        <li><b>It does not always help.</b> On simple, pattern-matching tasks it adds latency and
-        cost, and can talk a correct instinct out of itself. Match the thinking budget to the
-        difficulty.</li>
-        <li><b>The visible reasoning is not a log of the computation.</b> It is generated text,
-        subject to everything in Module 4. It is a useful artefact and often genuinely reflects the
-        process — but a plausible-looking chain of thought can accompany a wrong answer, and the
-        stated reason is not always the operative one.</li>
-      </ul>
+      <p>An early and somewhat embarrassing observation was that asking a model to work through a
+      problem step by step substantially improved its accuracy on multi-step questions. The
+      mechanism follows directly from Module 4.6.</p>
+      <p>A forward pass performs a fixed amount of computation and produces one token. Demanding an
+      immediate answer to a problem requiring five inferential steps asks for all five to be
+      compressed into that fixed depth. Allowing the model to write intermediate steps changes the
+      arithmetic: each step becomes part of the context for the next, so the computation is spread
+      across many forward passes, and later steps can attend to earlier conclusions. Generating
+      more tokens buys more serial computation, which is a resource the architecture otherwise has
+      no way to obtain.</p>
+      <p>Current reasoning models have this trained in rather than prompted. They generate an
+      extended internal monologue — often hidden or summarised in the interface — before producing
+      a final answer, and the relevant term is <b>test-time compute</b>: accuracy now scales with
+      how much computation you are willing to buy at inference, not only with model size.</p>
+      <p>Three practical points follow. Those tokens are billed and occupy the context window, so a
+      difficult problem may spend thousands of them, which is the trade being made. The technique
+      does not uniformly help; on simple pattern-matching tasks it adds latency and cost and can
+      talk a correct initial judgement out of itself. And the visible reasoning should be treated
+      with care. It is generated text, subject to everything in Module 4, and while it frequently
+      does reflect the process that produced the answer, a plausible chain of reasoning can
+      accompany a wrong conclusion, and the stated justification is not reliably the operative one.
+      The accurate claim is behavioural: these models perform better on multi-step problems when
+      they generate intermediate steps. Claims about what the model is experiencing while doing so
+      are not supported by the mechanism.</p>
     </div>
 
     <figure>
       <svg class="dgm" viewBox="0 0 680 230" role="img"
-        aria-label="Two paths from the same question: a direct answer compresses all the work into one forward pass and gets it wrong, while a reasoning path generates intermediate steps as tokens, each informing the next, and reaches the right answer at greater token cost.">
+        aria-label="Two paths from one question. The direct path compresses five inferential steps into a single forward pass of fixed depth. The reasoning path writes each step into the context, so each subsequent pass can attend to the previous conclusions.">
         <rect class="chip" x="24" y="88" width="120" height="44" rx="4"/>
         <text class="t-sm" x="84" y="107" text-anchor="middle">A question with</text>
         <text class="t-sm" x="84" y="122" text-anchor="middle">five steps in it</text>
+        <line class="flow" x1="146" y1="100" x2="177" y2="70"/><polygon class="head" points="177,66 186,69 178,76"/>
+        <line class="flow-a" x1="146" y1="120" x2="177" y2="152"/><polygon class="head-a" points="178,147 186,153 177,156"/>
 
-        <line class="flow" x1="146" y1="100" x2="176" y2="66"/><polygon class="head" points="176,62 184,66 177,71"/>
-        <line class="flow-a" x1="146" y1="120" x2="176" y2="156"/><polygon class="head-a" points="177,151 184,156 176,160"/>
-
-        <text class="t-ttl" x="186" y="40">DIRECT · ONE PASS</text>
-        <rect class="box" x="186" y="48" width="200" height="38" rx="4"/>
-        <text class="t-xs" x="286" y="72" text-anchor="middle">all five steps, one forward pass</text>
+        <text class="t-ttl" x="190" y="40">DIRECT · ONE PASS</text>
+        <rect class="box" x="190" y="48" width="196" height="38" rx="4"/>
+        <text class="t-xs" x="288" y="72" text-anchor="middle">all five steps, one fixed depth</text>
         <line class="flow" x1="388" y1="67" x2="406" y2="67"/><polygon class="head" points="406,63 414,67 406,71"/>
         <rect class="warn" x="416" y="48" width="112" height="38" rx="4"/>
         <text class="t-xs" x="472" y="72" text-anchor="middle">often wrong</text>
-        <text class="t-xs" x="548" y="62">cheap,</text>
-        <text class="t-xs" x="548" y="76">fast</text>
+        <text class="t-xs" x="542" y="62">cheap,</text>
+        <text class="t-xs" x="542" y="76">fast</text>
 
-        <text class="t-ttl" x="186" y="134">REASONING · ONE PASS PER STEP</text>
-        <rect class="hl" x="186" y="142" width="58" height="34" rx="3"/><text class="t-xs" x="215" y="163" text-anchor="middle">step 1</text>
-        <rect class="hl" x="250" y="142" width="58" height="34" rx="3"/><text class="t-xs" x="279" y="163" text-anchor="middle">step 2</text>
-        <rect class="hl" x="314" y="142" width="58" height="34" rx="3"/><text class="t-xs" x="343" y="163" text-anchor="middle">step 3</text>
-        <rect class="hl" x="378" y="142" width="58" height="34" rx="3"/><text class="t-xs" x="407" y="163" text-anchor="middle">step 4</text>
-        <rect class="hl" x="442" y="142" width="58" height="34" rx="3"/><text class="t-xs" x="471" y="163" text-anchor="middle">step 5</text>
-        <g class="flow-a">
-          <line x1="246" y1="159" x2="248" y2="159"/><line x1="310" y1="159" x2="312" y2="159"/>
-          <line x1="374" y1="159" x2="376" y2="159"/><line x1="438" y1="159" x2="440" y2="159"/>
-        </g>
-        <line class="flow-a" x1="502" y1="159" x2="516" y2="159"/><polygon class="head-a" points="516,155 524,159 516,163"/>
-        <rect class="good" x="526" y="142" width="96" height="34" rx="3"/>
-        <text class="t-xs" x="574" y="163" text-anchor="middle">more often right</text>
-
-        <text class="t-xs" x="186" y="196">each step is written into the context, so the next step can attend to it</text>
-        <text class="t-sm" x="340" y="220" text-anchor="middle">The trade is explicit: more tokens, more latency, more cost — bought with accuracy on hard problems.</text>
+        <text class="t-ttl" x="190" y="134">REASONING · ONE PASS PER STEP</text>
+        <rect class="hl" x="190" y="142" width="56" height="34" rx="3"/><text class="t-xs" x="218" y="163" text-anchor="middle">step 1</text>
+        <rect class="hl" x="252" y="142" width="56" height="34" rx="3"/><text class="t-xs" x="280" y="163" text-anchor="middle">step 2</text>
+        <rect class="hl" x="314" y="142" width="56" height="34" rx="3"/><text class="t-xs" x="342" y="163" text-anchor="middle">step 3</text>
+        <rect class="hl" x="376" y="142" width="56" height="34" rx="3"/><text class="t-xs" x="404" y="163" text-anchor="middle">step 4</text>
+        <rect class="hl" x="438" y="142" width="56" height="34" rx="3"/><text class="t-xs" x="466" y="163" text-anchor="middle">step 5</text>
+        <line class="flow-a" x1="496" y1="159" x2="512" y2="159"/><polygon class="head-a" points="512,155 520,159 512,163"/>
+        <rect class="good" x="522" y="142" width="100" height="34" rx="3"/>
+        <text class="t-xs" x="572" y="163" text-anchor="middle">more often right</text>
+        <text class="t-xs" x="190" y="196">each step is written into the context, so the next pass can attend to it</text>
+        <text class="t-sm" x="340" y="220" text-anchor="middle">Generating more tokens buys more serial computation. That is the whole trade.</text>
       </svg>
-      <figcaption>Why thinking out loud works. A forward pass has a fixed computational depth, so
-      <b>the only way to get more steps is to generate more tokens</b>. Reasoning models do this
-      by default and bill you for it, which is the right trade on a hard refactor and the wrong one
-      on a rename.</figcaption>
+      <figcaption>Why writing intermediate steps improves accuracy. A forward pass has a fixed
+      computational depth, so the only way to obtain more sequential steps is to produce more
+      tokens — which costs latency and money, and is worth it on a hard refactor and wasteful on a
+      rename.</figcaption>
     </figure>
-
     <div class="concept" id="c-prompting">
       <span class="cnum">5.6</span>
       <h3>Prompting, visible and hidden</h3>
-      <p>&ldquo;The prompt&rdquo; usually means what you typed. What reaches the model is far more,
-      and most of it was assembled by software. In a coding assistant, a single request typically
-      carries:</p>
-      <ol>
-        <li>A vendor system prompt — identity, formatting rules, tool-use conventions, safety
-        instructions. Often thousands of tokens. You cannot see or change it.</li>
-        <li>Tool definitions — the name, description and parameter schema of every available tool.</li>
-        <li>Organisation or repository instructions — your <code>copilot-instructions.md</code> and
-        friends.</li>
-        <li>Automatically gathered code context — the open file, nearby files, the cursor
-        surroundings, symbol definitions, recently viewed tabs.</li>
-        <li>Retrieved snippets from a semantic search over the repository.</li>
-        <li>The conversation so far.</li>
-        <li>Your actual sentence.</li>
-      </ol>
-      <p>Two things worth absorbing. First, <b>your typed words are a small fraction of the
-      prompt</b>, which is why identical phrasing behaves differently in different tools and
-      different files. Second, items 3 to 5 are the ones you influence — which is why context
-      engineering outperforms prompt wording as a discipline.</p>
-      <p>What still holds for the part you do write:</p>
-      <ul>
-        <li><b>Be specific about the goal, and about what must not change.</b> Constraints are
-        more valuable than instructions.</li>
-        <li><b>Say what the output should look like.</b> A diff, a whole file, a function, a
-        table, JSON matching this schema.</li>
-        <li><b>Show, don't describe.</b> One example of the convention you want beats three
-        sentences about it. Few-shot examples are the most reliable prompting technique there is.</li>
-        <li><b>Give it a role only when the role carries information.</b> &ldquo;You are reviewing
-        this as the on-call engineer who will be paged&rdquo; changes what gets noticed.
-        &ldquo;You are a world-class expert&rdquo; does not.</li>
-        <li><b>Ask for the uncertainty.</b> &ldquo;List what you assumed and what you would need
-        to check&rdquo; surfaces more real problems than any other single sentence.</li>
-      </ul>
+      <p>&ldquo;The prompt&rdquo; usually means what the user typed. What reaches the model is very
+      much more, and most of it was assembled by software. A single request to a coding assistant
+      typically carries a vendor system prompt running to thousands of tokens, the name,
+      description and parameter schema of every available tool, your organisation's instruction
+      files, automatically gathered code context from the open file and its neighbours, snippets
+      retrieved by a search over the repository, the conversation so far, and finally your
+      sentence.</p>
+      <p>Two things follow. Your typed words are a small fraction of the input, and identical phrasing therefore behaves differently across tools and across files in the same tool. And
+      the components you influence most are the instruction files and the retrieved context, where effort repays more reliably than refining prompt wording.</p>
+      <p>For the part you do write, what holds up is unglamorous. Be specific about the goal and
+      explicit about constraints, since constraints eliminate branches from the distribution rather
+      than merely nudging it. Say what shape the output should take. Show an example of the
+      convention you want rather than describing it, because a single concrete instance of a
+      pattern is the most reliable instruction available. Give a role only when the role carries
+      information — <i>you are reviewing this as the engineer who will be paged at three in the
+      morning</i> changes what gets noticed, whereas <i>you are a world-class expert</i> does not.
+      And ask for the uncertainty: requesting a list of what the model assumed and could not verify
+      surfaces more genuine problems than any other single sentence, and in the payment example it
+      is what elicits the admission that idempotency was not considered.</p>
     </div>
 
     <div class="concept" id="c-custom">
       <span class="cnum">5.7</span>
       <h3>Custom modifications</h3>
-      <p>Every way of customising a model's behaviour — writing style, house conventions, personas,
-      output formats — is one of exactly four things, and it is worth being able to name which:</p>
+      <p>Every method of adapting a model's behaviour — house style, conventions, personas, output
+      formats — is one of four things, and being able to name which prevents a good deal of wasted
+      effort.</p>
       <div class="tblw">
         <table>
           <thead><tr><th>Mechanism</th><th>What it changes</th><th>Cost</th><th>When</th></tr></thead>
           <tbody>
-            <tr><td><b>System prompt / instruction file</b></td><td>Text prepended to every request</td><td>Tokens, every request</td><td>Almost always the right answer</td></tr>
-            <tr><td><b>Few-shot examples</b></td><td>Text showing the desired pattern</td><td>Tokens, every request</td><td>Format and style that is easier shown than described</td></tr>
-            <tr><td><b>Retrieval / grounding</b></td><td>Text fetched per request</td><td>Tokens + a retrieval system</td><td>Knowledge too large or too fresh for a prompt</td></tr>
-            <tr><td><b>Fine-tuning</b></td><td>The parameters themselves</td><td>Training run, data, a model to maintain</td><td>Rarely. Behaviour or format a prompt cannot reach, at volume</td></tr>
+            <tr><td>System prompt or instruction file</td><td>Text prepended to every request</td><td>Tokens, on every request</td><td>Almost always the right answer</td></tr>
+            <tr><td>Few-shot examples</td><td>Text demonstrating the pattern</td><td>Tokens, on every request</td><td>Format and style easier shown than described</td></tr>
+            <tr><td>Retrieval</td><td>Text fetched per request</td><td>Tokens, plus a retrieval system</td><td>Knowledge too large or too fresh for a prompt</td></tr>
+            <tr><td>Fine-tuning</td><td>The parameters themselves</td><td>A training run, data, and a model to maintain</td><td>Rarely — behaviour no prompt reaches, at volume</td></tr>
           </tbody>
         </table>
       </div>
-      <p>The first three are all context engineering — the same lever from
-      <a href="#c-nexttoken">4.1</a>, applied at different scopes. Only the fourth touches the
-      parameters, and in practice the first three solve the overwhelming majority of what teams
-      want, at vastly lower cost. Teams reach for fine-tuning far too early; it is the right
-      answer when you need a behaviour no prompt achieves and you have enough volume to amortise
-      maintaining your own model, which is not most situations.</p>
-      <div class="callout c-key">
-        <span class="callout__tag">Key idea</span>
-        <p>Custom instructions are not configuration. They are tokens prepended to every single
-        request, competing with your code for the window and subject to the attention limits of
-        <a href="#c-context">4.7</a>. That is why length is a cost and not a thoroughness.</p>
-      </div>
-      <div class="callout c-bridge">
-        <span class="callout__tag">Bridge → Part Two</span>
-        <p>GitHub gives you three places to put this text — repository-wide, path-scoped, and
-        agent-specific — with precedence rules between them.
-        See <a href="part-2-practice.html#c-layers">9.1</a>.</p>
-      </div>
+      <p>The first three are the same lever from Module 4.1 applied at different scopes; only the
+      fourth touches the parameters. Teams reach for fine-tuning considerably earlier than they
+      should. It is the right answer when you need a behaviour that prompting demonstrably cannot
+      achieve and you have enough volume to justify maintaining your own model, which describes
+      fewer situations than it is invoked for.</p>
+      <p>The first row deserves one qualification that Part Two depends on. An instruction file is
+      not configuration in the usual sense — it is tokens prepended to every request, competing for
+      the window and subject to the attention limits of Module 4.7. Its length is therefore a
+      recurring cost rather than a measure of thoroughness.</p>
     </div>
 
     <div class="concept" id="c-tools">
       <span class="cnum">5.8</span>
       <h3>Tools</h3>
-      <p>A model cannot read a file, call an API or run a test. It emits tokens. Tool use is the
-      convention that turns emitted tokens into actions, and the mechanism is more mundane than the
-      capability suggests.</p>
-      <ol>
-        <li>The harness puts a list of available tools into the context — each with a name, a
-        description in prose, and a parameter schema.</li>
-        <li>The model, trained on this pattern, produces structured output that names a tool and
-        supplies arguments. <b>That is all it does.</b> It has emitted a request.</li>
-        <li>The harness parses it, checks permissions, and runs the actual code.</li>
-        <li>The result is appended to the context as text.</li>
-        <li>The model is called again, now with the result in front of it.</li>
-      </ol>
-      <p>Three consequences that matter enormously in practice:</p>
-      <p><b>The description is the interface.</b> The model chooses tools by reading their prose
-      descriptions in the context. A badly described tool is the wrong tool, chosen wrongly — and
-      a tool description is prompt text, with everything that implies for both quality and
-      security.</p>
-      <p><b>The model never executes anything.</b> Execution is entirely the harness's act. The
-      model cannot exceed the permissions of the code that runs its requests, which means your
-      security boundary is the harness and the credentials it holds — never the model's
-      willingness to comply.</p>
-      <p><b>Tool results are untrusted input.</b> Whatever comes back — a web page, a file, an
-      issue body, an API response — enters the context as text, indistinguishable from
-      instructions. This is the mechanism behind indirect prompt injection, and it is why
-      <a href="#c-injection">6.2</a> is unavoidable rather than theoretical.</p>
+      <p>A model cannot read a file, call an API or run a test. It emits tokens. <b>Tool use</b> is
+      the convention that converts emitted tokens into actions, and the mechanism is more mundane
+      than the resulting capability suggests.</p>
+      <p>The harness places a list of available tools into the context, each with a name, a prose
+      description and a parameter schema. The model, trained on this pattern, produces structured
+      output naming a tool and supplying arguments — and that is the entirety of its contribution.
+      It has emitted a request. The harness parses it, checks permissions, runs the actual code,
+      appends the result to the context as text, and calls the model again with that result in
+      front of it.</p>
+      <p>Applied to the payment example, this is the first point at which the double-charge problem
+      becomes solvable. Given a file-reading tool, the model can look at
+      <code>payments/gateway.py</code> and discover whether the gateway accepts an idempotency key.
+      Given a search tool, it can find that <code>internal/webhook/retry.py</code> already
+      implements the backoff policy the team uses and should be matched rather than reinvented. The
+      model's parameters have not changed; what changed is that facts it could not have known are
+      now in its context, placed there by its own requests.</p>
+      <p>Three consequences deserve emphasis. The description is the interface: the model selects
+      tools by reading their prose descriptions, so a poorly described tool is a tool chosen
+      wrongly, and a tool description is prompt text with everything that implies for quality and —
+      as Module 6.5 shows — for security. The model never executes anything, because execution is
+      entirely the harness's act, which means your security boundary is the harness and the
+      credentials it holds rather than the model's willingness to comply. And tool results are
+      untrusted input: whatever comes back, whether a web page, a file, an issue body or an API
+      response, enters the context as text indistinguishable from instructions.</p>
     </div>
 
     <div class="concept" id="c-agents">
       <span class="cnum">5.9</span>
       <h3>Agents</h3>
-      <p>An agent is that tool loop, run repeatedly, towards a goal, without asking permission at
-      every step. There is no new mechanism — the difference from a chatbot is who decides when to
-      stop.</p>
-      <p>Minimally, an agent needs four things: a goal, tools, a loop, and a stopping condition.
-      The loop is observe, decide, act, repeat. Everything else is refinement.</p>
-      <p>Agency is a spectrum rather than a category, and naming where you are on it clarifies most
-      arguments about agents:</p>
-      <div class="tblw">
-        <table>
-          <thead><tr><th>Level</th><th>Who decides what happens next</th><th>Example</th></tr></thead>
-          <tbody>
-            <tr><td>Completion</td><td>You, every keystroke</td><td>Inline code suggestions</td></tr>
-            <tr><td>Chat</td><td>You, every turn</td><td>Ask a question, read the answer, copy it</td></tr>
-            <tr><td>Single-step tool use</td><td>You approve each action</td><td>&ldquo;Read this file&rdquo; → you confirm</td></tr>
-            <tr><td>Bounded agent</td><td>The model, within a fixed scope and a step limit</td><td>&ldquo;Fix this failing test&rdquo; in one repository</td></tr>
-            <tr><td>Autonomous agent</td><td>The model, until it decides it is done</td><td>&ldquo;Implement this issue and open a pull request&rdquo;</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>What makes agents work, when they work, is <b>feedback the model can read</b>. An agent
-      that writes code and runs the tests gets told it was wrong, and can try again. An agent that
-      writes code into a repository with no runnable tests is generating plausible text with no
-      corrective signal at all — the same mechanism, with the error-correction removed.</p>
-      <p>What makes them fail is worth stating as plainly:</p>
-      <ul>
-        <li><b>No signal.</b> No tests, a broken build, a 40-minute CI run. The loop cannot learn
-        anything within the episode.</li>
-        <li><b>Compounding error.</b> Fifteen steps, each 95% reliable, is a coin flip overall.</li>
-        <li><b>Context exhaustion.</b> Long agent runs fill the window with tool output; quality
-        degrades exactly as <a href="#c-context">4.7</a> predicts.</li>
-        <li><b>Confident wrong direction.</b> An agent committed to a bad approach pursues it
-        thoroughly. More autonomy means more work done before anyone notices.</li>
-        <li><b>Under-specified goals.</b> &ldquo;Improve performance&rdquo; has no stopping
-        condition and no success test.</li>
-      </ul>
-      <div class="callout c-key">
-        <span class="callout__tag">Key idea</span>
-        <p>An agent is a loop around a stateless next-token predictor. Its reliability is set
-        almost entirely by the quality of the feedback in that loop. Invest in tests and fast
-        builds before investing in prompts.</p>
-      </div>
+      <p>An <b>agent</b> is that tool loop run repeatedly towards a goal without requesting
+      approval at each step. No new mechanism is involved; what changes is who decides when to
+      stop. Minimally an agent requires a goal, tools, a loop, and a stopping condition, and the
+      loop is observe, decide, act, repeat.</p>
+      <p>Agency is a spectrum rather than a category, and locating a given tool on it clarifies
+      most arguments about agents. At one end sits code completion, where you adjudicate every
+      keystroke. Then chat, where you adjudicate every turn. Then single-step tool use, where you
+      approve each action. Then a bounded agent working within a fixed scope and step limit. At the
+      far end, an agent that works until it judges itself finished and opens a pull request.</p>
+      <p>What makes agents work, when they work, is feedback the model can read. Return to the
+      payment task: an agent that can run the test suite will discover that its retry
+      implementation fails <code>test_charge_is_idempotent</code>, and that failure is a correction
+      signal arriving in its context without consuming any of your attention. It can then try
+      again. An agent operating in a repository with no runnable tests is generating plausible code
+      with the error-correction removed, which is Module 4.8 applied to your codebase.</p>
+      <p>The failure modes are equally traceable to the mechanism. Without a signal the loop cannot
+      learn anything within the episode. Errors compound, so fifteen steps at ninety-five per cent
+      reliability each is a coin flip overall. Long runs fill the window with tool output and
+      quality degrades exactly as Module 4.7 predicts. An agent committed to a wrong approach
+      pursues it thoroughly, which means greater autonomy produces more work before anyone notices.
+      And an under-specified goal such as <i>improve performance</i> has no stopping condition at
+      all — the agent cannot know when it is done because nothing in the request says.</p>
+      <p>The practical conclusion is unusually clear for this subject. The reliability of an agent
+      is set less by the model than by the quality of the feedback available in its loop, and
+      investment in fast, trustworthy tests pays off more than investment in prompts.</p>
     </div>
 
     <figure class="fig-wide">
       <svg class="dgm" viewBox="0 0 960 330" role="img"
-        aria-label="The agent loop: a goal enters, the model decides on an action, the harness checks permissions and executes it, the observed result is appended to the context and the loop repeats until a stopping condition. A feedback signal such as a test result enters at the observe step, and guards sit on the execute step.">
+        aria-label="The agent loop: a goal enters, the model decides on an action, the harness checks permissions and executes it, the result is appended to the context, and the loop repeats until a stopping condition. Guards constrain the act step and test results feed the observe step.">
         <rect class="chip" x="24" y="132" width="116" height="48" rx="4"/>
         <text class="t-sm" x="82" y="152" text-anchor="middle">Goal</text>
         <text class="t-xs" x="82" y="167" text-anchor="middle">+ success test</text>
@@ -2682,13 +2630,11 @@ Both, but never retry a 402.
         <rect class="hl" x="212" y="78" width="150" height="50" rx="4"/>
         <text class="t-sm" x="287" y="99" text-anchor="middle">Decide</text>
         <text class="t-xs" x="287" y="114" text-anchor="middle">model picks an action</text>
-
         <line class="flow-a" x1="364" y1="103" x2="420" y2="103"/><polygon class="head-a" points="420,99 428,103 420,107"/>
 
         <rect class="warn" x="430" y="78" width="150" height="50" rx="4"/>
         <text class="t-sm" x="505" y="99" text-anchor="middle">Act</text>
         <text class="t-xs" x="505" y="114" text-anchor="middle">harness executes it</text>
-
         <line class="flow-a" x1="505" y1="130" x2="505" y2="170"/><polygon class="head-a" points="501,170 505,178 509,170"/>
 
         <rect class="hl" x="430" y="180" width="150" height="50" rx="4"/>
@@ -2699,274 +2645,204 @@ Both, but never retry a 402.
         <polygon class="head-a" points="283,132 287,124 291,132"/>
         <text class="t-ac" x="332" y="268">repeat</text>
 
-        <!-- guards -->
         <rect class="warn" x="610" y="70" width="150" height="66" rx="4"/>
         <text class="t-xs" x="685" y="90" text-anchor="middle">permission check</text>
         <text class="t-xs" x="685" y="105" text-anchor="middle">allowlist · sandbox</text>
         <text class="t-xs" x="685" y="120" text-anchor="middle">token scope</text>
         <line class="flow" x1="608" y1="103" x2="586" y2="103"/><polygon class="head" points="586,99 578,103 586,107"/>
-        <text class="t-xs" x="685" y="152" text-anchor="middle">the only real boundary</text>
+        <text class="t-xs" x="685" y="152" text-anchor="middle">bounds the damage</text>
 
-        <!-- feedback -->
         <rect class="good" x="610" y="180" width="150" height="66" rx="4"/>
         <text class="t-xs" x="685" y="200" text-anchor="middle">tests · compiler</text>
         <text class="t-xs" x="685" y="215" text-anchor="middle">linter · type check</text>
         <text class="t-xs" x="685" y="230" text-anchor="middle">CI result</text>
         <line class="flow" x1="608" y1="205" x2="586" y2="205"/><polygon class="head" points="586,201 578,205 586,209"/>
-        <text class="t-xs" x="685" y="262" text-anchor="middle">without this, the loop is blind</text>
+        <text class="t-xs" x="685" y="262" text-anchor="middle">corrects the mistakes</text>
 
         <line class="flow" x1="782" y1="156" x2="806" y2="156"/><polygon class="head" points="806,152 814,156 806,160"/>
         <rect class="chip" x="818" y="132" width="118" height="48" rx="4"/>
         <text class="t-sm" x="877" y="152" text-anchor="middle">Stop</text>
         <text class="t-xs" x="877" y="167" text-anchor="middle">done, or limit hit</text>
 
-        <text class="t-sm" x="24" y="312">An agent is not a new kind of model. It is the same stateless predictor, called in a loop, with its outputs executed.</text>
+        <text class="t-sm" x="24" y="312">An agent is the same stateless predictor from Module 4, called in a loop, with its outputs executed.</text>
       </svg>
-      <figcaption>Decide, act, observe, repeat. The two boxes on the right are the ones that
-      determine whether an agent is useful or dangerous: <b>the green box is the only thing that
-      corrects the model's mistakes, and the orange box is the only thing that limits their
-      blast radius.</b> Neither is in the prompt.</figcaption>
+      <figcaption>Decide, act, observe, repeat. The two boxes on the right determine whether an
+      agent is useful or dangerous, and neither is in the prompt: the green one is the only thing
+      that corrects the model's mistakes, and the orange one is the only thing that limits their
+      consequences.</figcaption>
     </figure>
+
+    <div class="wrap" style="padding:0">
+      <div class="ex">
+        <p class="ex__h">Exercise 5.1</p>
+        <p>An agent is given the payment task in a repository whose test suite takes 40 minutes,
+        where three tests are already failing on the main branch for unrelated reasons. Predict two
+        specific ways the run goes wrong, using the mechanism rather than general pessimism.</p>
+        <details>
+          <summary>Expected answer</summary>
+          <p>First, the pre-existing failures are indistinguishable from failures the agent caused,
+          because its only evidence is the test output; it will attempt to fix them, consuming its
+          step budget and widening the diff with unrelated changes. Second, a 40-minute cycle
+          permits very few iterations within any sensible limit, so the loop has almost no
+          opportunity to self-correct and the first plausible implementation is effectively the
+          final one — which for this task means the idempotency problem survives. A third
+          acceptable answer: the accumulated test output consumes the context window, degrading
+          attention on the original instructions.</p>
+        </details>
+      </div>
+    </div>
 
     <div class="concept" id="c-skills">
       <span class="cnum">5.10</span>
       <h3>Skills</h3>
-      <p>Skills solve a problem created by <a href="#c-context">4.7</a>. You have a lot of
-      procedural knowledge the model should use — how to cut a release, how to write a migration,
-      how your incident reports are structured — but putting all of it in a system prompt would
-      consume the whole window on every request, including the ones that need none of it.</p>
-      <p>A skill is that knowledge packaged so it loads only when relevant. The pattern is
-      <b>progressive disclosure</b>, in three tiers:</p>
-
-      <div class="tiers">
-        <div class="tier">
-          <span class="tier__n">tier 1</span>
-          <h4>Name and description — always in context</h4>
-          <p>A line or two per skill, enough for the model to recognise that this task needs it.
-          Cheap enough that dozens can sit there permanently.</p>
-          <p class="tier__c">~30 tokens each · always loaded</p>
-        </div>
-        <div class="tier">
-          <span class="tier__n">tier 2</span>
-          <h4>The instructions — loaded on demand</h4>
-          <p>The actual procedure, conventions and worked examples. Read into the context only
-          when the model decides the skill applies.</p>
-          <p class="tier__c">a few thousand tokens · loaded when triggered</p>
-        </div>
-        <div class="tier">
-          <span class="tier__n">tier 3</span>
-          <h4>Scripts and reference files — opened if needed</h4>
-          <p>Templates, schemas, helper scripts, long reference tables. Referenced by path and
-          read or executed only if the task actually reaches them.</p>
-          <p class="tier__c">unbounded · never loaded unless used</p>
-        </div>
-      </div>
-
-      <p>The important distinction, because the three get muddled constantly:</p>
-      <div class="tblw">
-        <table>
-          <thead><tr><th></th><th>What it is</th><th>When it enters the context</th></tr></thead>
-          <tbody>
-            <tr><td><b>Instructions</b></td><td>Always-on rules and conventions</td><td>Every request, unconditionally</td></tr>
-            <tr><td><b>Skill</b></td><td>A procedure for a class of task</td><td>When the model judges it relevant</td></tr>
-            <tr><td><b>Tool</b></td><td>Code the harness can execute</td><td>Definition always; result when called</td></tr>
-            <tr><td><b>Prompt template</b></td><td>A reusable request you invoke</td><td>When you explicitly run it</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>Note that a skill is, in the end, just text that the harness decided to load. The
-      cleverness is entirely in the loading decision — which is why a skill's description matters
-      as much as its content, exactly as with a tool.</p>
+      <p>Skills address a problem created by the zero-sum context budget. A team accumulates
+      procedural knowledge — how to cut a release, how to write a migration, how incident reports
+      are structured — that the model should follow when relevant. Putting all of it in a system
+      prompt would consume the window on every request, including the overwhelming majority that
+      need none of it.</p>
+      <p>A <b>skill</b> packages that knowledge so it loads only when it applies, using a pattern
+      of progressive disclosure. A short name and description, costing perhaps thirty tokens, sits
+      permanently in the context — cheap enough that dozens can coexist. The body, containing the
+      actual procedure and its examples, is read into the context only when the model judges the
+      skill relevant. Supporting files and scripts are referenced by path and opened only if the
+      task reaches them.</p>
+      <p>The distinction from its neighbours is simply who decides to load it, and the four are
+      routinely confused. Instructions are always present. A skill is loaded when the model judges
+      it relevant. A tool's definition is always present while its result appears only when called.
+      A prompt template is loaded when you explicitly invoke it. Note that a skill is, in the end,
+      text the harness decided to include; the cleverness is entirely in the loading decision, so a skill's description matters as much as its contents.</p>
     </div>
 
     <div class="concept" id="c-rag">
       <span class="cnum">5.11</span>
       <h3>Retrieval and grounding</h3>
       <p>The model's knowledge is frozen at its training cutoff and contains nothing private. The
-      fix is not to retrain — it is to put the needed facts into the context at request time.
-      That is retrieval-augmented generation, and it is the standard answer to both staleness and
-      privacy.</p>
-      <p>The pipeline, in the terms of Module 2:</p>
-      <ol>
-        <li><b>Index, once.</b> Split your documents or code into chunks, embed each chunk into a
-        vector (<a href="#c-embedding">2.3</a>), store the vectors.</li>
-        <li><b>Retrieve, per request.</b> Embed the user's question, find the nearest chunks.
-        Good systems combine this with keyword search, because vectors are poor at exact matches
-        like an error code or an identifier.</li>
-        <li><b>Augment.</b> Paste the retrieved chunks into the context alongside the question.</li>
-        <li><b>Generate.</b> The model answers with the facts in front of it.</li>
-      </ol>
-      <p>Grounding is the general principle and it is the single most effective anti-hallucination
-      measure available: <b>a model answering from text in its context is far more reliable than
-      one answering from its parameters</b>, and it can cite what it used.</p>
-      <p>The failure modes are all in the retrieval, not the generation. Retrieve the wrong chunks
-      and the model confidently answers from the wrong source. Chunk badly — splitting a function
-      from its signature — and the retrieved text is useless. Retrieve too much and you spend the
-      whole window on near-misses. &ldquo;The AI gave a wrong answer&rdquo; in a retrieval system
-      is usually a search quality problem wearing a model's clothes.</p>
+      remedy is not retraining but supplying the needed facts at request time, which is
+      <b>retrieval-augmented generation</b>.</p>
+      <p>The pipeline rests directly on Module 2.3. Documents or code are split into chunks and
+      each chunk is embedded into a vector, once, and stored. At request time the question is
+      embedded by the same function and the nearest stored vectors are found, since proximity in
+      that space indicates similar usage. Good systems combine this with keyword search, because
+      embeddings are poor at exact matches such as an error code or a specific identifier. The
+      retrieved chunks are placed in the context alongside the question, and the model answers with
+      the material in front of it.</p>
+      <p>Grounding of this kind is the most effective measure against hallucination available,
+      because it constrains the distribution with something true and allows the system to cite what
+      it used. In the payment example it is what puts the gateway's idempotency documentation into
+      the context without anyone having to know in advance that it would be needed.</p>
+      <p>The failure modes live in the retrieval rather than in the generation, and this is worth
+      internalising because it changes how you debug. Retrieve the wrong chunks and the model
+      answers confidently from the wrong source. Chunk badly — separating a function from its
+      signature — and the retrieved text is useless. Retrieve too much and the window fills with
+      near-misses, with the consequences Module 4.7 describes. A wrong answer from a grounded
+      system is usually a search-quality problem wearing a model's clothes, and the first thing to
+      inspect is what was retrieved.</p>
     </div>
-
-    <figure>
-      <svg class="dgm" viewBox="0 0 680 250" role="img"
-        aria-label="Retrieval augmented generation: documents are chunked and embedded into a vector store once; at request time the question is embedded, nearest chunks are retrieved and combined with the question into the context, and the model answers with citations.">
-        <text class="t-ttl" x="24" y="24">ONCE · INDEX</text>
-        <rect class="chip" x="24" y="36" width="104" height="38" rx="4"/><text class="t-xs" x="76" y="59" text-anchor="middle">Your docs / code</text>
-        <line class="flow" x1="130" y1="55" x2="146" y2="55"/><polygon class="head" points="146,51 154,55 146,59"/>
-        <rect class="chip" x="156" y="36" width="90" height="38" rx="4"/><text class="t-xs" x="201" y="59" text-anchor="middle">Chunk</text>
-        <line class="flow" x1="248" y1="55" x2="264" y2="55"/><polygon class="head" points="264,51 272,55 264,59"/>
-        <rect class="chip" x="274" y="36" width="90" height="38" rx="4"/><text class="t-xs" x="319" y="59" text-anchor="middle">Embed</text>
-        <line class="flow" x1="366" y1="55" x2="382" y2="55"/><polygon class="head" points="382,51 390,55 382,59"/>
-        <rect class="hl" x="392" y="36" width="116" height="38" rx="4"/><text class="t-xs" x="450" y="59" text-anchor="middle">Vector store</text>
-
-        <text class="t-ttl" x="24" y="112">PER REQUEST · RETRIEVE</text>
-        <rect class="chip" x="24" y="124" width="104" height="38" rx="4"/><text class="t-xs" x="76" y="147" text-anchor="middle">Question</text>
-        <line class="flow" x1="130" y1="143" x2="146" y2="143"/><polygon class="head" points="146,139 154,143 146,147"/>
-        <rect class="chip" x="156" y="124" width="90" height="38" rx="4"/><text class="t-xs" x="201" y="147" text-anchor="middle">Embed</text>
-        <line class="flow" x1="248" y1="143" x2="264" y2="143"/><polygon class="head" points="264,139 272,143 264,147"/>
-        <rect class="hl" x="274" y="124" width="116" height="38" rx="4"/>
-        <text class="t-xs" x="332" y="141" text-anchor="middle">Nearest chunks</text>
-        <text class="t-xs" x="332" y="155" text-anchor="middle">+ keyword search</text>
-        <polyline class="flow" points="450,78 450,104 396,104 396,138"/>
-        <polygon class="head" points="392,138 396,146 400,138"/>
-
-        <line class="flow-a" x1="392" y1="143" x2="408" y2="143"/><polygon class="head-a" points="408,139 416,143 408,147"/>
-        <rect class="hl" x="418" y="118" width="100" height="50" rx="4"/>
-        <text class="t-xs" x="468" y="139" text-anchor="middle">Context =</text>
-        <text class="t-xs" x="468" y="153" text-anchor="middle">question + chunks</text>
-        <line class="flow-a" x1="520" y1="143" x2="536" y2="143"/><polygon class="head-a" points="536,139 544,143 536,147"/>
-        <rect class="box" x="546" y="118" width="110" height="50" rx="4"/>
-        <text class="t-xs" x="601" y="139" text-anchor="middle">Model answers</text>
-        <text class="t-xs" x="601" y="153" text-anchor="middle">with citations</text>
-
-        <text class="t-sm" x="24" y="204">Every failure in this diagram happens in the retrieve box, not the model box.</text>
-        <text class="t-sm" x="24" y="222">Wrong chunks → a confident answer from the wrong source. Bad chunking → useless text.</text>
-        <text class="t-sm" x="24" y="240">Too many chunks → the window is full of near-misses.</text>
-      </svg>
-      <figcaption>Retrieval turns &ldquo;what does the model know?&rdquo; into &ldquo;what can we
-      find and paste?&rdquo; — a search problem, with search's failure modes. <b>Debug a bad
-      grounded answer by looking at what was retrieved</b>, before blaming the model.</figcaption>
-    </figure>
 
     <div class="concept" id="c-mcp">
       <span class="cnum">5.12</span>
       <h3>MCP</h3>
-      <p>Every harness needed its own integration for every tool: N harnesses times M tools. The
-      Model Context Protocol is a standard interface that collapses that into N plus M — a tool
-      provider implements an MCP server once, and any MCP-capable client can use it.</p>
-      <p>An MCP server exposes three kinds of thing: <b>tools</b> (functions the model can
-      request), <b>resources</b> (data the client can read), and <b>prompts</b> (templates the
-      client can offer). Servers run locally as a subprocess or remotely over HTTP.</p>
-      <p>Nothing about MCP changes the mechanics of <a href="#c-tools">5.8</a>. It is plumbing, and
-      the value is ecosystem rather than capability. But the plumbing has a security shape worth
-      naming now:</p>
-      <ul>
-        <li><b>Tool descriptions come from the server and land in your context.</b> A malicious or
-        compromised server can put instructions in front of the model. This is tool poisoning.</li>
-        <li><b>Tool results come from the server too</b>, with the same consequence.</li>
-        <li><b>Servers hold credentials.</b> An MCP server with a broadly-scoped token is a
-        standing grant of that scope to anything that can influence the model — which, after
-        <a href="#c-injection">6.2</a>, includes anyone who can comment on your issues.</li>
-        <li><b>Installing a server is running third-party code</b> with whatever access you gave
-        it.</li>
-      </ul>
-      <p>Treat adding an MCP server with the seriousness of adding a dependency with production
-      credentials, because that is what it is.</p>
+      <p>Each harness originally needed its own integration for each tool, a combinatorial problem.
+      The Model Context Protocol standardises the interface so that a tool provider implements a
+      server once and any compatible client can use it. A server exposes tools the model can
+      request, resources the client can read, and prompt templates it can offer, running either as
+      a local subprocess or remotely over HTTP.</p>
+      <p>Nothing about the protocol changes the mechanics of 5.8; it is plumbing, and its value is
+      ecosystem rather than capability. Its security shape, however, is what Part Two depends on. Tool descriptions come from the server and land in your context,
+      where the model treats them as authoritative, so a compromised server can place instructions
+      in front of the model. Tool results arrive the same way. Servers hold credentials, which
+      means a broadly scoped token given to a server is a standing grant to anything that can
+      influence the model. And installing a server is running third-party code with whatever access
+      you gave it. The appropriate level of scrutiny is that of adding a production dependency,
+      because that is what it is.</p>
     </div>
 
     <div class="concept" id="c-evals">
       <span class="cnum">5.13</span>
       <h3>Evaluation</h3>
-      <p>Module 1 ended with the observation that a model can only be measured, not read. That
-      obligation does not go away when you build on one — it moves to you.</p>
-      <p>The minimum viable discipline, which almost no team has and every team needs:</p>
-      <ul>
-        <li><b>A fixed set of real cases.</b> Twenty to fifty actual tasks from your work, with
-        known-good outcomes. Write them down once; they become your regression suite.</li>
-        <li><b>Run them more than once.</b> Output is sampled (<a href="#c-seeds">4.5</a>), so a
-        single run tells you about one draw from a distribution. Three runs minimum before you
-        believe a difference.</li>
-        <li><b>Prefer checkable outcomes.</b> Did it compile, did the tests pass, did the output
-        match the schema, was the right file changed. Automatable and unarguable.</li>
-        <li><b>Use a model as a judge carefully.</b> It works for subjective qualities at scale,
-        and it inherits every bias in this course — including a documented preference for longer
-        and more confident answers.</li>
-        <li><b>Re-run when anything changes.</b> A new model version, a changed instruction file, a
-        new tool. All three silently change behaviour.</li>
-      </ul>
-      <div class="callout c-bridge">
-        <span class="callout__tag">Bridge → Part Two</span>
-        <p>This is how you tell whether an instruction file is actually helping rather than just
-        feeling thorough. Labs 3 and 5 in <a href="part-2-practice.html#m14">Module 14</a> are
-        small versions of exactly this loop.</p>
-      </div>
+      <p>Module 1.1 observed that a learned model can be measured but not read. That obligation
+      does not disappear when you build on one; it transfers to you, and it is the discipline
+      teams most often lack.</p>
+      <p>A workable minimum has four properties. It uses a fixed set of real cases — twenty to
+      fifty actual tasks from your own work with known-good outcomes — written down once so they
+      become a regression suite. It runs each case more than once, because output is sampled and a
+      single run reports one draw from a distribution rather than a property of the system. It
+      prefers checkable outcomes: did it compile, did the tests pass, did the output match the
+      schema, was the right file changed. And it is re-run whenever anything changes, including a
+      model version you did not choose to change.</p>
+      <p>Using a model to judge another model's output works for qualities that resist automation
+      and is now common practice, but it inherits every limitation in this course, including a
+      documented preference for longer and more confident answers over shorter and more accurate
+      ones. Treat it as a noisy instrument that needs its own calibration rather than as a
+      verdict.</p>
     </div>
   </div>
 </section>
+
 
 <section id="m6" class="module">
   <div class="wrap">
     <p class="eyebrow">Module 6</p>
     <h2>Security</h2>
-    <p class="lede">Every vulnerability in this module is a consequence of something in Modules
-    4 and 5, not a defect added on top. That is why none of them has a clean fix, and why the
-    defences are all architectural.</p>
+    <p class="lede">Every vulnerability in this module follows from something established in
+    Modules 4 and 5 rather than being a defect added on top. That is why none has a clean fix,
+    and why the effective defences are all architectural.</p>
   </div>
 
   <div class="wrap">
     <div class="concept" id="c-trust">
       <span class="cnum">6.1</span>
-      <h3>The trust boundary that isn't there</h3>
+      <h3>The trust boundary that is not there</h3>
       <p>In a conventional application, instructions and data arrive through different channels.
-      Code is code; user input is a string that gets escaped, parameterised, validated. SQL
-      injection was solved — properly solved — by separating the query structure from the values,
-      so that no amount of cleverness in a value can change the structure.</p>
-      <p>A language model has exactly one channel. The system prompt, your question, the file it
-      read, the issue comment it fetched, the tool result, its own previous output — all of it
-      becomes one flat sequence of tokens in one context, and the model attends over all of it
-      identically. There is no type system distinguishing &ldquo;instruction&rdquo; from
-      &ldquo;data&rdquo;, because there is no place in the architecture to put one.</p>
-      <p>Role markers (<a href="#c-chat">5.2</a>) look like a boundary and are not. They are tokens
-      the model was trained to weight heavily. That is a strong statistical disposition, and like
-      every statistical disposition it can be outvoted by sufficiently compelling text elsewhere
-      in the context.</p>
-      <div class="callout c-key">
-        <span class="callout__tag">Key idea</span>
-        <p>There is no parameterised query for prompts. The separation that fixed SQL injection
-        does not exist here, and cannot be added by escaping, filtering or asking nicely.
-        Therefore the defence has to live outside the model — in what the model is allowed to
-        reach.</p>
-      </div>
+      Code is code; user input is a string that gets escaped, parameterised or validated. SQL
+      injection was genuinely solved, not merely mitigated, by separating the structure of a query
+      from the values substituted into it — once that separation exists, no amount of cleverness
+      inside a value can alter the structure.</p>
+      <p>A language model has one channel. The system prompt, your question, the file it read, the
+      issue comment it fetched, the tool result and its own previous output all become one flat
+      sequence of tokens, and attention operates over all of it identically. Module 4.6 made the point in passing; stated directly, there is no field in the
+      representation recording where a token came from, because there is nowhere in the
+      architecture to put one.</p>
+      <p>The role markers of Module 5.2 look like a boundary and are not. They are tokens that
+      post-training taught the model to weight heavily — a strong statistical disposition, which,
+      like every statistical disposition, can be outweighed by sufficiently compelling text
+      elsewhere in the context. The practical conclusion is uncomfortable and should be stated
+      plainly: there is no parameterised query for prompts. The separation that fixed SQL injection
+      does not exist here and cannot be added by escaping, filtering, or instructing the model to
+      be careful. Defence has to live outside the model, in what the model is permitted to
+      reach.</p>
     </div>
 
     <div class="concept" id="c-injection">
       <span class="cnum">6.2</span>
       <h3>Prompt injection</h3>
-      <p>Prompt injection is putting text where the model will read it, phrased so the model treats
-      it as an instruction. It comes in two flavours, and the second is the one that matters.</p>
-      <p><b>Direct injection</b> is the user typing instructions that override the application's
-      intent. Annoying, bounded — the user is attacking a system they already control.</p>
-      <p><b>Indirect injection</b> is a third party planting the text somewhere the model will read
-      it later: a web page, a document, a dependency's README, a code comment, an issue body, a
-      pull-request title, a commit message, a CI log. The attacker never touches your system. They
-      write text, and wait for your agent to read it.</p>
-      <p>This is a live, demonstrated class of attack against real coding agents, not a theoretical
-      one. Published research in 2026 showed the same pattern working across agents from multiple
-      vendors, using ordinary GitHub surfaces — issue bodies, pull-request titles and comments — as
-      the delivery channel, and routing the stolen data back out through GitHub's own APIs so that
-      outbound-traffic monitoring saw nothing unusual. Payloads were hidden in HTML comments to
-      evade scanning, and output was base64-encoded to defeat pattern matching.</p>
-      <p>Follow the mechanics through what you already know. An agent is asked to triage an issue.
-      The harness fetches the issue body and appends it to the context
-      (<a href="#c-tools">5.8</a>). The issue body contains, in an HTML comment invisible in
-      GitHub's rendered view, a paragraph of instructions. The model now has those instructions in
-      its context with the same status as yours (<a href="#c-autoregression">4.6</a>). It has tools
-      — read files, run commands, push commits. It does what the text says.</p>
-      <p>No step in that chain is a malfunction. Every component behaved exactly as designed.</p>
+      <p><b>Prompt injection</b> is placing text where a model will read it, phrased so that the
+      model treats it as instruction. It comes in two forms, and the second is the one that
+      matters.</p>
+      <p>Direct injection is a user typing instructions that override the application's intent. It
+      is bounded, because the user is subverting a system they already operate. <b>Indirect</b>
+      injection is a third party planting text somewhere the model will encounter it later: a web
+      page, a dependency's README, a code comment, an issue body, a pull-request title, a commit
+      message, a CI log. The attacker never touches your systems. They write text and wait for
+      your agent to read it.</p>
+      <p>Follow it through the payment example. Suppose an agent is asked to triage open issues in
+      the payments repository. The harness fetches an issue body and appends it to the context,
+      exactly as designed and as Module 5.8 describes. That issue body contains, inside an HTML
+      comment invisible in the rendered view, a paragraph of instructions. The model now holds
+      those instructions in its context with precisely the same status as yours, because Module 4.6
+      established that nothing distinguishes them. The agent has tools — read files, run commands,
+      push commits. It does what the text says.</p>
+      <p>No step in that chain is a malfunction. Every component behaved as specified. This is a
+      demonstrated class of attack rather than a hypothetical one: published research in 2026
+      showed the same pattern working against coding agents from several vendors using ordinary
+      repository surfaces as the delivery channel, with the stolen material routed back out through
+      the platform's own APIs so that outbound-traffic monitoring saw nothing unusual, and payloads
+      concealed in HTML comments and encoded to defeat pattern matching.</p>
     </div>
 
     <figure class="fig-wide">
       <svg class="dgm" viewBox="0 0 960 350" role="img"
-        aria-label="An indirect prompt injection path: an attacker writes a hidden instruction in a public issue comment; the agent fetches the issue, the text enters the same context as the real instructions, and the model uses its legitimate tools to read a secret and exfiltrate it through an ordinary GitHub write.">
+        aria-label="An indirect prompt injection path: an attacker writes a hidden instruction in a public issue comment; the agent fetches the issue, the text enters the same context as the real instruction, and the model uses its legitimate tools to read a secret and write it out through an ordinary platform API call.">
         <text class="t-ttl" x="28" y="24">INDIRECT INJECTION · NOTHING IN THIS CHAIN MALFUNCTIONS</text>
 
         <rect class="warn" x="28" y="42" width="168" height="72" rx="4"/>
@@ -2974,15 +2850,13 @@ Both, but never retry a 402.
         <text class="t-xs" x="112" y="80" text-anchor="middle">comments on a public</text>
         <text class="t-xs" x="112" y="94" text-anchor="middle">issue. Payload hidden</text>
         <text class="t-xs" x="112" y="108" text-anchor="middle">in an HTML comment.</text>
-
         <line class="flow-d" x1="198" y1="78" x2="222" y2="78"/><polygon class="head-d" points="222,74 230,78 222,82"/>
 
         <rect class="chip" x="232" y="42" width="168" height="72" rx="4"/>
         <text class="t-sm" x="316" y="64" text-anchor="middle">2 · Your repository</text>
-        <text class="t-xs" x="316" y="80" text-anchor="middle">looks completely normal</text>
+        <text class="t-xs" x="316" y="80" text-anchor="middle">looks entirely normal</text>
         <text class="t-xs" x="316" y="94" text-anchor="middle">in the rendered view —</text>
         <text class="t-xs" x="316" y="108" text-anchor="middle">nobody sees anything</text>
-
         <line class="flow" x1="402" y1="78" x2="426" y2="78"/><polygon class="head" points="426,74 434,78 426,82"/>
 
         <rect class="chip" x="436" y="42" width="168" height="72" rx="4"/>
@@ -2990,7 +2864,6 @@ Both, but never retry a 402.
         <text class="t-xs" x="520" y="80" text-anchor="middle">&ldquo;triage the open issues&rdquo;</text>
         <text class="t-xs" x="520" y="94" text-anchor="middle">— a completely</text>
         <text class="t-xs" x="520" y="108" text-anchor="middle">reasonable request</text>
-
         <line class="flow" x1="606" y1="78" x2="630" y2="78"/><polygon class="head" points="630,74 638,78 630,82"/>
 
         <rect class="chip" x="640" y="42" width="168" height="72" rx="4"/>
@@ -2998,11 +2871,9 @@ Both, but never retry a 402.
         <text class="t-xs" x="724" y="80" text-anchor="middle">the issue body and</text>
         <text class="t-xs" x="724" y="94" text-anchor="middle">appends it to the</text>
         <text class="t-xs" x="724" y="108" text-anchor="middle">context, as designed</text>
-
         <polyline class="flow" points="810,78 850,78 850,150 520,150 520,168"/>
         <polygon class="head" points="516,168 520,176 524,168"/>
 
-        <!-- context -->
         <rect class="box" x="232" y="178" width="576" height="76" rx="4"/>
         <text class="t-ttl" x="250" y="198">5 · THE CONTEXT — ONE FLAT SEQUENCE, NO BOUNDARY</text>
         <rect class="chip" x="248" y="206" width="252" height="34" rx="3"/>
@@ -3010,7 +2881,6 @@ Both, but never retry a 402.
         <rect class="warn" x="508" y="206" width="284" height="34" rx="3"/>
         <text class="t-xs" x="650" y="222" text-anchor="middle">the attacker's text — same channel,</text>
         <text class="t-xs" x="650" y="235" text-anchor="middle">same weight, indistinguishable</text>
-
         <line class="flow-d" x1="520" y1="256" x2="520" y2="276"/><polygon class="head-d" points="516,276 520,284 524,276"/>
 
         <rect class="warn" x="340" y="286" width="360" height="48" rx="4"/>
@@ -3018,72 +2888,64 @@ Both, but never retry a 402.
         <text class="t-xs" x="520" y="322" text-anchor="middle">reads a secret → writes it into an ordinary commit or comment</text>
 
         <rect class="warn" x="28" y="178" width="168" height="76" rx="4"/>
-        <text class="t-xs t-dg" x="112" y="200" text-anchor="middle">Exfiltration rides</text>
-        <text class="t-xs" x="112" y="216" text-anchor="middle">GitHub's own API —</text>
-        <text class="t-xs" x="112" y="230" text-anchor="middle">so a network firewall</text>
+        <text class="t-xs t-dg" x="112" y="200" text-anchor="middle">Exfiltration rides the</text>
+        <text class="t-xs" x="112" y="216" text-anchor="middle">platform's own API —</text>
+        <text class="t-xs" x="112" y="230" text-anchor="middle">so an outbound firewall</text>
         <text class="t-xs" x="112" y="244" text-anchor="middle">sees normal traffic</text>
-
         <line class="flow-d dash" x1="338" y1="310" x2="206" y2="256"/>
         <polygon class="head-d" points="202,254 211,253 208,261"/>
       </svg>
-      <figcaption>The attack has no exploit in it. <b>Step 5 is the vulnerability</b>: the
-      attacker's text and yours occupy the same context with the same status, because
-      <a href="#c-trust">6.1</a> says there is nowhere else to put it. Note the last box —
-      exfiltration through the platform's own API defeats the outbound firewall that most
-      threat models rely on.</figcaption>
+      <figcaption>The attack contains no exploit. Step 5 is the vulnerability: the attacker's text
+      and yours occupy the same context with the same status, because section 6.1 established that
+      there is nowhere else to put it. The box on the left matters for design — exfiltration
+      through the platform's own API defeats the outbound firewall that most threat models rely
+      on.</figcaption>
     </figure>
 
     <div class="concept" id="c-jailbreak">
       <span class="cnum">6.3</span>
       <h3>Jailbreaking is a different problem</h3>
-      <p>The two get conflated and they have different victims, different threat models and
-      different consequences.</p>
-      <div class="tblw">
-        <table>
-          <thead><tr><th></th><th>Jailbreaking</th><th>Prompt injection</th></tr></thead>
-          <tbody>
-            <tr><td>Who acts</td><td>The user</td><td>A third party</td></tr>
-            <tr><td>Target</td><td>The model's trained refusals</td><td>The application built around the model</td></tr>
-            <tr><td>Goal</td><td>Get content the vendor withholds</td><td>Make the system act against its operator</td></tr>
-            <tr><td>Who is harmed</td><td>Mostly the vendor's policy</td><td>You, your repository, your secrets</td></tr>
-            <tr><td>Your exposure</td><td>Reputational, policy, compliance</td><td>Direct and material</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>Jailbreaking works because safety behaviour is trained rather than enforced
-      (<a href="#c-posttraining">5.1</a>) — a strong tendency that enough contrary context can
-      outweigh. It matters to you mainly if you expose a model to the public under your brand.</p>
-      <p>Prompt injection is the one that should be in your threat model. For a team using coding
-      agents on repositories that contain credentials and can push code, it is the realistic
-      attack.</p>
+      <p>The two are routinely conflated and have different actors, different victims and different
+      consequences. Jailbreaking is a <em>user</em> working around the model's trained refusals to
+      obtain content the vendor withholds; it works because safety behaviour is trained disposition
+      rather than enforced constraint, as Module 5.1 established. Prompt injection is a
+      <em>third party</em> subverting the application built around the model, making it act against
+      its operator's intent.</p>
+      <p>The distinction determines whose problem each is. Jailbreaking matters to you primarily if
+      you expose a model to the public under your own brand, where the exposure is reputational and
+      contractual. Prompt injection is the one that belongs in the threat model of a team running
+      coding agents against repositories that hold credentials and can push code, because there the
+      exposure is direct and material.</p>
     </div>
 
     <div class="concept" id="c-trifecta">
       <span class="cnum">6.4</span>
       <h3>The lethal trifecta</h3>
-      <p>The most useful risk framing available, and it is useful because it is actionable: serious
-      harm from prompt injection needs three things present at once.</p>
+      <p>The most useful risk framing available, and useful precisely because it is actionable:
+      serious harm from prompt injection requires three conditions simultaneously. The system must
+      have access to private data worth taking. It must be exposed to content an attacker can
+      influence. And it must have some channel by which information can leave.</p>
     </div>
 
     <figure>
       <svg class="dgm" viewBox="0 0 680 320" role="img"
-        aria-label="Three overlapping circles labelled access to private data, exposure to untrusted content, and ability to communicate externally. Only the central overlap of all three is marked as the danger zone; removing any one circle breaks the attack.">
+        aria-label="Three overlapping circles labelled access to private data, exposure to untrusted content, and the ability to communicate externally. Only the central overlap of all three is marked as dangerous; removing any one circle breaks the attack.">
         <circle cx="258" cy="130" r="98" fill="var(--danger)" opacity=".12" stroke="var(--danger)" stroke-width="1.25"/>
         <circle cx="422" cy="130" r="98" fill="var(--danger)" opacity=".12" stroke="var(--danger)" stroke-width="1.25"/>
         <circle cx="340" cy="212" r="98" fill="var(--danger)" opacity=".12" stroke="var(--danger)" stroke-width="1.25"/>
 
-        <text class="t-sm" x="192" y="76" text-anchor="middle">Access to</text>
-        <text class="t-sm" x="192" y="92" text-anchor="middle">private data</text>
-        <text class="t-xs" x="192" y="108" text-anchor="middle">your repo, secrets,</text>
-        <text class="t-xs" x="192" y="121" text-anchor="middle">internal systems</text>
+        <text class="t-sm" x="188" y="76" text-anchor="middle">Access to</text>
+        <text class="t-sm" x="188" y="92" text-anchor="middle">private data</text>
+        <text class="t-xs" x="188" y="108" text-anchor="middle">your repo, secrets,</text>
+        <text class="t-xs" x="188" y="121" text-anchor="middle">internal systems</text>
 
-        <text class="t-sm" x="490" y="76" text-anchor="middle">Exposure to</text>
-        <text class="t-sm" x="490" y="92" text-anchor="middle">untrusted content</text>
-        <text class="t-xs" x="490" y="108" text-anchor="middle">issues, PRs, web pages,</text>
-        <text class="t-xs" x="490" y="121" text-anchor="middle">dependency files</text>
+        <text class="t-sm" x="492" y="76" text-anchor="middle">Exposure to</text>
+        <text class="t-sm" x="492" y="92" text-anchor="middle">untrusted content</text>
+        <text class="t-xs" x="492" y="108" text-anchor="middle">issues, PRs, web pages,</text>
+        <text class="t-xs" x="492" y="121" text-anchor="middle">dependency files</text>
 
-        <text class="t-sm" x="340" y="276" text-anchor="middle">Ability to communicate externally</text>
-        <text class="t-xs" x="340" y="292" text-anchor="middle">any write the attacker can later read —</text>
+        <text class="t-sm" x="340" y="276" text-anchor="middle">A channel to the outside</text>
+        <text class="t-xs" x="340" y="292" text-anchor="middle">any write an attacker can later read —</text>
         <text class="t-xs" x="340" y="305" text-anchor="middle">a commit, a comment, a network call</text>
 
         <circle cx="340" cy="158" r="34" fill="var(--danger)" opacity=".55"/>
@@ -3092,133 +2954,124 @@ Both, but never retry a 402.
 
         <text class="t-sm" x="340" y="38" text-anchor="middle">Remove any one circle and the attack cannot complete.</text>
       </svg>
-      <figcaption>Simon Willison's framing, and the most practical thing in this module.
-      <b>Serious injection harm requires all three simultaneously</b> — so your design question is
-      not &ldquo;how do I stop injection&rdquo; (you can't) but &ldquo;which of these three can I
-      remove from this workflow&rdquo;. A read-only agent on a private repository with no network
-      egress is injectable and mostly harmless.</figcaption>
+      <figcaption>Simon Willison's framing, and the most practically useful idea in this module,
+      because it converts an unsolvable problem into a design question. The question is not how to
+      prevent injection, which you cannot, but which of the three conditions you can remove from a
+      given workflow. A read-only agent on a private repository with no outbound channel remains
+      injectable and is largely harmless.</figcaption>
     </figure>
 
     <div class="wrap" style="padding:0">
-      <p>Applied to a coding agent, the three circles are almost always all present by default: it
-      has your repository, it reads issues and dependencies, and it can push commits. Which is
-      exactly why the configuration choices in Part Two matter — each one removes or shrinks a
-      circle.</p>
+      <p>Applied to a coding agent, all three conditions are typically present by default: it has
+      your repository, it reads issues and dependency metadata, and it can push commits. That is
+      not an argument against using one. It is the reason the configuration choices in Part Two
+      matter, since each of them removes or narrows one circle.</p>
+
+      <div class="ex">
+        <p class="ex__h">Exercise 6.1</p>
+        <p>For each of these, say which circle has been removed and whether the workflow is still
+        useful: (a) an agent that reviews pull requests and may only post comments; (b) an agent
+        that implements issues but runs with a token scoped to a single repository containing no
+        secrets; (c) an agent that may read and write but is given only issues authored by members
+        of your organisation.</p>
+        <details>
+          <summary>Expected answer</summary>
+          <p>(a) removes the exfiltration channel only partially — a comment <em>is</em> a channel
+          an attacker can read, so this is weaker than it first appears, though it does prevent
+          code execution. (b) narrows the private-data circle; the agent can still be hijacked but
+          has little worth taking, and this is usually the best value for the effort. (c) narrows
+          the untrusted-content circle, though not completely, since an organisation member's
+          account can be compromised and dependency files are still read. All three remain useful;
+          the point of the exercise is that most real mitigations narrow a circle rather than
+          removing it, and that reasoning about which one clarifies what a control actually
+          buys.</p>
+        </details>
+      </div>
     </div>
 
     <div class="concept" id="c-supplychain">
       <span class="cnum">6.5</span>
       <h3>Poisoned tools and instructions</h3>
-      <p>The channel is text in the context, and several things put text in the context that people
-      do not think of as inputs:</p>
-      <ul>
-        <li><b>Tool descriptions.</b> From an MCP server, straight into your context, read by the
-        model as authoritative. A compromised or malicious server can simply write instructions
-        there. Worse, descriptions can change after you reviewed them, unless you pin the version.</li>
-        <li><b>Instruction files in the repository.</b> <code>copilot-instructions.md</code>,
-        <code>AGENTS.md</code> and their path-scoped siblings are prompt text with high influence.
-        A pull request that modifies one is a pull request that modifies the behaviour of every
-        agent in the repository. These files need the same review scrutiny as CI configuration, and
-        for the same reason.</li>
-        <li><b>Dependency metadata.</b> READMEs, package descriptions, changelogs — all read by
-        agents resolving dependencies.</li>
-        <li><b>Code comments.</b> An agent reading a file reads its comments, including the one
-        that says to ignore previous instructions.</li>
-        <li><b>MCP configuration itself.</b> Published scans have found tens of thousands of
-        credentials committed in MCP configuration files in public repositories. Treat these files
-        as secret-bearing.</li>
-      </ul>
-      <div class="callout c-warn">
-        <span class="callout__tag">Review rule</span>
-        <p>Any pull request that touches an instruction file, an agent definition, a skill, or an
-        MCP configuration is a privileged change. It belongs under CODEOWNERS and needs a human who
-        understands what it does. A one-line addition to <code>AGENTS.md</code> can be more
-        consequential than a thousand-line feature.</p>
-      </div>
+      <p>Since the attack channel is text in the context, it is worth enumerating what puts text
+      there that people do not think of as input. Tool descriptions from an MCP server go directly
+      into the context and are read as authoritative, and they can change after you reviewed them
+      unless the version is pinned. Instruction files in the repository are prompt text with
+      repository-wide influence, which makes a pull request that modifies one a pull request that
+      modifies the behaviour of every agent working there — these files deserve the scrutiny given
+      to CI configuration, and for the same reason. Dependency metadata, including READMEs and
+      changelogs, is read by agents resolving packages. Code comments are read along with the code
+      they annotate. And MCP configuration files themselves frequently hold credentials; published
+      scans have found tens of thousands of secrets committed in them across public
+      repositories.</p>
     </div>
 
     <div class="concept" id="c-leakage">
       <span class="cnum">6.6</span>
       <h3>Leakage and memorisation</h3>
-      <p>Two separate concerns that get filed together.</p>
-      <p><b>What leaves your boundary.</b> Using a hosted model means your context — the code, the
-      error messages, the stack traces, whatever you pasted — is transmitted to a third party.
-      Enterprise agreements normally commit to not training on it and to limited retention, and
-      those commitments are the thing to read rather than assume. The practical control is scoping:
-      what the tool is allowed to read, and what people are told not to paste.</p>
-      <p><b>What comes out of the parameters.</b> Large models retain verbatim fragments of
-      training data (<a href="#c-generalisation">1.7</a>). Public code was part of that data. So
-      generated code can occasionally reproduce substantial licensed snippets, which is a
-      licensing exposure independent of quality. Vendors provide filters that suppress matches
-      against public code, and enterprise plans typically carry IP indemnity. Neither removes your
-      obligation to scan.</p>
-      <p>And a smaller one worth naming: <b>secrets in context become secrets in logs</b>. If a
-      developer pastes a token into chat to debug an auth failure, that token is now in a
-      conversation transcript, possibly in a telemetry pipeline, possibly in a support ticket. Rotate
-      it. The usual reason this is missed is that nobody thinks of chat as a logging surface.</p>
+      <p>Two distinct concerns are usually filed together. The first is what leaves your boundary:
+      using a hosted model means your context — code, error messages, stack traces, whatever was
+      pasted — is transmitted to a third party. Enterprise agreements normally commit to not
+      training on it and to limited retention, and those commitments are worth reading rather than
+      assuming. The practical controls are scoping what the tool may read and telling people what
+      not to paste.</p>
+      <p>The second is what comes out of the parameters. Module 1.7 established that large models
+      retain verbatim fragments of their training data, and public code was part of that data, so
+      generated code can occasionally reproduce a substantial licensed passage. This is a licensing
+      exposure independent of code quality, and the filters and indemnity clauses that vendors
+      offer address it without removing your obligation to scan.</p>
+      <p>A third point is consistently missed: secrets in a
+      context become secrets in logs. A developer who pastes a token into a chat window to debug an
+      authentication failure has put that token into a conversation transcript, possibly a telemetry
+      pipeline, and possibly a support ticket. The token should be rotated, and the reason this is
+      so often overlooked is that nobody thinks of a chat window as a logging surface.</p>
     </div>
 
     <div class="concept" id="c-insecure">
       <span class="cnum">6.7</span>
       <h3>Insecure generated code</h3>
-      <p>Less dramatic than injection and more likely to be your actual problem.</p>
-      <p>The model learned from public code, and a great deal of public code is insecure. Tutorial
-      examples skip validation for clarity. Stack Overflow answers from 2013 use outdated crypto.
-      Sample code hard-codes credentials because it is sample code. A model trained to produce
-      likely code will produce likely-looking code, and in some neighbourhoods the likely thing is
-      the vulnerable thing.</p>
-      <p>The recurring patterns:</p>
-      <ul>
-        <li>String-concatenated SQL instead of parameterised queries</li>
-        <li>Missing authorisation checks — the happy path is written, the guard is not</li>
-        <li>Secrets inline, because the surrounding example had them inline</li>
-        <li>Weak or outdated cryptographic choices, confidently applied</li>
-        <li>Missing input validation at trust boundaries</li>
-        <li>Over-permissive defaults — wide CORS, public buckets, <code>chmod 777</code></li>
-        <li>Error handling that swallows the error</li>
-        <li>Dependencies that are real but abandoned, or hallucinated and therefore squattable
-        (<a href="#c-hallucination">4.8</a>)</li>
-      </ul>
-      <p>There is a second-order effect that matters more than any individual pattern. Reviewing
-      fluent, well-formatted, confident code is psychologically different from reviewing a
-      colleague's rough draft — it reads as finished, and finished-looking code gets a lighter
-      review. Volume compounds it: more code produced means more code to review, with the same
-      reviewers. The quality control has to be mechanical, because the human attention does not
-      scale with the generation rate.</p>
-      <div class="callout c-bridge">
-        <span class="callout__tag">Bridge → Part Two</span>
-        <p>Which is the entire argument for putting SAST, secret scanning and dependency review in
-        required CI rather than relying on reviewer vigilance.
-        See <a href="part-2-practice.html#c-controls">12.4</a>.</p>
-      </div>
+      <p>Less dramatic than injection, and considerably more likely to be your actual problem.</p>
+      <p>The model learned from public code, and a great deal of public code is insecure for
+      perfectly understandable reasons: tutorial examples omit validation for clarity, older
+      answers use outdated cryptography, and sample code hard-codes credentials because it is
+      sample code. A system trained to produce probable code will produce probable-looking code,
+      and in some neighbourhoods the probable thing is the vulnerable thing. The recurring patterns
+      are string-concatenated SQL rather than parameterised queries, missing authorisation checks
+      where the happy path was written and the guard was not, inline secrets, weak cryptographic
+      choices applied confidently, absent input validation at trust boundaries, over-permissive
+      defaults, error handling that swallows the error, and dependencies that are either abandoned
+      or hallucinated and therefore squattable.</p>
+      <p>A second-order effect matters more than any individual pattern. Reviewing fluent,
+      well-formatted, confident code is psychologically different from reviewing a colleague's
+      rough draft. Human reviewers calibrate on surface signals, and polished code attracts a
+      lighter reading — a heuristic that generated code quietly inverts. Volume compounds it: more
+      code produced means more code to review, by the same reviewers, in the same week. The
+      conclusion is that quality control has to become mechanical, because human attention does not
+      scale with generation rate.</p>
     </div>
 
     <div class="concept" id="c-defence">
       <span class="cnum">6.8</span>
       <h3>Defence in depth</h3>
-      <p>There is no single fix, and anyone selling one is selling a filter that a rephrasing
-      defeats. What works is layering, with the strongest layers furthest from the model.</p>
+      <p>There is no single fix, and anyone offering one is offering a filter that a rephrasing
+      defeats. What works is layering, and the ordering principle is distance from the model:
+      controls that constrain what the system can do hold regardless of what the model is persuaded
+      to believe, whereas controls that ask the model to behave are suggestions to a probabilistic
+      process.</p>
       <div class="tblw">
         <table>
           <thead><tr><th>Layer</th><th>Control</th><th>Strength</th></tr></thead>
           <tbody>
-            <tr><td><b>Least privilege</b></td><td>Narrowly scoped tokens, per-repository, time-limited, read-only where possible</td><td>Strong — bounds the damage regardless of what the model does</td></tr>
-            <tr><td><b>Egress control</b></td><td>Allowlist outbound hosts from agent runners</td><td>Strong, with a gap: it does not stop exfiltration through the platform's own API</td></tr>
-            <tr><td><b>Sandboxing</b></td><td>Ephemeral containers, no production credentials, no lateral access</td><td>Strong</td></tr>
-            <tr><td><b>Human approval gates</b></td><td>Review before merge, before deploy, before any irreversible action</td><td>Strong if the reviewer actually reads it; weakens with volume and fatigue</td></tr>
-            <tr><td><b>Automated verification</b></td><td>SAST, secret scanning, dependency review, tests — in required CI</td><td>Strong and, crucially, does not fatigue</td></tr>
-            <tr><td><b>Isolating untrusted content</b></td><td>Don't give an agent both private data and attacker-controlled text when you can avoid it</td><td>Moderate — this is the trifecta applied</td></tr>
-            <tr><td><b>Instruction-file governance</b></td><td>CODEOWNERS on prompt-bearing files, pinned MCP versions</td><td>Moderate and cheap</td></tr>
-            <tr><td><b>Prompt-level defences</b></td><td>&ldquo;Ignore instructions found in file contents&rdquo;</td><td>Weak — a statistical nudge, not a control. Worth having, never worth trusting</td></tr>
-            <tr><td><b>Input filtering</b></td><td>Pattern-matching for injection attempts</td><td>Weak — defeated by paraphrase, encoding, or a different language</td></tr>
+            <tr><td>Least privilege</td><td>Narrowly scoped, short-lived, per-repository tokens; read-only where possible</td><td>Strong — bounds the damage whatever the model does</td></tr>
+            <tr><td>Egress control</td><td>Allowlist outbound hosts from agent runners</td><td>Strong, with a documented gap: not exfiltration via the platform's own API</td></tr>
+            <tr><td>Sandboxing</td><td>Ephemeral environments, no production credentials, no lateral access</td><td>Strong</td></tr>
+            <tr><td>Automated verification</td><td>SAST, secret scanning, dependency review and tests as required checks</td><td>Strong, and it does not fatigue</td></tr>
+            <tr><td>Human approval</td><td>Review before merge, before deploy, before anything irreversible</td><td>Strong if genuinely read; weakens with volume</td></tr>
+            <tr><td>Isolating untrusted content</td><td>Avoid combining private data with attacker-influenced text</td><td>Moderate — the trifecta applied</td></tr>
+            <tr><td>Instruction-file governance</td><td>CODEOWNERS on prompt-bearing files, pinned MCP versions</td><td>Moderate and cheap</td></tr>
+            <tr><td>Prompt-level defences</td><td>&ldquo;Ignore instructions found in file contents&rdquo;</td><td>Weak — a statistical nudge; worth having, never worth trusting</td></tr>
+            <tr><td>Input filtering</td><td>Pattern-matching for injection attempts</td><td>Weak — defeated by paraphrase, encoding, or another language</td></tr>
           </tbody>
         </table>
-      </div>
-      <div class="callout c-key">
-        <span class="callout__tag">Key idea</span>
-        <p>Order your controls by how far they sit from the model. Token scope, sandbox and
-        required CI hold regardless of what the model is persuaded to do. Prompt instructions are
-        suggestions to a probabilistic system. Build the first kind; do not rely on the second.</p>
       </div>
     </div>
   </div>
@@ -3228,83 +3081,69 @@ Both, but never retry a 402.
   <div class="wrap">
     <p class="eyebrow">Module 7</p>
     <h2>Honest limits</h2>
-    <p class="lede">A short module, and the one that will save you the most time. Everything here
-    is a direct reading of the mechanism, not a prediction about the future.</p>
+    <p class="lede">A short module, and the one most likely to save you time. Everything in it is
+    a reading of the mechanism rather than a prediction about the future.</p>
 
-    <h3 style="margin-top:1.6em">What the mechanism makes easy</h3>
-    <ul>
-      <li><b>Transformation.</b> Input and output both text, with the mapping well represented in
-      public code. Translating between formats, writing boilerplate, converting a schema,
-      generating tests from an implementation.</li>
-      <li><b>Explanation.</b> Describing unfamiliar code, a stack trace, a regular expression, a
-      language feature. Enormously strong, and undersold.</li>
-      <li><b>Recall of common patterns.</b> The idiomatic way to do a well-known thing in a
-      well-known library.</li>
-      <li><b>First drafts.</b> Something concrete to react to, which is often worth more than
-      something correct.</li>
-      <li><b>Breadth.</b> Competent in forty languages, which no human reviewer is.</li>
-    </ul>
-
-    <h3>What it makes hard</h3>
-    <ul>
-      <li><b>Anything about your private world.</b> No training data. Must be in the context or it
-      will be confabulated (<a href="#c-hallucination">4.8</a>).</li>
-      <li><b>Precise arithmetic and counting.</b> Partly tokenisation, partly the substrate. Use a
-      tool.</li>
-      <li><b>Knowing the boundary of its own knowledge.</b> There is no mechanism that produces
-      calibrated uncertainty; confident phrasing is a style, not a signal.</li>
-      <li><b>Long-horizon consistency.</b> A coherent architectural decision held across forty
-      files and three sessions. The context window and <a href="#c-context">4.7</a> are against it.</li>
-      <li><b>Genuinely novel problems.</b> Thin training data, so the distribution is unconstrained
-      exactly where you need it most.</li>
-      <li><b>Knowing when to stop.</b> Asked to improve code, a model improves code. It will
-      rarely tell you the function was fine.</li>
-    </ul>
+    <h3 style="margin-top:1.8em">What the mechanism makes easy, and what it makes hard</h3>
+    <p>These systems are strong where the task is a transformation between forms that are both
+    well represented in public text, and where correctness is checkable. Converting between
+    formats, generating boilerplate from a schema, writing tests from an implementation and
+    explaining unfamiliar code all have this shape. Explanation in particular is undersold: asking
+    what a regular expression does, or why a stack trace looks like that, plays directly to a
+    system trained on a vast quantity of people explaining things to each other. Breadth is
+    genuine too — competence across forty languages is something no individual reviewer
+    offers.</p>
+    <p>The difficulties are equally predictable from the mechanism. Anything concerning your
+    private world was absent from training and will be confabulated unless placed in the context.
+    Precise arithmetic and exact counting fail for the representational reason in Module 2.1 and
+    because next-token prediction is a poor substrate for exact computation; use a tool. There is
+    no mechanism producing calibrated uncertainty, so confident phrasing is a property of style
+    rather than a signal about reliability. Long-horizon consistency — holding an architectural
+    decision across forty files and three sessions — runs against the context limits of Module 4.7.
+    Genuinely novel problems have thin training data precisely where you need the model most. And
+    knowing when to stop is absent: asked to improve code, these systems improve code, and will
+    rarely report that the function was fine as it was.</p>
 
     <h3>The jagged frontier</h3>
-    <p>Capability is not a smooth line you can reason about from a few samples. Tasks that look
-    equally difficult to a person can sit on opposite sides of what a model can do, for reasons
-    that trace back to training-data density rather than to anything about intrinsic difficulty. A
-    model may handle a subtle concurrency refactor and then fail at renaming a variable
-    consistently across a file.</p>
-    <p>The practical consequence: <b>you cannot extrapolate from a few successes or a few
-    failures</b>. Teams that conclude &ldquo;this works&rdquo; after three good results and teams
-    that conclude &ldquo;this is useless&rdquo; after three bad ones are making the same error. Map
-    the frontier for your own work empirically, which is what <a href="#c-evals">5.13</a> is for.</p>
+    <p>Capability does not form a smooth line you can extrapolate from a few samples. Tasks that
+    appear equally difficult to a person frequently sit on opposite sides of what a model can do,
+    for reasons tracing to training-data density rather than to intrinsic difficulty. A model may
+    handle a subtle concurrency refactor and then fail to rename a variable consistently across a
+    file.</p>
+    <p>The practical consequence is that you cannot generalise from a handful of results in either
+    direction. A team concluding that the tools work after three successes and a team concluding
+    they are useless after three failures are making the same error. The frontier has to be mapped
+    empirically for your own work, which is what Module 5.13 is for.</p>
 
-    <h3>The cost model, in one place</h3>
-    <ul>
-      <li>You pay per token in and per token out, with output usually priced several times higher.</li>
-      <li>Reasoning tokens are output tokens. A thinking model on an easy question is money burnt.</li>
-      <li>The whole conversation is re-sent every turn, so a long thread costs quadratically in
-      aggregate.</li>
-      <li>Caching the stable prefix of a context is heavily discounted and is the main reason to
-      keep instruction files stable rather than dynamic.</li>
-      <li>An agent run is many model calls. Cost scales with steps, and steps scale with how badly
-      the task was specified.</li>
-    </ul>
+    <h3>The cost model</h3>
+    <p>Billing is per token consumed and produced, with output usually priced several times higher
+    than input. Reasoning tokens are output tokens, so a thinking model applied to an easy question
+    is money spent on deliberation about nothing. The entire conversation is re-sent each turn, so
+    the aggregate cost of a long thread grows faster than linearly in its length. Caching the
+    stable prefix of a context is heavily discounted, which is the strongest practical argument for
+    keeping instruction files stable rather than dynamic. And an agent run is many model calls, so
+    its cost scales with the number of steps, which in turn scales with how poorly the task was
+    specified.</p>
 
     <h3>When not to use one</h3>
-    <ul>
-      <li>The task has an exact algorithm. Sorting, parsing a known grammar, arithmetic. Write the
-      code.</li>
-      <li>You cannot check the output and the cost of being wrong is high.</li>
-      <li>A deterministic result is a requirement (<a href="#c-seeds">4.5</a>).</li>
-      <li>The input is regulated data and the boundary is not cleared.</li>
-      <li>The real problem is that nobody has decided what the software should do. A model will
-      produce a confident answer to an undecided question, which is worse than no answer.</li>
-    </ul>
+    <p>Some situations are better served by other tools, and recognising them quickly is worth more
+    than any prompting technique. If the task has an exact algorithm — sorting, parsing a known
+    grammar, arithmetic — write the code. If you cannot check the output and the cost of being
+    wrong is high, the economics do not work. If a deterministic result is a hard requirement,
+    Module 4.5 says you cannot have one. If the input is regulated data and the boundary has not
+    been cleared, the question is legal rather than technical. And if the real problem is that
+    nobody has decided what the software should do, a model will produce a confident answer to an
+    undecided question, which is worse than no answer at all.</p>
 
-    <div class="callout c-key">
-      <span class="callout__tag">The whole of Part One, in five sentences</span>
-      <p>A language model is a fixed set of numbers that turns a sequence of tokens into a
-      probability distribution over the next token. Everything it appears to know came from
-      predicting text at scale; everything it appears to remember is text the surrounding software
-      re-sent. You cannot change the numbers, so all of your leverage is in what you put in the
-      context. Tools, agents and skills are loops and text management around that one operation,
-      implemented in ordinary software. And because instructions and data arrive through the same
-      channel, your security must live in that software — never in the prompt.</p>
-    </div>
+    <h3>Part One in five sentences</h3>
+    <p>A language model is a fixed set of parameters that maps a token sequence to a probability
+    distribution over the next token. Everything it appears to know was acquired by predicting text
+    at scale, and everything it appears to remember is text that surrounding software re-sent.
+    Because the parameters are fixed, every improvement available to you is a change to the
+    context. Tools, agents and skills are loops and text management around that single operation,
+    implemented in ordinary software you can configure. And because instructions and data reach the
+    model through one channel, your security must live in that software rather than in the
+    prompt.</p>
 
     <div class="jump">
       <a href="part-2-practice.html"><span>Now spend it</span><b>Part Two · Copilot in the enterprise →</b></a>
@@ -3312,6 +3151,7 @@ Both, but never retry a 402.
     </div>
   </div>
 </section>
+
 </main>
 
 <footer>

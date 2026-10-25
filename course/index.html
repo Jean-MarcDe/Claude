@@ -205,8 +205,8 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
     descent to agents. Part Two spends that understanding inside GitHub Enterprise — on instruction
     files, prompts, code review, coding agents and the governance around them.</p>
     <p class="meta">
-      Two parts&nbsp;· 14 modules&nbsp;· 20 figures&nbsp;· 8 labs<br>
-      Reading time ≈ 4 hours&nbsp;· Full workshop ≈ 2 days<br>
+      Two parts&nbsp;· 14 modules&nbsp;· 18 diagrams&nbsp;· 11 exercises&nbsp;· 8 labs<br>
+      Reading time ≈ 5 hours&nbsp;· Full workshop ≈ 2 days<br>
       Audience: engineers, tech leads and platform owners. No maths beyond school algebra.
     </p>
   </div>
@@ -226,8 +226,7 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
     injection because the model reads instructions and data through the same channel.
     None of that is memorisable as a tip. All of it is obvious once you can see the
     machine.</p>
-    <p>So Part One builds the machine, and every concept block ends with a
-    <b>bridge</b> marker pointing at the practice it determines. Part Two points back.</p>
+    <p>So Part One builds the machine, developing three worked examples that recur as the concepts accumulate — a neuron learning logical AND, one sentence carried from tokenisation through to sampling, and a payment function that an assistant is asked to modify. Part Two then uses the same three, and names the mechanism behind each recommendation it makes.</p>
   </div>
 </section>
 
@@ -363,21 +362,16 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
   <div class="wide" style="margin-top:1.4em">
     <div class="modgrid">
       <div class="mod"><span class="mod__n">1</span><h3 class="mod__t">Learning instead of programming</h3>
-        <p class="mod__c">Machine learning vs traditional software · neural networks · parameters ·
-        training and loss · gradient descent · backpropagation · inference · overfitting and generalisation</p></div>
+        <p class="mod__c">Supervised learning vs writing rules · a neuron that learns logical AND, worked by hand · loss functions · gradient descent · why one neuron is not enough · backpropagation · generalisation · inference · self-supervision and next-token prediction</p></div>
       <div class="mod"><span class="mod__n">2</span><h3 class="mod__t">Turning text into numbers</h3>
-        <p class="mod__c">Tokenisation · vocabularies and BPE · encoding · embeddings and vector space ·
-        positional information · <b>how your choice of human language changes cost and quality</b></p></div>
+        <p class="mod__c">Tokenisation and byte-pair encoding · vocabularies · encoding · static embeddings and what their geometry does and does not mean · positional information · how your choice of human language changes cost and quality</p></div>
       <div class="mod"><span class="mod__n">3</span><h3 class="mod__t">The transformer</h3>
-        <p class="mod__c">What transformers solved · attention as a soft lookup · queries, keys and values ·
-        multi-head attention · the residual stream · a full forward pass · why language modelling scales</p></div>
+        <p class="mod__c">What transformers solved · attention as a soft lookup · queries, keys and values · multi-head attention and depth · static embeddings becoming contextual representations · a full forward pass · why language was the right target</p></div>
       <div class="mod"><span class="mod__n">4</span><h3 class="mod__t">Generating text</h3>
         <p class="mod__c">Next-token prediction · logits and probability · temperature · top-k and top-p ·
         seeds and determinism · autoregression · the context window · hallucination</p></div>
-      <div class="mod"><span class="mod__n">5</span><h3 class="mod__t">From model to product</h3>
-        <p class="mod__c">Post-training and instruction tuning · chat as a text format · the harness ·
-        reasoning and test-time compute · prompting, visible and hidden · system prompts and custom
-        instructions · tools · agents · skills · retrieval · MCP · evaluation</p></div>
+      <div class="mod"><span class="mod__n">5</span><h3 class="mod__t">From model to system</h3>
+        <p class="mod__c">Post-training · chat as a text format · the harness · reasoning and test-time compute · prompting, visible and hidden · custom modifications · tools · agents · skills · retrieval · MCP · evaluation</p></div>
       <div class="mod"><span class="mod__n">6</span><h3 class="mod__t">Security</h3>
         <p class="mod__c">The trust boundary · prompt injection, direct and indirect · jailbreaking ·
         the lethal trifecta · exfiltration channels · tool and supply-chain poisoning · insecure

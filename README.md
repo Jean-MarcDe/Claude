@@ -15,9 +15,10 @@ you can adapt when the product changes underneath you.
 
 | File | What it is |
 |---|---|
+| [`course_style_guide.md`](course_style_guide.md) | Editorial and pedagogical conventions — prose style, formatting budgets, mathematical notation, the three recurring examples, exercise and diagram rules, terminology. Governs future additions as well as the current text |
 | [`course/index.html`](course/index.html) | Course overview: concept map, full syllabus, the theory→practice bridge table, and four ways to run it (2-hour skim, 2-day workshop, 6-week study group, reference) |
-| [`course/part-1-theory.html`](course/part-1-theory.html) | **Part One** — Modules 1–7, 17 figures. ML vs traditional software, neural networks, training, gradient descent, backpropagation, inference, tokenisation, encoding, embeddings, attention, transformers, next-token prediction, temperature, seeds, autoregression, context, hallucination, chat, the harness, reasoning, prompting, tools, agents, skills, retrieval, MCP, evaluation, and security |
-| [`course/part-2-practice.html`](course/part-2-practice.html) | **Part Two** — Modules 8–14, 3 figures, 8 labs. The Copilot surface area, context engineering in a repository, prompting, code review, coding agents, security and governance, rollout, and hands-on exercises |
+| [`course/part-1-theory.html`](course/part-1-theory.html) | **Part One** — Modules 1–7, 14 diagrams, 11 exercises. ML vs traditional software, neural networks, training, gradient descent, backpropagation, inference, tokenisation, encoding, embeddings, attention, transformers, next-token prediction, temperature, seeds, autoregression, context, hallucination, chat, the harness, reasoning, prompting, tools, agents, skills, retrieval, MCP, evaluation, and security |
+| [`course/part-2-practice.html`](course/part-2-practice.html) | **Part Two** — Modules 8–14, 3 diagrams, 8 labs. The Copilot surface area, context engineering in a repository, prompting, code review, coding agents, security and governance, rollout, and hands-on exercises |
 | [`course/resources.html`](course/resources.html) | 38 annotated further-learning resources — 3Blue1Brown, Karpathy, Jay Alammar, interactive explainers, OWASP, official GitHub docs, courses and papers. Each says what it uniquely gives you, how long it takes, and which module it extends |
 
 ## Reading it
@@ -30,7 +31,7 @@ Each page is a **self-contained HTML file** — no build step, no dependencies, 
 The pages follow the reader's light or dark theme, work at phone width, and have print
 stylesheets, so a module can be printed as a handout for a workshop.
 
-Fonts load from Google Fonts; everything else — including all 20 diagrams, which are hand-authored
+Fonts load from Google Fonts; everything else — including all 18 diagrams, which are hand-authored
 inline SVG — is embedded in the file. The pages render fine offline with fallback fonts.
 
 ## Which parts expire
@@ -47,6 +48,28 @@ If you adopt this course internally, the maintenance job is Part Two's Modules 8
 GitHub section of the resources page. Check them against
 [GitHub's Copilot documentation](https://docs.github.com/en/copilot) and the
 [changelog](https://github.blog/changelog/) before standardising anything across an organisation.
+
+## How it teaches
+
+Three worked examples recur and accumulate rather than each concept getting its own analogy:
+
+- **A neuron learning logical AND** (Module 1) — computed by hand, including one full
+  gradient-descent update and a two-layer backward pass, before the reader meets a model with
+  hundreds of billions of parameters.
+- **"The nightly run failed because it timed out."** (Modules 2–4) — one sentence carried from
+  tokenisation through embeddings, attention and sampling. It is chosen because *run* is
+  sense-ambiguous and *it* needs a referent, so it poses the exact problems attention solves.
+- **Adding retry logic to a payment function** (Module 5 onward) — underspecified in a way that
+  matters, since retrying a charge without an idempotency key can double-bill a customer. It is
+  re-run as repository context, instruction files, tools, tests and full agency are added.
+
+Mathematics appears where it explains rather than decorates: the neuron, loss functions, the
+gradient-descent update, the chain rule, softmax, scaled dot-product attention and temperature.
+All numerical results in the course were verified computationally. Eleven inline exercises sit
+beside the explanations they reinforce, each with an expected answer.
+
+See [`REVISION-NOTES.md`](REVISION-NOTES.md) for what changed in the editorial revision and what
+remains open.
 
 ## Covered concepts
 
