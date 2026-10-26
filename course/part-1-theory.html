@@ -971,9 +971,9 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
     <div class="concept" id="c-generalisation">
       <span class="cnum">1.7</span>
       <h3>Generalisation and overfitting</h3>
-      <p>Minimising training loss was never the objective. Reproducing examples you already possess
-      has no value; what matters is behaviour on inputs the model has not seen, and the gap between
-      those two quantities is the central difficulty of the whole field.</p>
+      <p>Minimising training loss was never the objective. Reproducing examples already in hand has little value, since the purpose is to behave sensibly
+      on inputs the model has not seen. The gap between performance on training data and
+      performance on new data is the central difficulty of the field.</p>
       <p>A model with enough parameters can drive its training loss to nearly zero by effectively
       memorising the examples, while performing poorly on anything new. This is <b>overfitting</b>:
       the model has learned the data rather than the regularity that produced it. It is detected by
@@ -1305,8 +1305,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       <b>rotary position embeddings</b>, which rotate the query and key vectors of Module 3.3 by an
       angle proportional to position. The appeal is that the dot product between two rotated
       vectors then depends on the difference between their positions rather than on their absolute
-      offsets, so the model learns relative distance directly — which is what language actually
-      cares about.</p>
+      offsets, so the model learns relative distance directly, which is generally the more useful quantity for language.</p>
       <p>This is not a footnote. How a model encodes position is a substantial part of why context
       windows have limits at all, why quality degrades towards the far end of a very long input,
       and why a claim to support a million tokens and a claim to work well at a million tokens are
@@ -1447,8 +1446,8 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       <p>The result is written back into the position's own representation. After the operation,
       the vector at <i>run</i> is no longer the static embedding <b>e</b>(<i>run</i>); it is a new
       vector <b>h</b> that has absorbed information from <i>nightly</i> and <i>failed</i>. This is
-      the distinction the course will maintain from here onward, because conflating the two is the
-      single most common misconception about how these models work:</p>
+      the distinction the course will maintain from here onward, because conflating the two is a common and consequential misunderstanding of how these models
+      work:</p>
       <div class="eq">
         <b>e</b>(<var>t</var>) — the <b>static embedding</b>, one per vocabulary entry<br>
         <b>h</b><sub><var>i</var></sub><sup>(<var>l</var>)</sup> — the <b>contextual
@@ -1946,8 +1945,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       <p>The third panel contains the lesson that makes temperature comprehensible. Flattening does
       not merely promote the second-best candidate; it promotes the entire vocabulary, and because
       the tail contains two hundred thousand entries, a modest per-token increase aggregates into
-      most of the probability mass. At <var>T</var> = 1.5 the model is more likely than not to emit
-      something from the tail — which is to say, something close to nonsense. This is why raising
+      most of the probability mass. At <var>T</var> = 1.5 more than half the probability mass sits in the tail, so a sampled token is more likely than not to come from the part of the vocabulary the model rated as implausible. This is why raising
       temperature degrades coherence so sharply, and why the sampling restrictions in 4.4 exist.</p>
       <p>As <var>T</var> approaches zero the sharpening becomes total and the procedure reduces to
       always taking the highest-scoring token. That limiting case is <b>greedy decoding</b>, and
@@ -2160,14 +2158,26 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       material the model needed. Input and output share the window, so a long prompt leaves less
       room for a long answer and exhausting the budget mid-generation produces truncation rather
       than an error.</p>
-      <p>The third is the one that surprises people, and it follows from Module 3.2. Attention
-      distributes a fixed total weight across all positions, so as a context grows, the weight
-      available to any individual position falls. Empirically, models retrieve information placed
-      near the beginning or the end of a long context considerably more reliably than information
-      in the middle — a pattern robust enough across models and tasks to have a name, the
-      lost-in-the-middle effect. Capacity and reliable use are therefore different claims, and a
-      stated window of a million tokens describes what the system will accept rather than what it
-      will attend to evenly.</p>
+      <p>The third concerns reliability rather than capacity, and it needs stating carefully because the
+      usual short explanation is wrong. Attention weights are normalised across positions, but that
+      does not by itself mean the distribution flattens as the sequence lengthens: a model can and
+      does concentrate most of its attention on a few positions in a long context. The observed
+      difficulty is not a direct consequence of the normalisation.</p>
+      <p>What is observed is that retrieving a specific piece of information from a long input
+      becomes less reliable as the input grows, and that where the information sits matters.
+      Material near the beginning and the end of a long context is typically recovered more
+      reliably than material in the middle — a pattern reported across a range of models and tasks
+      and generally called the lost-in-the-middle effect. Several factors plausibly contribute:
+      how positional information is encoded and how far that encoding extrapolates beyond the
+      lengths seen in training, the relative scarcity of very long sequences in training data,
+      competition from large quantities of irrelevant material, and the simple fact that the
+      correct answer must be distinguished from a great deal of superficially similar text. The
+      relative contribution of these is an active research question rather than a settled
+      account.</p>
+      <p>For practice the implication is the same whichever explanation dominates: a stated context
+      length describes what a system will accept, not how reliably it will use material anywhere
+      within it. Those are different claims, and the gap between them varies by model and by task,
+      so it is worth measuring on your own material rather than assuming.</p>
       <p>What follows is a disposition rather than a rule: treat the context as a curated brief
       rather than as a container to fill. Relevance beats volume, position matters enough to put
       the decisive constraint at the end, and removing an irrelevant file is as real an improvement
@@ -2218,8 +2228,8 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       correct answers when pushed, which is a known consequence of training against human
       preference judgements.</p>
       <p>What helps is correspondingly structural. Putting the real documentation, schema or source
-      file into the context constrains the distribution with something true, which is the entire
-      argument for retrieval in Module 5.11 and the single most effective measure available.
+      file into the context constrains the distribution with something true, which is the argument for retrieval in Module 5.11 and generally the most effective of the
+      available measures.
       Giving the system a way to check itself — computing the number, querying the real source,
       opening the document it is citing — converts an invention into a detectable failure, and a tool result
       that contradicts the model is a correction signal that no amount of instruction provides.
@@ -2230,8 +2240,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       <p>One variant deserves separate mention because it has an active adversary. Where a model
       invents a plausible name for something that can be fetched — a software package is the
       best-documented case — attackers can register that name in advance and supply hostile
-      contents when it is requested. The general shape is worth recognising beyond software: a
-      confabulated identifier that someone else can claim is not merely wrong but exploitable, and
+      contents when it is requested. The general shape is worth recognising beyond software: a confabulated identifier that someone else can register in advance is both wrong and exploitable, and
       anything a model names as a thing to retrieve should be verified as the intended thing before
       it is used.</p>
     </div>
@@ -2929,9 +2938,9 @@ Both, and flag every case where they disagree.
       its operator's intent.</p>
       <p>The distinction determines whose problem each is. Jailbreaking matters primarily to an
       organisation exposing a model to the public under its own brand, where the exposure is
-      reputational and contractual. Prompt injection is the one that belongs in the threat model of
-      anyone whose assistant reads documents, email, web pages or data that arrived from outside —
-      which is to say almost everyone using these tools for real work.</p>
+      reputational and contractual. Prompt injection belongs in the threat model of anyone whose assistant reads documents, email,
+      web pages or data originating outside the organisation, which covers most substantial uses of
+      these tools.</p>
     </div>
 
     <div class="concept" id="c-trifecta">
@@ -3059,9 +3068,8 @@ Both, and flag every case where they disagree.
       <p>In the supplier assessment this shows up as a memo in which four figures are drawn from
       the measurements, one is drawn from a vendor's marketing summary, and one was constructed
       because a number was needed and none was found. All six are formatted identically, and the
-      prose around them is equally assured. Nothing in the document marks the third category, and
-      the reader has no way to identify it except by returning to the sources — which is the work
-      the memo was supposed to save.</p>
+      prose around them is equally assured. Nothing in the document marks the third category, so identifying it requires returning to the
+      sources — the work the memo was intended to reduce.</p>
       <p>The same effect in software has a specific and well-catalogued form. Models learned from
       public code, much of which is insecure for understandable reasons: tutorial examples omit
       validation for clarity, older answers use outdated cryptography, sample code hard-codes
@@ -3190,8 +3198,11 @@ Both, and flag every case where they disagree.
 <footer>
   <div class="wrap">
     <p><b>Tokens to Decisions</b> · Part One</p>
-    <p class="meta">Mechanism, not product surface. Nothing in this part has changed materially
-    since 2017 and none of it is vendor-specific.</p>
+    <p class="meta">Mechanism rather than product surface, and vendor-neutral throughout. The mathematical
+    foundations — gradient descent, backpropagation, attention, sampling — have been stable for
+    years. Several topics in Modules 5 to 7, including post-training, reasoning, agentic systems,
+    long-context behaviour and evaluation, are areas of active research where current understanding
+    is still changing.</p>
   </div>
 </footer>
 </body>

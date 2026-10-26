@@ -375,6 +375,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
             <li><a href="#c-modes">10.2 Four ways of working</a></li>
             <li><a href="#c-choosing-mode">10.3 Choosing the mode</a></li>
             <li><a href="#c-autonomy-risk">10.4 What autonomy costs</a></li>
+            <li><a href="#c-guidance-enforcement">10.5 Guidance, orchestration and enforcement</a></li>
           </ol></li>
         <li><a href="#m11"><span class="toc__n">11</span>Planning, decomposition and orchestration</a>
           <ol>
@@ -398,6 +399,7 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
             <li><a href="#c-build-skill">13.3 Building a skill</a></li>
             <li><a href="#c-tools13">13.4 Tools and MCP</a></li>
             <li><a href="#c-custom-agents">13.5 Custom agents and subagents</a></li>
+            <li><a href="#c-automation-ladder">13.6 Choosing the level of automation</a></li>
           </ol></li>
         <li><a href="#m14"><span class="toc__n">14</span>Evaluation, safety and the workshop</a>
           <ol>
@@ -452,11 +454,19 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       <p><b>Reasoning effort</b> is now a configurable quantity rather than a fixed property of a
       model. Module 5.5 established the mechanism: generating intermediate steps buys serial
       computation, because a single forward pass has fixed depth. Many current models expose this
-      as a setting — minimal, low, medium, high, or a token budget — and the setting has a larger
-      effect on both quality and cost than the choice between two adjacent models in the same
-      family. A small model told to think hard will outperform a large model told to answer
-      immediately on a genuinely multi-step problem, and will cost less doing it. Treat effort as a
-      dial you set per task rather than a property you inherit.</p>
+      as a setting — minimal, low, medium, high, or a token budget — and on some tasks the setting changes results more than the choice between two adjacent models
+      in the same family does.</p>
+      <p>How much it helps depends on several things at once: whether the task actually decomposes
+      into steps that benefit from being written out, how the model was trained to use the extra
+      computation, how large a budget it is given, and what the provider charges for those tokens.
+      For a problem with genuine inferential depth, raising the effort on a smaller model is
+      sometimes competitive with a larger model answering directly, and sometimes not — the
+      comparison depends on the models and on the task, and the only reliable way to settle it for
+      your work is the kind of small comparison described in 8.3. For tasks that are largely
+      retrieval or reformatting, additional reasoning tokens tend to add cost and latency without
+      a corresponding improvement. What is worth taking from this is that effort is a variable you
+      can set per task, and that it belongs in any comparison you run rather than being left at a
+      default.</p>
       <p><b>Long-context capability</b> is two claims that vendors report as one. The advertised
       window is how many tokens the system will accept. How well the model uses material in the
       middle of that window is a separate question, measured by separate evaluations, and the two
@@ -729,18 +739,20 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
         <text class="t-xs" x="846" y="92">1 · one large model</text>
 
         <circle class="head-d" cx="820" cy="178" r="6"/>
-        <text class="t-dg t-xs" x="676" y="196" text-anchor="end">4 · agentic, poorly specified —</text>
-        <text class="t-xs" x="676" y="210" text-anchor="end">same cost as option 1, worse result:</text>
-        <text class="t-xs" x="676" y="224" text-anchor="end">strictly worse, so discard it</text>
+        <text class="t-dg t-xs" x="676" y="196" text-anchor="end">4 · agentic, under-specified:</text>
+        <text class="t-xs" x="676" y="210" text-anchor="end">cost close to option 1, weaker result</text>
+        <text class="t-xs" x="676" y="224" text-anchor="end">on these criteria</text>
         <line class="flow-d dash" x1="686" y1="196" x2="806" y2="180"/>
 
         <text class="t-sm" x="90" y="318">Latency is a third axis, omitted here. The frontier is where the real decision lives; everything below it is simply a worse version of something else.</text>
       </svg>
       <figcaption>The same four options from 8.6, placed against quality rather than cost alone.
-      Option 4 is drawn as it behaves when the task is under-specified: it spends like the
-      expensive option and performs like the cheap one, which makes it not a trade-off but a
-      mistake. The decision worth having is <em>where on the curve</em> this task belongs, and that
-      follows from the cost of being wrong rather than from any property of a model.</figcaption>
+      Option 4 is drawn as it behaves when the task is under-specified, where it consumes
+      resources comparable to the expensive option without a corresponding gain in quality; a
+      well-specified agentic run would sit elsewhere. An option that another available option beats
+      on every axis is not a trade-off worth considering. The remaining question is where along the
+      curve a given task belongs, which depends on the consequences of an incorrect result rather
+      than on any property of a model.</figcaption>
     </figure>
     <div class="concept" id="c-total-cost">
       <span class="cnum">8.7</span>
@@ -764,9 +776,9 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
       <p>This produces a usable framing. For any task, three quantities are in tension: quality,
       cost and latency. Improving one usually costs you another, and the set of options where you
       cannot improve any one without sacrificing another is the frontier of sensible choices.
-      Options inside that frontier are strictly worse than something else available and should
-      simply be discarded. The real decision is where on the frontier a given task belongs — and
-      that depends on the consequence of being wrong, which is a judgement about the work rather
+      An option that some other available option matches or beats on all three axes can usually be
+      set aside. The remaining decision is where along that frontier a given task belongs, which
+      depends on the consequences of an unacceptable result — a judgement about the work rather
       than a property of any model.</p>
     </div>
   </div>
@@ -855,21 +867,25 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
           <text class="t-xs" x="708" y="302">your question</text>
         </g>
       </svg>
-      <figcaption>Nothing leaves the context on its own. Every tool result, every intermediate
-      answer and every document opened stays until the window fills, at which point the harness
-      removes or summarises the oldest material — usually your original instructions, which are
-      the thing you least wanted removed. The orange sliver is your question, at every stage.</figcaption>
+      <figcaption>Material accumulates unless the harness manages it, and harnesses differ in how.
+      Some retain the transcript until the window fills and then drop or summarise the earliest
+      turns; some summarise progressively; some retrieve only the relevant portions; many re-insert
+      the standing instructions on every request so that those survive. Which approach your tool
+      takes determines what is lost first, and is worth establishing. The orange sliver is your
+      question, at every stage.</figcaption>
     </figure>
 
     <div class="concept" id="c-effective">
       <span class="cnum">9.2</span>
       <h3>Supported context and usable context</h3>
       <p>A vendor's stated context length is a capacity claim: this many tokens will be accepted
-      without error. It is not a claim about how reliably material anywhere in that span will be
-      used, and Module 4.7 explained the mechanism behind the gap. Attention distributes a fixed
-      total weight across all positions, so the more positions there are, the less weight any one
-      receives; and material near the beginning and end is attended to more reliably than material
-      in the middle.</p>
+      without error. It is not a claim about how reliably material anywhere in that span will be used. Module 4.7
+      set out what is actually observed: retrieval of a specific detail becomes less reliable as the
+      input lengthens, and position matters, with material near the start and end of a long context
+      typically recovered more dependably than material in the middle. The contributing factors —
+      positional encoding and how far it extrapolates, the scarcity of very long sequences in
+      training data, and competition from irrelevant material — are still being studied, and the
+      degree of degradation varies considerably between models.</p>
       <p>The practical consequence is that filling a large window is not a way of ensuring the
       model has everything it needs. Beyond some point it is a way of ensuring that what it needs
       is somewhere in the middle. For the supplier assessment this is immediately concrete: loading
@@ -930,17 +946,21 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
     <div class="concept" id="c-longsession">
       <span class="cnum">9.4</span>
       <h3>Long sessions, growth and compaction</h3>
-      <p>In a conversation, and far more sharply in an agentic workflow, the context grows
-      monotonically. Each turn appends your message and the reply; each tool call appends its
-      result. Nothing is removed, because nothing in the mechanism removes it.</p>
-      <p>Eventually the window fills, and the harness must do something. Which something it does is
-      a design decision made by the tool, and the options have different failure modes. Dropping
-      the oldest turns is simple and silently discards your original instructions, which were
-      usually the most important thing present. Summarising early history into a short note
-      preserves the gist and loses specifics, so a precise figure mentioned in turn three becomes
-      an approximate recollection. Retrieving only the relevant parts of the transcript works well
-      when retrieval works and fails invisibly when it does not. Some systems do this automatically
-      and call it compaction; some ask; some simply refuse further input.</p>
+      <p>In a conversation, and more sharply in an agentic workflow, the material to be carried
+      forward grows with every turn: your message, the reply, and the result of every tool call.
+      The model itself does not discard anything, because nothing in the forward pass removes text
+      from an input it is given. Managing that growth is the harness's responsibility, and it is
+      handled in several different ways.</p>
+      <p>Some systems retain the full transcript until the window is nearly full and then drop or
+      summarise the earliest turns, which is simple and risks discarding the original instructions.
+      Some summarise progressively, preserving the gist and losing specifics, so a precise figure
+      mentioned early becomes an approximate recollection. Some retrieve only the portions of the
+      history that appear relevant to the current turn, which works well when the retrieval works
+      and fails quietly when it does not. Many re-insert system and project instructions on every
+      request, so those survive even when conversational history does not. Several of these are
+      often combined, and the process is commonly called compaction. Implementations vary enough
+      that it is worth finding out deliberately what your own tool does, rather than discovering it
+      during work that matters.</p>
       <p>Knowing which your tool does explains a great deal of its behaviour at the edges, and it
       is worth finding out deliberately rather than discovering it during important work.</p>
       <p>The practical habits follow from the mechanism rather than from preference. Work on one
@@ -956,9 +976,9 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
       <p>One deliberate technique is worth naming because it solves a real problem. When a long
       piece of work must continue across sessions, end each session by having the assistant write
       a short handover note — what was decided, what remains, which figures are confirmed — and
-      begin the next session with that note rather than with the old transcript. You are choosing
-      what survives rather than letting a truncation algorithm choose for you, and it is the
-      single most effective habit for work that spans days.</p>
+      begin the next session with that note rather than with the old transcript. This way you choose what survives rather than leaving it to whatever truncation or
+      summarisation the harness applies, which is useful whenever work spans more than one
+      session.</p>
     </div>
 
     <div class="concept" id="c-prompt">
@@ -1037,9 +1057,9 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
       model underneath.</p>
       <p>It also settles a recurring confusion about what an instruction can accomplish. Telling a
       model not to do something shifts a probability. Removing the tool that does it removes the
-      possibility. The first is a request to a probabilistic process; the second is a property of
-      the system. Module 14.4 returns to this, and it is the single most important distinction in
-      this module.</p>
+      possibility. The first influences a probabilistic process and may not be followed; the second changes what
+      the system is able to do. Module 14.4 develops the point; it is the distinction on which most of this module
+      depends.</p>
     </div>
 
     <div class="concept" id="c-modes">
@@ -1202,6 +1222,49 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
       <p>None of this argues against autonomy. It argues for earning it: run the process
       supervised until you know where it fails, build a check for that failure, and then let it
       run. That sequence is the subject of Modules 13 and 14.</p>
+    <div class="concept" id="c-guidance-enforcement">
+      <span class="cnum">10.5</span>
+      <h3>Guidance, orchestration and enforcement</h3>
+      <p>Three different kinds of control are available, they are frequently confused, and the
+      confusion leads people to believe a system is constrained when it is only being asked.</p>
+      <p><b>Behavioural guidance</b> is text: instructions, prompts, preferences, style profiles,
+      the standards written into a skill. It influences what the model produces without
+      guaranteeing it. Guidance is subject to everything in Part One — it competes for attention
+      with the rest of the context, it can be outweighed by material elsewhere, and compliance is a
+      tendency rather than a certainty.</p>
+      <p><b>Workflow orchestration</b> is structure: the sequence of steps, which model handles
+      which subtask, what the harness does with each result, when the loop stops. Orchestration
+      determines what ordinarily happens. It makes some outcomes much more likely and others much
+      less, without making anything impossible.</p>
+      <p><b>Enforced constraint</b> is a property of the execution environment: which credentials
+      exist, what the available tools are permitted to do, whether an action requires approval,
+      what the sandbox allows. Constraints determine what can happen at all, and they hold
+      regardless of what the model is persuaded to attempt.</p>
+      <p>An example makes the difference concrete. Writing <i>do not modify any files</i> in a
+      prompt is guidance: it will usually be followed, and it can be displaced by a long context,
+      an ambiguous instruction, or text inside a document that says otherwise. Running the
+      assistant with read-only access to the folder is a constraint: a modification is not
+      declined, it is unavailable. The two appear similar in a configuration summary and differ
+      entirely in what they promise.</p>
+      <div class="tblw">
+        <table>
+          <thead><tr><th></th><th>Guidance</th><th>Orchestration</th><th>Enforcement</th></tr></thead>
+          <tbody>
+            <tr><td>Expressed as</td><td>Text in the context</td><td>Workflow structure</td><td>Permissions and environment</td></tr>
+            <tr><td>Determines</td><td>What is likely</td><td>What ordinarily happens</td><td>What is possible</td></tr>
+            <tr><td>Fails when</td><td>Attention is diluted or instructions conflict</td><td>A step is skipped or a result misread</td><td>Only if misconfigured</td></tr>
+            <tr><td>Example</td><td>&ldquo;Cite a page for every figure&rdquo;</td><td>A review step that checks citations</td><td>No write access outside the drafts folder</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>None of the three is sufficient alone, and the useful question for any requirement is
+      which of them it needs. A formatting preference is guidance and needs nothing more. A
+      checking step that should happen every time is orchestration, and writing it into an
+      instruction instead leaves it to chance. Anything whose violation would be costly or
+      irreversible belongs in enforcement, where the guarantee does not depend on the model's
+      behaviour. Module 14.4 applies this to untrusted material, where the distinction matters
+      most.</p>
+    </div>
     </div>
   </div>
 </section>
@@ -1278,10 +1341,9 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
       <p>Two features of that table are worth noticing. Subtask 3 is not given to a model at all:
       computing a median over twelve thousand rows is arithmetic, and Module 4.8 explains why
       asking a language model to do it produces a plausible number rather than a correct one. Part
-      of the value of planning is identifying which pieces should not involve a model. And subtask
-      2 is the one requiring genuine judgement — three vendors measuring different things and
-      calling them the same word — which is why it gets the capable model while the extraction does
-      not.</p>
+      of the value of planning is identifying which pieces should not involve a model. Subtask 2, by contrast, requires judgement: three vendors measure different quantities and
+      give them the same name, and deciding how to present that is not a mechanical operation. It
+      is assigned the more capable model for that reason, while the extraction is not.</p>
 
       <div class="ex">
         <p class="ex__h">Exercise 11.1</p>
@@ -1502,12 +1564,25 @@ Material: three reports ≈ 100 000 tokens · measurements summarised ≈ 12 000
       catches every case it needs to. A rule about how to format procurement memos does not belong
       in your personal preferences, where it is sent with every request including the ones about
       something else entirely. It belongs with the procurement work.</p>
-      <p>One property of these layers is easy to misread and causes real confusion. They are
-      concatenated into one context rather than resolved by a precedence engine. If your personal
-      preferences say to write concisely and a project instruction says to be exhaustive, the model
-      receives both sentences and does something between them, with the outcome determined by
-      sampling rather than by a documented rule. There is no override semantics to rely on. Remove
-      the contradiction instead.</p>
+      <p>How these layers combine is worth understanding, because it is easy to assume more structure
+      than exists and equally easy to assume none.</p>
+      <p>The layers are not simply poured into one undifferentiated block. A harness decides what
+      to include and in what order, and that ordering carries weight: providers generally train
+      models to treat instructions arriving through a system channel as taking priority over
+      instructions in user messages, and over content encountered inside documents or tool results.
+      Several providers describe an explicit instruction hierarchy along these lines. So there is a
+      notion of authority, and it is real enough to rely on in ordinary use.</p>
+      <p>What it is not is a guarantee. The hierarchy is a trained disposition, reinforced by how
+      the harness assembles the context, rather than a rule the architecture enforces. Module 6.1 drew this distinction, and it is why
+      prompt injection remains possible. Two
+      instructions at the same level that contradict each other have no documented resolution: if
+      your personal preferences ask for concision and a project instruction asks for exhaustive
+      detail, what you get depends on the model and on the sampling, not on a published precedence
+      order. The practical conclusion is to rely on ordering between levels where providers have
+      defined one, and to remove contradictions within a level rather than hoping one wins.</p>
+      <p>A separate point, developed in 13.1 and 14.4: none of these layers restricts what the
+      system can <em>do</em>. They shape behaviour. Restricting actions is the job of permissions
+      and the execution environment, and the two should not be confused.</p>
       <p class="meta">In the organisation's environment these scopes map onto specific files and
       settings whose names change: personal instructions in the editor's settings, project
       instructions in a file at the project root, path-scoped instructions in a dedicated folder
@@ -1681,13 +1756,17 @@ Rules
       containing the actual procedure and its standards, is read only when the model judges the
       skill applicable. Supporting material such as templates, reference tables or scripts is
       referenced by path and opened only if the work reaches it.</p>
-      <p>That structure has an immediate practical consequence that surprises people: <b>the
-      description is the most important part of a skill</b>. It is the only part the model sees
-      when deciding whether to use it. A skill whose description says &ldquo;helps with
-      documents&rdquo; will never be selected for the supplier assessment; one that says
-      &ldquo;produces technical comparison memos from vendor reports and measurement data, with
-      sourced figures and an explicit assumptions section&rdquo; will be. A beautifully written
-      body behind a vague description is simply never loaded.</p>
+      <p>Where a harness selects skills automatically, this structure makes the description do
+      unusual work: it is typically the only part the model has available when deciding whether the
+      skill applies. A description such as &ldquo;helps with documents&rdquo; gives little to match
+      against, whereas one naming the situation — &ldquo;produces technical comparison memos from
+      vendor reports and measurement data, with sourced figures and an explicit assumptions
+      section&rdquo; — gives considerably more. A detailed body behind a vague description may
+      simply not be reached.</p>
+      <p>Not every environment selects automatically. Some require you to invoke a skill by name,
+      in which case the description serves mainly to remind you what it does and the matching
+      problem does not arise. Implementations also differ in how many tiers they load and when, so
+      it is worth establishing which behaviour your own tool has rather than assuming.</p>
       <p>Skills are generally defined as a folder containing a definition file with a name and
       description, plus whatever supporting files the procedure needs. An open specification has
       emerged and is supported across several tools, which means a skill written once may work in
@@ -1741,8 +1820,8 @@ Rules
         <text class="t-xs" x="864" y="218" text-anchor="middle">they are</text>
       </svg>
       <figcaption>The structure exists to protect the context budget, and it puts an unusual
-      weight on the description. Most skills that fail do so at tier 1, by never being selected,
-      rather than by performing badly once loaded.</figcaption>
+      weight on the description. Where selection is automatic, a skill that is never chosen produces no benefit however well
+      its body is written, so the description deserves as much attention as the procedure.</figcaption>
     </figure>
 
     <div class="concept" id="c-build-skill">
@@ -1869,6 +1948,50 @@ REFUSE TO
       selected by you. Everything in Module 11.4 about handover applies: a subagent knows only what
       its invocation passes to it, and context that the orchestrator held implicitly is simply
       absent.</p>
+    <div class="concept" id="c-automation-ladder">
+      <span class="cnum">13.6</span>
+      <h3>Choosing the level of automation</h3>
+      <p>The mechanisms in this module and the previous one form a progression of increasing
+      preparation effort and increasing repeatability. Each step costs more to set up than the one
+      before and repays that cost only if the work recurs often enough, so the question is not
+      which is most capable but which is proportionate.</p>
+      <div class="tblw">
+        <table>
+          <thead><tr><th>Approach</th><th>Setup effort</th><th>Appropriate when</th></tr></thead>
+          <tbody>
+            <tr><td>A single conversational request</td><td>None</td><td>One-off work, or you are still establishing what you want</td></tr>
+            <tr><td>A structured task specification</td><td>Minutes</td><td>The task matters and a first attempt missed the point</td></tr>
+            <tr><td>A saved prompt template</td><td>Under an hour</td><td>The same request recurs in much the same form</td></tr>
+            <tr><td>Persistent personal or project instructions</td><td>An hour, plus upkeep</td><td>A preference applies across many different tasks</td></tr>
+            <tr><td>A reusable skill</td><td>Half a day, plus upkeep</td><td>A multi-step procedure with standards worth recording, used regularly</td></tr>
+            <tr><td>A tool-supported agent</td><td>Setup plus a permissions review</td><td>The work requires actions a model cannot perform in text</td></tr>
+            <tr><td>Several coordinated agents</td><td>Substantial</td><td>Subtasks differ enough in difficulty, or can usefully run in parallel</td></tr>
+            <tr><td>Conventional software</td><td>Varies, often less than expected</td><td>The procedure is exact and the inputs are structured</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The last row is the one most often overlooked. A monthly report that extracts four fixed
+      fields from a consistently formatted file and arranges them in a table does not require a
+      language model: a spreadsheet formula or a short script performs the same job
+      deterministically, at no per-run cost, with the same result every time. Language models are
+      worth their cost where inputs are irregular, where judgement is required, or where the task
+      cannot be specified exactly in advance. Where those conditions do not hold, conventional
+      automation is generally more reliable and often cheaper.</p>
+      <p>Several factors determine where on this progression a task belongs. Frequency is the most
+      direct, since preparation amortises over runs, so a quarterly task justifies less structure
+      than a daily one. Variability works in the opposite direction: highly variable inputs resist
+      both templates and deterministic automation, and favour the conversational end. The cost of
+      an error raises the value of anything that makes checking systematic, which argues for
+      skills and explicit criteria. The number of people doing the work matters too, because a
+      recorded procedure makes a practice shared rather than individual. And so does the stability
+      of the task, since encoding a process that is about to change wastes the preparation.</p>
+      <p>Two failure modes recur. Building elaborate automation for work done three times a year
+      costs more than it saves, and the maintenance obligation outlasts the initial enthusiasm.
+      Repeating an intricate conversational process by hand forty times a month wastes effort and
+      produces inconsistent results, because nothing records what the process was. Starting at the
+      conversational end, noticing what you repeat, and moving one step when the repetition becomes
+      apparent is generally more effective than selecting a level in advance.</p>
+    </div>
     </div>
   </div>
 </section>
@@ -2110,9 +2233,9 @@ REFUSE TO
         <p><b>Produce:</b> a verification record, a cost accounting, and a stated failure mode.</p>
       </div>
 
-      <p>The last item is the one to take seriously. A process whose failure modes you can name is
-      one you can supervise proportionately, and that is the difference between using these systems
-      and being used by them.</p>
+      <p>The last item deserves particular attention. Being able to name where a process is likely to
+      fail is what allows supervision to be set proportionately: checks concentrated where errors
+      are plausible and consequential, rather than applied uniformly or not at all.</p>
     </div>
   </div>
 </section>

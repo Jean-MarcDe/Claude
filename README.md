@@ -58,8 +58,10 @@ expected answer.
 
 ## Which parts expire
 
-- **Part One is mechanism.** Nothing in it has changed materially since 2017 and none of it is
-  vendor-specific. It does not need maintenance.
+- **Part One covers mechanism** and is vendor-neutral. Its mathematical foundations — gradient
+  descent, backpropagation, attention, sampling — are stable. Several topics in Modules 5 to 7,
+  including post-training, reasoning, agentic systems, long-context behaviour and evaluation, are
+  areas of active research where current understanding continues to change.
 - **Part Two describes products, prices and features that change monthly.** Volatile facts appear
   in dated verification tables saying what was checked and against what, rather than in prose. Where
   a figure depends on your organisation's configuration, the text names what an administrator must
