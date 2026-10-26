@@ -5,6 +5,182 @@ Most recent first.
 
 ---
 
+# Revision 4 — rhetoric, corrections, and three new materials
+
+Four objectives: remove the remaining rhetorical overstatement from the course, make six specific
+technical corrections, and produce three teaching materials the course did not have — a
+presentation, a handout, and a beginner's practical guide.
+
+## Part A — the course
+
+### Rhetorical overstatement
+
+The brief named seven constructions to eliminate. A sweep found **45 instances** across the two
+course pages. All were rewritten. One survived into this revision's final check — a "does not
+merely X; it Y" in §4.3 — and was rewritten so that the informative claim leads and the
+correction is subordinate. The current count of the named constructions across all four materials
+is **zero**.
+
+The pattern that produced them is worth naming, because it will recur. Each one worked by
+withholding the claim for a beat to make it land harder: set up a wrong belief, pause, deliver the
+right one. It reads as emphasis and functions as padding, and at density it makes a text sound
+like it is selling something. The replacement in every case was to state the claim first and let
+the contrast be subordinate.
+
+### Six technical corrections
+
+| | Was | Now |
+|---|---|---|
+| §8.1 | Reasoning effort described as a property models have | A per-task configurable quantity; helps where there is inferential depth, costs where there is not; the amount it helps depends on model, task and budget and is settled by comparison |
+| §3.3, §4.7 | Attention cost and context length conflated in places | Attention cost grows with the square of sequence length; a stated context length is a capacity claim about what is accepted, separate from how reliably material in it is used |
+| §12.1 | Instruction hierarchy described as a rule | A trained disposition that mostly holds, with no documented resolution for conflicts within a level — so contradictions must be removed rather than arbitrated |
+| §13.2 | Skill discovery described as automatic | Automatic in some harnesses, by-name in others; where it is automatic the description does the selecting, which is why it should say when the skill applies rather than what it contains |
+| §9.4 | Context management described as one behaviour | Harnesses differ — dropping, summarising, retrieving, re-inserting — and which one yours does determines what disappears |
+| Throughout | Durable and changing facts interleaved | Separated, with volatile claims moved into dated verification tables carrying per-row confidence |
+
+### §10.5 — three kinds of control
+
+Added. Guidance (prompts and instructions) determines what is *likely*. Orchestration (steps,
+routing, stopping rules) determines what *ordinarily* happens. Enforcement (permissions,
+sandboxing, approval) determines what is *possible*. The distinction is the one that decides how
+much latitude an agentic task should get, and conflating the first with the third is the most
+common reasoning error in this area. It now carries through the deck (slide 25), the handout and
+the practical guide (§10).
+
+### §13.6 — how much structure to build
+
+Strengthened, with conventional software added as the final row of the table. A model earns its
+cost where inputs are irregular, judgement is required, or the task cannot be specified exactly in
+advance. Where none of those holds, a script is cheaper, faster and repeatable — and that option
+is routinely skipped in favour of the interesting one.
+
+## Part B — the practical guide (`practical-guide/`)
+
+A standalone companion for readers who have never opened a code editor: 8,200 words, fourteen
+sections, one diagram, and a reproducible exercise.
+
+Its structural decision is a **two-layer separation**. Prose describes mechanisms and should hold
+for years. Step boxes describe the interface and each carries a confidence flag — **Stable**
+(5 boxes), **Verify** (7), **Unconfirmed** (5). Roughly two-thirds of the interface instructions
+are reconstructions rather than confirmations, and the flags say so rather than hiding it.
+
+**There are no screenshots.** This is deliberate and is stated in the guide's second section. The
+material was written without network access, including none to GitHub's or Microsoft's
+documentation; a screenshot would look like evidence it is not, and would be stale within months
+regardless.
+
+### The exercise
+
+Sixty rows of trial measurements, a fictional supplier brief, eight acceptance criteria, and an
+exact answer key. About forty minutes.
+
+It is built around one specific failure: an assessment can get all five headline figures right and
+still be unusable. Two of the highest readings carry an operator note putting them outside the
+rated operating envelope the supplier's own brief defines, and the six missing downtime readings
+are not missing at random — the reasons given (sensor offline, logger replaced) are the reasons
+downtime would have been high. A numbers-only review passes that answer. The exercise exists so
+someone can discover that once, cheaply, on data where the right answer is known.
+
+Every figure in `answer-key.md` was computed from the CSV rather than estimated, and spreadsheet
+formulas are given so a reader can reproduce each one without programming. If the data is edited,
+the key must be recomputed.
+
+## Part C — the presentation (`presentation/`)
+
+Thirty slides in two acts, with speaker notes on every slide, fourteen progressive disclosure
+steps, and six interactive demonstrations: a neuron that trains, an attention matrix, a
+temperature distribution, a model comparison whose ranking flips with the weighting, a cost
+calculator, and a context composition toggle.
+
+All widget values are fixed and illustrative, match the course text, and are labelled as
+illustrative on the slide. None is a measurement of a real model or a live price.
+
+Verified by rendering rather than by inspection: all 30 slides fit the 720px frame, all have
+notes, all steps reveal, printing produces 30 pages with chrome hidden and steps revealed, and
+each widget produces its intended pedagogical result. Three slides initially overflowed and were
+fixed by reducing global padding rather than by trimming three slides in isolation.
+
+Two bugs found by testing rather than by reading: the deck ignored hash changes, so direct links
+to a slide silently did nothing; and the temperature widget's first implementation used a tail
+logit that made the tail swamp the distribution at T=1.0, producing a figure that was wrong and
+that undercut the point the slide makes.
+
+## Part D — the handout (`handout/`)
+
+Seven A4 pages in three formats: Markdown source, print-first HTML, and a generated PDF.
+Definitions, relationships and decision tables, with section numbers in the margin pointing back
+to the course.
+
+The Markdown and the HTML are maintained in parallel by hand rather than by a converter, because
+the print layout needs control Markdown cannot express — column breaks, table widths, which boxes
+must not split across a page. Each of the seven pages was rendered and inspected.
+
+## Incidental corrections
+
+- **`course/index.html` had no document wrapper** — no doctype, no charset, no `<html>` or
+  `<body>`. It had been authored as a fragment while its three siblings were complete documents,
+  so it rendered in quirks mode with an undeclared encoding when opened as a local file. Fixed.
+- **README counts were wrong.** The course is ~42,000 words, not ~37,000; Part One has 15 figures
+  of which 14 are SVG diagrams, not 15 diagrams. Both corrected against the files.
+- **The practical guide's README misstated its own flag counts** (6/8/7 rather than 5/7/5),
+  caught before commit.
+
+---
+
+## What remains unverified
+
+**The network constraint has not changed.** Every documentation host the briefs cite is blocked by
+this environment's network policy — confirmed by direct test, with the proxy logging 403 CONNECT
+rejections for `docs.github.com`, `code.visualstudio.com`, `modelcontextprotocol.io`,
+`agentskills.io`, `artificialanalysis.ai`, `developers.openai.com` and `github.blog`.
+
+This was handled structurally rather than worked around. Volatile facts live in dated verification
+tables with per-row confidence, never in prose; the practical guide flags every interface
+instruction; and four questions that only an administrator can answer are named as such rather
+than guessed at.
+
+### Confirm before relying on these
+
+| Claim | Where | Why it is uncertain |
+|---|---|---|
+| Copilot's model list, and which models an organisation sees | Guide §4 | Set by plan and by administrator; changes without notice |
+| Mode names — Ask, Edit, Agent | Guide §5 | These names have changed before |
+| `.github/copilot-instructions.md` as the per-folder instruction file | Guide §12 | Believed current; the scoped `.github/instructions/` variant is newer and less certain |
+| `.github/prompts/*.prompt.md` as Copilot's skill mechanism | Guide §13 | Several related mechanisms exist at different maturities; which your version supports is unconfirmed |
+| Where usage and quota are reported | Guide §11 | Has moved more than once; organisation-wide figures may be admin-only |
+| Allow-list and approval setting names | Guide §10 | Version-dependent and sometimes centrally managed |
+| All pricing, allowances and request accounting | Part Two §8, handout | Vendor policy, revisable, and organisation-specific |
+
+### Four questions for an administrator
+
+Named in Part Two §8.5, the handout and the practical guide §11, because none can be answered from
+inside the product: which billing model the agreement is on; what the allowance is and whether it
+pools; whether overage is enabled and what happens at exhaustion; and which report shows
+consumption, to whom.
+
+### Areas of genuine research uncertainty
+
+Distinct from product volatility, and flagged in the text rather than smoothed over:
+post-training and what it does to disposition, reasoning and test-time compute, long-context
+behaviour, agentic reliability, and evaluation. The course says where understanding is contested
+rather than presenting one account as settled.
+
+## Remaining issues in this revision
+
+- **The handout's Markdown and HTML can drift.** They are maintained by hand. A converter would
+  prevent drift and lose the print control; the trade was made deliberately and is noted in
+  `handout/README.md`.
+- **The deck's widget values are illustrative and hard-coded.** They match the course, but if a
+  course figure changes, the widget will not notice. There is no test tying them together.
+- **The practical guide's exercise has one scenario.** A reader who has done it once cannot
+  repeat it usefully. Generating variants was out of scope here.
+- **Three fonts load from Google Fonts** in the course and the practical guide. The deck and the
+  handout are fully offline; those two are not, and degrade to system fonts rather than failing.
+
+
+---
+
+
 # Revision 3 — audience and practical refocus
 
 Two objectives: widen the audience from software teams to knowledge workers generally, and refocus

@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tokens to Decisions — reference handout</title>
+<meta name="description" content="A compact printable reference for the Tokens to Decisions course: how language models work, and how to operate them.">
+<style>
+/* ============================================================
+   Tokens to Decisions — reference handout
+   Print-first. A4, two-column prose, full-width tables.
+   Palette and type match the course and the workshop deck.
+   No external resources: system fonts only.
+   ============================================================ */
+
+:root{
+  --paper:#ffffff;
+  --surface:#f4f6f8;
+  --surface-2:#e8edf1;
+  --ink:#0f1820;
+  --ink-soft:#44525e;
+  --ink-faint:#6b7a86;
+  --rule:#cfd8df;
+  --rule-strong:#a9b7c2;
+  --accent:#06697b;          /* mechanism */
+  --accent-soft:#e3f0f2;
+  --practice:#8c4a0c;        /* practice, decisions */
+  --practice-soft:#f8efe4;
+  --danger:#99232a;
+  --danger-soft:#f9e8e8;
+
+  --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --mono: "SF Mono", "Cascadia Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  color-scheme: light;
+}
+
+@media screen and (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0b1116; --surface:#131c23; --surface-2:#1c262e;
+    --ink:#e6edf3; --ink-soft:#a6b4bf; --ink-faint:#8795a1;
+    --rule:#27333c; --rule-strong:#3c4d59;
+    --accent:#50c5d8; --accent-soft:#0e3038;
+    --practice:#dd9a55; --practice-soft:#33240f;
+    --danger:#e58a8d; --danger-soft:#381c1f;
+    color-scheme: dark;
+  }
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 10.2pt/1.42 var(--serif);
+  text-rendering:optimizeLegibility;
+}
+.page{max-width:186mm; margin:0 auto; padding:16mm 10mm 20mm}
+
+/* ---------- masthead ---------- */
+.masthead{border-bottom:2px solid var(--ink); padding-bottom:7pt; margin-bottom:12pt}
+.eyebrow{
+  font:600 7.4pt/1 var(--sans); letter-spacing:.13em; text-transform:uppercase;
+  color:var(--accent); margin:0 0 5pt
+}
+h1{font:600 20pt/1.1 var(--sans); margin:0 0 5pt; letter-spacing:-.01em}
+.standfirst{margin:0; color:var(--ink-soft); font-size:9.6pt; max-width:132mm}
+.wayfinding{
+  margin:7pt 0 0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:3pt 14pt;
+  font:400 8.2pt/1.3 var(--sans); color:var(--ink-faint)
+}
+.wayfinding b{font-weight:600; color:var(--ink-soft)}
+.wayfinding code{font-size:7.8pt}
+
+/* ---------- structure ---------- */
+h2{
+  font:600 13.2pt/1.15 var(--sans); margin:0 0 9pt; padding-bottom:4pt;
+  border-bottom:1px solid var(--rule-strong); letter-spacing:-.01em;
+  break-after:avoid; page-break-after:avoid
+}
+.part{break-before:page; page-break-before:always; padding-top:2pt}
+.part:first-of-type{break-before:auto; page-break-before:auto; padding-top:0}
+h3{
+  font:600 9.2pt/1.2 var(--sans); letter-spacing:.1em; text-transform:uppercase;
+  color:var(--practice); margin:13pt 0 6pt;
+  break-after:avoid; page-break-after:avoid
+}
+h3:first-of-type{margin-top:0}
+h4{
+  font:600 10.2pt/1.25 var(--sans); margin:9pt 0 3pt; color:var(--ink);
+  break-after:avoid; page-break-after:avoid
+}
+p{margin:0 0 5.5pt; orphans:2; widows:2}
+.cols{columns:2; column-gap:9mm; column-rule:1px solid var(--rule)}
+.cols > *:first-child{margin-top:0}
+.cols p:last-child{margin-bottom:0}
+
+/* ---------- definitions ---------- */
+.term{font-weight:600; font-family:var(--sans); font-size:9.6pt}
+.term + .gloss{color:var(--ink-faint)}
+dfn{font-style:normal; font-weight:600}
+p.def{margin-bottom:6.5pt}
+p.def .term{color:var(--accent)}
+
+em.key{font-style:italic}
+strong{font-weight:600}
+code{
+  font:400 8.8pt/1 var(--mono); background:var(--surface-2);
+  padding:.7pt 2.4pt; border-radius:2px
+}
+
+/* ---------- maths / formula blocks ---------- */
+.formula{
+  break-inside:avoid; page-break-inside:avoid;
+  margin:0 0 6pt; padding:5pt 7pt;
+  background:var(--surface); border-left:2.5pt solid var(--accent);
+  font:400 9pt/1.5 var(--mono); white-space:pre-wrap
+}
+.formula .ann{
+  display:block; margin-top:3pt; font:400 8.4pt/1.35 var(--serif); color:var(--ink-soft);
+  white-space:normal
+}
+
+/* ---------- note boxes ---------- */
+.note{
+  break-inside:avoid; page-break-inside:avoid;
+  margin:0 0 6pt; padding:5.5pt 7pt;
+  background:var(--surface); border-left:2.5pt solid var(--rule-strong);
+  font-size:9.6pt
+}
+.note p:last-child{margin-bottom:0}
+.note.warn{background:var(--danger-soft); border-left-color:var(--danger)}
+.note.act{background:var(--practice-soft); border-left-color:var(--practice)}
+.note .lbl{
+  font:600 7.6pt/1 var(--sans); letter-spacing:.11em; text-transform:uppercase;
+  display:block; margin-bottom:3pt; color:var(--ink-soft)
+}
+.note.warn .lbl{color:var(--danger)}
+.note.act .lbl{color:var(--practice)}
+
+/* ---------- lists ---------- */
+ul.tight{margin:0 0 6pt; padding-left:12pt}
+ul.tight li{margin-bottom:2.2pt}
+ul.tight.two{columns:2; column-gap:9mm}
+
+/* ---------- tables ---------- */
+table{
+  width:100%; border-collapse:collapse; margin:0 0 8pt;
+  font:400 9pt/1.32 var(--sans);
+  break-inside:avoid; page-break-inside:avoid
+}
+caption{
+  caption-side:top; text-align:left;
+  font:600 9.2pt/1.25 var(--sans); color:var(--ink);
+  padding:0 0 3.5pt
+}
+caption .q{font-weight:400; color:var(--ink-faint)}
+th,td{
+  text-align:left; vertical-align:top;
+  padding:3.2pt 6pt 3.2pt 0; border-bottom:1px solid var(--rule)
+}
+th{
+  font-weight:600; font-size:8pt; letter-spacing:.055em; text-transform:uppercase;
+  color:var(--ink-soft); border-bottom:1px solid var(--rule-strong)
+}
+thead th{white-space:nowrap}
+tbody tr:last-child td{border-bottom:1px solid var(--rule-strong)}
+td:first-child{padding-right:8pt}
+td.k{font-weight:600; width:30%}
+td.k2{font-weight:600; width:22%}
+table.three td:first-child{width:26%}
+table.three td:nth-child(2){width:30%}
+tfoot td{
+  border-bottom:none; padding-top:4pt;
+  font:400 8.4pt/1.35 var(--serif); color:var(--ink-soft)
+}
+.ref{
+  font:400 8pt/1 var(--sans); color:var(--ink-faint); white-space:nowrap
+}
+
+/* ---------- colophon ---------- */
+.colophon{
+  margin-top:12pt; padding-top:7pt; border-top:2px solid var(--ink);
+  font-size:9.4pt
+}
+a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft)}
+
+/* ---------- print ---------- */
+@page{ size:A4; margin:13mm 12mm 12mm; }
+@media print{
+  :root{
+    --paper:#fff; --surface:#f3f5f7; --surface-2:#e9edf0;
+    --ink:#000; --ink-soft:#3a4651; --ink-faint:#5d6973;
+    --rule:#c3ccd3; --rule-strong:#8d9aa4;
+    --accent:#05505f; --practice:#7a3f08; --danger:#8a1f26;
+  }
+  body{font-size:9.3pt; line-height:1.38; background:#fff}
+  .page{max-width:none; margin:0; padding:0}
+  h1{font-size:18pt}
+  h2{font-size:12.4pt}
+  .screen-only{display:none}
+  table,.note,.formula{break-inside:avoid; page-break-inside:avoid}
+  a{color:inherit; border-bottom:none}
+  .cols{column-gap:8mm}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="masthead">
+  <p class="eyebrow">Reference handout</p>
+  <h1>Tokens to Decisions</h1>
+  <p class="standfirst">The definitions, relationships and decision criteria worth keeping to hand. It
+  does not reproduce the course — it is what you consult after it. Numbers in the right margin point
+  to the course section that explains the entry.</p>
+  <ul class="wayfinding">
+    <li><b>Full course</b> <code>../course/index.html</code></li>
+    <li><b>Workshop deck</b> <code>../presentation/index.html</code></li>
+    <li><b>Getting started</b> <code>../practical-guide/index.html</code></li>
+  </ul>
+</header>
+
+<section class="part">
+<h2>Part One · How the machine works</h2>
+
+<h3>Learning and training</h3>
+<div class="cols">
+<p class="def"><span class="term">Machine learning</span> <span class="ref">1.1</span> — rules are
+found by a search procedure rather than written by a person. In <dfn>supervised</dfn> learning you
+supply inputs paired with desired outputs. In <dfn>self-supervised</dfn> learning the targets are
+constructed from the data itself, which is how language models are trained: hide what comes next and
+predict it. No annotation is needed, so the supply of training data is effectively unlimited.</p>
+
+<p class="def"><span class="term">Neural network</span> <span class="ref">1.2</span> — layers of
+simple units. Each unit computes a weighted sum of its inputs, adds a constant, and applies a
+non-linear function. Without that non-linearity, stacked layers collapse algebraically into a single
+layer, and a single layer cannot represent a problem as simple as exclusive-or.</p>
+
+<p class="def"><span class="term">Parameters</span> <span class="ref">1.2</span> — the learned
+numbers: the <dfn>weights</dfn> multiplying each input and the <dfn>bias</dfn> added to the sum. A
+frontier model has on the order of 10<sup>11</sup> of them. Distinct from <dfn>hyperparameters</dfn>
+— layer count, learning rate, batch size — which are chosen before training rather than learned.</p>
+
+<p class="formula">z = w₁x₁ + w₂x₂ + b
+ŷ = σ(z) = 1 / (1 + e<sup>−z</sup>)<span class="ann">One unit, two inputs. Everything a network
+does is this, repeated.</span></p>
+
+<p class="def"><span class="term">Loss</span> <span class="ref">1.3, 1.9</span> — one number saying
+how wrong a prediction was, and the complete specification of the training goal: whatever reduces it
+is what the model learns to do. Squared error, ½(ŷ − y)², suits simple regression. Language models
+use <dfn>cross-entropy</dfn>, −log of the probability assigned to the token that actually occurred,
+which penalises assigning near-zero probability to something that then happens.</p>
+
+<p class="def"><span class="term">Gradient descent</span> <span class="ref">1.4</span> — compute the
+slope of the loss with respect to every parameter, then step each one a small distance downhill. Too
+small a step and training crawls; too large and each step overshoots. In practice the gradient is
+estimated from a small random batch rather than the full dataset.</p>
+
+<p class="formula">w ← w − η · ∂L/∂w<span class="ann">η is the learning rate. This single line,
+applied to 10<sup>11</sup> parameters for months, is the whole of training.</span></p>
+
+<p class="def"><span class="term">Backpropagation</span> <span class="ref">1.6</span> — an efficient
+method for obtaining every one of those derivatives in a single backward sweep, at roughly the cost
+of one extra forward pass. It computes derivatives; gradient descent does the learning. The two are
+routinely conflated and are not the same thing.</p>
+
+<p class="def"><span class="term">Generalisation and overfitting</span> <span class="ref">1.7</span>
+— the goal is behaviour on inputs never seen. A model with enough capacity can memorise its training
+data and perform poorly on anything new; a held-out set is what detects this. Large models also
+retain verbatim fragments of their training data, which is a licensing question independent of
+quality.</p>
+
+<p class="def"><span class="term">Inference</span> <span class="ref">1.8</span> — running the trained
+model forward. Parameters are frozen, nothing is written back, and nothing you do while using a model
+changes it. Apparent memory is always text that surrounding software re-sent.</p>
+</div>
+
+<h3>From text to prediction</h3>
+<div class="cols">
+<p class="def"><span class="term">Token</span> <span class="ref">2.1</span> — a chunk of text drawn
+from a fixed vocabulary of roughly 100,000–200,000 entries, built before training by repeatedly
+merging the most frequent adjacent pair (<dfn>byte-pair encoding</dfn>). Frequency determines
+granularity: common words are one token, rare ones several. A leading space belongs to its token, and
+the model cannot see the characters inside one — which is why character-level tasks are oddly hard.</p>
+
+<p class="def"><span class="term">Language effects</span> <span class="ref">2.5</span> — the
+vocabulary was built from a corpus dominated by English and code, so the same meaning costs more
+tokens in most other languages. That affects cost directly and, through the context window, how much
+material fits. Measure your own languages rather than assuming a ratio.</p>
+
+<p class="def"><span class="term">Embedding</span> <span class="ref">2.3</span> — the first layer is
+a table with one row per vocabulary entry. The row selected by a token's id is its <dfn>static
+embedding</dfn>, written <strong>e</strong>(<em>t</em>). Training arranges the rows so that tokens
+used in similar ways sit near one another.</p>
+
+<div class="note"><span class="lbl">Common misreading</span><p>Individual embedding dimensions do
+<strong>not</strong> correspond to interpretable properties. Meaningful directions combine many
+coordinates, and the two-dimensional pictures everyone draws are projections that discard almost all
+of the structure.</p></div>
+
+<p class="def"><span class="term">Contextual representation</span> <span class="ref">3.2</span> —
+written <strong>h</strong><sub>i</sub><sup>(l)</sup>, the vector at position <em>i</em> after layer
+<em>l</em>, once attention has mixed in information from other positions. One static embedding per
+token, many contextual representations. Of all the distinctions in Part One this is the one most
+worth keeping straight: the first is a property of a word, the second a property of a word
+<em>in a sentence</em>.</p>
+
+<p class="def"><span class="term">Attention</span> <span class="ref">3.2, 3.3</span> — each position
+emits a query describing what it needs; every position offers a key describing what it has; each
+receives a weighted blend of the others' values. The scaling by √d<sub>k</sub> keeps the softmax out
+of its saturated region, where gradients vanish. Cost grows with the square of sequence length, which
+is why long contexts are expensive rather than merely large.</p>
+
+<p class="formula">Attention(Q,K,V) = softmax( QKᵀ / √d<sub>k</sub> ) V<span class="ann">Attention
+weights show where information was gathered from. They are not an explanation of the output, and
+should not be presented as one.</span></p>
+
+<p class="def"><span class="term">Transformer</span> <span class="ref">3.4</span> — stacked blocks,
+each pairing multi-head attention with a feed-forward network, with residual connections and
+normalisation around both. Attention moves information between positions; the feed-forward network
+processes information at a position. Residual connections are what make depth trainable.</p>
+
+<p class="def"><span class="term">Logits and softmax</span> <span class="ref">3.5</span> — the
+forward pass ends with one raw score per vocabulary entry. Softmax exponentiates and normalises them
+into a probability distribution summing to one.</p>
+
+<p class="def"><span class="term">Temperature</span> <span class="ref">4.3, 4.4</span> — divides the
+logits before the softmax. Below 1 sharpens the distribution, above 1 flattens it. Flattening
+promotes the <em>entire</em> vocabulary, and the tail is large: with ~200,000 tokens, a modest
+increase to each aggregates into most of the probability mass. <dfn>Top-p</dfn> truncates to the
+smallest set of tokens summing to p before sampling, which is why in practice it accompanies
+temperature rather than competing with it.</p>
+
+<p class="formula">p(t) = e<sup>z<sub>t</sub>/T</sup> / Σ e<sup>z<sub>t′</sub>/T</sup><span class="ann">Temperature
+does not make a model more creative. It makes it less selective.</span></p>
+
+<p class="def"><span class="term">Autoregression</span> <span class="ref">4.6</span> — one token per
+forward pass, appended to the context, then the whole thing runs again. Three consequences: cost
+grows with context length, early errors compound because they become input, and generated text
+becomes indistinguishable from supplied text.</p>
+
+<p class="def"><span class="term">Context window</span> <span class="ref">4.7</span> — the maximum
+input in tokens, and zero-sum: instructions compete with material for the same space. A published
+length says what will be <em>accepted</em>, not how reliably material anywhere in it will be
+<em>used</em>. Retrieval of a specific detail becomes less reliable as input grows, and the middle of
+a long context is the weakest region.</p>
+
+<p class="def"><span class="term">Hallucination</span> <span class="ref">4.8</span> — fluent output
+that is false. No step in the process checks a claim against the world; the model produces a
+plausible continuation, and plausible is not the same as true. This is the same mechanism that
+produces correct answers, operating where training data did not constrain it — which is why
+mitigations are architectural (retrieval, citation, verification) rather than corrective.</p>
+
+<p class="def"><span class="term">Pretraining and post-training</span> <span class="ref">5.1</span> —
+pretraining on next-token prediction supplies the knowledge. <dfn>Supervised fine-tuning</dfn> then
+teaches the question-and-answer format, and <dfn>preference-based post-training</dfn> (RLHF and its
+relatives) installs tone, helpfulness and refusal behaviour — and with them a measurable tendency to
+agree with the person asking. Safety behaviour is trained disposition, not an enforced constraint.</p>
+</div>
+
+<h3>The systems around the model</h3>
+<div class="cols">
+<p class="def"><span class="term">Harness</span> <span class="ref">5.4</span> — the program
+surrounding the model: it assembles the context, supplies the tool definitions, parses the output,
+executes tool calls, and decides when to stop. Two harnesses around the same model are two different
+products, and most of what people attribute to a model is the harness.</p>
+
+<p class="def"><span class="term">Tool and tool calling</span> <span class="ref">5.8</span> — the
+model emits a structured request naming a tool and its arguments; the harness checks permissions and
+runs the code, then appends the result to the context. The model never executes anything. Tool
+descriptions are prompt text, and tool results are untrusted input.</p>
+
+<p class="def"><span class="term">Agentic loop</span> <span class="ref">5.9</span> — observe, decide,
+act, repeat, until a stopping condition. Reliability is set less by the model than by the quality of
+feedback available inside the loop: a loop that can test its own work converges, and one that cannot
+drifts.</p>
+
+<p class="def"><span class="term">Retrieval (RAG)</span> <span class="ref">5.11</span> — embed
+documents once, find those nearest to a question, place the retrieved passages in the context. The
+most effective single measure against hallucination, because it replaces recall with reading. Its
+failures are search failures, so debug it by inspecting what was retrieved, not by rephrasing the
+question.</p>
+
+<p class="def"><span class="term">Prompt injection</span> <span class="ref">6.1, 6.2</span> — text
+placed where a model will read it, phrased as an instruction. <dfn>Indirect</dfn> injection arrives
+inside a document, web page or data record from outside. It works because instructions and data share
+one input channel and nothing in the architecture records provenance; it is a structural property,
+not a bug awaiting a patch.</p>
+</div>
+</section>
+
+<section class="part">
+<h2>Part Two · Operating the system</h2>
+
+<h3>Choosing a model, and knowing it was the right one</h3>
+
+<table>
+<caption>Which characteristics matter for which work <span class="q">— rank these for the task in front of you, rather than looking for the best model</span></caption>
+<thead><tr><th>Characteristic</th><th>Matters most where</th></tr></thead>
+<tbody>
+<tr><td class="k">Depth on hard problems</td><td>Multi-step work in which an early error propagates through everything after it</td></tr>
+<tr><td class="k">Instruction following</td><td>Constraints that must hold across a long output, not just in the first paragraph</td></tr>
+<tr><td class="k">Structured output</td><td>A required shape — table, schema, fixed fields — reliably, every time</td></tr>
+<tr><td class="k">Tool use</td><td>Choosing the right tool, passing sound arguments, and reading the result correctly</td></tr>
+<tr><td class="k">Long-context handling</td><td>Material that sits far from the end of the window and still has to be used</td></tr>
+<tr><td class="k">Latency</td><td>Conversational back-and-forth, where waiting breaks the thread of thought</td></tr>
+<tr><td class="k">Cost</td><td>Anything run repeatedly, where a small per-call difference compounds</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p class="def"><span class="term">Reasoning effort</span> <span class="ref">8.1</span> — a per-task
+setting on models that support it, not a fixed property of a model. Additional inference-time
+computation helps on tasks with genuine inferential depth; on retrieval or reformatting it adds cost
+and latency without improving the answer. How much it helps depends on the model, the task and the
+budget, so settle it by comparison on your own work rather than by assumption.</p>
+
+<p class="def"><span class="term">Benchmarks</span> <span class="ref">8.2</span> — useful as a first
+filter, not as a decision. Composite indices hide a weighting someone else chose; test conditions
+vary between published figures; benchmark content leaks into later training data; saturated
+benchmarks compress real differences into noise; and none of them is your task. Use one to narrow
+thirty candidates to three, then stop.</p>
+
+<p class="def"><span class="term">Your own evaluation</span> <span class="ref">8.3, 14.2</span> —
+five to ten real tasks with known-good outcomes; acceptance criteria written <em>before</em> the
+runs; each task run three times, because output is sampled and a single run measures luck; scored
+against the criteria with cost and elapsed time recorded alongside. An afternoon's work, and it
+answers the question a leaderboard cannot.</p>
+</div>
+
+<h3>What it costs, and what the cost actually is</h3>
+
+<table class="three">
+<caption>Five units that are routinely confused <span class="q">— the conversion between them is not fixed</span></caption>
+<thead><tr><th>Unit</th><th>What it is</th><th>Defined by</th></tr></thead>
+<tbody>
+<tr><td class="k">Token</td><td>A chunk of text processed</td><td>The tokeniser — technical, not commercial</td></tr>
+<tr><td class="k">Model call</td><td>One request with its own context</td><td>The system's architecture</td></tr>
+<tr><td class="k">Your instruction</td><td>One thing you asked for</td><td>You — and it may cause many calls</td></tr>
+<tr><td class="k">Credit</td><td>An accounting unit with a stated value</td><td>The vendor, by policy, and revisable</td></tr>
+<tr><td class="k">Allowance</td><td>Credits included per seat per period</td><td>Your organisation's plan</td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">One instruction is not one request, and one request is not one credit. An
+agentic workflow can turn a single sentence into twenty model calls.  <span class="ref">8.5</span></td></tr></tfoot>
+</table>
+
+<div class="cols">
+<p class="def"><span class="term">Token pricing</span> <span class="ref">8.4</span> — input, cached
+input and output are priced separately. Output usually costs several times input, because generating
+it is sequential where reading is parallel. Cached input — a prefix the provider has already
+processed — is often around a tenth of input, which is the financial reason to keep standing
+instructions stable and put anything variable at the end. Reasoning tokens are billed as output and
+are frequently invisible in the interface.</p>
+
+<p><strong>What increases consumption.</strong> Long attached documents, re-sent on every turn of a
+conversation. Long conversations, because the entire transcript goes back each turn. High reasoning
+effort. Agentic loops, which add both steps and context at each step. Changing the early part of a
+prompt, which invalidates the cache. And retries caused by a task that was under-specified the first
+time.</p>
+
+<div class="note act"><span class="lbl">The cost that matters</span><p>Model spend is usually the
+small term. Twenty minutes of verification against a loaded hourly rate commonly exceeds it several
+times over, so the cheapest route is the one that needs fewest corrections. Weigh model cost,
+elapsed time, retries, human verification, and the cost of an error that gets through.
+<span class="ref">8.7</span></p></div>
+</div>
+
+<h3>Context engineering</h3>
+<div class="cols">
+<p class="def"><span class="term">What is in the context</span> <span class="ref">9.1</span> — the
+vendor's system prompt, the tool definitions, your persistent instructions, material gathered from
+your working environment, retrieved passages, the conversation so far, and finally your words. Yours
+are a small fraction of the total. Most quality problems are context problems, and most context
+problems are things you cannot see.</p>
+
+<p><strong>Long sessions.</strong> Harnesses manage growth differently: some drop the earliest turns,
+some summarise progressively, some retrieve selectively, and many re-insert standing instructions on
+every request. Which one yours does determines what quietly disappears. For work spanning sessions,
+end each with a short handover note and open the next with it. <span class="ref">9.4</span></p>
+</div>
+
+<table>
+<caption>Six elements of a prompt that works <span class="q">— the last two are most often omitted and change the result most</span></caption>
+<thead><tr><th>Element</th><th>Weak</th><th>Strong</th></tr></thead>
+<tbody>
+<tr><td class="k2">Objective</td><td>“Compare the suppliers”</td><td>“A four-page memo recommending one supplier, for Thursday's decision meeting”</td></tr>
+<tr><td class="k2">Background</td><td><em>omitted</em></td><td>“We run these continuously; sustained throughput matters more than peak”</td></tr>
+<tr><td class="k2">Constraints</td><td>“Be accurate”</td><td>“Never present a vendor's claimed figure as a measurement”</td></tr>
+<tr><td class="k2">Output shape</td><td>“Write it up”</td><td>“Comparison table, then conflicts, then assumptions, then recommendation”</td></tr>
+<tr><td class="k2">Acceptance</td><td><em>omitted</em></td><td>“Every numeric claim traceable to a page number or row range”</td></tr>
+<tr><td class="k2">Uncertainty</td><td><em>omitted</em></td><td>“List what you could not verify, and what you assumed instead”</td></tr>
+</tbody>
+</table>
+
+<div class="note"><span class="lbl">When to start a new conversation</span>
+<ul class="tight two">
+<li>The task has changed.</li>
+<li>Three corrections have failed — the context now holds three wrong approaches.</li>
+<li>Quality has drifted over a long session.</li>
+<li>You are moving from exploring to doing the actual work.</li>
+<li>Before anything where a stray earlier instruction would be expensive.</li>
+</ul></div>
+
+<h3>Working modes and autonomy</h3>
+
+<table class="three">
+<caption>Four modes <span class="q">— start at the least autonomous one that could work</span></caption>
+<thead><tr><th>Mode</th><th>You judge</th><th>Suits</th></tr></thead>
+<tbody>
+<tr><td class="k">Conversational</td><td>Every answer</td><td>Understanding, drafting, deciding what to do at all</td></tr>
+<tr><td class="k">Planning</td><td>The plan, before any work happens</td><td>Anything large, ambiguous or expensive to redo</td></tr>
+<tr><td class="k">Interactive</td><td>Each action, as it is proposed</td><td>Most substantial work, and any first run of anything</td></tr>
+<tr><td class="k">Autonomous</td><td>Only the final result</td><td>Established, checkable, repeated tasks</td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">Choose on six questions: how ambiguous is the task; how reversible are the
+actions; what does a mistake cost; can success be checked automatically; what can the tools reach;
+how much undocumented judgement does it need.  <span class="ref">10.2, 10.3</span></td></tr></tfoot>
+</table>
+
+<table class="three">
+<caption>Three kinds of control, which are not interchangeable <span class="q">— §10.5</span></caption>
+<thead><tr><th>Kind</th><th>Determines</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td class="k"><strong>Guidance</strong><br><span class="ref">prompts, instructions, style</span></td><td>What is <em>likely</em> to happen</td><td>“Cite a page number for every figure”</td></tr>
+<tr><td class="k"><strong>Orchestration</strong><br><span class="ref">steps, routing, stopping rules</span></td><td>What <em>ordinarily</em> happens</td><td>A review step that checks every citation before the draft is returned</td></tr>
+<tr><td class="k"><strong>Enforcement</strong><br><span class="ref">permissions, sandboxing, approval</span></td><td>What is <em>possible</em></td><td>No write access outside the drafts folder</td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">Writing “do not modify any files” is guidance, and guidance can be
+displaced by anything else in the context, including text that arrived in a document. Read-only
+access is enforcement and cannot. Put anything costly or irreversible in the third row.</td></tr></tfoot>
+</table>
+
+<h3>Planning, decomposition and delegation</h3>
+<div class="cols">
+<p><strong>When planning earns its cost.</strong> <span class="ref">11.1</span> The task is large,
+ambiguous, or expensive to redo; several people must agree what “done” means; the work will be
+delegated to someone or something else; or a first attempt has already surprised you. A planning pass
+costs a fraction of a full attempt and surfaces a misunderstanding in a two-minute artefact rather
+than in a finished deliverable.</p>
+
+<p><strong>A plan worth having</strong> <span class="ref">11.2</span> restates the objective in the
+model's own words, names the information it is missing, fixes the deliverable, lists constraints and
+acceptance criteria, decomposes the work, identifies dependencies, suggests a model and mode for each
+subtask, and says how the parts will be integrated. Reading the restated objective is the cheapest
+error-detection available: if it is wrong there, everything after it is wrong too.</p>
+
+<p><strong>When delegation is worthwhile.</strong> <span class="ref">11.4</span> The task exceeds what
+one context holds well; subtasks differ markedly in difficulty, so a cheaper model suits some of them;
+parts can genuinely run in parallel; or the work recurs often enough to justify specifying it once.</p>
+
+<p><strong>What delegation costs.</strong> Context does not transfer between subtasks — each one
+starts without what the last one learned. Specification is real work. Errors propagate without being
+revisited. Integration is a judgement step routinely treated as clerical. And sequential dependencies
+add latency that parallelism does not recover. A single capable model with a well-curated context
+beats a poorly orchestrated pipeline more often than people expect.</p>
+</div>
+
+<h3>Persistent configuration</h3>
+
+<table class="three">
+<caption>Where an instruction belongs <span class="q">— push each one to the narrowest scope that still catches every case</span></caption>
+<thead><tr><th>Scope</th><th>Cost paid</th><th>Good for</th></tr></thead>
+<tbody>
+<tr><td class="k">One-off instruction</td><td>Once</td><td>Anything unusual about this particular request</td></tr>
+<tr><td class="k">Personal preferences</td><td>Every request, everywhere</td><td>Writing style, language, level of detail</td></tr>
+<tr><td class="k">Project instructions</td><td>Every request in that project</td><td>Terminology, conventions, standard layouts</td></tr>
+<tr><td class="k">Path-scoped instructions</td><td>Only on matching work</td><td>Rules that apply to one kind of material</td></tr>
+<tr><td class="k">Saved prompt template</td><td>When invoked</td><td>A request made repeatedly in the same form</td></tr>
+<tr><td class="k">Skill</td><td>Description always; body on demand</td><td>A procedure with standards attached</td></tr>
+<tr><td class="k">Organisational policy</td><td>Varies by platform</td><td>What must hold regardless of individual preference</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p><strong>The instruction hierarchy is real, and it is a disposition.</strong>
+<span class="ref">12.1</span> Providers generally train models to treat system-channel instructions
+as taking priority over user messages, and user messages over content inside documents. That ordering
+mostly holds. It is trained behaviour rather than an enforced rule, and conflicts <em>within</em> a
+level have no documented resolution at all — so remove contradictions rather than relying on one of
+them to win.</p>
+
+<p><strong>A style profile works when it names decisions</strong> <span class="ref">12.2, 12.4</span>
+— voice, tense, person, heading case, sentence length, words to avoid — rather than describing good
+writing in the abstract. “Write clearly” changes nothing; “never open a paragraph with
+<em>Furthermore</em>” changes something. Review it quarterly and prune: every line is sent with every
+request, and instructions that no longer apply crowd out ones that do.</p>
+</div>
+
+<h3>Skills, agents and tools</h3>
+
+<table class="three">
+<caption>Nine things that are regularly confused <span class="q">— §13.2</span></caption>
+<thead><tr><th>Thing</th><th>Supplies</th><th>Activated by</th></tr></thead>
+<tbody>
+<tr><td class="k">Prompt</td><td>Text, once</td><td>You, typing it</td></tr>
+<tr><td class="k">Saved prompt file</td><td>Text, reused</td><td>You, by name</td></tr>
+<tr><td class="k">Persistent instructions</td><td>Text, always present</td><td>Nobody — always on</td></tr>
+<tr><td class="k"><strong>Skill</strong></td><td>Text plus optional files, on demand</td><td>The model, where selection is automatic</td></tr>
+<tr><td class="k"><strong>Custom agent</strong></td><td>Instructions, a tool set, sometimes a model</td><td>You, by selecting it</td></tr>
+<tr><td class="k">Subagent</td><td>The same, inside a larger workflow</td><td>The orchestrating system</td></tr>
+<tr><td class="k"><strong>Tool</strong></td><td>The ability to act outside text</td><td>Model requests it; harness executes it</td></tr>
+<tr><td class="k">MCP server</td><td>A package of tools and resources</td><td>Configured once, then available</td></tr>
+<tr><td class="k">Hook</td><td>Code at a fixed point, every time</td><td>Nobody — it is deterministic</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p><strong>Skills and progressive disclosure.</strong> <span class="ref">13.2</span> A short name and
+description stay in context permanently; the body loads when the skill is judged relevant; supporting
+files open only if they are needed. Where a harness selects skills automatically, the description does
+unusual work — it is typically all the model has when deciding — so write it to say when the skill
+applies, not what it contains. Some environments require invoking a skill by name instead, which
+changes nothing about how to write the body.</p>
+
+<div class="note warn"><span class="lbl">Adding an MCP server is installing software</span><p>It is
+third-party code running with whatever credentials you give it. Establish the publisher, pin the
+version, read the tool descriptions once — they enter your context and are a prompt-injection surface
+— scope credentials to the minimum, and keep an inventory of what is installed. A tool the model
+cannot reach is a tool it cannot misuse.  <span class="ref">13.4</span></p></div>
+</div>
+
+<table class="three">
+<caption>How much structure to build <span class="q">— the last row is the one most often skipped</span></caption>
+<thead><tr><th>Approach</th><th>Setup</th><th>Appropriate when</th></tr></thead>
+<tbody>
+<tr><td class="k">Single conversational request</td><td>None</td><td>One-off work, or you are still deciding what you want</td></tr>
+<tr><td class="k">Structured task specification</td><td>Minutes</td><td>It matters, and the first attempt missed</td></tr>
+<tr><td class="k">Saved prompt template</td><td>Under an hour</td><td>The same request recurs in the same form</td></tr>
+<tr><td class="k">Persistent instructions</td><td>An hour, plus upkeep</td><td>A preference spans many different tasks</td></tr>
+<tr><td class="k">Reusable skill</td><td>Half a day, plus upkeep</td><td>A multi-step procedure with standards, used regularly</td></tr>
+<tr><td class="k">Tool-supported agent</td><td>Setup and a permissions review</td><td>The work needs actions that text alone cannot perform</td></tr>
+<tr><td class="k">Several coordinated agents</td><td>Substantial</td><td>Subtasks differ markedly, or genuinely run in parallel</td></tr>
+<tr><td class="k"><strong>Conventional software</strong></td><td>Often less than expected</td><td><strong>The procedure is exact and the inputs are structured</strong></td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">Frequency, input variability, cost of error, number of people involved and
+how stable the task is all move the answer. A model earns its cost where inputs are irregular,
+judgement is required, or the task cannot be specified exactly in advance. Where none of those holds,
+a script is cheaper, faster and repeatable.  <span class="ref">13.6</span></td></tr></tfoot>
+</table>
+
+<h3>Verification</h3>
+<div class="cols">
+<p><strong>Write acceptance criteria before the work.</strong> <span class="ref">14.1</span> Written
+afterwards, they describe whatever was produced. Stated in the prompt, they improve the output as
+well as the review. The test of a criterion is whether someone other than its author could apply it
+and reach the same verdict.</p>
+
+<div class="note act"><span class="lbl">Design for cheap checking</span><p>A document in which every
+figure carries its source is verified in minutes. The same document without sources takes an hour,
+because the checker must first work out what to check. Asking for traceability is therefore a
+verification decision, not a formatting preference.</p></div>
+</div>
+
+<table>
+<caption>Seven dimensions, and a criterion you could actually apply <span class="q">— §14.1</span></caption>
+<thead><tr><th>Dimension</th><th>A checkable criterion</th></tr></thead>
+<tbody>
+<tr><td class="k">Factual accuracy</td><td>Each cited figure matches the page or row range cited for it</td></tr>
+<tr><td class="k">Completeness</td><td>All agreed criteria appear for all subjects, with gaps marked as gaps</td></tr>
+<tr><td class="k">Traceability</td><td>No claim without a source; “not stated” where a source is silent</td></tr>
+<tr><td class="k">Numerical correctness</td><td>Computed values reproduce when recalculated independently</td></tr>
+<tr><td class="k">Structural validity</td><td>Every required section is present and non-empty</td></tr>
+<tr><td class="k">Honest boundaries</td><td>Claims taken from a source are never presented as measurements</td></tr>
+<tr><td class="k">Repeatability</td><td>Three runs produce the same <em>figures</em>, if not the same prose</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p><strong>Proportionate oversight.</strong> <span class="ref">14.3</span> Exploratory work needs a
+skim. Material informing your own thinking needs spot checks on anything you will rely on. Work
+circulating to colleagues needs every factual claim traced. Anything entering a decision, a contract
+or an external communication needs full verification, with numbers recomputed independently.</p>
+
+<div class="note warn"><span class="lbl">Actions deserving extra caution</span>
+<ul class="tight">
+<li>Anything irreversible: sending, filing, submitting, purchasing, deleting.</li>
+<li>Anything acting on material that came from outside the organisation.</li>
+<li>Anything with write access to a shared location.</li>
+<li>Numbers entering a decision, a contract or an external communication.</li>
+<li>Workflows combining private data, untrusted content and an outward channel — remove one of the three.</li>
+<li>First runs of anything, and first runs after a model or configuration change.</li>
+</ul></div>
+
+<p><strong>What not to paste.</strong> <span class="ref">14.4</span> Live credentials, personal data
+about identifiable people, material confidential to a third party, and anything under legal hold. If
+a credential does reach a prompt, rotate it: a transcript is a logging surface. Your own
+organisation's ordinary working material is normally fine, which covers most of what people actually
+want to paste.</p>
+</div>
+</section>
+
+<section class="colophon">
+<h2>Where to read further</h2>
+<div class="cols">
+<p>The course's annotated reading list, with forty-six entries sorted by what each one is good for,
+is at <code>../course/resources.html</code>. The five most useful starting points:</p>
+<ul class="tight">
+<li><strong>3Blue1Brown</strong>, neural networks and transformers — the best visual explanation of
+this material that exists, and the one to watch first.</li>
+<li><strong>Andrej Karpathy</strong>, <em>Deep Dive into LLMs like ChatGPT</em> for the full
+pipeline, and <em>Neural Networks: Zero to Hero</em> for building one from nothing.</li>
+<li><strong>Anthropic</strong>, <em>Building effective agents</em> — design patterns, and a candid
+section on when not to use them.</li>
+<li><strong>Simon Willison</strong>, prompt-injection archive — the running record of a problem that
+has not been solved.</li>
+<li><strong>OWASP Top 10 for LLM Applications</strong> — a recognised vulnerability taxonomy, useful
+for talking to a security function in its own vocabulary.</li>
+</ul>
+
+<p><strong>Product documentation.</strong> For anything plan-dependent, version-dependent or priced,
+consult the vendor's own current documentation rather than this handout. GitHub Copilot, VS Code
+agent customisation, the Model Context Protocol and the Agent Skills specification each publish a
+reference that is updated more often than any course can be.</p>
+
+<div class="note warn"><span class="lbl">Verification note</span><p>Product behaviour and all
+commercial figures in this course were compiled in October 2026 from secondary sources, because the
+primary documentation hosts were not reachable from the environment in which it was written. Confirm
+them before standardising on any of them. Four questions only your own administrator can answer:
+which billing model your agreement is on; what the allowance is and whether it pools across the
+organisation; whether overage is enabled and what happens at exhaustion; and which report shows
+consumption, to whom.</p></div>
+</div>
+</section>
+
+</div>
+</body>
+</html>

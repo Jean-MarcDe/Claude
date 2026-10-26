@@ -1,6 +1,7 @@
 # Tokens to Decisions
 
-A two-part learning course on how modern AI works and how to operate it well.
+A course on how modern AI systems work and how to operate them well, with four pieces of
+material for four different situations.
 
 **Part One** explains the mechanism — from gradient descent to agents — for a reader with no
 background in machine learning. **Part Two** spends that understanding on the decisions you make
@@ -8,33 +9,80 @@ every time you use an AI system: which model, what it costs, what to put in fron
 to supervise, how to break up a large task, how to make what worked repeatable, and how to know
 whether the result is right.
 
-**No programming experience is required anywhere in the course.** Lacking it is not the same as
-being unable to follow a mechanism, so the material keeps its technical depth — including
-mathematics where mathematics explains something — while assuming no familiarity with code, Git,
-terminals or development environments. Software development appears as one application among
-several rather than as the default setting.
+**No programming experience is required anywhere.** Lacking it is not the same as being unable to
+follow a mechanism, so the material keeps its technical depth — including mathematics where
+mathematics explains something — while assuming no familiarity with code, Git, terminals or
+development environments. Software development appears as one application among several rather
+than as the default setting.
+
+---
+
+## The four materials
+
+| | For | Form | Time |
+|---|---|---|---|
+| **[The course](course/index.html)** | Reading and working through, alone or over several sessions | Four HTML pages, ~42,000 words, 20 diagrams, 20 exercises, a 5-stage workshop | A day, or seven sittings |
+| **[The deck](presentation/index.html)** | Teaching it to a room | 30 slides, 6 interactive demonstrations, speaker notes throughout | 90 minutes, or two 50-minute halves |
+| **[The handout](handout/handout.html)** | Keeping beside you afterwards | 7 printed pages of definitions and decision tables | Consulted, not read |
+| **[The practical guide](practical-guide/index.html)** | Actually doing it, on a real tool | 14 sections plus a 40-minute exercise with an answer key | An afternoon |
+
+**The course is the authority.** The other three simplify; none of them introduces a technical
+claim the course does not make. Where a slide or a handout entry compresses something, it points
+at the section that does not.
+
+### Choosing between them
+
+- **Learning this for yourself** — the course, in order. The practical guide afterwards if you
+  use GitHub Copilot.
+- **Teaching a workshop** — the deck for the session, the handout printed for the room, the
+  course as your own preparation and as what you point people to afterwards.
+- **You have used these tools for a year and want to use them better** — Part Two and the
+  handout. Part One is there when something in Part Two does not sit right.
+- **Someone on your team has never opened an editor** — the practical guide, on its own. It is
+  written to stand alone and links back where interest arises.
+- **Half a day and a team to convince** — the deck's second act, then the practical guide's
+  exercise run live. The exercise is built so that a plausible wrong answer and a good one look
+  visibly different, which is the argument that lands.
+
+---
 
 ## Contents
 
-| File | What it is |
+| Path | What it is |
 |---|---|
 | [`course_style_guide.md`](course_style_guide.md) | Editorial and pedagogical conventions — audience, prose style, formatting budgets, mathematical notation, the three recurring examples, verification rules for volatile product facts. Governs future additions as well as the current text |
 | [`course/index.html`](course/index.html) | Course overview: concept map, full syllabus, the mechanism-to-practice table, and four ways to run it |
-| [`course/part-1-theory.html`](course/part-1-theory.html) | **Part One** — Modules 1–7, 14 diagrams, 11 exercises. Machine learning, neural networks, training, gradient descent, backpropagation, inference, tokenisation, embeddings, attention, transformers, next-token prediction, temperature, context, hallucination, harnesses, reasoning, tools, agents, skills, retrieval, and security |
+| [`course/part-1-theory.html`](course/part-1-theory.html) | **Part One** — Modules 1–7, 15 figures, 11 exercises. Machine learning, neural networks, training, gradient descent, backpropagation, inference, tokenisation, embeddings, attention, transformers, next-token prediction, temperature, context, hallucination, harnesses, reasoning, tools, agents, skills, retrieval, and security |
 | [`course/part-2-practice.html`](course/part-2-practice.html) | **Part Two** — Modules 8–14, 5 diagrams, 9 exercises, a 5-stage workshop. Model selection and benchmarking, the economics of tokens and credits, context engineering, interaction modes and autonomy, planning and orchestration, personalisation, skills and tools, evaluation and safety |
-| [`course/resources.html`](course/resources.html) | 46 annotated further-learning sources, from 3Blue1Brown and Karpathy to the specifications and vendor documentation behind Part Two |
+| [`course/resources.html`](course/resources.html) | 46 annotated further-learning sources, from 3Blue1Brown and Karpathy to the specifications behind Part Two |
+| [`presentation/`](presentation/) | The workshop deck — `index.html`, `deck.css`, `deck.js`, and [its README](presentation/README.md) on running, projecting and printing it |
+| [`handout/`](handout/) | The reference handout as Markdown, printable HTML and PDF, with [a build script](handout/build-pdf.js) |
+| [`practical-guide/`](practical-guide/) | The GitHub Copilot companion and its `exercise/` folder — data, a supplier brief, acceptance criteria and an exact answer key |
 | [`REVISION-NOTES.md`](REVISION-NOTES.md) | What changed across revisions, and what remains unverified |
 
-## Reading it
+---
 
-Each page is a **self-contained HTML file** — no build step, no dependencies, no server. Open
-`course/index.html` in a browser, or view the published version:
+## Running them
+
+Everything is **self-contained HTML** — no build step, no dependencies, no server. Open any
+`index.html` in a browser, or view the published course:
 
 **https://claude.ai/artifact/WDTEAh7PkdBk2yjkxdrQLw**
 
-The pages follow the reader's light or dark theme, work at phone width, and have print
-stylesheets, so a module can be printed as a handout. Fonts load from Google Fonts; everything
-else — including all 20 diagrams, which are hand-authored inline SVG — is embedded in the file.
+The pages follow the reader's light or dark theme, work at phone width, and carry print
+stylesheets. The deck and the handout are designed to work on a disconnected laptop in a
+workshop room: they use system fonts and contain all their own styling, scripting and graphics.
+The course and the practical guide load three fonts from Google Fonts and degrade gracefully
+without them.
+
+```
+node handout/build-pdf.js        # regenerate the handout PDF (7 A4 pages)
+```
+
+To print the deck, use the browser's print dialogue — every slide prints on its own page with
+all progressive steps revealed. `presentation/README.md` has the headless Chromium equivalent.
+
+---
 
 ## How it teaches
 
@@ -42,19 +90,23 @@ Three worked examples recur and accumulate rather than each concept getting its 
 
 - **A neuron learning logical AND** (Module 1) — computed by hand, including a full
   gradient-descent update and a two-layer backward pass, before the reader meets a model with
-  hundreds of billions of parameters.
+  hundreds of billions of parameters. The deck makes it interactive: move the weights, take a
+  training step, watch the loss fall.
 - **"The nightly run failed because it timed out."** (Modules 2–4) — carried from tokenisation
   through embeddings and attention to sampling. Chosen because *run* is sense-ambiguous and *it*
   needs a referent, so the sentence poses the exact problems attention solves.
-- **A supplier assessment** (Module 5 onward) — three vendor reports and a spreadsheet of
-  measurements, to be compared into a recommendation memo. It exercises context budgeting, tool
-  use, injection from untrusted documents, decomposition, reusable skills and evaluation without
-  requiring a line of code.
+- **A supplier assessment** (Module 5 onward) — vendor claims against a spreadsheet of
+  measurements, to be turned into a recommendation. It exercises context budgeting, tool use,
+  injection from untrusted documents, decomposition, reusable skills and evaluation without
+  requiring a line of code. The practical guide's exercise is a small, fully reproducible version
+  of it, with an exact answer key.
 
 Mathematics appears where it explains rather than decorates, and all numerical results — the
-gradient-descent arithmetic, the temperature distributions, the cost comparisons — were verified
-computationally. Twenty inline exercises sit beside the explanations they reinforce, each with an
-expected answer.
+gradient-descent arithmetic, the temperature distributions, the cost comparisons, the exercise's
+answer key — were verified computationally. Twenty inline exercises sit beside the explanations
+they reinforce, each with an expected answer.
+
+---
 
 ## Which parts expire
 
@@ -63,12 +115,22 @@ expected answer.
   including post-training, reasoning, agentic systems, long-context behaviour and evaluation, are
   areas of active research where current understanding continues to change.
 - **Part Two describes products, prices and features that change monthly.** Volatile facts appear
-  in dated verification tables saying what was checked and against what, rather than in prose. Where
-  a figure depends on your organisation's configuration, the text names what an administrator must
-  confirm.
+  in dated verification tables saying what was checked and against what, rather than in prose.
+  Where a figure depends on your organisation's configuration, the text names what an
+  administrator must confirm.
+- **The practical guide describes an interface that moves several times a year.** Every step is
+  flagged Stable, Verify or Unconfirmed, and roughly two-thirds are reconstructions rather than
+  confirmations. There are no screenshots, deliberately — see that guide's README.
 
-The maintenance job is Part Two's Modules 8 and 12–13, and the operating section of the resources
-page.
+All product-specific material was compiled in **October 2026 without network access**, including
+no access to GitHub's or Microsoft's own documentation. That constraint shaped the structure
+rather than being worked around: volatile claims are dated, scoped and flagged rather than
+asserted. `REVISION-NOTES.md` lists what to confirm before relying on it.
+
+The maintenance job is Part Two's Modules 8 and 12–13, the operating section of the resources
+page, and the practical guide's step boxes.
+
+---
 
 ## Covered concepts
 
@@ -92,13 +154,17 @@ cached and reasoning tokens · credits, requests, allowances and quotas · a fou
 comparison · total cost including verification · the quality–cost–latency frontier · what is
 actually in the context · supported versus usable context · curating a brief · long sessions,
 growth and compaction · task specification · the layers of an AI system · conversational,
-planning, interactive and autonomous working · choosing a mode · what autonomy costs · why
-planning is a separate step · the plan as an artefact · delegating to smaller models · the costs
-of delegation · manual and automatic orchestration · scopes of instruction · style profiles ·
+planning, interactive and autonomous working · choosing a mode · what autonomy costs · guidance,
+orchestration and enforced constraints distinguished · why planning is a separate step · the plan
+as an artefact · delegating to smaller models · the costs of delegation · manual and automatic
+orchestration · scopes of instruction · the instruction hierarchy and its limits · style profiles ·
 output templates · when persistent instructions hurt · prompts, skills, agents, subagents, tools,
 MCP servers and hooks distinguished · building a skill · tools and permissions · custom agents ·
-acceptance criteria · evaluation sets · proportionate oversight · working safely with untrusted
-material · an integrated workshop
+how much structure a task justifies, including when to write software instead · acceptance
+criteria · evaluation sets · proportionate oversight · working safely with untrusted material ·
+an integrated workshop
+
+---
 
 ## Exercises and workshop
 
@@ -116,6 +182,12 @@ Part Two closes with a five-stage workshop — specify and select, plan and deco
 the right autonomy, make it repeatable, verify and account — run on a task the participant brings
 from their own work. The deliverable is a repeatable process with honest evidence about what it
 costs and where it fails, not a document.
+
+The practical guide closes with a separate, smaller exercise that supplies its own data and an
+exact answer key, so a reader who has no suitable task of their own can still do the thing the
+workshop is about.
+
+---
 
 ## Licence and attribution
 

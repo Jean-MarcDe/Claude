@@ -1942,10 +1942,9 @@ var{font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:1.04
       with three series, because the comparison is between distributions rather than within one.
       Same model, same context, same parameters — only the reshaping differs.</p>
 
-      <p>The third panel contains the lesson that makes temperature comprehensible. Flattening does
-      not merely promote the second-best candidate; it promotes the entire vocabulary, and because
-      the tail contains two hundred thousand entries, a modest per-token increase aggregates into
-      most of the probability mass. At <var>T</var> = 1.5 more than half the probability mass sits in the tail, so a sampled token is more likely than not to come from the part of the vocabulary the model rated as implausible. This is why raising
+      <p>The third panel is the one worth dwelling on. Flattening promotes the entire vocabulary,
+      not only the second-best candidate, and because the tail contains two hundred thousand
+      entries, a modest per-token increase aggregates into most of the probability mass. At <var>T</var> = 1.5 more than half the probability mass sits in the tail, so a sampled token is more likely than not to come from the part of the vocabulary the model rated as implausible. This is why raising
       temperature degrades coherence so sharply, and why the sampling restrictions in 4.4 exist.</p>
       <p>As <var>T</var> approaches zero the sharpening becomes total and the procedure reduces to
       always taking the highest-scoring token. That limiting case is <b>greedy decoding</b>, and
