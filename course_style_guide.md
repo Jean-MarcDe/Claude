@@ -12,16 +12,31 @@ stylesheet.
 
 ---
 
-## 1. What the course is trying to do
+## 1. Audience and purpose
 
-The reader is a competent engineer who has not studied machine learning. They can follow algebra
-and read a derivative without flinching, but they have no reason to know what a logit is. They are
-here because they use AI coding tools daily and want to understand why those tools behave as they
-do.
+The course is written for employees across a range of professional backgrounds — engineers,
+analysts, researchers, project managers and other knowledge workers. Participants can follow
+technical reasoning and elementary algebra. **No programming experience may be assumed anywhere in
+the course.**
 
-The course succeeds if, having finished it, the reader can predict how a language model will behave
-in a situation the course never discussed, and can explain to a colleague why. It fails if they
-have merely acquired vocabulary. Every editorial rule below follows from that distinction.
+That constraint is narrower than it sounds, and it is important not to over-apply it. Lacking
+programming experience is not the same as being unable to understand a mechanism. Participants
+should come away understanding neural networks, parameters, embeddings, attention, inference,
+context management, tool use and agentic systems, with mathematics where mathematics explains
+something. What must never be assumed is familiarity with Python, Git, APIs, terminals,
+repositories, build systems or development environments.
+
+In practice this means: a mechanism may be explained with an equation, but not with a code
+listing the reader is expected to parse. A file may be referred to, but the concept of a working
+directory must be introduced rather than presumed. Software development remains a legitimate
+application domain and appears as one example among several — it is no longer the default setting
+for every illustration.
+
+The course succeeds if, having finished it, a participant can predict how an AI system will behave
+in a situation the course never discussed, and act on that prediction: choosing a model,
+interpreting what it costs, deciding how much context to supply, picking an interaction mode,
+decomposing a large task, and judging whether the result can be trusted. It fails if they have
+merely acquired vocabulary, or a list of prompt formulas.
 
 This has a direct consequence for depth. A mechanism explained in two sentences produces
 recognition; the reader nods and retains nothing usable. The same mechanism developed over four
@@ -29,6 +44,18 @@ paragraphs, with a worked example and an explicit statement of what it cannot do
 the reader can reason with. When those two options conflict, choose the longer one — but only for
 mechanisms that carry weight later. Material that no subsequent chapter depends on should be short
 or absent.
+
+### Platform neutrality
+
+The organisation provides GitHub Copilot through GitHub Enterprise, used mainly in VS Code. That is
+the practical environment the course writes against, not its subject. Teach the general mechanism
+first and name the product as one implementation of it, so that what participants learn transfers
+to ChatGPT, Claude Code, Codex and whatever arrives next.
+
+Concretely: write "an instruction file that applies to every request" and then note what the file
+is called in this environment, rather than writing about `copilot-instructions.md` as though the
+filename were the concept. Where a capability exists in one harness and not another, say so. Never
+imply that a feature of one product is a property of language models in general.
 
 ## 2. Prose
 
@@ -167,29 +194,47 @@ cannot distinguish the two senses of *run*; that is the problem attention solves
 is order-blind; that is the problem positional encoding solves. The reader should experience the
 architecture as a series of answers, not a tour of components.
 
-### Example C — adding retry logic to a payment function
+### Example C — the supplier assessment
 
-Carries Modules 5 and 6 and all of Part Two. A small Python function charges a card against a
-payment gateway. The request is "add retry logic", which is underspecified in a way that matters:
-retrying a charge without an idempotency key can charge the customer twice. The model will produce
-fluent, plausible, dangerous code.
+Carries Module 5 and the whole of Part Two. An analyst must evaluate three competing suppliers.
+The inputs are three vendor technical reports of forty to sixty pages each, written to different
+conventions, and a spreadsheet of roughly twelve thousand rows of test measurements taken in-house.
+The deliverable is a short comparison memo for a decision meeting: where the vendors' claims
+conflict with the measured data, which assumptions each vendor made, and a recommendation with its
+reasoning stated.
 
-The example is then re-run as capability is added — clearer requirements, repository context,
-instruction files, file-reading tools, test execution, a harness managing the loop, full agency —
-and the reader sees which failures each addition fixes and which it does not. It is also the
-vehicle for misleading repository content, prompt injection through an issue, and validation by
-tests and review.
+The example was chosen because it exercises nearly every mechanism in the course without requiring
+a line of code. The inputs are far larger than a context window, so context budgeting is a real
+constraint rather than a hypothetical one. The measurements must be totalled and compared, which a
+language model cannot do reliably by itself and which therefore motivates tool use. The vendor
+reports are documents from outside the organisation, which makes prompt injection concrete in a
+non-software setting. The task decomposes naturally, which motivates planning and delegation. It
+recurs every quarter, which motivates reusable skills. And it has checkable acceptance criteria,
+which makes evaluation teachable rather than abstract.
 
-Fixed setup:
+Fixed setup, used wherever the example appears:
 
-```python
-# payments/charge.py
-def charge(card_token: str, amount_cents: int) -> ChargeResult:
-    resp = gateway.post("/charges", {"token": card_token, "amount": amount_cents})
-    if resp.status != 200:
-        raise GatewayError(resp.body)
-    return ChargeResult(id=resp.body["id"], status="captured")
 ```
+Inputs
+  vendor-a-report.pdf      54 pages, prose with embedded tables
+  vendor-b-report.pdf      61 pages, prose with embedded tables
+  vendor-c-report.pdf      38 pages, slide-style with appendices
+  measurements-q3.xlsx     ~12 000 rows: date, unit_id, vendor, metric, value
+
+Deliverable
+  A four-page memo: comparison table, conflicts between claimed and
+  measured performance, assumptions each vendor made, recommendation.
+
+Acceptance criteria
+  Every numeric claim traceable to a row range or a report page.
+  Every conflict names both sources.
+  Assumptions listed separately from findings.
+  No claim without a citation.
+```
+
+Software development may still supply an example where it genuinely illustrates a mechanism better
+than the supplier assessment would — a code review is a good instance of verification under
+fluency bias. It appears as one domain among several, never as the default.
 
 ## 5. How to develop an explanation
 
@@ -234,15 +279,48 @@ diagram using *w* where the text uses *θ* is a defect.
 ## 8. Stable theory and product-specific material
 
 Part One describes mechanisms that have been stable since 2017 and are vendor-neutral. Part Two
-describes a product surface that changes monthly.
+describes products, prices and features that change monthly. Keeping the two apart is the single
+most important editorial discipline in the course, because a product behaviour presented as a
+technical principle will mislead a reader long after the product has changed.
 
-Keep them separate, and never let a product behaviour masquerade as a technical principle. Any
-statement about GitHub Copilot that depends on a plan, a policy, a configuration or a version is
-marked as such and written as a pointer to official documentation rather than as a durable fact.
-Where the first edition could not verify a specific — the environment blocks `docs.github.com` — the
-text says so rather than implying confirmation.
+Nothing in Part One may name a vendor or a product. Where Part Two makes a claim that depends on a
+plan, a policy, a configuration, a subscription tier or a software version, that claim is marked as
+such and written as a pointer to official documentation rather than as a durable fact.
 
-The reciprocal rule: nothing in Part One should name a vendor or a product.
+### Three categories, treated differently
+
+**Durable mechanism.** How tokenisation affects cost, why a context window is zero-sum, what a
+tool call is, why an agent needs a feedback signal. Stated plainly, no caveat needed, belongs in
+the main prose.
+
+**Product capability.** Which file names a harness reads, which interaction modes exist, whether a
+feature is generally available. Named with the product, phrased so that the underlying concept
+survives a rename, and accompanied by a pointer to the vendor's documentation.
+
+**Commercial and volatile fact.** Prices, credit allowances, quotas, benchmark rankings, model
+version names. These carry a **verification date** and appear in a table rather than in prose, so
+that a reader can see at a glance what needs rechecking. Never build an explanation whose logic
+depends on a specific number remaining true; build it on the structure, and let the number be an
+illustration the reader can substitute.
+
+### Verified-as-of tables
+
+Any section containing commercial or volatile facts carries a short table recording what was
+checked, when, and against what. Where a fact could not be verified against a primary source, the
+table says so rather than implying confirmation. Where a fact depends on the organisation's own
+configuration, the table names what an administrator must confirm, because that is actionable and
+a vague warning is not.
+
+This is not defensive boilerplate. A reader deciding how to spend a budget needs to know whether
+the figure in front of them was read from a vendor's pricing page last week or inferred from a
+secondary source six months ago, and the course is more useful, not less, for saying which.
+
+### Worked examples with numbers
+
+Cost calculations, token estimates and model comparisons should use explicitly labelled
+illustrative rates, chosen to make the arithmetic clear, with a sentence telling the reader to
+substitute their own current figures. A worked example that teaches the method survives a price
+change; one that teaches a price does not.
 
 ## 9. Terminology
 
