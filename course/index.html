@@ -1,4 +1,4 @@
-<title>Tokens to Pull Requests</title>
+<title>Tokens to Decisions</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -185,7 +185,7 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 
 <header class="masthead">
   <div class="masthead__in">
-    <span class="masthead__mark">Tokens&nbsp;to&nbsp;Pull&nbsp;Requests</span>
+    <span class="masthead__mark">Tokens&nbsp;to&nbsp;Decisions</span>
     <nav aria-label="Course sections">
       <a href="index.html" aria-current="page">Overview</a>
       <a href="part-1-theory.html">Part One · Theory</a>
@@ -199,15 +199,18 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">A two-part course for software teams</p>
-    <h1>Tokens to Pull&nbsp;Requests</h1>
+    <p class="eyebrow">A two-part course for people who use AI at work</p>
+    <h1>Tokens&nbsp;to&nbsp;Decisions</h1>
     <p class="lede">Part One explains how a modern language model actually works, from gradient
-    descent to agents. Part Two spends that understanding inside GitHub Enterprise — on instruction
-    files, prompts, code review, coding agents and the governance around them.</p>
+    descent to agents. Part Two spends that understanding on the decisions you make every time you
+    use one: which model, what it costs, what to put in front of it, how much to supervise, how to
+    break up a large task, and how to know whether the result is right.</p>
     <p class="meta">
-      Two parts&nbsp;· 14 modules&nbsp;· 18 diagrams&nbsp;· 11 exercises&nbsp;· 8 labs<br>
-      Reading time ≈ 5 hours&nbsp;· Full workshop ≈ 2 days<br>
-      Audience: engineers, tech leads and platform owners. No maths beyond school algebra.
+      Two parts&nbsp;· 14 modules&nbsp;· 20 diagrams&nbsp;· 20 exercises&nbsp;· a 5-stage workshop<br>
+      Reading time ≈ 5.5 hours&nbsp;· Full workshop ≈ 2 days<br>
+      Audience: anyone who uses AI tools for professional work — engineers, analysts, researchers,
+      project managers.<br>
+      <b>No programming experience required.</b> No maths beyond school algebra.
     </p>
   </div>
 </section>
@@ -215,17 +218,15 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 <section>
   <div class="wrap">
     <h2>Why the theory comes first</h2>
-    <p>Most teams learn AI tooling as a list of tricks: add this file, say
-    &ldquo;think step by step&rdquo;, pick that model. The tricks work until they
-    don't, and then nobody can say why — because the tricks were never connected to
-    a mechanism.</p>
-    <p>Almost every practical rule in Part Two is a direct consequence of something
-    mechanical in Part One. Instruction files have to be short because they compete with
-    your code for a fixed token budget. A coding agent needs a green test suite because
-    the loop has no other error signal. You cannot sanitise your way out of prompt
-    injection because the model reads instructions and data through the same channel.
-    None of that is memorisable as a tip. All of it is obvious once you can see the
-    machine.</p>
+    <p>Most people learn AI tools as a list of tricks: phrase it this way, add that instruction,
+    pick the newer model. The tricks work until they don't, and then nobody can say why — because
+    the tricks were never connected to a mechanism.</p>
+    <p>Almost every practical rule in Part Two is a direct consequence of something mechanical in
+    Part One. Attaching every document is a bad idea because the context is zero-sum and attention
+    thins as it fills. A model cannot be trusted to total a spreadsheet column because next-token
+    prediction is not arithmetic. You cannot instruct your way out of a hidden message in a
+    supplier's document, because the model reads instructions and data through the same channel.
+    None of that is memorisable as a tip. All of it is obvious once you can see the machine.</p>
     <p>So Part One builds the machine, developing three worked examples that recur as the concepts accumulate — a neuron learning logical AND, one sentence carried from tokenisation through to sampling, and a payment function that an assistant is asked to modify. Part Two then uses the same three, and names the mechanism behind each recommendation it makes.</p>
   </div>
 </section>
@@ -385,35 +386,39 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 
 <section>
   <div class="wrap">
-    <h2>Part Two · Copilot in the enterprise</h2>
-    <p>The same mechanics, now with your repositories, your reviewers and your compliance
-    obligations attached.</p>
+    <h2>Part Two &middot; Operating AI systems</h2>
+    <p>The same mechanics, now applied to the decisions you actually make. One example runs
+    through all seven modules: three supplier reports, a spreadsheet of measurements, and a memo
+    due before a decision meeting.</p>
   </div>
   <div class="wide" style="margin-top:1.4em">
     <div class="modgrid">
-      <div class="mod mod--p"><span class="mod__n">8</span><h3 class="mod__t">The surface area</h3>
-        <p class="mod__c">Every place a model touches GitHub — completions, chat, CLI, code review,
-        coding agent, Spaces, Actions · what Business and Enterprise plans add · who owns what</p></div>
-      <div class="mod mod--p"><span class="mod__n">9</span><h3 class="mod__t">Context engineering in a repository</h3>
-        <p class="mod__c">The instruction layers and their precedence · <code>copilot-instructions.md</code>,
-        <code>*.instructions.md</code>, <code>AGENTS.md</code> · what makes a good instruction file ·
-        Spaces as curated grounding · making a repo legible to a model</p></div>
-      <div class="mod mod--p"><span class="mod__n">10</span><h3 class="mod__t">Prompting that holds up</h3>
-        <p class="mod__c">Prompt anatomy for code · which surface for which task · prompt files,
-        custom agents and skills · choosing a model · which human language to write in · context hygiene</p></div>
-      <div class="mod mod--p"><span class="mod__n">11</span><h3 class="mod__t">Review, agents and the PR workflow</h3>
-        <p class="mod__c">Copilot code review · shaping a task an agent can finish · why the agent needs
-        a green build · reviewing AI-written code · MCP servers with least privilege</p></div>
-      <div class="mod mod--p"><span class="mod__n">12</span><h3 class="mod__t">Security and governance</h3>
-        <p class="mod__c">Policies, content exclusion and its gaps · audit and metrics · injection through
-        issues and pull requests · least-privilege tokens · the controls that actually hold</p></div>
-      <div class="mod mod--p"><span class="mod__n">13</span><h3 class="mod__t">Rolling it out</h3>
-        <p class="mod__c">A 30/60/90 plan · enablement that works · metrics worth tracking and vanity
-        metrics to ignore · writing your team's conventions down</p></div>
-      <div class="mod mod--p"><span class="mod__n">14</span><h3 class="mod__t">Labs</h3>
-        <p class="mod__c">Eight exercises, each tied back to a module — tokeniser measurement,
-        temperature, instruction-file A/B, prompt files, agent task shaping, a benign injection
-        red-team, and an AI-code review pass</p></div>
+      <div class="mod mod--p"><span class="mod__n">8</span><h3 class="mod__t">Choosing a model, and what it costs</h3>
+        <p class="mod__c">What actually differs between models · reading benchmarks honestly ·
+        building a benchmark of your own · tokens as the unit of cost · credits, requests and
+        quotas · four ways to do one task, costed · the cost that actually matters</p></div>
+      <div class="mod mod--p"><span class="mod__n">9</span><h3 class="mod__t">Context engineering and prompting</h3>
+        <p class="mod__c">What is really in the context · supported window versus usable window ·
+        choosing what to include · long sessions, growth and compaction · writing a task
+        specification</p></div>
+      <div class="mod mod--p"><span class="mod__n">10</span><h3 class="mod__t">Harnesses, interaction modes and autonomy</h3>
+        <p class="mod__c">The layers of an AI system · conversational, planning, interactive and
+        autonomous working · choosing the mode · what autonomy costs</p></div>
+      <div class="mod mod--p"><span class="mod__n">11</span><h3 class="mod__t">Planning, decomposition and orchestration</h3>
+        <p class="mod__c">Why planning is a separate step · the plan as a checkable artefact ·
+        delegating to smaller models · what delegation costs · manual and automatic
+        orchestration</p></div>
+      <div class="mod mod--p"><span class="mod__n">12</span><h3 class="mod__t">Personalisation and persistent instructions</h3>
+        <p class="mod__c">Scopes of instruction and what each costs · building a style profile ·
+        output templates and conventions · when persistent instructions hurt</p></div>
+      <div class="mod mod--p"><span class="mod__n">13</span><h3 class="mod__t">Skills, agents and tools</h3>
+        <p class="mod__c">Sorting out the vocabulary · what a skill is and why the description
+        matters most · building one without code · tools and MCP · custom agents and
+        subagents</p></div>
+      <div class="mod mod--p"><span class="mod__n">14</span><h3 class="mod__t">Evaluation, safety and the workshop</h3>
+        <p class="mod__c">Acceptance criteria · a small evaluation set · proportionate oversight ·
+        working safely with untrusted material · a five-stage integrated workshop on your own
+        work</p></div>
     </div>
   </div>
 </section>
@@ -429,16 +434,18 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
       <table>
         <thead><tr><th>Mechanism (Part One)</th><th>Consequence you can act on (Part Two)</th></tr></thead>
         <tbody>
-          <tr><td>The context window is a fixed token budget</td><td>Instruction files compete with your source code. Short and specific beats thorough.</td></tr>
-          <tr><td>Tokenisation is tuned for English and for code</td><td>The same instruction costs 1.5–2&times; more tokens in German or Japanese. Write durable repo instructions in English.</td></tr>
-          <tr><td>Attention degrades over long contexts</td><td>Start a fresh session per task instead of one long thread. Put the important constraint last.</td></tr>
-          <tr><td>The model is stateless; the harness re-sends everything</td><td>&ldquo;It forgot&rdquo; is almost always a context-assembly problem, not a model problem.</td></tr>
-          <tr><td>Output is sampled from a probability distribution</td><td>Two identical prompts can give different answers. Never treat a single run as evidence.</td></tr>
-          <tr><td>Hallucination is the normal behaviour of a likelihood machine</td><td>Ground every factual claim in retrieved context, and verify APIs against the actual package.</td></tr>
-          <tr><td>The model has one input channel for instructions and data</td><td>A pull-request comment is executable input. Treat all repository content as untrusted.</td></tr>
-          <tr><td>An agent loop only improves if it gets a signal</td><td>Fast, reliable tests and a runnable build are the single biggest agent accelerant.</td></tr>
-          <tr><td>Tools are requests the harness executes, not model capabilities</td><td>Security lives in the harness and the token scope, never in the prompt.</td></tr>
-          <tr><td>Reasoning spends tokens to buy accuracy</td><td>Match model and thinking budget to task difficulty, not to habit.</td></tr>
+          <tr><td>The context window is a fixed token budget</td><td>Attaching every document crowds out the passages that matter. Curate a brief.</td></tr>
+          <tr><td>Attention thins as the context fills, and is weakest in the middle</td><td>A supported window and a usable window are different claims. Extract before you attach.</td></tr>
+          <tr><td>Tokenisation is tuned for English</td><td>The same instruction costs 1.5–2&times; more in German or Japanese. Write re-sent text in English.</td></tr>
+          <tr><td>A stable context prefix can be cached</td><td>Keep instructions stable; a preamble that changes each run can cost several times more.</td></tr>
+          <tr><td>The model is stateless; the software re-sends everything</td><td>&ldquo;It forgot&rdquo; is a context-management problem. Write handover notes deliberately.</td></tr>
+          <tr><td>Output is sampled from a probability distribution</td><td>One run is one draw. Never compare two models, or two prompts, on a single attempt.</td></tr>
+          <tr><td>Next-token prediction is a poor substrate for arithmetic</td><td>Route calculations to a tool, and check one value by hand.</td></tr>
+          <tr><td>Hallucination is the normal behaviour of a likelihood machine</td><td>Ground every factual claim in supplied material, and require a citation for each.</td></tr>
+          <tr><td>Instructions and data share one input channel</td><td>A supplier's document is executable input. Limit what the assistant can reach.</td></tr>
+          <tr><td>A forward pass has fixed computational depth</td><td>Plan as a separate, cheap step rather than demanding depth in a single answer.</td></tr>
+          <tr><td>Each context is independent</td><td>Delegation loses everything the specification leaves out. Write the handover.</td></tr>
+          <tr><td>Fluent output carries no signal about correctness</td><td>Write acceptance criteria before the work, not after.</td></tr>
         </tbody>
       </table>
     </div>
@@ -450,39 +457,41 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
     <h2>How to run it</h2>
     <p>The material is one thing; the format is yours. Four that work:</p>
     <div class="paths">
-      <div class="path"><h4>Skim</h4><span class="dur">2 hours · solo</span>
-        <p>Read the concept map, every <b>key idea</b> callout in Part One, then all of Part Two.
-        Enough to stop making the common mistakes.</p></div>
+      <div class="path"><h4>Skim</h4><span class="dur">2.5 hours · solo</span>
+        <p>Read the concept map, Modules 1 to 4 of Part One, then Modules 8, 9 and 14 of Part Two.
+        Enough to stop making the expensive mistakes.</p></div>
       <div class="path"><h4>Workshop</h4><span class="dur">2 days · 6–20 people</span>
-        <p>Day one: Modules 1–7 with the labs in Module 14 interleaved. Day two: Part Two against
-        your own repository. Finish by writing your real instruction files together.</p></div>
-      <div class="path"><h4>Study group</h4><span class="dur">6 weeks · 1 hour weekly</span>
-        <p>One module pair per week, one lab per week, one volunteer presenting. Slowest but it
-        sticks best, and the discussion is where the real objections surface.</p></div>
+        <p>Day one: Part One with the inline exercises worked together. Day two: Part Two, ending
+        with the five-stage workshop run on a task the group actually owns.</p></div>
+      <div class="path"><h4>Study group</h4><span class="dur">7 weeks · 1 hour weekly</span>
+        <p>One module per week, one volunteer presenting, the exercises done in advance. Slowest,
+        and it sticks best — the discussion is where the real objections surface.</p></div>
       <div class="path"><h4>Reference</h4><span class="dur">ongoing</span>
-        <p>Keep it in the repo. When someone asks why an instruction file must be short, send
-        the Module 4 anchor rather than the answer.</p></div>
+        <p>When someone asks why attaching all three reports made the answer worse, send the
+        Module 9.2 anchor rather than the answer.</p></div>
     </div>
     <h3>What you need</h3>
-    <ul>
-      <li><b>For Part One:</b> nothing. No maths beyond school algebra, no Python. Every figure is
-      self-contained.</li>
-      <li><b>For Part Two:</b> a GitHub repository you can push branches to, and Copilot enabled on
-      it. A Business or Enterprise plan for the governance sections in Module 12 — read them anyway
-      if you are on an individual plan, because they tell you what your organisation cannot
-      currently see.</li>
-      <li><b>For the labs:</b> a browser. Two labs are more interesting with a terminal.</li>
-    </ul>
+    <p>For Part One, nothing at all. No programming, no maths beyond school algebra, and every
+    figure is self-contained. The three worked examples — a neuron learning logical AND, a single
+    sentence carried through tokenisation to sampling, and the supplier assessment — are developed
+    from scratch where they appear.</p>
+    <p>For Part Two, access to an AI assistant you can use on real work, and a task of your own to
+    bring to the workshop in Module 14. The practical environment described is GitHub Copilot in
+    VS Code, because that is what the organisation provides, but the concepts transfer to other
+    tools and the text says which parts are specific. Some sections describe an assistant writing
+    and running a short script on your behalf; you are never asked to write one, and the course
+    explains what such a script does and how to check it.</p>
     <div class="callout c-key">
       <span class="callout__tag">Before you start</span>
-      <p>Part Two names specific files, features and model versions. Those move faster than any
-      document can. Treat every name as a pointer to GitHub's own documentation rather than as a
-      fact with a shelf life, and check anything you are about to standardise on. The mechanics in
-      Part One have not changed since 2017 and are not about to.</p>
+      <p>Part Two names specific products, prices and features. Those move faster than any document
+      can, and several of them changed while this course was being written. Volatile facts appear
+      in dated tables saying what was checked and against what; treat them as pointers rather than
+      as a current price list, and confirm anything you are about to standardise on. The mechanics
+      in Part One have not changed since 2017 and are not about to.</p>
     </div>
     <div class="jump">
       <a href="part-1-theory.html"><span>Start here</span><b>Part One · How the machine works →</b></a>
-      <a href="part-2-practice.html"><span>Then</span><b>Part Two · Copilot in the enterprise →</b></a>
+      <a href="part-2-practice.html"><span>Then</span><b>Part Two · Operating AI systems →</b></a>
       <a href="resources.html"><span>Alongside</span><b>Further reading →</b></a>
     </div>
   </div>
@@ -492,9 +501,9 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 
 <footer>
   <div class="wrap">
-    <p><b>Tokens to Pull Requests</b> — a two-part course on modern AI and its use inside GitHub Enterprise.</p>
-    <p class="meta">Part One is mechanism and does not expire. Part Two describes a product surface
-    that changes monthly; verify specifics against GitHub's documentation before you standardise.
-    Compiled October 2026.</p>
+    <p><b>Tokens to Decisions</b> — a two-part course on how modern AI works and how to operate it well.</p>
+    <p class="meta">Part One is mechanism and does not expire. Part Two describes products and prices that change
+    monthly and carries dated verification tables; confirm anything you standardise on. Compiled
+    October 2026.</p>
   </div>
 </footer>

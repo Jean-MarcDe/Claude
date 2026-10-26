@@ -1,6 +1,6 @@
 # Course style guide
 
-Editorial and pedagogical conventions for *Tokens to Pull Requests*. It governs the prose inside
+Editorial and pedagogical conventions for *Tokens to Decisions*. It governs the prose inside
 `course/*.html`, applies to revisions as well as new material, and exists so that a chapter written
 six months from now still reads as part of the same book.
 

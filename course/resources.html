@@ -280,7 +280,7 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 
 <header class="masthead">
   <div class="masthead__in">
-    <span class="masthead__mark"><a href="index.html">Tokens&nbsp;to&nbsp;Pull&nbsp;Requests</a></span>
+    <span class="masthead__mark"><a href="index.html">Tokens&nbsp;to&nbsp;Decisions</a></span>
     <nav aria-label="Course sections">
       <a href="index.html">Overview</a>
       <a href="part-1-theory.html">Part One &middot; Theory</a>
@@ -574,6 +574,104 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
   </div>
 </section>
 
+<section id="operating">
+  <div class="wrap">
+    <h2>Operating AI systems</h2>
+    <p>Sources for Part Two. This section dates faster than any other on the page: product
+    documentation changes monthly and benchmark rankings change weekly. Treat each entry as a live
+    source to consult rather than a document to read once.</p>
+
+    <div class="reslist">
+      <div class="res">
+        <p class="res__t"><a href="https://docs.github.com/en/copilot">GitHub Copilot documentation</a></p>
+        <p class="res__m">GitHub · official documentation · <span class="pill pill--1">gentle</span></p>
+        <p>The authoritative source for anything plan-dependent. The pages that matter most for
+        this course are billing and usage, which govern how credits are consumed and reported;
+        the customisation reference, which lists every instruction, prompt, agent and skill file
+        with its location; and the enterprise sections on policies and content exclusion.</p>
+        <p class="res__why">Before relying on any figure in Module 8.5, and before configuring
+        anything in Modules 12 or 13. <b>Nothing in those modules was verified against this
+        source</b> — it was unreachable from the environment the course was written in.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://code.visualstudio.com/docs/agents/overview">VS Code: agents and customisation</a></p>
+        <p class="res__m">Microsoft · official documentation · <span class="pill pill--1">gentle</span></p>
+        <p>The practical environment for most of Part Two. The customisation overview explains how
+        instructions, prompt files, skills, custom agents, MCP servers and hooks relate to one
+        another; separate pages cover each. Useful even if you work elsewhere, because the
+        distinctions it draws are the ones Module 13.1 is built on.</p>
+        <p class="res__why">Setting up anything in Modules 12 and 13, and confirming which features
+        your installed version actually has.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://agentskills.io/">Agent Skills specification</a></p>
+        <p class="res__m">open specification · <span class="pill pill--2">solid</span></p>
+        <p>The cross-vendor format behind Module 13.2 — a folder with a definition file carrying a
+        name and description, plus optional supporting material, loaded progressively. Opened as a
+        public standard and supported by a growing number of tools, which means a skill written
+        once may work in more than one environment.</p>
+        <p class="res__why">Before writing a skill you intend to reuse across tools. Check support
+        in your own environment rather than assuming it.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></p>
+        <p class="res__m">open specification · <span class="pill pill--2">solid</span></p>
+        <p>How tools, resources and prompts are described and how clients and servers negotiate.
+        Worth skimming before connecting an MCP server, because the security properties in Module
+        13.4 become obvious once you have seen that tool descriptions travel from the server into
+        your context.</p>
+        <p class="res__why">Evaluating or connecting any external tool.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://artificialanalysis.ai/models">Artificial Analysis</a></p>
+        <p class="res__m">independent benchmarking · continuously updated · <span class="pill pill--2">solid</span></p>
+        <p>Independent comparison of models across quality, speed and price, with a published
+        methodology explaining how its composite index is weighted. Read the methodology before the
+        rankings: the weighting encodes a view about what matters, and the stated confidence
+        intervals are narrow enough that small differences are not differences.</p>
+        <p class="res__why">Narrowing thirty models to a shortlist of three. Module 8.2 explains
+        why it cannot do more than that, and Module 8.3 explains what to do next.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://code.claude.com/docs/en/overview">Claude Code</a> &middot; <a href="https://developers.openai.com/codex/">OpenAI Codex</a></p>
+        <p class="res__m">vendor documentation · <span class="pill pill--2">solid</span></p>
+        <p>Two other agentic environments, included because comparing them is the fastest way to
+        see which parts of Part Two are general and which belong to a particular product. The
+        interaction modes, the permission models and the customisation mechanisms differ in
+        instructive ways.</p>
+        <p class="res__why">Deciding whether a capability you read about is a property of models or
+        of one vendor's harness.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://developers.google.com/style/">Google developer documentation style guide</a> &middot; <a href="https://learn.microsoft.com/en-us/style-guide/">Microsoft writing style guide</a></p>
+        <p class="res__m">style references · <span class="pill pill--1">gentle</span></p>
+        <p>Two mature, opinionated guides to technical writing. Their value here is not that you
+        should follow them, but that they have already converted vague preferences into specific,
+        checkable decisions — voice, tense, person, heading case, sentence length — which is
+        exactly the raw material a style profile needs.</p>
+        <p class="res__why">Module 12.2, when building a personal style profile. Lift the decisions
+        you agree with rather than writing &ldquo;write clearly&rdquo;.</p>
+      </div>
+
+      <div class="res">
+        <p class="res__t"><a href="https://diataxis.fr/">Diátaxis</a></p>
+        <p class="res__m">documentation framework · 30 min · <span class="pill pill--1">gentle</span></p>
+        <p>A framework distinguishing explanation, tutorial, how-to guidance and reference, on the
+        argument that confusing them is why so much documentation fails. Directly useful when
+        deciding what a skill, a template or a handover note should contain.</p>
+        <p class="res__why">Writing anything reusable in Modules 12 and 13 — and it explains why
+        this course's labs read differently from its explanations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="security">
   <div class="wrap">
     <h2>Security</h2>
@@ -626,13 +724,13 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 
 <section id="github">
   <div class="wrap">
-    <h2>GitHub Copilot — the authoritative sources</h2>
+    <h2>Software development with AI</h2>
     <div class="callout c-warn" style="margin-top:1em">
       <span class="callout__tag">Important</span>
-      <p>Part Two names files and features as they stood in October 2026. <b>These are the only
-      sources you should trust for current specifics</b> — file paths, precedence rules, model
-      availability, plan boundaries and the coverage gaps in content exclusion all move. Check
-      here before you standardise anything across an organisation.</p>
+      <p>Software development is one application of everything in this course rather than its
+      subject, and these sources cover that application. They are also the most useful worked
+      examples available of instruction files, agent configuration and automated review, so they
+      repay reading even if you never write code.</p>
     </div>
 
     <div class="reslist">
@@ -833,7 +931,7 @@ footer p{font-family:var(--display);font-size:13px;color:var(--ink-faint);margin
 
 <footer>
   <div class="wrap">
-    <p><b>Tokens to Pull Requests</b> &middot; Further reading</p>
+    <p><b>Tokens to Decisions</b> &middot; Further reading</p>
     <p class="meta">Links compiled October 2026. The foundational material is stable; the
     documentation and security sections change continuously, so treat those as entry points
     rather than snapshots.</p>
