@@ -26,6 +26,11 @@ than as the default setting.
 | **[The handout](handout/handout.html)** | Keeping beside you afterwards | 7 printed pages of definitions and decision tables | Consulted, not read |
 | **[The practical guide](practical-guide/index.html)** | Actually doing it, on a real tool | 14 sections plus a 40-minute exercise with an answer key | An afternoon |
 
+**In German:** the deck and the handout also exist as
+[`presentation/de/`](presentation/de/) and [`handout/de/`](handout/de/) — a full translation in
+the register of technical documentation, with a terminology table mapping the English terms to the
+German ones. The course and the practical guide remain English.
+
 **The course is the authority.** The other three simplify; none of them introduces a technical
 claim the course does not make. Where a slide or a handout entry compresses something, it points
 at the section that does not.
@@ -58,6 +63,8 @@ at the section that does not.
 | [`presentation/`](presentation/) | The workshop deck — `index.html`, `deck.css`, `deck.js`, and [its README](presentation/README.md) on running, projecting and printing it |
 | [`handout/`](handout/) | The reference handout as Markdown, printable HTML and PDF, with [a build script](handout/build-pdf.js) |
 | [`practical-guide/`](practical-guide/) | The GitHub Copilot companion and its `exercise/` folder — data, a supplier brief, acceptance criteria and an exact answer key |
+| [`presentation/de/`](presentation/de/) | **Foliensatz (deutsch)** — the same 30 slides, sharing the English engine and stylesheet |
+| [`handout/de/`](handout/de/) | **Referenzblatt (deutsch)** — ten A4 pages in Markdown, HTML and PDF, with the terminology table |
 | [`REVISION-NOTES.md`](REVISION-NOTES.md) | What changed across revisions, and what remains unverified |
 
 ---
@@ -76,11 +83,17 @@ The course and the practical guide load three fonts from Google Fonts and degrad
 without them.
 
 ```
-node handout/build-pdf.js        # regenerate the handout PDF (7 A4 pages)
+node handout/build-pdf.js              # both handout PDFs (7 pages EN, 10 pages DE)
+node handout/build-pdf.js de           # just the German one
 ```
 
-To print the deck, use the browser's print dialogue — every slide prints on its own page with
+To print either deck, use the browser's print dialogue — every slide prints on its own page with
 all progressive steps revealed. `presentation/README.md` has the headless Chromium equivalent.
+
+The German editions are translations, not separate works: the deck shares the English engine and
+stylesheet and looks its strings up by their English originals, so a missing translation falls
+through to English rather than breaking. Where German needed different wording to fit a slide or a
+diagram box, the wording changed and the claim did not.
 
 ---
 
@@ -121,6 +134,9 @@ they reinforce, each with an expected answer.
 - **The practical guide describes an interface that moves several times a year.** Every step is
   flagged Stable, Verify or Unconfirmed, and roughly two-thirds are reconstructions rather than
   confirmations. There are no screenshots, deliberately — see that guide's README.
+- **The German editions track the English ones.** A change to the English deck or handout needs
+  the same change in `de/`; nothing enforces that automatically. The terminology table in
+  `handout/de/` is what keeps the two German materials consistent with each other.
 
 All product-specific material was compiled in **October 2026 without network access**, including
 no access to GitHub's or Microsoft's own documentation. That constraint shaped the structure

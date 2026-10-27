@@ -2,7 +2,7 @@
    change that breaks a demonstration shows up as a wrong number rather than as
    a silent no-op.  Run: node widget-test.js */
 const { chromium } = require('playwright');
-const F='file://' + require('path').resolve(__dirname,'index.html');
+const F='file://' + require('path').resolve(__dirname, process.argv[2] || 'index.html');
 (async () => {
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport:{width:1600,height:950} });
@@ -18,7 +18,10 @@ const F='file://' + require('path').resolve(__dirname,'index.html');
   await pg.click('#nstep10');
   let after50 = await pg.textContent('#nloss');
   const rowsOK = await pg.evaluate(()=>document.querySelectorAll('#nrows tr').length);
-  console.log(`neuron:  loss ${before} -> ${after1} -> ${after50} (${rowsOK} rows)  ${+after50 < +before ? 'LEARNS' : 'FAIL'}`);
+  // the German deck prints decimals with a comma, so normalise before comparing
+  const num = t => parseFloat(String(t).replace(',', '.'));
+  console.log(`neuron:  loss ${before} -> ${after1} -> ${after50} (${rowsOK} rows)  `
+    + (num(after50) < num(before) ? 'LEARNS' : 'FAIL'));
   await pg.fill('#nw1','7.7'); await pg.dispatchEvent('#nw1','input');
   console.log('         slider w1=7.7 ->', await pg.textContent('#ow1'));
 

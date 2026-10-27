@@ -15,6 +15,30 @@
   'use strict';
 
   // ---------------------------------------------------------
+  // Localisation
+  //
+  // English strings are the keys, so the English deck is served
+  // by the fall-through and cannot drift. A German deck is any
+  // page with lang="de"; it loads this same engine.
+  // DICT.de lives in deck.de.js, which the German deck loads
+  // before this file and which sets window.DECK_DICT.
+  // ---------------------------------------------------------
+  var LANG = (document.documentElement.lang || 'en').slice(0, 2);
+  var LOC  = LANG === 'de' ? 'de-DE' : 'en-GB';
+  var DICT = (window.DECK_DICT && window.DECK_DICT[LANG]) || null;
+
+  function tr(k) { return (DICT && DICT[k]) || k; }
+  function trf(k) {                      // tr() with %1, %2 … substitution
+    var a = Array.prototype.slice.call(arguments, 1);
+    return tr(k).replace(/%(\d)/g, function (_, i) { return a[i - 1]; });
+  }
+  // decimals follow the locale: 0.365 in English, 0,365 in German
+  function dec(x, n) {
+    var t = Number(x).toFixed(n);
+    return LANG === 'de' ? t.replace('.', ',') : t;
+  }
+
+  // ---------------------------------------------------------
   // Engine
   // ---------------------------------------------------------
   var slides = [], cur = 0, step = 0;
@@ -34,7 +58,7 @@
     counter.textContent = (cur + 1) + ' / ' + slides.length;
     var n = slides[cur].querySelector('template.notes');
     notesBody.innerHTML = n ? n.innerHTML
-      : '<p class="muted">No notes for this slide.</p>';
+      : '<p class="muted">' + tr('No notes for this slide.') + '</p>';
     initWidgets(slides[cur]);
     if (location.hash !== '#' + (cur + 1)) {
       history.replaceState(null, '', '#' + (cur + 1));
@@ -142,7 +166,7 @@
     });
   }
 
-  var fmt = function (x, n) { return Number(x).toFixed(n === undefined ? 3 : n); };
+  var fmt = function (x, n) { return dec(x, n === undefined ? 3 : n); };
   var sig = function (z) { return 1 / (1 + Math.exp(-z)); };
 
   // ---- 1. The neuron that learns AND -----------------------
@@ -153,7 +177,7 @@
     var w1 = 0.5, w2 = -0.4, b = 0.2, ETA = 1.0, epoch = 0;
 
     root.innerHTML =
-      '<h3>A neuron learning AND</h3>' +
+      '<h3>' + tr('A neuron learning AND') + '</h3>' +
       '<div class="ctrl"><label for="nw1">w&#8321;</label>' +
         '<input id="nw1" type="range" min="-8" max="8" step="0.1"><output id="ow1"></output></div>' +
       '<div class="ctrl"><label for="nw2">w&#8322;</label>' +
@@ -161,13 +185,15 @@
       '<div class="ctrl"><label for="nb">b</label>' +
         '<input id="nb" type="range" min="-14" max="6" step="0.1"><output id="ob"></output></div>' +
       '<table class="readout"><thead><tr>' +
-        '<th>x&#8321;</th><th>x&#8322;</th><th>target</th><th>z</th><th>&#375;</th><th>loss</th>' +
+        '<th>x&#8321;</th><th>x&#8322;</th><th>' + tr('target') + '</th><th>z</th>' +
+        '<th>&#375;</th><th>' + tr('loss') + '</th>' +
       '</tr></thead><tbody id="nrows"></tbody></table>' +
-      '<p class="tiny" style="margin:10px 0 0">mean loss <b id="nloss" class="mono"></b>' +
-        ' &middot; epoch <span id="nep" class="mono">0</span></p>' +
-      '<div class="btnrow"><button id="nstep">Train one step</button>' +
-        '<button id="nstep10" class="secondary">Run 50 steps</button>' +
-        '<button id="nreset" class="secondary">Reset</button></div>';
+      '<p class="tiny" style="margin:10px 0 0">' + tr('mean loss') +
+        ' <b id="nloss" class="mono"></b>' +
+        ' &middot; ' + tr('epoch') + ' <span id="nep" class="mono">0</span></p>' +
+      '<div class="btnrow"><button id="nstep">' + tr('Train one step') + '</button>' +
+        '<button id="nstep10" class="secondary">' + tr('Run 50 steps') + '</button>' +
+        '<button id="nreset" class="secondary">' + tr('Reset') + '</button></div>';
 
     var $ = function (id) { return root.querySelector('#' + id); };
 
@@ -228,13 +254,13 @@
     var T = 1.0;
 
     root.innerHTML =
-      '<h3>Sampling temperature</h3>' +
+      '<h3>' + tr('Sampling temperature') + '</h3>' +
       '<div class="ctrl"><label for="tT">T</label>' +
         '<input id="tT" type="range" min="0.1" max="2" step="0.05" value="1"><output id="tO">1.00</output></div>' +
       '<div class="bars" id="tBars"></div>' +
-      '<p class="tiny" style="margin-top:12px">Context: <span class="mono">' +
-        '&ldquo;The nightly run failed because it&rdquo;</span>. Fixed illustrative logits, ' +
-        'not a measurement of any model.</p>';
+      '<p class="tiny" style="margin-top:12px">' + tr('Context:') + ' <span class="mono">' +
+        '&ldquo;The nightly run failed because it&rdquo;</span>. ' +
+        tr('Fixed illustrative logits, not a measurement of any model.') + '</p>';
 
     var bars = root.querySelector('#tBars');
     function dist(t) {
@@ -252,19 +278,20 @@
         var pc = d.p[i] * 100;
         html += '<div class="bar"><code class="bar__k">' + tk.replace(/ /g, '&nbsp;') + '</code>' +
           '<div class="bar__t"><i style="width:' + Math.max(pc, 0.4) + '%"></i></div>' +
-          '<span class="bar__v">' + pc.toFixed(1) + '%</span></div>';
+          '<span class="bar__v">' + dec(pc, 1) + '%</span></div>';
       });
       var tc = d.tail * 100;
-      html += '<div class="bar bar--tail"><code class="bar__k">tail</code>' +
+      html += '<div class="bar bar--tail"><code class="bar__k">' + tr('tail') + '</code>' +
         '<div class="bar__t"><i style="width:' + Math.max(tc, 0.4) + '%"></i></div>' +
-        '<span class="bar__v">' + tc.toFixed(1) + '%</span></div>';
-      html += '<p class="tiny" style="margin:4px 0 0">&ldquo;tail&rdquo; = the other ' +
-        TAIL_N.toLocaleString('en-GB') + ' tokens combined</p>';
+        '<span class="bar__v">' + dec(tc, 1) + '%</span></div>';
+      html += '<p class="tiny" style="margin:4px 0 0">' +
+        trf('&ldquo;tail&rdquo; = the other %1 tokens combined',
+            TAIL_N.toLocaleString(LOC)) + '</p>';
       bars.innerHTML = html;
     }
     root.querySelector('#tT').addEventListener('input', function (e) {
       T = parseFloat(e.target.value);
-      root.querySelector('#tO').textContent = T.toFixed(2);
+      root.querySelector('#tO').textContent = dec(T, 2);
       draw();
     });
     draw();
@@ -288,12 +315,12 @@
     ];
     var sel = 5;
     root.innerHTML =
-      '<h3>Attention &mdash; choose a token to see what it draws on</h3>' +
+      '<h3>' + tr('Attention &mdash; choose a token to see what it draws on') + '</h3>' +
       '<div id="aToks" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px"></div>' +
       '<div class="bars" id="aBars"></div>' +
-      '<p class="tiny" style="margin-top:12px">Illustrative weights for one head in one layer. ' +
-      'Real models run many heads per layer and these patterns are not an explanation of the ' +
-      'model&rsquo;s output.</p>';
+      '<p class="tiny" style="margin-top:12px">' +
+      tr('Illustrative weights for one head in one layer. Real models run many heads per ' +
+         'layer and these patterns are not an explanation of the model&rsquo;s output.') + '</p>';
     function draw() {
       root.querySelector('#aToks').innerHTML = T.map(function (t, i) {
         return '<button class="' + (i === sel ? '' : 'secondary') +
@@ -307,8 +334,9 @@
           '<div class="bar__t"><i style="width:' + Math.max(pc, 1) + '%"></i></div>' +
           '<span class="bar__v">' + pc.toFixed(0) + '%</span></div>';
       });
-      html += '<p class="tiny" style="margin:4px 0 0">Positions to the right of &ldquo;' +
-        T[sel] + '&rdquo; are masked: a token may not see what follows it.</p>';
+      html += '<p class="tiny" style="margin:4px 0 0">' +
+        trf('Positions to the right of &ldquo;%1&rdquo; are masked: a token may not see ' +
+            'what follows it.', T[sel]) + '</p>';
       root.querySelector('#aBars').innerHTML = html;
       root.querySelectorAll('#aToks button').forEach(function (b) {
         b.addEventListener('click', function () { sel = +b.dataset.i; draw(); });
@@ -322,17 +350,17 @@
   // context, and that headroom is what everything else consumes.
   widgets.context = function (root) {
     var SRC = [
-      { k: 'system', label: 'System prompt + tools', tok: 4800, on: true, fixed: true, o: .95 },
-      { k: 'instr', label: 'Your instructions', tok: 1600, on: true, o: .76 },
-      { k: 'docs', label: 'Three vendor reports (full)', tok: 100000, on: false, o: .58 },
-      { k: 'extract', label: 'Extracted sections only', tok: 6000, on: true, o: .58 },
-      { k: 'data', label: 'Measurement summary', tok: 1200, on: true, o: .44 },
-      { k: 'hist', label: 'Conversation so far', tok: 9000, on: true, o: .34 },
-      { k: 'q', label: 'Your question', tok: 120, on: true, fixed: true, o: 1, practice: true }
+      { k: 'system', label: tr('System prompt + tools'), tok: 4800, on: true, fixed: true, o: .95 },
+      { k: 'instr', label: tr('Your instructions'), tok: 1600, on: true, o: .76 },
+      { k: 'docs', label: tr('Three vendor reports (full)'), tok: 100000, on: false, o: .58 },
+      { k: 'extract', label: tr('Extracted sections only'), tok: 6000, on: true, o: .58 },
+      { k: 'data', label: tr('Measurement summary'), tok: 1200, on: true, o: .44 },
+      { k: 'hist', label: tr('Conversation so far'), tok: 9000, on: true, o: .34 },
+      { k: 'q', label: tr('Your question'), tok: 120, on: true, fixed: true, o: 1, practice: true }
     ];
     var WINDOW = 200000;
     root.innerHTML =
-      '<h3>What is in the context</h3>' +
+      '<h3>' + tr('What is in the context') + '</h3>' +
       '<div class="budget" id="cBar"></div>' +
       '<p class="tiny" id="cSum" style="margin:2px 0 0"></p>' +
       '<div class="toggles" id="cTog"></div>';
@@ -350,17 +378,18 @@
       });
       html += '<div class="budget__seg" style="flex-grow:' + head +
         ';background:var(--rule-strong)">' +
-        (head / WINDOW > .08 ? 'headroom ' + Math.round(head / WINDOW * 100) + '%' : '') + '</div>';
+        (head / WINDOW > .08
+           ? trf('headroom %1%', Math.round(head / WINDOW * 100)) : '') + '</div>';
       root.querySelector('#cBar').innerHTML = html;
       root.querySelector('#cSum').innerHTML =
-        '<b class="mono">' + used.toLocaleString('en-GB') + '</b> of ' +
-        WINDOW.toLocaleString('en-GB') + ' tokens used &middot; your question is <b class="mono">' +
-        (120 / used * 100).toFixed(2) + '%</b> of it';
+        trf('<b class="mono">%1</b> of %2 tokens used &middot; your question is ' +
+            '<b class="mono">%3%</b> of it',
+            used.toLocaleString(LOC), WINDOW.toLocaleString(LOC), dec(120 / used * 100, 2));
       root.querySelector('#cTog').innerHTML = SRC.map(function (s, i) {
         return '<label class="toggle' + (s.on ? '' : ' is-off') + '">' +
           '<input type="checkbox" data-i="' + i + '"' + (s.on ? ' checked' : '') +
           (s.fixed ? ' disabled' : '') + '>' + s.label +
-          ' <span class="mono tiny">' + s.tok.toLocaleString('en-GB') + '</span></label>';
+          ' <span class="mono tiny">' + s.tok.toLocaleString(LOC) + '</span></label>';
       }).join('');
       root.querySelectorAll('#cTog input').forEach(function (cb) {
         cb.addEventListener('change', function () {
@@ -385,39 +414,43 @@
                  c(RATE.sm, 12000, 0, 800) + c(RATE.lg, 7000, 0, 3000);
       var agent = c(RATE.lg, 35000, 375200, 9800);
       return [
-        { n: '1 · One large model, single pass', v: one },
-        { n: '2 · One small model, single pass', v: small },
-        { n: '3 · Large plans, small models execute', v: plan },
-        { n: '4 · Agentic loop, 14 steps', v: agent }
+        { n: '1 · ' + tr('One large model, single pass'), v: one },
+        { n: '2 · ' + tr('One small model, single pass'), v: small },
+        { n: '3 · ' + tr('Large plans, small models execute'), v: plan },
+        { n: '4 · ' + tr('Agentic loop, 14 steps'), v: agent }
       ];
     }
     root.innerHTML =
-      '<h3>What one task costs</h3>' +
-      '<table class="readout"><thead><tr><th>Approach</th>' +
-      '<th class="num">Model cost</th><th class="num">Credits</th></tr></thead>' +
+      '<h3>' + tr('What one task costs') + '</h3>' +
+      '<table class="readout"><thead><tr><th>' + tr('Approach') + '</th>' +
+      '<th class="num">' + tr('Model cost') + '</th>' +
+      '<th class="num">' + tr('Credits') + '</th></tr></thead>' +
       '<tbody id="kRows"></tbody></table>' +
       '<div class="toggles" style="margin-top:14px">' +
-        '<label class="toggle"><input type="checkbox" id="kCache" checked> Prompt caching enabled</label>' +
+        '<label class="toggle"><input type="checkbox" id="kCache" checked> ' +
+        tr('Prompt caching enabled') + '</label>' +
       '</div>' +
       '<div class="ctrl" style="margin-top:12px;grid-template-columns:150px 1fr 84px">' +
-        '<label for="kRev">review min</label>' +
+        '<label for="kRev">' + tr('review min') + '</label>' +
         '<input id="kRev" type="range" min="0" max="60" step="5" value="20"><output id="kRevO">20</output></div>' +
       '<p class="tiny" id="kCmp" style="margin:4px 0 0"></p>' +
-      '<p class="tiny" style="margin-top:10px">Illustrative rates in US$ per million tokens: ' +
-      'large 3.00 in / 0.30 cached / 15.00 out; small 0.25 / 0.025 / 1.25. ' +
-      'Credits shown at 1 credit = $0.01. Substitute your own current figures.</p>';
+      '<p class="tiny" style="margin-top:10px">' +
+      tr('Illustrative rates in US$ per million tokens: large 3.00 in / 0.30 cached / ' +
+         '15.00 out; small 0.25 / 0.025 / 1.25. Credits shown at 1 credit = $0.01. ' +
+         'Substitute your own current figures.') + '</p>';
     function draw() {
       var rows = calc();
       root.querySelector('#kRows').innerHTML = rows.map(function (r) {
-        return '<tr><td>' + r.n + '</td><td class="num">$' + r.v.toFixed(3) +
+        return '<tr><td>' + r.n + '</td><td class="num">$' + dec(r.v, 3) +
           '</td><td class="num">' + (r.v * 100).toFixed(0) + '</td></tr>';
       }).join('');
       var human = rev / 60 * wage;
       var m = rows[0].v;
       root.querySelector('#kCmp').innerHTML =
-        rev === 0 ? 'No verification time counted.' :
-        'Verification at ' + rev + ' min &times; $' + wage + '/h = <b>$' + human.toFixed(2) +
-        '</b>, about <b>' + Math.round(human / m) + '&times;</b> the model cost of approach 1.';
+        rev === 0 ? tr('No verification time counted.') :
+        trf('Verification at %1 min &times; $%2/h = <b>$%3</b>, about <b>%4&times;</b> ' +
+            'the model cost of approach 1.',
+            rev, wage, dec(human, 2), Math.round(human / m));
     }
     root.querySelector('#kCache').addEventListener('change', function (e) {
       cache = e.target.checked; draw();
@@ -434,26 +467,29 @@
   // Objective: see that "best" depends on which axis you weight.
   widgets.compare = function (root) {
     var MODELS = [
-      { n: 'Large, high effort', q: 95, c: 100, l: 100 },
-      { n: 'Large, low effort', q: 86, c: 42, l: 34 },
-      { n: 'Small, high effort', q: 78, c: 18, l: 46 },
-      { n: 'Small, low effort', q: 64, c: 6, l: 12 }
+      { n: tr('Large, high effort'), q: 95, c: 100, l: 100 },
+      { n: tr('Large, low effort'), q: 86, c: 42, l: 34 },
+      { n: tr('Small, high effort'), q: 78, c: 18, l: 46 },
+      { n: tr('Small, low effort'), q: 64, c: 6, l: 12 }
     ];
     var wq = 60, wc = 25, wl = 15;
     root.innerHTML =
-      '<h3>Weighting the three axes</h3>' +
-      '<div class="ctrl"><label for="mq">quality</label>' +
+      '<h3>' + tr('Weighting the three axes') + '</h3>' +
+      '<div class="ctrl"><label for="mq">' + tr('quality') + '</label>' +
         '<input id="mq" type="range" min="0" max="100" step="5" value="60"><output id="mqO">60</output></div>' +
-      '<div class="ctrl"><label for="mc">cost</label>' +
+      '<div class="ctrl"><label for="mc">' + tr('cost') + '</label>' +
         '<input id="mc" type="range" min="0" max="100" step="5" value="25"><output id="mcO">25</output></div>' +
-      '<div class="ctrl"><label for="ml">speed</label>' +
+      '<div class="ctrl"><label for="ml">' + tr('speed') + '</label>' +
         '<input id="ml" type="range" min="0" max="100" step="5" value="15"><output id="mlO">15</output></div>' +
-      '<table class="readout"><thead><tr><th>Option</th><th class="num">quality</th>' +
-      '<th class="num">cost</th><th class="num">latency</th><th class="num">score</th>' +
+      '<table class="readout"><thead><tr><th>' + tr('Option') + '</th>' +
+      '<th class="num">' + tr('quality') + '</th>' +
+      '<th class="num">' + tr('cost') + '</th>' +
+      '<th class="num">' + tr('latency') + '</th>' +
+      '<th class="num">' + tr('score') + '</th>' +
       '</tr></thead><tbody id="mRows"></tbody></table>' +
-      '<p class="tiny" style="margin-top:10px">Illustrative profiles, not measurements. ' +
-      'The point is that the ranking changes with the weighting, so &ldquo;best&rdquo; is not a ' +
-      'property of a model alone.</p>';
+      '<p class="tiny" style="margin-top:10px">' +
+      tr('Illustrative profiles, not measurements. The point is that the ranking changes ' +
+         'with the weighting, so &ldquo;best&rdquo; is not a property of a model alone.') + '</p>';
     function draw() {
       var tot = wq + wc + wl || 1;
       var scored = MODELS.map(function (m) {
@@ -464,7 +500,7 @@
         return '<tr><td>' + (i === 0 ? '<b>' + r.m.n + '</b>' : r.m.n) + '</td>' +
           '<td class="num">' + r.m.q + '</td><td class="num">' + r.m.c + '</td>' +
           '<td class="num">' + r.m.l + '</td><td class="num ' + (i === 0 ? 'ok' : '') + '">' +
-          r.s.toFixed(1) + '</td></tr>';
+          dec(r.s, 1) + '</td></tr>';
       }).join('');
     }
     [['mq', 'wq'], ['mc', 'wc'], ['ml', 'wl']].forEach(function (p) {

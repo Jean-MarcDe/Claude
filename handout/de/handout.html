@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Von Tokens zu Entscheidungen — Referenzblatt</title>
+<meta name="description" content="Kompakte druckbare Referenz zum Kurs Tokens to Decisions: Funktionsweise von Sprachmodellen und ihr Betrieb.">
+<style>
+/* ============================================================
+   Tokens to Decisions — reference handout
+   Print-first. A4, two-column prose, full-width tables.
+   Palette and type match the course and the workshop deck.
+   No external resources: system fonts only.
+   ============================================================ */
+
+:root{
+  --paper:#ffffff;
+  --surface:#f4f6f8;
+  --surface-2:#e8edf1;
+  --ink:#0f1820;
+  --ink-soft:#44525e;
+  --ink-faint:#6b7a86;
+  --rule:#cfd8df;
+  --rule-strong:#a9b7c2;
+  --accent:#06697b;          /* mechanism */
+  --accent-soft:#e3f0f2;
+  --practice:#8c4a0c;        /* practice, decisions */
+  --practice-soft:#f8efe4;
+  --danger:#99232a;
+  --danger-soft:#f9e8e8;
+
+  --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --mono: "SF Mono", "Cascadia Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  color-scheme: light;
+}
+
+@media screen and (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0b1116; --surface:#131c23; --surface-2:#1c262e;
+    --ink:#e6edf3; --ink-soft:#a6b4bf; --ink-faint:#8795a1;
+    --rule:#27333c; --rule-strong:#3c4d59;
+    --accent:#50c5d8; --accent-soft:#0e3038;
+    --practice:#dd9a55; --practice-soft:#33240f;
+    --danger:#e58a8d; --danger-soft:#381c1f;
+    color-scheme: dark;
+  }
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 10.2pt/1.42 var(--serif);
+  text-rendering:optimizeLegibility;
+}
+.page{max-width:186mm; margin:0 auto; padding:16mm 10mm 20mm}
+
+/* ---------- masthead ---------- */
+.masthead{border-bottom:2px solid var(--ink); padding-bottom:7pt; margin-bottom:12pt}
+.eyebrow{
+  font:600 7.4pt/1 var(--sans); letter-spacing:.13em; text-transform:uppercase;
+  color:var(--accent); margin:0 0 5pt
+}
+h1{font:600 20pt/1.1 var(--sans); margin:0 0 5pt; letter-spacing:-.01em}
+.standfirst{margin:0; color:var(--ink-soft); font-size:9.6pt; max-width:132mm}
+.wayfinding{
+  margin:7pt 0 0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:3pt 14pt;
+  font:400 8.2pt/1.3 var(--sans); color:var(--ink-faint)
+}
+.wayfinding b{font-weight:600; color:var(--ink-soft)}
+.wayfinding code{font-size:7.8pt}
+
+/* ---------- structure ---------- */
+h2{
+  font:600 13.2pt/1.15 var(--sans); margin:0 0 9pt; padding-bottom:4pt;
+  border-bottom:1px solid var(--rule-strong); letter-spacing:-.01em;
+  break-after:avoid; page-break-after:avoid
+}
+.part{break-before:page; page-break-before:always; padding-top:2pt}
+.part:first-of-type{break-before:auto; page-break-before:auto; padding-top:0}
+h3{
+  font:600 9.2pt/1.2 var(--sans); letter-spacing:.1em; text-transform:uppercase;
+  color:var(--practice); margin:13pt 0 6pt;
+  break-after:avoid; page-break-after:avoid
+}
+h3:first-of-type{margin-top:0}
+h4{
+  font:600 10.2pt/1.25 var(--sans); margin:9pt 0 3pt; color:var(--ink);
+  break-after:avoid; page-break-after:avoid
+}
+p{margin:0 0 5.5pt; orphans:2; widows:2}
+.cols{columns:2; column-gap:9mm; column-rule:1px solid var(--rule)}
+.cols > *:first-child{margin-top:0}
+.cols p:last-child{margin-bottom:0}
+
+/* ---------- definitions ---------- */
+.term{font-weight:600; font-family:var(--sans); font-size:9.6pt}
+.term + .gloss{color:var(--ink-faint)}
+dfn{font-style:normal; font-weight:600}
+p.def{margin-bottom:6.5pt}
+p.def .term{color:var(--accent)}
+
+em.key{font-style:italic}
+strong{font-weight:600}
+code{
+  font:400 8.8pt/1 var(--mono); background:var(--surface-2);
+  padding:.7pt 2.4pt; border-radius:2px
+}
+
+/* ---------- maths / formula blocks ---------- */
+.formula{
+  break-inside:avoid; page-break-inside:avoid;
+  margin:0 0 6pt; padding:5pt 7pt;
+  background:var(--surface); border-left:2.5pt solid var(--accent);
+  font:400 9pt/1.5 var(--mono); white-space:pre-wrap
+}
+.formula .ann{
+  display:block; margin-top:3pt; font:400 8.4pt/1.35 var(--serif); color:var(--ink-soft);
+  white-space:normal
+}
+
+/* ---------- note boxes ---------- */
+.note{
+  break-inside:avoid; page-break-inside:avoid;
+  margin:0 0 6pt; padding:5.5pt 7pt;
+  background:var(--surface); border-left:2.5pt solid var(--rule-strong);
+  font-size:9.6pt
+}
+.note p:last-child{margin-bottom:0}
+.note.warn{background:var(--danger-soft); border-left-color:var(--danger)}
+.note.act{background:var(--practice-soft); border-left-color:var(--practice)}
+.note .lbl{
+  font:600 7.6pt/1 var(--sans); letter-spacing:.11em; text-transform:uppercase;
+  display:block; margin-bottom:3pt; color:var(--ink-soft)
+}
+.note.warn .lbl{color:var(--danger)}
+.note.act .lbl{color:var(--practice)}
+
+/* ---------- lists ---------- */
+ul.tight{margin:0 0 6pt; padding-left:12pt}
+ul.tight li{margin-bottom:2.2pt}
+ul.tight.two{columns:2; column-gap:9mm}
+
+/* ---------- tables ---------- */
+table{
+  width:100%; border-collapse:collapse; margin:0 0 8pt;
+  font:400 9pt/1.32 var(--sans);
+  break-inside:avoid; page-break-inside:avoid
+}
+caption{
+  caption-side:top; text-align:left;
+  font:600 9.2pt/1.25 var(--sans); color:var(--ink);
+  padding:0 0 3.5pt
+}
+caption .q{font-weight:400; color:var(--ink-faint)}
+th,td{
+  text-align:left; vertical-align:top;
+  padding:3.2pt 6pt 3.2pt 0; border-bottom:1px solid var(--rule)
+}
+th{
+  font-weight:600; font-size:8pt; letter-spacing:.055em; text-transform:uppercase;
+  color:var(--ink-soft); border-bottom:1px solid var(--rule-strong)
+}
+thead th{white-space:nowrap}
+tbody tr:last-child td{border-bottom:1px solid var(--rule-strong)}
+td:first-child{padding-right:8pt}
+td.k{font-weight:600; width:30%}
+td.k2{font-weight:600; width:22%}
+table.three td:first-child{width:26%}
+table.three td:nth-child(2){width:30%}
+tfoot td{
+  border-bottom:none; padding-top:4pt;
+  font:400 8.4pt/1.35 var(--serif); color:var(--ink-soft)
+}
+.ref{
+  font:400 8pt/1 var(--sans); color:var(--ink-faint); white-space:nowrap
+}
+
+/* ---------- colophon ---------- */
+.colophon{
+  margin-top:12pt; padding-top:7pt; border-top:2px solid var(--ink);
+  font-size:9.4pt
+}
+a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft)}
+
+/* ---------- print ---------- */
+@page{ size:A4; margin:13mm 12mm 12mm; }
+@media print{
+  :root{
+    --paper:#fff; --surface:#f3f5f7; --surface-2:#e9edf0;
+    --ink:#000; --ink-soft:#3a4651; --ink-faint:#5d6973;
+    --rule:#c3ccd3; --rule-strong:#8d9aa4;
+    --accent:#05505f; --practice:#7a3f08; --danger:#8a1f26;
+  }
+  body{font-size:9.3pt; line-height:1.38; background:#fff}
+  .page{max-width:none; margin:0; padding:0}
+  h1{font-size:18pt}
+  h2{font-size:12.4pt}
+  .screen-only{display:none}
+  table,.note,.formula{break-inside:avoid; page-break-inside:avoid}
+  a{color:inherit; border-bottom:none}
+  .cols{column-gap:8mm}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+</style>
+<style>
+/* Deutsche Fassung: Silbentrennung, weil Komposita in schmalen Spalten sonst
+   große Lücken im Blocksatz erzeugen. Erfordert lang="de" am <html>. */
+body{hyphens:auto;-webkit-hyphens:auto;hyphenate-limit-chars:7 3 3}
+th,td,.formula{hyphens:manual;-webkit-hyphens:manual}
+caption .q{hyphens:auto}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="masthead">
+  <p class="eyebrow">Referenzblatt</p>
+  <h1>Von Tokens zu Entscheidungen</h1>
+  <p class="standfirst">Die Definitionen, Zusammenhänge und Entscheidungskriterien, die im
+  Arbeitsalltag nachgeschlagen werden. Das Blatt wiederholt den Kurs nicht; es ist das, was nach dem
+  Kurs zur Hand bleibt. Die Ziffern am rechten Rand verweisen auf den Kursabschnitt, der den Eintrag
+  entwickelt.</p>
+  <ul class="wayfinding">
+    <li><b>Kurs (englisch)</b> <code>../../course/index.html</code></li>
+    <li><b>Foliensatz</b> <code>../../presentation/de/index.html</code></li>
+    <li><b>Englische Fassung</b> <code>../handout.html</code></li>
+  </ul>
+</header>
+
+<section class="part">
+<h2>Teil Eins · Funktionsweise des Modells</h2>
+
+<div class="note"><span class="lbl">Zur Sprache</span><p>Der Kurs ist auf Englisch verfasst. Dieses
+Blatt verwendet die im deutschsprachigen Fachgebrauch üblichen Begriffe und nennt bei der ersten
+Erwähnung den englischen Originalbegriff. Der Abschnitt <em>Terminologie</em> am Ende enthält die
+vollständige Zuordnung beider Formen.</p></div>
+
+<h3>Lernen und Training</h3>
+<div class="cols">
+<p class="def"><span class="term">Maschinelles Lernen</span> <span class="ref">1.1</span> — die
+Regeln werden durch ein Suchverfahren ermittelt und nicht von einer Person geschrieben. Beim
+<dfn>überwachten Lernen</dfn> werden Eingaben zusammen mit den gewünschten Ausgaben vorgegeben. Beim
+<dfn>selbstüberwachten Lernen</dfn> werden die Zielwerte aus den Daten selbst gebildet; so werden
+Sprachmodelle trainiert: Der folgende Textabschnitt wird verdeckt und vorhergesagt. Eine Annotation
+entfällt, die Menge verfügbarer Trainingsdaten ist daher praktisch unbegrenzt.</p>
+
+<p class="def"><span class="term">Neuronales Netz</span> <span class="ref">1.2</span> — Schichten
+einfacher Einheiten. Jede Einheit bildet eine gewichtete Summe ihrer Eingaben, addiert eine Konstante
+und wendet eine nichtlineare Funktion an. Ohne diese Nichtlinearität lassen sich gestapelte Schichten
+algebraisch zu einer einzigen Schicht zusammenfassen, und eine einzelne Schicht kann bereits das
+Exklusiv-Oder nicht darstellen.</p>
+
+<p class="def"><span class="term">Parameter</span> <span class="ref">1.2</span> — die gelernten
+Zahlen: die <dfn>Gewichte</dfn>, mit denen jede Eingabe multipliziert wird, und der <dfn>Bias</dfn>,
+der zur Summe addiert wird. Ein aktuelles großes Modell hat in der Größenordnung von 10<sup>11</sup>
+Parameter. Davon zu unterscheiden sind <dfn>Hyperparameter</dfn> — Anzahl der Schichten, Lernrate,
+Batch-Größe —, die vor dem Training festgelegt und nicht gelernt werden.</p>
+
+<p class="formula">z = w₁x₁ + w₂x₂ + b
+ŷ = σ(z) = 1 / (1 + e<sup>−z</sup>)<span class="ann">Eine Einheit, zwei Eingaben. Alles, was ein
+neuronales Netz tut, ist dieser Vorgang, vielfach wiederholt.</span></p>
+
+<p class="def"><span class="term">Verlustfunktion</span> <span class="ref">1.3, 1.9</span> — eine
+einzelne Zahl, die angibt, wie falsch eine Vorhersage war, und zugleich die vollständige
+Spezifikation des Trainingsziels: Das Modell lernt genau das, was diese Zahl verringert. Für einfache
+Regression eignet sich der quadratische Fehler ½(ŷ − y)². Sprachmodelle verwenden die
+<dfn>Kreuzentropie</dfn>, also −log der Wahrscheinlichkeit, die dem tatsächlich aufgetretenen Token
+zugewiesen wurde. Sie bestraft eine Wahrscheinlichkeit nahe null für ein Ereignis, das dann
+eintritt.</p>
+
+<p class="def"><span class="term">Gradientenabstieg</span> <span class="ref">1.4</span> — die
+Steigung der Verlustfunktion wird bezüglich jedes Parameters berechnet, anschließend wird jeder
+Parameter um einen kleinen Betrag in Richtung des Abstiegs verschoben. Ist die Schrittweite zu klein,
+verläuft das Training sehr langsam; ist sie zu groß, überschreitet jeder Schritt das Ziel. In der
+Praxis wird der Gradient aus einem kleinen zufälligen Batch geschätzt und nicht aus dem gesamten
+Datenbestand.</p>
+
+<p class="formula">w ← w − η · ∂L/∂w<span class="ann">η ist die Lernrate. Diese eine Zeile, über
+Monate auf 10<sup>11</sup> Parameter angewendet, ist das gesamte Training.</span></p>
+
+<p class="def"><span class="term">Backpropagation</span> <span class="ref">1.6</span> — ein
+Verfahren, das alle benötigten Ableitungen in einem einzigen Rückwärtslauf berechnet, mit etwa dem
+Aufwand eines zusätzlichen Vorwärtslaufs. Backpropagation berechnet Ableitungen; der
+Gradientenabstieg führt die Anpassung durch. Beide Begriffe werden häufig gleichgesetzt und
+bezeichnen verschiedene Vorgänge.</p>
+
+<p class="def"><span class="term">Generalisierung und Überanpassung</span> <span class="ref">1.7</span>
+— maßgeblich ist das Verhalten bei Eingaben, die nie gesehen wurden. Ein Modell mit ausreichender
+Kapazität kann seine Trainingsdaten auswendig lernen und bei neuen Eingaben schlecht abschneiden; ein
+zurückgehaltener Datensatz macht dies sichtbar. Große Modelle behalten zudem wörtliche Ausschnitte
+der Trainingsdaten, was eine lizenzrechtliche Frage unabhängig von der Qualität ist.</p>
+
+<p class="def"><span class="term">Inferenz</span> <span class="ref">1.8</span> — die Anwendung des
+trainierten Modells. Die Parameter sind unveränderlich, es wird nichts zurückgeschrieben, und keine
+Nutzung verändert das Modell. Was wie Erinnerung wirkt, ist stets Text, den die umgebende Software
+erneut übermittelt hat.</p>
+</div>
+
+<h3>Von Text zu Vorhersage</h3>
+<div class="cols">
+<p class="def"><span class="term">Token</span> <span class="ref">2.1</span> — ein Textabschnitt aus
+einem festen Vokabular von etwa 100.000 bis 200.000 Einträgen. Das Vokabular wird vor dem Training
+gebildet, indem wiederholt das häufigste benachbarte Zeichenpaar zusammengefasst wird
+(<dfn>Byte-Pair-Encoding</dfn>). Die Häufigkeit bestimmt die Granularität: Häufige Wörter bilden ein
+Token, seltene mehrere. Ein führendes Leerzeichen gehört zum jeweiligen Token, und das Modell kann
+die einzelnen Zeichen innerhalb eines Tokens nicht erkennen — daher sind Aufgaben auf Zeichenebene
+unerwartet schwierig.</p>
+
+<p class="def"><span class="term">Spracheffekte</span> <span class="ref">2.5</span> — das Vokabular
+wurde aus einem Korpus gebildet, in dem Englisch und Quellcode überwiegen. Derselbe Inhalt benötigt
+in den meisten anderen Sprachen mehr Tokens. Für Deutsch ist dieser Effekt relevant: Komposita und
+längere Wortformen werden in mehrere Tokens zerlegt, sodass ein deutscher Text in der Regel mehr
+Tokens benötigt als die englische Entsprechung. Das wirkt unmittelbar auf die Kosten und über das
+Kontextfenster darauf, wie viel Material hineinpasst. Der Faktor ist für die eigenen Texte zu messen
+und nicht zu schätzen.</p>
+
+<p class="def"><span class="term">Embedding</span> <span class="ref">2.3</span> — die erste Schicht
+ist eine Tabelle mit einer Zeile je Vokabulareintrag. Die über die Token-Kennung ausgewählte Zeile
+ist das <dfn>statische Embedding</dfn>, geschrieben <strong>e</strong>(<em>t</em>). Das Training
+ordnet die Zeilen so an, dass ähnlich verwendete Tokens benachbart liegen.</p>
+
+<div class="note"><span class="lbl">Häufige Fehldeutung</span><p>Einzelne Dimensionen eines
+Embeddings entsprechen <strong>keinen</strong> interpretierbaren Eigenschaften. Bedeutungstragende
+Richtungen setzen sich aus vielen Koordinaten zusammen, und die üblichen zweidimensionalen
+Darstellungen sind Projektionen, die nahezu die gesamte Struktur verwerfen.</p></div>
+
+<p class="def"><span class="term">Kontextuelle Repräsentation</span> <span class="ref">3.2</span> —
+geschrieben <strong>h</strong><sub>i</sub><sup>(l)</sup>, der Vektor an Position <em>i</em> nach
+Schicht <em>l</em>, nachdem Attention Informationen aus anderen Positionen eingemischt hat. Ein
+statisches Embedding je Token, viele kontextuelle Repräsentationen. Diese Unterscheidung ist die
+wichtigste in Teil Eins: Das erste ist eine Eigenschaft eines Wortes, das zweite eine Eigenschaft
+eines Wortes <em>in einem Satz</em>.</p>
+
+<p class="def"><span class="term">Attention</span> <span class="ref">3.2, 3.3</span> — jede Position
+erzeugt eine Anfrage (query), die beschreibt, welche Information sie benötigt; jede Position bietet
+einen Schlüssel (key) an, der beschreibt, welche Information sie trägt; jede Position erhält eine
+gewichtete Mischung der Werte (values) der übrigen Positionen. Die Skalierung mit √d<sub>k</sub> hält
+die Softmax-Funktion außerhalb ihres gesättigten Bereichs, in dem die Gradienten verschwinden. Der
+Aufwand wächst quadratisch mit der Sequenzlänge; lange Kontexte sind deshalb teuer und nicht nur
+groß.</p>
+
+<p class="formula">Attention(Q,K,V) = softmax( QKᵀ / √d<sub>k</sub> ) V<span class="ann">Attention-Gewichte
+zeigen, woher Information bezogen wurde. Sie sind keine Erklärung der Ausgabe und sollten nicht als
+solche dargestellt werden.</span></p>
+
+<p class="def"><span class="term">Transformer</span> <span class="ref">3.4</span> — gestapelte
+Blöcke, die jeweils Multi-Head-Attention mit einem Feed-Forward-Netz verbinden, mit
+Residualverbindungen und Normalisierung um beide. Attention bewegt Information zwischen Positionen;
+das Feed-Forward-Netz verarbeitet Information an einer Position. Residualverbindungen machen große
+Tiefe trainierbar.</p>
+
+<p class="def"><span class="term">Logits und Softmax</span> <span class="ref">3.5</span> — der
+Vorwärtslauf endet mit einem Rohwert je Vokabulareintrag. Die Softmax-Funktion exponenziert und
+normiert diese Werte zu einer Wahrscheinlichkeitsverteilung mit der Summe eins.</p>
+
+<p class="def"><span class="term">Temperatur</span> <span class="ref">4.3, 4.4</span> — teilt die
+Logits vor der Softmax-Funktion. Werte unter 1 verschärfen die Verteilung, Werte über 1 flachen sie
+ab. Das Abflachen hebt die Wahrscheinlichkeit des <em>gesamten</em> Vokabulars an, und dieser Rest
+ist groß: Bei etwa 200.000 Tokens summiert sich ein geringer Zuwachs je Token zum überwiegenden Teil
+der Wahrscheinlichkeitsmasse. <dfn>Top-p</dfn> beschränkt vor dem Ziehen auf die kleinste Menge von
+Tokens, deren Wahrscheinlichkeiten sich zu p summieren; deshalb wird das Verfahren in der Praxis
+zusammen mit der Temperatur eingesetzt.</p>
+
+<p class="formula">p(t) = e<sup>z<sub>t</sub>/T</sup> / Σ e<sup>z<sub>t′</sub>/T</sup><span class="ann">Eine
+höhere Temperatur macht ein Modell nicht kreativer. Sie macht es weniger auswählend.</span></p>
+
+<p class="def"><span class="term">Autoregression</span> <span class="ref">4.6</span> — ein Token je
+Vorwärtslauf. Das Token wird an den Kontext angehängt, anschließend läuft der gesamte Vorgang erneut.
+Daraus folgen drei Konsequenzen: Die Kosten wachsen mit der Kontextlänge, frühe Fehler verstärken
+sich, weil sie zur Eingabe werden, und erzeugter Text ist von zugeliefertem Text nicht mehr zu
+unterscheiden.</p>
+
+<p class="def"><span class="term">Kontextfenster</span> <span class="ref">4.7</span> — die maximale
+Eingabe in Tokens. Der Platz ist begrenzt und wird geteilt: Anweisungen konkurrieren mit Material um
+denselben Raum. Eine veröffentlichte Länge beschreibt, was <em>entgegengenommen</em> wird, nicht, wie
+zuverlässig Material an beliebiger Stelle <em>verwendet</em> wird. Das Auffinden einer bestimmten
+Angabe wird mit wachsender Eingabe unzuverlässiger; der mittlere Bereich eines langen Kontexts ist
+der schwächste.</p>
+
+<p class="def"><span class="term">Halluzination</span> <span class="ref">4.8</span> — flüssige,
+inhaltlich falsche Ausgabe. Kein Schritt des Verfahrens prüft eine Aussage gegen die Wirklichkeit;
+das Modell erzeugt eine plausible Fortsetzung, und plausibel ist nicht dasselbe wie zutreffend. Es
+handelt sich um denselben Mechanismus, der korrekte Antworten erzeugt, angewendet auf einen Bereich,
+in dem die Trainingsdaten ihn nicht eingeschränkt haben. Gegenmaßnahmen sind daher struktureller Art
+— Retrieval, Quellenangaben, Prüfung — und keine nachträgliche Korrektur.</p>
+
+<p class="def"><span class="term">Pretraining und Post-Training</span> <span class="ref">5.1</span> —
+das Pretraining auf der Vorhersage des nächsten Tokens liefert das Wissen. Das <dfn>überwachte
+Nachtrainieren</dfn> vermittelt anschließend das Frage-Antwort-Format, und das <dfn>präferenzbasierte
+Nachtrainieren</dfn> (RLHF und verwandte Verfahren) prägt Tonfall, Hilfsbereitschaft und
+Ablehnungsverhalten — und damit auch eine messbare Neigung, der fragenden Person zuzustimmen.
+Sicherheitsverhalten ist eine antrainierte Disposition und keine technisch erzwungene
+Beschränkung.</p>
+</div>
+
+<h3>Systeme um das Modell</h3>
+<div class="cols">
+<p class="def"><span class="term">Harness</span> <span class="ref">5.4</span> — das Programm, das das
+Modell umgibt: Es stellt den Kontext zusammen, liefert die Tool-Definitionen, wertet die Ausgabe aus,
+führt Tool-Aufrufe durch und entscheidet über den Abbruch. Zwei Harnesses um dasselbe Modell sind
+zwei verschiedene Produkte, und das meiste, was dem Modell zugeschrieben wird, stammt aus dem
+Harness.</p>
+
+<p class="def"><span class="term">Tool und Tool-Aufruf</span> <span class="ref">5.8</span> — das
+Modell gibt eine strukturierte Anforderung aus, die ein Tool und dessen Argumente benennt; der
+Harness prüft die Berechtigungen, führt den Code aus und hängt das Ergebnis an den Kontext an. Das
+Modell führt nichts selbst aus. Tool-Beschreibungen sind Teil des Prompts, und Tool-Ergebnisse sind
+nicht vertrauenswürdige Eingaben.</p>
+
+<p class="def"><span class="term">Agentische Schleife</span> <span class="ref">5.9</span> —
+beobachten, entscheiden, handeln, wiederholen, bis eine Abbruchbedingung erfüllt ist. Die
+Zuverlässigkeit hängt weniger vom Modell ab als von der Qualität der Rückmeldung innerhalb der
+Schleife: Eine Schleife, die ihr eigenes Ergebnis prüfen kann, konvergiert; eine Schleife ohne diese
+Möglichkeit entfernt sich vom Ziel.</p>
+
+<p class="def"><span class="term">Retrieval (RAG)</span> <span class="ref">5.11</span> — Dokumente
+werden einmalig eingebettet, zu einer Frage werden die nächstgelegenen Abschnitte ermittelt und in
+den Kontext eingefügt. Dies ist die wirksamste Einzelmaßnahme gegen Halluzination, weil sie Abruf aus
+dem Gedächtnis durch Lesen ersetzt. Die auftretenden Fehler sind Suchfehler; zur Fehlersuche ist
+daher zu prüfen, was abgerufen wurde, und nicht die Frage umzuformulieren.</p>
+
+<p class="def"><span class="term">Prompt Injection</span> <span class="ref">6.1, 6.2</span> — Text,
+der dort platziert wird, wo ein Modell ihn liest, und als Anweisung formuliert ist. Bei der
+<dfn>indirekten</dfn> Variante steht der Text in einem Dokument, einer Webseite oder einem Datensatz
+aus externer Quelle. Das Verfahren funktioniert, weil Anweisungen und Daten denselben Eingabekanal
+verwenden und die Architektur die Herkunft nicht festhält; es ist eine strukturelle Eigenschaft und
+kein Fehler, für den eine Korrektur aussteht.</p>
+</div>
+</section>
+
+<section class="part">
+<h2>Teil Zwei · Betrieb des Systems</h2>
+
+<h3>Modellauswahl</h3>
+
+<table>
+<caption>Welche Eigenschaft für welche Arbeit zählt <span class="q">— für die jeweilige Aufgabe zu gewichten, statt nach dem besten Modell zu suchen</span></caption>
+<thead><tr><th>Eigenschaft</th><th>Besonders wichtig bei</th></tr></thead>
+<tbody>
+<tr><td class="k">Leistung bei schwierigen Aufgaben</td><td>Mehrstufiger Arbeit, bei der sich ein früher Fehler durch alles Folgende fortsetzt</td></tr>
+<tr><td class="k">Befolgen von Anweisungen</td><td>Vorgaben, die über eine lange Ausgabe hinweg gelten müssen, nicht nur im ersten Absatz</td></tr>
+<tr><td class="k">Strukturierte Ausgabe</td><td>Einer vorgegebenen Form — Tabelle, Schema, feste Felder — zuverlässig bei jedem Durchlauf</td></tr>
+<tr><td class="k">Tool-Nutzung</td><td>Auswahl des richtigen Tools, sinnvollen Argumenten und korrekter Auswertung des Ergebnisses</td></tr>
+<tr><td class="k">Verarbeitung langer Kontexte</td><td>Material, das weit vom Ende des Fensters entfernt steht und dennoch verwendet werden muss</td></tr>
+<tr><td class="k">Antwortzeit</td><td>Dialogbetrieb mit häufigem Wechsel, bei dem Wartezeit den Arbeitsfluss unterbricht</td></tr>
+<tr><td class="k">Kosten</td><td>Allem, was wiederholt ausgeführt wird und wo sich ein kleiner Unterschied je Aufruf summiert</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p class="def"><span class="term">Reasoning Effort</span> <span class="ref">8.1</span> — eine
+Einstellung je Aufgabe bei Modellen, die sie unterstützen, und keine feste Eigenschaft des Modells.
+Zusätzliche Berechnung zur Laufzeit hilft bei Aufgaben mit tatsächlicher Schlussfolgerungstiefe; bei
+Abruf oder Umformatierung erhöht sie Kosten und Antwortzeit, ohne die Antwort zu verbessern. Das
+Ausmaß des Nutzens hängt von Modell, Aufgabe und Budget ab und ist durch Vergleich an der eigenen
+Arbeit zu bestimmen, nicht durch Annahme.</p>
+
+<p class="def"><span class="term">Benchmarks</span> <span class="ref">8.2</span> — als erster Filter
+geeignet, nicht als Entscheidungsgrundlage. Zusammengesetzte Indizes enthalten eine Gewichtung, die
+jemand anderes festgelegt hat; die Testbedingungen unterscheiden sich zwischen veröffentlichten
+Werten; Benchmark-Inhalte gelangen in spätere Trainingsdaten; gesättigte Benchmarks verringern
+sichtbare Unterschiede bis zur Zufallsschwelle; und keiner von ihnen bildet die eigene Aufgabe ab.
+Geeignet sind sie, um aus dreißig Kandidaten drei auszuwählen.</p>
+
+<p class="def"><span class="term">Eigene Evaluation</span> <span class="ref">8.3, 14.2</span> — fünf
+bis zehn reale Aufgaben mit bekanntem Sollergebnis; Abnahmekriterien, die <em>vor</em> den
+Durchläufen festgelegt werden; je Aufgabe drei Durchläufe, da die Ausgabe gezogen wird und ein
+einzelner Durchlauf den Zufall misst; Bewertung anhand der Kriterien unter Erfassung von Kosten und
+Dauer. Der Aufwand beträgt etwa einen halben Tag und beantwortet die Frage, die eine Rangliste nicht
+beantworten kann.</p>
+</div>
+
+<h3>Kosten</h3>
+
+<table class="three">
+<caption>Fünf Einheiten, die regelmäßig verwechselt werden <span class="q">— die Umrechnung zwischen ihnen ist nicht festgelegt</span></caption>
+<thead><tr><th>Einheit</th><th>Was sie bezeichnet</th><th>Festgelegt durch</th></tr></thead>
+<tbody>
+<tr><td class="k">Token</td><td>Ein verarbeiteter Textabschnitt</td><td>Den Tokenizer — technisch, nicht kommerziell</td></tr>
+<tr><td class="k">Modellaufruf</td><td>Eine Anfrage mit eigenem Kontext</td><td>Die Architektur des Systems</td></tr>
+<tr><td class="k">Ihre Anweisung</td><td>Eine angeforderte Leistung</td><td>Sie — und sie kann viele Aufrufe auslösen</td></tr>
+<tr><td class="k">Credit</td><td>Eine Verrechnungseinheit mit festgelegtem Wert</td><td>Den Anbieter, durch Richtlinie und änderbar</td></tr>
+<tr><td class="k">Kontingent</td><td>Credits je Lizenz und Abrechnungszeitraum</td><td>Den Vertrag Ihrer Organisation</td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">Eine Anweisung ist nicht eine Anfrage, und eine Anfrage ist nicht ein
+Credit. Ein agentischer Arbeitsablauf kann aus einem einzelnen Satz zwanzig Modellaufrufe erzeugen.
+<span class="ref">8.5</span></td></tr></tfoot>
+</table>
+
+<div class="cols">
+<p class="def"><span class="term">Token-Preise</span> <span class="ref">8.4</span> — Eingabe,
+zwischengespeicherte Eingabe und Ausgabe werden getrennt berechnet. Die Ausgabe kostet in der Regel
+ein Mehrfaches der Eingabe, da sie sequenziell erzeugt wird, während die Eingabe parallel gelesen
+wird. Zwischengespeicherte Eingabe — ein Präfix, das der Anbieter bereits verarbeitet hat — kostet
+häufig etwa ein Zehntel der Eingabe. Daraus folgt der finanzielle Grund, dauerhafte Anweisungen
+stabil zu halten und Veränderliches ans Ende zu stellen. Tokens für Zwischenberechnungen werden als
+Ausgabe abgerechnet und sind in der Oberfläche häufig nicht sichtbar.</p>
+
+<p><strong>Was den Verbrauch erhöht.</strong> Lange angehängte Dokumente, die bei jedem Dialogschritt
+erneut übermittelt werden. Lange Dialoge, da der gesamte Verlauf je Schritt erneut übermittelt wird.
+Hoher Reasoning Effort. Agentische Schleifen, die sowohl Schritte als auch bei jedem Schritt Kontext
+hinzufügen. Eine Änderung am Anfang des Prompts, wodurch die Zwischenspeicherung entfällt. Und
+Wiederholungen aufgrund einer Aufgabe, die beim ersten Mal unzureichend spezifiziert war.</p>
+
+<div class="note act"><span class="lbl">Der maßgebliche Kostenanteil</span><p>Die Modellkosten sind
+in der Regel der kleinere Posten. Zwanzig Minuten Prüfung übersteigen sie, bewertet mit einem
+Vollkostensatz, meist um ein Mehrfaches. Der günstigste Weg ist daher derjenige, der die wenigsten
+Korrekturen erfordert. Zu berücksichtigen sind Modellkosten, Durchlaufzeit, Wiederholungen,
+menschliche Prüfung und die Kosten eines Fehlers, der unbemerkt bleibt. <span class="ref">8.7</span></p></div>
+</div>
+
+<h3>Context Engineering</h3>
+<div class="cols">
+<p class="def"><span class="term">Inhalt des Kontexts</span> <span class="ref">9.1</span> — der
+System-Prompt des Anbieters, die Tool-Definitionen, Ihre dauerhaften Anweisungen, Material aus Ihrer
+Arbeitsumgebung, abgerufene Abschnitte, der bisherige Dialog und zuletzt Ihre Eingabe. Ihre Eingabe
+ist davon ein kleiner Anteil. Die meisten Qualitätsprobleme sind Kontextprobleme, und die meisten
+Kontextprobleme betreffen Bestandteile, die nicht sichtbar sind.</p>
+
+<p><strong>Lange Sitzungen.</strong> Harnesses behandeln das Anwachsen unterschiedlich: Manche
+verwerfen die frühesten Schritte, manche fassen fortlaufend zusammen, manche rufen gezielt ab, viele
+fügen dauerhafte Anweisungen bei jeder Anfrage erneut ein. Welches Verfahren das eigene System
+verwendet, bestimmt, was unbemerkt entfällt. Bei Arbeiten über mehrere Sitzungen ist jede Sitzung mit
+einer kurzen Übergabenotiz zu beenden und die folgende damit zu beginnen. <span class="ref">9.4</span></p>
+</div>
+
+<table>
+<caption>Sechs Bestandteile eines belastbaren Prompts <span class="q">— die beiden letzten fehlen am häufigsten und verändern das Ergebnis am stärksten</span></caption>
+<thead><tr><th>Bestandteil</th><th>Schwach</th><th>Belastbar</th></tr></thead>
+<tbody>
+<tr><td class="k2">Ziel</td><td>„Vergleiche die Lieferanten“</td><td>„Eine vierseitige Empfehlung für einen Lieferanten, für die Entscheidungssitzung am Donnerstag“</td></tr>
+<tr><td class="k2">Hintergrund</td><td><em>fehlt</em></td><td>„Die Anlagen laufen im Dauerbetrieb; der Dauerdurchsatz ist wichtiger als der Spitzenwert“</td></tr>
+<tr><td class="k2">Vorgaben</td><td>„Sei genau“</td><td>„Eine Herstellerangabe nie als Messwert darstellen“</td></tr>
+<tr><td class="k2">Ausgabeform</td><td>„Schreib das auf“</td><td>„Vergleichstabelle, dann Widersprüche, dann Annahmen, dann Empfehlung“</td></tr>
+<tr><td class="k2">Abnahmekriterien</td><td><em>fehlt</em></td><td>„Jede Zahlenangabe auf eine Seitenzahl oder einen Zeilenbereich zurückführbar“</td></tr>
+<tr><td class="k2">Umgang mit Lücken</td><td><em>fehlt</em></td><td>„Aufführen, was nicht überprüft werden konnte und was stattdessen angenommen wurde“</td></tr>
+</tbody>
+</table>
+
+<div class="note"><span class="lbl">Wann ein neuer Dialog zu beginnen ist</span>
+<ul class="tight two">
+<li>Die Aufgabe hat sich geändert.</li>
+<li>Drei Korrekturen sind erfolglos geblieben — der Kontext enthält nun drei falsche Ansätze.</li>
+<li>Die Qualität hat über eine lange Sitzung nachgelassen.</li>
+<li>Der Wechsel von der Erkundung zur eigentlichen Arbeit steht an.</li>
+<li>Vor Schritten, bei denen eine übrig gebliebene frühere Anweisung teuer wäre.</li>
+</ul></div>
+
+<h3>Arbeitsmodi und Autonomie</h3>
+
+<table class="three">
+<caption>Vier Modi <span class="q">— zu beginnen ist mit dem geringsten Autonomiegrad, der die Aufgabe erfüllen kann</span></caption>
+<thead><tr><th>Modus</th><th>Sie beurteilen</th><th>Geeignet für</th></tr></thead>
+<tbody>
+<tr><td class="k">Dialog</td><td>Jede Antwort</td><td>Verstehen, Entwerfen, Festlegen des Vorgehens</td></tr>
+<tr><td class="k">Planung</td><td>Den Plan, vor jeder Ausführung</td><td>Umfangreiche, unklare oder teuer zu wiederholende Aufgaben</td></tr>
+<tr><td class="k">Interaktiv</td><td>Jede Aktion, sobald sie vorgeschlagen wird</td><td>Die meisten umfangreicheren Arbeiten und jeden ersten Durchlauf</td></tr>
+<tr><td class="k">Autonom</td><td>Nur das Endergebnis</td><td>Eingeführte, prüfbare, wiederkehrende Aufgaben</td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">Die Auswahl richtet sich nach sechs Fragen: Wie eindeutig ist die Aufgabe?
+Wie umkehrbar sind die Aktionen? Welche Kosten verursacht ein Fehler? Lässt sich der Erfolg
+automatisch prüfen? Worauf können die Tools zugreifen? Wie viel nicht dokumentiertes Urteilsvermögen
+ist erforderlich? <span class="ref">10.2, 10.3</span></td></tr></tfoot>
+</table>
+
+<table class="three">
+<caption>Drei Arten von Kontrolle, die nicht austauschbar sind <span class="q">— §10.5</span></caption>
+<thead><tr><th>Art</th><th>Bestimmt</th><th>Beispiel</th></tr></thead>
+<tbody>
+<tr><td class="k"><strong>Anweisung</strong><br><span class="ref">Prompts, Vorgaben, Stilregeln</span></td><td>Was <em>wahrscheinlich</em> geschieht</td><td>„Zu jeder Zahl eine Seitenangabe nennen“</td></tr>
+<tr><td class="k"><strong>Orchestrierung</strong><br><span class="ref">Schritte, Verzweigungen, Abbruchbedingungen</span></td><td>Was <em>üblicherweise</em> geschieht</td><td>Ein Prüfschritt, der jede Quellenangabe kontrolliert, bevor der Entwurf zurückgegeben wird</td></tr>
+<tr><td class="k"><strong>Technische Beschränkung</strong><br><span class="ref">Berechtigungen, Sandbox, Freigabe</span></td><td>Was <em>möglich</em> ist</td><td>Kein Schreibzugriff außerhalb des Entwurfsordners</td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">Die Formulierung „verändere keine Dateien“ ist eine Anweisung, und eine
+Anweisung kann durch alles andere im Kontext verdrängt werden, auch durch Text, der in einem Dokument
+eingetroffen ist. Ein Nur-Lese-Zugriff ist eine technische Beschränkung und kann es nicht. Alles, was
+teuer oder nicht umkehrbar ist, gehört in die dritte Zeile.</td></tr></tfoot>
+</table>
+
+<h3>Planung, Zerlegung und Delegation</h3>
+<div class="cols">
+<p><strong>Wann Planung ihren Aufwand rechtfertigt.</strong> <span class="ref">11.1</span> Die
+Aufgabe ist umfangreich, unklar oder teuer zu wiederholen; mehrere Beteiligte müssen sich darüber
+verständigen, was „fertig“ bedeutet; die Arbeit wird an jemanden oder etwas anderes delegiert; oder
+ein erster Versuch ist bereits unerwartet ausgefallen. Ein Planungsdurchlauf kostet einen Bruchteil
+eines vollständigen Versuchs und macht ein Missverständnis in einem kurzen Zwischenergebnis sichtbar
+statt in einem fertigen Arbeitsergebnis.</p>
+
+<p><strong>Ein brauchbarer Plan</strong> <span class="ref">11.2</span> gibt das Ziel in den Worten
+des Modells wieder, benennt die fehlenden Informationen, legt das Arbeitsergebnis fest, listet
+Vorgaben und Abnahmekriterien auf, zerlegt die Arbeit, benennt die Abhängigkeiten, schlägt je
+Teilaufgabe ein Modell und einen Modus vor und beschreibt die Zusammenführung. Die wiedergegebene
+Zielformulierung zu lesen ist die günstigste verfügbare Fehlererkennung: Ist sie dort falsch, ist
+alles Folgende ebenfalls falsch.</p>
+
+<p><strong>Wann Delegation sinnvoll ist.</strong> <span class="ref">11.4</span> Die Aufgabe
+übersteigt, was ein Kontext zuverlässig aufnimmt; die Teilaufgaben unterscheiden sich deutlich im
+Schwierigkeitsgrad, sodass für einen Teil ein günstigeres Modell genügt; Teile können tatsächlich
+parallel laufen; oder die Arbeit wiederholt sich häufig genug, um eine einmalige Spezifikation zu
+rechtfertigen.</p>
+
+<p><strong>Was Delegation kostet.</strong> Kontext wird zwischen Teilaufgaben nicht übertragen —
+jede beginnt ohne das, was die vorherige gelernt hat. Die Spezifikation ist eigener Aufwand. Fehler
+setzen sich fort, ohne erneut geprüft zu werden. Die Zusammenführung ist ein Beurteilungsschritt, der
+regelmäßig als reine Routine behandelt wird. Und sequenzielle Abhängigkeiten erhöhen die
+Durchlaufzeit, was die Parallelisierung nicht ausgleicht. Ein einzelnes leistungsfähiges Modell mit
+sorgfältig zusammengestelltem Kontext liefert häufiger bessere Ergebnisse als eine schlecht
+orchestrierte Kette.</p>
+</div>
+
+<h3>Dauerhafte Konfiguration</h3>
+
+<table class="three">
+<caption>Wohin eine Anweisung gehört <span class="q">— jeweils in den engsten Geltungsbereich, der noch alle Fälle erfasst</span></caption>
+<thead><tr><th>Geltungsbereich</th><th>Aufwand</th><th>Geeignet für</th></tr></thead>
+<tbody>
+<tr><td class="k">Einmalige Anweisung</td><td>Einmalig</td><td>Was an dieser einen Anfrage besonders ist</td></tr>
+<tr><td class="k">Persönliche Voreinstellungen</td><td>Jede Anfrage, überall</td><td>Schreibstil, Sprache, Detailgrad</td></tr>
+<tr><td class="k">Projektanweisungen</td><td>Jede Anfrage im Projekt</td><td>Terminologie, Konventionen, Standardaufbau</td></tr>
+<tr><td class="k">Pfadbezogene Anweisungen</td><td>Nur bei passender Arbeit</td><td>Regeln für eine bestimmte Materialart</td></tr>
+<tr><td class="k">Gespeicherte Prompt-Vorlage</td><td>Beim Aufruf</td><td>Eine wiederkehrende Anfrage in gleicher Form</td></tr>
+<tr><td class="k">Skill</td><td>Beschreibung immer; Inhalt bei Bedarf</td><td>Ein Verfahren mit festgelegten Anforderungen</td></tr>
+<tr><td class="k">Organisationsrichtlinie</td><td>Je nach Plattform</td><td>Was unabhängig von persönlichen Vorlieben gelten muss</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p><strong>Die Rangfolge der Anweisungen besteht, und sie ist eine Disposition.</strong>
+<span class="ref">12.1</span> Anbieter trainieren Modelle in der Regel darauf, Anweisungen aus dem
+Systemkanal Vorrang vor Benutzereingaben einzuräumen und Benutzereingaben Vorrang vor Inhalten aus
+Dokumenten. Diese Ordnung hält überwiegend. Sie ist antrainiertes Verhalten und keine erzwungene
+Regel, und für Konflikte <em>innerhalb</em> einer Ebene existiert keine dokumentierte Auflösung.
+Widersprüche sind daher zu beseitigen und nicht einer Rangfolge zu überlassen.</p>
+
+<p><strong>Ein Stilprofil wirkt, wenn es Entscheidungen benennt</strong> <span class="ref">12.2, 12.4</span>
+— Stimme, Tempus, Person, Schreibweise von Überschriften, Satzlänge, zu vermeidende Wörter — statt
+gutes Schreiben allgemein zu beschreiben. „Schreibe klar“ ändert nichts; „einen Absatz nie mit
+<em>Darüber hinaus</em> beginnen“ ändert etwas. Das Profil ist vierteljährlich zu prüfen und zu
+kürzen: Jede Zeile wird mit jeder Anfrage übermittelt, und Anweisungen, die nicht mehr zutreffen,
+verdrängen solche, die zutreffen.</p>
+</div>
+
+<h3>Skills, Agenten und Tools</h3>
+
+<table class="three">
+<caption>Neun Begriffe, die regelmäßig verwechselt werden <span class="q">— §13.2</span></caption>
+<thead><tr><th>Begriff</th><th>Stellt bereit</th><th>Wird ausgelöst durch</th></tr></thead>
+<tbody>
+<tr><td class="k">Prompt</td><td>Text, einmalig</td><td>Sie, durch Eingabe</td></tr>
+<tr><td class="k">Gespeicherte Prompt-Datei</td><td>Text, wiederverwendbar</td><td>Sie, über den Namen</td></tr>
+<tr><td class="k">Dauerhafte Anweisungen</td><td>Text, immer vorhanden</td><td>Niemanden — stets aktiv</td></tr>
+<tr><td class="k"><strong>Skill</strong></td><td>Text und optional Dateien, bei Bedarf</td><td>Das Modell, sofern die Auswahl automatisch erfolgt</td></tr>
+<tr><td class="k"><strong>Eigener Agent</strong></td><td>Anweisungen, eine Tool-Auswahl, teils ein Modell</td><td>Sie, durch Auswahl</td></tr>
+<tr><td class="k">Subagent</td><td>Dasselbe, innerhalb eines größeren Ablaufs</td><td>Das orchestrierende System</td></tr>
+<tr><td class="k"><strong>Tool</strong></td><td>Die Fähigkeit, außerhalb von Text zu handeln</td><td>Modell fordert an; Harness führt aus</td></tr>
+<tr><td class="k">MCP-Server</td><td>Ein Paket aus Tools und Ressourcen</td><td>Einmalige Konfiguration</td></tr>
+<tr><td class="k">Hook</td><td>Code an festgelegter Stelle, bei jedem Durchlauf</td><td>Niemanden — deterministisch</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p><strong>Skills und gestufte Offenlegung.</strong> <span class="ref">13.2</span> Ein kurzer Name
+und eine Beschreibung verbleiben dauerhaft im Kontext; der Inhalt wird geladen, sobald der Skill als
+einschlägig beurteilt wird; zugehörige Dateien werden nur bei Bedarf geöffnet. Wo ein Harness Skills
+automatisch auswählt, trägt die Beschreibung die Hauptlast — sie ist dem Modell bei der Entscheidung
+meist die einzige verfügbare Information. Sie ist deshalb so zu formulieren, dass sie angibt,
+<em>wann</em> der Skill zutrifft, und nicht, was er enthält. Manche Umgebungen verlangen stattdessen
+den Aufruf über den Namen, was an der Gestaltung des Inhalts nichts ändert.</p>
+
+<div class="note warn"><span class="lbl">Einen MCP-Server hinzuzufügen heißt, Software zu installieren</span>
+<p>Es handelt sich um fremden Code, der mit den erteilten Zugangsdaten ausgeführt wird. Zu klären
+sind der Herausgeber, eine feste Version, die einmalige Durchsicht der Tool-Beschreibungen — sie
+gelangen in den Kontext und sind eine Angriffsfläche für Prompt Injection —, die Beschränkung der
+Zugangsdaten auf das Notwendige und ein Verzeichnis des Installierten. Ein Tool, das das Modell nicht
+erreichen kann, kann es nicht missbrauchen. <span class="ref">13.4</span></p></div>
+</div>
+
+<table class="three">
+<caption>Umfang der zu erstellenden Struktur <span class="q">— die letzte Zeile wird am häufigsten übergangen</span></caption>
+<thead><tr><th>Vorgehen</th><th>Einrichtung</th><th>Angemessen, wenn</th></tr></thead>
+<tbody>
+<tr><td class="k">Einzelne Anfrage im Dialog</td><td>Keine</td><td>Einmalige Arbeit, oder das Ziel ist noch offen</td></tr>
+<tr><td class="k">Strukturierte Aufgabenspezifikation</td><td>Minuten</td><td>Es darauf ankommt und der erste Versuch fehlgeschlagen ist</td></tr>
+<tr><td class="k">Gespeicherte Prompt-Vorlage</td><td>Unter einer Stunde</td><td>Dieselbe Anfrage sich in gleicher Form wiederholt</td></tr>
+<tr><td class="k">Dauerhafte Anweisungen</td><td>Eine Stunde zzgl. Pflege</td><td>Eine Vorgabe für viele verschiedene Aufgaben gilt</td></tr>
+<tr><td class="k">Wiederverwendbarer Skill</td><td>Ein halber Tag zzgl. Pflege</td><td>Ein mehrstufiges Verfahren mit Anforderungen regelmäßig genutzt wird</td></tr>
+<tr><td class="k">Agent mit Tool-Zugriff</td><td>Einrichtung und Berechtigungsprüfung</td><td>Die Arbeit Aktionen erfordert, die Text allein nicht leisten kann</td></tr>
+<tr><td class="k">Mehrere abgestimmte Agenten</td><td>Erheblich</td><td>Teilaufgaben sich stark unterscheiden oder tatsächlich parallel laufen</td></tr>
+<tr><td class="k"><strong>Herkömmliche Software</strong></td><td>Oft geringer als erwartet</td><td><strong>Das Verfahren exakt und die Eingaben strukturiert sind</strong></td></tr>
+</tbody>
+<tfoot><tr><td colspan="3">Häufigkeit, Variabilität der Eingaben, Fehlerkosten, Anzahl der Beteiligten
+und Stabilität der Aufgabe verschieben die Antwort. Ein Modell rechtfertigt seine Kosten, wo Eingaben
+unregelmäßig sind, Urteilsvermögen erforderlich ist oder die Aufgabe sich nicht vorab exakt
+spezifizieren lässt. Trifft nichts davon zu, ist ein Skript günstiger, schneller und wiederholbar.
+<span class="ref">13.6</span></td></tr></tfoot>
+</table>
+
+<h3>Prüfung</h3>
+<div class="cols">
+<p><strong>Abnahmekriterien vor der Arbeit festlegen.</strong> <span class="ref">14.1</span>
+Nachträglich formuliert beschreiben sie das, was entstanden ist. Im Prompt genannt verbessern sie
+sowohl die Ausgabe als auch die Prüfung. Maßstab für ein Kriterium ist, ob eine andere Person als die
+verfassende es anwenden und zum selben Urteil gelangen könnte.</p>
+
+<div class="note act"><span class="lbl">Prüfbarkeit einplanen</span><p>Ein Dokument, in dem jede
+Zahl ihre Quelle nennt, ist in Minuten geprüft. Dasselbe Dokument ohne Quellenangaben erfordert eine
+Stunde, da zunächst zu ermitteln ist, was überhaupt zu prüfen ist. Nachvollziehbarkeit einzufordern
+ist daher eine Entscheidung über den Prüfaufwand und keine Frage der Formatierung.</p></div>
+</div>
+
+<table>
+<caption>Sieben Dimensionen und jeweils ein anwendbares Kriterium <span class="q">— §14.1</span></caption>
+<thead><tr><th>Dimension</th><th>Ein prüfbares Kriterium</th></tr></thead>
+<tbody>
+<tr><td class="k">Sachliche Richtigkeit</td><td>Jede genannte Zahl stimmt mit der dafür angegebenen Seite oder dem Zeilenbereich überein</td></tr>
+<tr><td class="k">Vollständigkeit</td><td>Alle vereinbarten Kriterien erscheinen für alle Gegenstände, Lücken sind als Lücken gekennzeichnet</td></tr>
+<tr><td class="k">Nachvollziehbarkeit</td><td>Keine Aussage ohne Quelle; „nicht angegeben“, wo eine Quelle dazu schweigt</td></tr>
+<tr><td class="k">Rechnerische Richtigkeit</td><td>Berechnete Werte lassen sich bei unabhängiger Nachrechnung reproduzieren</td></tr>
+<tr><td class="k">Strukturelle Gültigkeit</td><td>Jeder geforderte Abschnitt ist vorhanden und nicht leer</td></tr>
+<tr><td class="k">Klare Abgrenzung</td><td>Angaben aus einer Quelle werden nie als Messwerte dargestellt</td></tr>
+<tr><td class="k">Wiederholbarkeit</td><td>Drei Durchläufe liefern dieselben <em>Zahlen</em>, wenn auch nicht denselben Text</td></tr>
+</tbody>
+</table>
+
+<div class="cols">
+<p><strong>Angemessener Prüfumfang.</strong> <span class="ref">14.3</span> Erkundende Arbeit
+erfordert eine Durchsicht. Material, das in die eigene Meinungsbildung eingeht, erfordert Stichproben
+bei allem, worauf man sich stützen wird. Arbeit, die an Kolleginnen und Kollegen weitergegeben wird,
+erfordert die Rückführung jeder Sachaussage auf ihre Quelle. Alles, was in eine Entscheidung, einen
+Vertrag oder eine externe Mitteilung eingeht, erfordert eine vollständige Prüfung mit unabhängiger
+Nachrechnung der Zahlen.</p>
+
+<div class="note warn"><span class="lbl">Aktionen, die besondere Sorgfalt erfordern</span>
+<ul class="tight">
+<li>Alles Nicht-Umkehrbare: Versenden, Einreichen, Bestellen, Löschen.</li>
+<li>Alles, was auf Material aus externer Quelle angewendet wird.</li>
+<li>Alles mit Schreibzugriff auf eine gemeinsam genutzte Ablage.</li>
+<li>Zahlen, die in eine Entscheidung, einen Vertrag oder eine externe Mitteilung eingehen.</li>
+<li>Abläufe, die vertrauliche Daten, nicht vertrauenswürdige Inhalte und einen ausgehenden Kanal verbinden — eines der drei Elemente entfernen.</li>
+<li>Erste Durchläufe, auch nach einem Wechsel von Modell oder Konfiguration.</li>
+</ul></div>
+
+<p><strong>Was nicht einzugeben ist.</strong> <span class="ref">14.4</span> Gültige Zugangsdaten,
+personenbezogene Daten identifizierbarer Personen, Material, das Dritten gegenüber vertraulich ist,
+sowie Unterlagen unter rechtlicher Aufbewahrungspflicht. Gelangt ein Zugangsdatum in einen Prompt,
+ist es zu wechseln: Ein Dialogverlauf ist eine protokollierte Datenablage. Übliches Arbeitsmaterial
+der eigenen Organisation ist in der Regel unbedenklich, und darauf entfällt der größte Teil dessen,
+was tatsächlich eingefügt werden soll.</p>
+</div>
+</section>
+
+<section class="part">
+<h2>Terminologie</h2>
+
+<p style="max-width:132mm">Die deutschsprachige Fachliteratur verwendet für einen Teil dieser
+Begriffe die englischen Ausdrücke. Dieses Blatt folgt dem jeweils üblichen Gebrauch. Die Tabelle
+ordnet beide Formen einander zu, damit englischsprachige Quellen — einschließlich des Kurses selbst —
+anschlussfähig bleiben.</p>
+
+<table class="three">
+<thead><tr><th>Englisch</th><th>In diesem Dokument</th><th>Anmerkung</th></tr></thead>
+<tbody>
+<tr><td class="k">machine learning</td><td>maschinelles Lernen</td><td></td></tr>
+<tr><td class="k">neural network</td><td>neuronales Netz</td><td></td></tr>
+<tr><td class="k">weights / bias</td><td>Gewichte / Bias</td><td>„Bias“ unübersetzt, da etabliert</td></tr>
+<tr><td class="k">loss</td><td>Verlustfunktion</td><td></td></tr>
+<tr><td class="k">cross-entropy</td><td>Kreuzentropie</td><td></td></tr>
+<tr><td class="k">gradient descent</td><td>Gradientenabstieg</td><td></td></tr>
+<tr><td class="k">backpropagation</td><td>Backpropagation</td><td>unübersetzt, da etabliert</td></tr>
+<tr><td class="k">overfitting</td><td>Überanpassung</td><td></td></tr>
+<tr><td class="k">inference</td><td>Inferenz</td><td></td></tr>
+<tr><td class="k">token / vocabulary</td><td>Token / Vokabular</td><td></td></tr>
+<tr><td class="k">embedding</td><td>Embedding</td><td>„Einbettung“ ist seltener</td></tr>
+<tr><td class="k">contextual representation</td><td>kontextuelle Repräsentation</td><td></td></tr>
+<tr><td class="k">attention</td><td>Attention</td><td>„Aufmerksamkeitsmechanismus“ bei Ersterwähnung</td></tr>
+<tr><td class="k">context window</td><td>Kontextfenster</td><td></td></tr>
+<tr><td class="k">temperature</td><td>Temperatur</td><td></td></tr>
+<tr><td class="k">hallucination</td><td>Halluzination</td><td></td></tr>
+<tr><td class="k">harness</td><td>Harness (Rahmenprogramm)</td><td>kein etablierter deutscher Begriff</td></tr>
+<tr><td class="k">tool / tool call</td><td>Tool / Tool-Aufruf</td><td></td></tr>
+<tr><td class="k">agentic loop</td><td>agentische Schleife</td><td></td></tr>
+<tr><td class="k">retrieval</td><td>Retrieval</td><td></td></tr>
+<tr><td class="k">prompt injection</td><td>Prompt Injection</td><td>unübersetzt, da Fachbegriff</td></tr>
+<tr><td class="k">reasoning effort</td><td>Reasoning Effort</td><td>Umfang der Zwischenberechnung</td></tr>
+<tr><td class="k">guidance</td><td>Anweisung</td><td>eine der drei Arten von Kontrolle</td></tr>
+<tr><td class="k">orchestration</td><td>Orchestrierung</td><td></td></tr>
+<tr><td class="k">enforcement</td><td>technische Beschränkung</td><td></td></tr>
+<tr><td class="k">acceptance criteria</td><td>Abnahmekriterien</td><td></td></tr>
+<tr><td class="k">progressive disclosure</td><td>gestufte Offenlegung</td><td></td></tr>
+<tr><td class="k">skill / agent / hook</td><td>Skill / Agent / Hook</td><td>unübersetzt, da Produktbegriffe</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="colophon">
+<h2>Weiterführende Quellen</h2>
+<div class="cols">
+<p>Die kommentierte Quellensammlung des Kurses mit 46 Einträgen, sortiert nach Verwendungszweck,
+steht unter <code>../../course/resources.html</code>. Die fünf wichtigsten Einstiegspunkte sind
+englischsprachig:</p>
+<ul class="tight">
+<li><strong>3Blue1Brown</strong>, neuronale Netze und Transformer — die beste verfügbare visuelle
+Darstellung dieses Stoffs und der geeignete Einstieg.</li>
+<li><strong>Andrej Karpathy</strong>, <em>Deep Dive into LLMs like ChatGPT</em> für den gesamten
+Ablauf und <em>Neural Networks: Zero to Hero</em> für den Aufbau von Grund auf.</li>
+<li><strong>Anthropic</strong>, <em>Building effective agents</em> — Entwurfsmuster und ein
+offener Abschnitt darüber, wann sie ungeeignet sind.</li>
+<li><strong>Simon Willison</strong>, Sammlung zu Prompt Injection — fortlaufende Dokumentation
+eines ungelösten Problems.</li>
+<li><strong>OWASP Top 10 for LLM Applications</strong> — anerkannte Systematik der Schwachstellen,
+geeignet für die Abstimmung mit einer Sicherheitsabteilung.</li>
+</ul>
+
+<p><strong>Produktdokumentation.</strong> Für alles, was vom Tarif, der Version oder der
+Preisgestaltung abhängt, ist die jeweils aktuelle Dokumentation des Anbieters heranzuziehen und
+nicht dieses Blatt. GitHub Copilot, die Agentenkonfiguration von VS Code, das Model Context Protocol
+und die Agent-Skills-Spezifikation veröffentlichen jeweils eine eigene Referenz, die häufiger
+aktualisiert wird, als ein Kurs es kann.</p>
+
+<div class="note warn"><span class="lbl">Hinweis zur Überprüfung</span><p>Produktverhalten und alle
+kommerziellen Angaben dieses Kurses wurden im Oktober 2026 aus Sekundärquellen zusammengestellt, da
+die primären Dokumentationsserver aus der Arbeitsumgebung nicht erreichbar waren. Vor einer
+verbindlichen Festlegung sind sie zu bestätigen. Vier Fragen kann nur die eigene Administration
+beantworten: welches Abrechnungsmodell der Vertrag vorsieht; wie hoch das Kontingent ist und ob es
+organisationsweit zusammengefasst wird; ob eine Überschreitung zugelassen ist und was bei Erschöpfung
+geschieht; und welcher Bericht den Verbrauch wem gegenüber ausweist.</p></div>
+</div>
+</section>
+
+</div>
+</body>
+</html>

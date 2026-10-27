@@ -5,6 +5,125 @@ Most recent first.
 
 ---
 
+# Revision 5 — German editions of the deck and the handout
+
+Two of the four materials now exist in German: the workshop deck and the reference handout. The
+course and the practical guide remain English.
+
+The brief asked for a plainer register than the English — the voice of technical documentation
+rather than of teaching material. That is a real difference, not just a translation: sachlich and
+declarative, one term per concept throughout, no rhetorical questions and no pointed phrasing in
+slide text. Questions survive only in the speaker notes, where they are instructions to the person
+presenting and have a job to do.
+
+## Terminology
+
+German practice mixes German terms with English loanwords, and picking inconsistently is the main
+way a translation like this goes wrong. The choices are fixed in a **terminology table** in the
+German handout, which is the reference for both German materials.
+
+The decisions worth recording: *Gradientenabstieg*, *Kreuzentropie*, *Verlustfunktion*,
+*Überanpassung*, *Inferenz*, *Kontextfenster* and *kontextuelle Repräsentation* are translated,
+because established German equivalents exist. *Backpropagation*, *Embedding*, *Attention*,
+*Token*, *Prompt Injection*, *Skill*, *Agent*, *Tool* and *Hook* are not, because the German
+alternatives are either rare or invented. *Harness* has no German equivalent at all and is used as
+a loanword, glossed once as *Rahmenprogramm*.
+
+The three kinds of control needed terms that hold their distinction: **Anweisung** (guidance),
+**Orchestrierung** (orchestration), **technische Beschränkung** (enforcement). Translating the
+third as *Durchsetzung* would have blurred it into the first.
+
+## The example sentence stays in English
+
+"The nightly run failed because it timed out." is analysed throughout the course, and the
+illustrative attention weights and logits are tuned to its specific tokens. Translating it would
+have meant inventing new weights for a German sentence and presenting them as illustrative — a
+fabricated number in place of a reviewed one.
+
+So it stays, with a German gloss on the slide. The slide's notes turn the constraint into content:
+German tokenises less efficiently than English, so the same meaning costs more tokens, which
+affects both cost and how much fits in the window. The German handout makes the same point in its
+section on language effects, where the English edition is more general.
+
+## Engine and strings
+
+The deck's engine and stylesheet are shared, not forked. `deck.js` reads the language from
+`<html lang>` and looks each visible string up in `window.DECK_DICT`, which `de/deck.de.js` sets.
+
+**The English strings are the lookup keys.** A missing translation falls through to English, so
+the German deck can be incomplete but not broken, and the English deck cannot drift — which the
+test suite confirms: after the change, the English widget output is byte-identical to before.
+Coverage is checked against the keys extracted from `deck.js` rather than by eye: 52 keys, 52
+entries, no orphans.
+
+Numbers follow the locale (`0,365` and `200.000` in German). The values themselves live only in
+`deck.js` and are identical in both editions.
+
+One constraint discovered while writing the dictionary: an object-literal key cannot be a
+concatenated expression in ES5, so the long keys sit on single lines. The file says so, since the
+next person to add one will try to wrap it.
+
+## What testing caught
+
+German prose runs roughly 10–15% longer than English, and the deck's slide height is a fixed
+720px. **Five slides overflowed** on the first build — 9, 10, 11, 27 and 30 — and were fixed by
+tightening the German text rather than by changing the type scale, which would have made the two
+decks diverge visually. The shorter wording also suits the plainer register.
+
+**Six SVG labels overflowed their boxes**, which the slide-height check does not detect because
+the SVG itself does not overflow — only the text inside it does. This needed a new check,
+`svg-fit-test.js`, which compares each label's rendered width against the rect it sits in. Its
+first version reported nothing, because `getComputedTextLength()` returns 0 on a slide that is not
+currently displayed; it has to visit each slide in turn. Once corrected it found all six
+(`zusammengestellt + gekürzt` in a 140px box, `Stauchung auf (0,1)` in a 92px box, and four
+others), and they were shortened.
+
+That checker reports two labels on slide 13 in **both** languages: they sit deliberately outside
+the dashed transformer block, so their anchor falls inside it. The honest standard is parity with
+the other edition, not zero, and both READMEs say so.
+
+The German handout runs to **ten A4 pages** against the English seven — longer prose plus the
+terminology table. Automatic hyphenation is enabled for the German page, because German compounds
+leave large gaps in the narrow columns without it.
+
+A test bug surfaced too: `widget-test.js` compared losses with `parseFloat`, which returns 0 for
+`"0,1416"`, so the German neuron widget reported `FAIL` while working correctly. The test now
+normalises the separator.
+
+## Incidental correction
+
+`course/index.html` still described the **payment-function example** that revision 3 replaced with
+the supplier assessment, in the same paragraph that introduces the three recurring examples. The
+rest of the page already described the supplier assessment, so the page contradicted itself. Found
+while reading the published artifact against the working copy. Fixed.
+
+---
+
+## What remains unverified
+
+Everything in revision 4's list still stands; nothing in this revision touched a product claim.
+
+Specific to the German editions:
+
+| Claim | Where | Why it is uncertain |
+|---|---|---|
+| The German term choices | Terminology table | Usage varies by field and organisation; these are defensible, not authoritative. An organisation with its own glossary should prefer it and change the table. |
+| German tokenises less efficiently than English | Deck slide 10, handout §2.5 | The direction is well established; no ratio is claimed, and the materials say to measure your own text rather than assume one. |
+
+## Remaining issues
+
+- **The German editions must be updated by hand** when the English ones change. Nothing enforces
+  it. The string-table design protects the deck's engine from drift, but not the slide prose.
+- **The terminology table is maintained manually.** Nothing checks that the German materials
+  actually use the terms it lists.
+- **The course and the practical guide are not translated.** The German handout links to the
+  English course for anything it compresses, so a German-only reader reaches an English text at
+  that point.
+
+
+---
+
+
 # Revision 4 — rhetoric, corrections, and three new materials
 
 Four objectives: remove the remaining rhetorical overstatement from the course, make six specific

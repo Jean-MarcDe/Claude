@@ -52,6 +52,8 @@ chromium --headless --print-to-pdf=deck.pdf \
 | `deck.js` | Navigation engine, progressive disclosure, notes panel, and the six interactive widgets |
 | `deck-test.js` | Walks every slide with steps revealed; reports overflow, missing notes, console errors |
 | `widget-test.js` | Drives all six widgets and prints what they produced |
+| `svg-fit-test.js` | Finds diagram labels that have outgrown their boxes |
+| `de/` | The German edition — its own slides and string table, this engine and stylesheet |
 
 Content, styling and behaviour are separated, so editing a slide does not require touching the
 engine and changing the palette does not require touching the slides.
@@ -118,17 +120,38 @@ colours is what keeps both themes working.
 slide is shown. Keep illustrative data at the top of the function and label it as illustrative on
 the slide.
 
-**What to check after editing.** Run the two test scripts:
+**What to check after editing.** Run the three test scripts, on each language you changed:
 
 ```
-node deck-test.js      # overflow, missing notes, console errors
-node widget-test.js    # each widget still produces its intended result
+node deck-test.js                    # overflow, missing notes, console errors
+node widget-test.js                  # each widget still produces its intended result
+node svg-fit-test.js                 # diagram labels wider than their boxes
+node deck-test.js de/index.html      # and the same three for the German deck
 ```
 
 The fixed 720px height is unforgiving, and overflow is the failure that most often slips through
 a read-through. `widget-test.js` prints each demonstration's output rather than asserting on it,
 so a change that quietly breaks one shows up as a wrong number instead of as nothing. Then print
 to PDF and confirm the page count matches the slide count.
+
+`svg-fit-test.js` reports two labels on slide 13 in both languages: they sit deliberately outside
+the dashed transformer block, so compare the two decks rather than expecting zero.
+
+## The German edition
+
+`de/` holds a German deck with the same 30 slides. It shares this `deck.css` and `deck.js`; only
+the slides and a string table are its own.
+
+`deck.js` reads the language from `<html lang>` and looks every visible string up in
+`window.DECK_DICT`, which `de/deck.de.js` sets. **The English strings are the lookup keys**, so a
+missing translation falls through to English and the English deck cannot drift. Numbers follow the
+locale — `0,365` and `200.000` in German — while the values themselves live only in `deck.js` and
+are identical in both.
+
+German prose runs longer than English. Building that edition pushed five slides past the 720px
+frame and six diagram labels past their boxes, none of which is visible from reading the markup —
+hence the two layout checks above. `de/README.md` covers the rest, including why the example
+sentence stays in English.
 
 ## Relationship to the other materials
 
@@ -137,6 +160,7 @@ to PDF and confirm the page count matches the slide count.
 | [`../course/`](../course/) | The full text. Detailed explanation, the authoritative source for everything here |
 | This deck | Visual and interactive explanation for an instructor-led session |
 | [`../handout/`](../handout/) | Compact reference for during and after the workshop |
+| [`de/`](de/) | This deck in German |
 | [`../practical-guide/`](../practical-guide/) | Getting started in the organisation's own environment |
 
 The course is the authority. Where this deck simplifies, the notes say so; nothing here introduces

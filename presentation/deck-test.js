@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
   const errs = [];
   pg.on('console', m => { if (m.type()==='error') errs.push(m.text().slice(0,140)); });
   pg.on('pageerror', e => errs.push('PAGEERROR: '+String(e).slice(0,160)));
-  await pg.goto('file://' + require('path').resolve(__dirname,'index.html'), {waitUntil:'load'});
+  await pg.goto('file://' + require('path').resolve(__dirname, process.argv[2] || 'index.html'), {waitUntil:'load'});
   await pg.waitForTimeout(500);
 
   const n = await pg.evaluate(() => document.querySelectorAll('.slide').length);
