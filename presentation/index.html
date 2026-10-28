@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tokens to Decisions — workshop deck</title>
+<title>How language models work — workshop deck</title>
 <link rel="stylesheet" href="deck.css">
 </head>
 <body>
@@ -13,74 +13,90 @@
 
 <!-- ============ 1 · TITLE ============ -->
 <section class="slide slide--title">
-  <p class="eyebrow">A workshop on modern AI</p>
-  <h1>Tokens to Decisions</h1>
+  <p class="eyebrow">Workshop</p>
+  <h1>How language models work</h1>
   <div class="rule"></div>
-  <p class="lead">How language models actually work, and what follows from that
-  when you use one for real work.</p>
+  <p class="lead">The core concepts of modern AI and what follows from them: what language models
+  can do, what they cannot, and what that means for working with GitHub Copilot in VS Code.</p>
   <p class="tiny" style="margin-top:28px">Press <b>→</b> or <b>space</b> to advance ·
   <b>S</b> for speaker notes · <b>?</b> for all keys</p>
   <template class="notes"><div class="nt">
-    <p><strong>Framing for the opening.</strong> This workshop accompanies the course text; it does
-    not replace it. The text explains, the deck illustrates, the handout is for afterwards.</p>
-    <p><strong>Set expectations early:</strong> no programming is required at any point, and no
-    maths beyond school algebra. We will look at real arithmetic, but you will never be asked to
-    write code.</p>
-    <p><em>Opening question to the room:</em> "When an AI tool gives you a wrong answer, what is
-    your current theory of why?" Collect two or three answers and come back to them at the end.</p>
+    <p><strong>Framing.</strong> The workshop has two parts. Part 1 explains how a language model
+    works. Part 2 shows what follows for everyday work, with GitHub Copilot in VS Code as the
+    tool.</p>
+    <p><strong>Set expectations.</strong> No programming is required. A few calculations appear: a
+    weighted sum, one derivative, one logarithm. Each is explained in words, and nobody has to
+    carry it out themselves.</p>
+    <p><em>Opening question to the room:</em> "When an AI tool gives you a wrong answer — how do
+    you explain it?" Collect two or three answers and come back to them at the end.</p>
+    <p>Accompanying material: the handout for reference, the course text for the full account, the
+    practical guide for getting started in VS Code.</p>
   </div></template>
 </section>
 
-<!-- ============ 2 · WHY MECHANISM ============ -->
+<!-- ============ 2 · OUTLINE ============ -->
 <section class="slide">
-  <p class="eyebrow">Why start with mechanism</p>
-  <h2>Two ways to learn a tool</h2>
-  <div class="cols" style="margin-top:20px">
+  <p class="eyebrow">Overview</p>
+  <h2>Workshop outline</h2>
+  <div class="cols" style="margin-top:18px;flex:none">
     <div class="card">
-      <h3>By rules of thumb</h3>
-      <p>Phrase it this way. Add that instruction. Use the newer model. Attach everything you
-      have.</p>
-      <p style="margin-top:12px">Works until it doesn't, and offers nothing when it stops
-      working.</p>
+      <h3>Part 1 · How a language model works</h3>
+      <ul style="font-size:18px;margin:10px 0 0">
+        <li>Learning from examples</li>
+        <li>How a language model is trained</li>
+        <li>Processing text: tokens, embeddings, attention</li>
+        <li>Generating text: sampling, autoregression</li>
+        <li>What the model knows, and its limits</li>
+        <li>The model and the system around it</li>
+      </ul>
     </div>
-    <div class="card" style="background:var(--accent-soft);border-color:var(--accent)">
-      <h3>By mechanism</h3>
-      <p>Know what the system does with what you give it, and the rules of thumb become
-      derivable.</p>
-      <p style="margin-top:12px">Transfers to tools that did not exist when you learned it.</p>
+    <div class="card" style="background:var(--practice-soft);border-color:var(--practice)">
+      <h3>Part 2 · What follows in practice</h3>
+      <ul style="font-size:18px;margin:10px 0 0">
+        <li>The concepts in GitHub Copilot</li>
+        <li>Model choice and cost</li>
+        <li>Assembling context deliberately</li>
+        <li>Working modes and autonomy</li>
+        <li>Control and security</li>
+        <li>Checking the results</li>
+      </ul>
     </div>
   </div>
-  <div class="note" style="margin-top:26px">
-    <p>Today: build the machine in the morning, spend it in the afternoon.</p>
+  <div class="note" style="margin-top:24px">
+    <p style="max-width:none">Every recommendation in Part 2 follows from a mechanism in Part 1.
+    Knowing the mechanism lets you apply the recommendation to other and newer tools.</p>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Justify spending the morning on theory to an audience that came
-    for practical advice.</p>
-    <p>The argument to make: every practical recommendation in the second half is a consequence of
-    something in the first half. Attaching every document is a bad idea for a specific, explainable
-    reason. A model cannot total a spreadsheet column for a specific, explainable reason.</p>
-    <p><em>If the room is impatient,</em> promise them one concrete payoff by lunch: they will be
-    able to predict which tasks will go wrong before trying them.</p>
+    <p><strong>Objective.</strong> Explain how the two parts connect.</p>
+    <p>The case for Part 1: practical tips without the mechanism behind them only help while the
+    situation stays the same. Two examples from Part 2: attaching every available document makes
+    results worse, and a language model cannot reliably total a spreadsheet column. Both have a
+    reason that Part 1 explains.</p>
+    <p><em>If the room is waiting for practice:</em> the aim of Part 1 is that participants can
+    predict which tasks a language model will handle reliably and which it will not, before they
+    try them.</p>
   </div></template>
 </section>
 
-<!-- ============ 3 · SECTION: THE MACHINE ============ -->
+<!-- ============ 3 · SECTION: PART 1 ============ -->
 <section class="slide slide--section">
-  <p class="eyebrow">Part one</p>
-  <h2>How the machine works</h2>
-  <p class="lead" style="margin-top:18px">Learning · tokens · attention · generation · systems</p>
+  <p class="eyebrow">Part 1</p>
+  <h2>How a language model works</h2>
+  <p class="lead" style="margin-top:18px">Learning · Training · Processing text · Generating text ·
+  Knowledge and limits · Model and system</p>
   <template class="notes"><div class="nt">
-    <p>Section divider. Roughly two hours with the exercises.</p>
+    <p>Section divider. Part 1 explains the mechanism. Where a slide has a direct consequence for
+    practice, it appears in an orange-bordered box at the bottom of the slide.</p>
   </div></template>
 </section>
 
-<!-- ============ 4 · RULES VS PARAMETERS ============ -->
+<!-- ============ 4 · RULES AND PARAMETERS ============ -->
 <section class="slide">
-  <p class="eyebrow">1 · Learning instead of programming</p>
-  <h2>The arrows swap</h2>
-  <figure style="margin:10px 0 0;flex:1">
+  <p class="eyebrow">Part 1 · Learning</p>
+  <h2>Programmed rules and learned parameters</h2>
+  <figure style="margin:10px 0 0">
     <svg class="dgm" viewBox="0 0 1120 330" role="img"
-      aria-label="Conventional software takes rules and data as input and produces answers. Supervised learning takes data and target answers as input and produces parameters, which are then used like a program.">
+      aria-label="Conventional software takes rules and data as input and produces answers. Supervised learning takes inputs and target outputs and produces parameters, which are then used like a program.">
       <text class="t-ttl" x="20" y="26">CONVENTIONAL SOFTWARE &mdash; A PERSON WRITES THE RULES</text>
       <rect class="chip" x="20" y="44" width="170" height="44" rx="5"/>
       <text class="t-sm" x="105" y="71" text-anchor="middle">Rules (code)</text>
@@ -94,12 +110,12 @@
       <line class="flow" x1="430" y1="96" x2="470" y2="96"/><polygon class="head" points="470,91 480,96 470,101"/>
       <rect class="hl" x="482" y="68" width="170" height="56" rx="5"/>
       <text x="567" y="101" text-anchor="middle">Answers</text>
-      <text class="t-sm" x="676" y="90">The rule is legible. You can</text>
-      <text class="t-sm" x="676" y="108">read it, test it and change it.</text>
+      <text class="t-sm" x="676" y="90">The rules are legible: they can be</text>
+      <text class="t-sm" x="676" y="108">checked and changed.</text>
 
       <line class="axis" x1="20" y1="168" x2="1100" y2="168"/>
 
-      <text class="t-ttl" x="20" y="200">SUPERVISED LEARNING &mdash; A SEARCH FINDS THE PARAMETERS</text>
+      <text class="t-ttl" x="20" y="200">SUPERVISED LEARNING &mdash; A TRAINING PROCEDURE FINDS THE PARAMETERS</text>
       <rect class="chip" x="20" y="218" width="170" height="44" rx="5"/>
       <text class="t-sm" x="105" y="245" text-anchor="middle">Inputs</text>
       <rect class="chip" x="20" y="274" width="170" height="44" rx="5"/>
@@ -113,49 +129,56 @@
       <line class="flow" x1="430" y1="270" x2="470" y2="270"/><polygon class="head" points="470,265 480,270 470,275"/>
       <rect class="hl" x="482" y="242" width="170" height="56" rx="5"/>
       <text x="567" y="268" text-anchor="middle">Parameters <tspan class="t-mono">&#952;</tspan></text>
-      <text class="t-sm" x="567" y="286" text-anchor="middle">(an array of numbers)</text>
+      <text class="t-sm" x="567" y="286" text-anchor="middle">(many numbers)</text>
       <line class="flow-a dash" x1="654" y1="270" x2="694" y2="270"/><polygon class="head-a" points="694,265 704,270 694,275"/>
       <rect class="box" x="706" y="242" width="180" height="56" rx="5"/>
       <text class="t-sm" x="796" y="275" text-anchor="middle">used like a program</text>
-      <text class="t-sm" x="906" y="254">Not legible. Behaviour</text>
-      <text class="t-sm" x="906" y="272">can only be established</text>
-      <text class="t-sm" x="906" y="290">by measurement.</text>
+      <text class="t-sm" x="906" y="254">Not legible. Behaviour can</text>
+      <text class="t-sm" x="906" y="272">only be established by</text>
+      <text class="t-sm" x="906" y="290">testing.</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="max-width:none"><strong>In practice:</strong> Whether a model can do a task cannot be
+    read off. It can only be established by testing it on examples whose correct answer is
+    known.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Establish that the rules in a learned system are an output, not
-    an input, and that nobody has read them.</p>
-    <p><strong>Mechanism.</strong> In the lower row you supply examples of inputs paired with
-    desired outputs; a search procedure adjusts numbers inside a flexible function until it
-    reproduces them.</p>
-    <p><strong>Caveat worth stating:</strong> supervised learning is one paradigm among several.
-    Language models are trained self-supervised, which we reach in a few slides.</p>
-    <p><em>Consequence to flag now:</em> this is why evaluation rather than inspection is the
-    quality gate for everything built on these systems.</p>
+    <p><strong>Objective.</strong> Establish that a learned system has no written rules. Its
+    behaviour lies in numbers, the parameters, which a training procedure derived from examples.
+    Nobody has read those numbers, or could.</p>
+    <p><strong>Mechanism.</strong> In the lower row you supply examples, each an input paired with
+    the desired output. A search procedure adjusts the numbers inside a flexible function until the
+    function reproduces those examples.</p>
+    <p><strong>Caveat:</strong> supervised learning is one paradigm among several. Language models
+    are trained self-supervised; that comes on the slide "Language models learn to predict the next
+    token".</p>
+    <p><em>Consequence:</em> for everything built on these systems, testing rather than inspection
+    is the quality gate. This returns in Part 2 under model choice and verification.</p>
     <p>Course reference: Module 1.1.</p>
   </div></template>
 </section>
 
 <!-- ============ 5 · THE NEURON ============ -->
 <section class="slide">
-  <p class="eyebrow">1.2 · A parameterised function</p>
-  <h2>The smallest useful example</h2>
+  <p class="eyebrow">Part 1 · Learning</p>
+  <h2>A neuron: a function with three parameters</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Logical AND has four cases and we already know the answers, so we can check the
-      machinery against something.</p>
+      <p>The example is logical AND. It has four cases with known results, so every intermediate
+      result can be checked.</p>
       <p class="mono" style="font-size:19px;color:var(--ink)">(0,0) → 0&nbsp;&nbsp; (0,1) → 0<br>
       (1,0) → 0&nbsp;&nbsp; (1,1) → 1</p>
-      <p style="margin-top:18px">A neuron computes a weighted sum, adds a constant, and passes the
-      result through a function that squashes it into the range 0 to 1.</p>
+      <p style="margin-top:18px">A neuron multiplies each input by a weight, adds up the results
+      and a constant, the bias, and maps the sum to a value between 0 and 1.</p>
       <p class="mono" style="font-size:18px;color:var(--ink)">z = w₁x₁ + w₂x₂ + b<br>ŷ = σ(z)</p>
       <p style="font-size:18px">The three numbers <var>w</var><sub>1</sub>,
-      <var>w</var><sub>2</sub> and <var>b</var> are the parameters. They are the only thing
-      training changes.</p>
+      <var>w</var><sub>2</sub> and <var>b</var> are the parameters. Training changes only these
+      numbers.</p>
     </div>
     <figure style="margin:0">
       <svg class="dgm" viewBox="0 0 620 320" role="img"
-        aria-label="A neuron: two inputs multiplied by weights, summed with a bias, passed through a sigmoid to produce a prediction. Alongside, the same neuron shown as a straight boundary in the input plane separating the single AND-positive point from the three negatives.">
+        aria-label="A neuron: two inputs multiplied by weights, summed with a bias, passed through a sigmoid to produce a prediction. Below, the same neuron as a straight dividing line in the plane of the inputs, separating the one case with result 1 from the three cases with result 0.">
         <circle class="chip" cx="46" cy="92" r="19"/><text class="t-mono" x="46" y="98" text-anchor="middle">x₁</text>
         <circle class="chip" cx="46" cy="176" r="19"/><text class="t-mono" x="46" y="182" text-anchor="middle">x₂</text>
         <line class="flow" x1="66" y1="97" x2="150" y2="124"/>
@@ -172,43 +195,56 @@
         <line class="flow" x1="292" y1="134" x2="310" y2="134"/><polygon class="head" points="310,129 320,134 310,139"/>
         <rect class="hl" x="322" y="108" width="92" height="52" rx="5"/>
         <text class="t-mono" x="368" y="131" text-anchor="middle">σ(z)</text>
-        <text class="t-xs" x="368" y="148" text-anchor="middle">squash to (0,1)</text>
+        <text class="t-xs" x="368" y="148" text-anchor="middle">to (0,1)</text>
         <line class="flow" x1="416" y1="134" x2="434" y2="134"/><polygon class="head" points="434,129 444,134 434,139"/>
         <circle class="box" cx="468" cy="134" r="21"/><text class="t-mono" x="468" y="140" text-anchor="middle">ŷ</text>
 
-        <line class="axis" x1="40" y1="296" x2="300" y2="296"/>
-        <line class="axis" x1="40" y1="296" x2="40" y2="246"/>
-        <text class="t-xs" x="296" y="312" text-anchor="end">the same neuron is a straight line in the input plane</text>
+        <line class="axis" x1="50" y1="304" x2="214" y2="304"/>
+        <line class="axis" x1="50" y1="304" x2="50" y2="232"/>
+        <text class="t-mono t-xs" x="220" y="308">x₁</text>
+        <text class="t-mono t-xs" x="50" y="226" text-anchor="middle">x₂</text>
+        <circle class="chip" cx="76" cy="290" r="6"/>
+        <circle class="chip" cx="176" cy="290" r="6"/>
+        <circle class="chip" cx="76" cy="248" r="6"/>
+        <circle class="head-a" cx="176" cy="248" r="7"/>
+        <line class="flow-a dash" x1="112" y1="234" x2="212" y2="286"/>
+        <text class="t-xs" x="252" y="258">The same neuron as a line in the plane of the</text>
+        <text class="t-xs" x="252" y="274">inputs: it separates the case (1,1), result 1,</text>
+        <text class="t-xs" x="252" y="290">from the three cases with result 0.</text>
       </svg>
     </figure>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Give the audience a parameterised function small enough to hold
-    in their head before meeting one with billions of parameters.</p>
-    <p><strong>Mechanism.</strong> The sigmoid does two jobs: it makes the output readable as a
-    value between "no" and "yes", and it is smooth, which matters because the training procedure
-    needs derivatives.</p>
-    <p><em>Point to make:</em> we could write AND in three characters. The purpose is to watch a
-    search procedure find it without being told, on a problem where nothing is hidden.</p>
+    <p><strong>Objective.</strong> Show a function with parameters that is small enough to take in
+    completely, before one with billions of parameters follows.</p>
+    <p><strong>Mechanism.</strong> The function σ is the sigmoid. It does two jobs: it makes the
+    output readable as a value between "no" (0) and "yes" (1), and it is smooth, without jumps. The
+    second matters because the training procedure needs derivatives.</p>
+    <p><strong>The diagram below.</strong> The neuron outputs more than 0.5 when z is greater than
+    zero. The boundary z = 0 is a straight line in the plane of the two inputs. For AND there is a
+    line that separates the point (1,1) from the other three.</p>
+    <p><em>Point to make:</em> AND could be written down directly. The purpose is to watch a
+    procedure find it without being told, on a problem where nothing is hidden.</p>
     <p>Course reference: Module 1.2.</p>
   </div></template>
 </section>
 
-<!-- ============ 6 · INTERACTIVE: NEURON ============ -->
+<!-- ============ 6 · TRAINING (INTERACTIVE) ============ -->
 <section class="slide">
-  <p class="eyebrow">1.2–1.4 · Interactive</p>
-  <h2>Make it learn</h2>
+  <p class="eyebrow">Part 1 · Learning</p>
+  <h2>Training: adjusting parameters step by step</h2>
   <div class="cols cols--wide-right" style="margin-top:4px">
     <div>
-      <p>Move the three sliders and watch the predictions. Then let the training procedure move
-      them instead.</p>
-      <p style="font-size:19px"><strong>Try first:</strong> can you find values by hand that get
-      all four rows right? Note how the parameters interact — fixing one row breaks another.</p>
-      <p style="font-size:19px"><strong>Then:</strong> press <em>Train one step</em> and watch the
-      mean loss. Each press computes a gradient and nudges all three parameters.</p>
-      <div class="note" style="margin-top:18px">
-        <p style="font-size:18px">This is the entire learning algorithm. A frontier model performs
-        the same calculation on a different function, on the order of 10<sup>20</sup> times.</p>
+      <p style="font-size:19px">Move the three sliders and watch the predictions. The loss measures
+      how far the predictions are from the targets.</p>
+      <p style="font-size:19px"><strong>First:</strong> look for values by hand that get all four
+      rows right. Improving one row often makes another worse.</p>
+      <p style="font-size:19px"><strong>Then:</strong> press <em>Train one step</em>. Each step
+      moves all three parameters a little in the direction in which the mean loss falls.</p>
+      <div class="note" style="margin-top:14px">
+        <p style="font-size:18px">This procedure is called gradient descent. Large language models
+        are trained on the same principle, with around 10<sup>11</sup> parameters and
+        10<sup>13</sup> tokens of text.</p>
       </div>
     </div>
     <div class="widget" data-widget="neuron"></div>
@@ -216,77 +252,95 @@
   <template class="notes"><div class="nt">
     <p><strong>Objective.</strong> Replace "the model learns" with a concrete procedure the
     audience has watched operate.</p>
-    <p><strong>Run it like this.</strong> Let them fiddle for ninety seconds first — the frustration
-    of hand-tuning is the point, because it motivates having a procedure. Then press <em>Train one
-    step</em> slowly, five or six times, and read the mean loss aloud each time.</p>
-    <p><em>Ask before pressing "Run 50 steps":</em> "What will the weights look like when it has
-    learned AND?" The answer — two large positive weights and a bias that cancels them unless both
-    inputs are present — is a recognisable encoding of conjunction nobody specified.</p>
-    <p><strong>Caveat.</strong> Real training estimates the gradient from a small random sample
-    rather than the whole dataset, and uses refinements such as momentum. The shape is unchanged.</p>
+    <p><strong>Run it like this.</strong> Let people adjust the sliders by hand for about ninety
+    seconds first. The difficulty is intended: it shows why an automatic procedure is needed. Then
+    press <em>Train one step</em> slowly, five or six times, and read out the mean loss each
+    time.</p>
+    <p><em>Ask before pressing "Run 50 steps":</em> "What will the parameters look like when the
+    neuron has learned AND?" Answer: two large positive weights and a negative bias, so that the sum
+    only becomes positive when both inputs are 1. Nobody specified this solution; the procedure
+    found it.</p>
+    <p><strong>Caveat.</strong> Real training estimates the direction from a small random sample of
+    the data (a batch) and uses refinements such as momentum. The principle is the same.</p>
     <p>Course reference: Modules 1.3 and 1.4.</p>
   </div></template>
 </section>
 
-<!-- ============ 7 · ONE GRADIENT STEP ============ -->
+<!-- ============ 7 · ONE TRAINING STEP ============ -->
 <section class="slide">
-  <p class="eyebrow">1.4 · One step, in full</p>
-  <h2>What "train one step" did</h2>
+  <p class="eyebrow">Part 1 · Learning</p>
+  <h2>One training step in detail</h2>
   <div class="cols">
     <div>
-      <p>On the fourth row, with the starting parameters, a learning rate of 1.0:</p>
-      <pre class="mono" style="font-size:16.5px;line-height:1.75;background:var(--surface-2);padding:16px 20px;border-radius:8px;border:1px solid var(--rule)">
-z   = 0.5(1) + (−0.4)(1) + 0.2   = 0.30000
-ŷ   = σ(0.30000)                 = 0.57444
-L   = ½(0.57444 − 1)²            = 0.09055
+      <pre class="mono" style="font-size:15px;line-height:1.6;margin:4px 0 0;background:var(--surface-2);padding:14px 18px;border-radius:8px;border:1px solid var(--rule)">
+Row (1,1), target y = 1 · start values · learning rate η = 1
 
-δ   = (ŷ − y)·σ′(z)              = −0.10403
-∂L/∂w₁ = δ·x₁                    = −0.10403
+<b>1  Prediction</b>
+   z  = 0.5·1 + (−0.4)·1 + 0.2   =  0.30000
+   ŷ  = σ(0.30000)               =  0.57444
+<b>2  Error</b>
+   L  = ½·(0.57444 − 1)²         =  0.09055
+<b>3  Direction</b>
+   δ  = (ŷ − y)·σ′(z)            = −0.10403
+   derivatives for w₁, w₂, b     = −0.10403
+   (δ·x₁, δ·x₂ and δ; here x₁ = x₂ = 1)
+<b>4  Update</b>
+   w₁ new = 0.5  − 1·(−0.10403)  =  0.60403
+   w₂ new = −0.4 − 1·(−0.10403)  = −0.29597
+   b  new = 0.2  − 1·(−0.10403)  =  0.30403
 
-w₁ ← 0.5 − 1.0(−0.10403)         = 0.60403
-w₂ ← −0.4 − 1.0(−0.10403)        = −0.29597
-b  ← 0.2 − 1.0(−0.10403)         = 0.30403
-
-<b>new L</b>                            <b>= 0.06180</b></pre>
+<b>New loss on this row          =  0.06180</b></pre>
     </div>
     <div class="center">
-      <h3>Reading the derivative</h3>
-      <p>∂<var>L</var>/∂<var>w</var><sub>1</sub> =
+      <h3>What the derivative tells you</h3>
+      <p style="font-size:19px">The derivative ∂<var>L</var>/∂<var>w</var><sub>1</sub> says how
+      the loss changes when <var>w</var><sub>1</sub> changes slightly. Its sign gives the direction
+      of the update, its size the amount.</p>
+      <p style="font-size:19px">∂<var>L</var>/∂<var>w</var><sub>1</sub> =
       (<var>ŷ</var>−<var>y</var>) · <var>σ</var>′(<var>z</var>) · <var>x</var><sub>1</sub></p>
-      <ul>
-        <li><var>x</var><sub>1</sub> — how much this weight mattered here. Zero input, no
+      <ul style="font-size:18px">
+        <li>(<var>ŷ</var>−<var>y</var>): the error, with its sign.</li>
+        <li><var>σ</var>′(<var>z</var>): how strongly the output responds to a change in
+        <var>z</var>.</li>
+        <li><var>x</var><sub>1</sub>: how much the weight was involved. With input 0, no
         change.</li>
-        <li><var>σ</var>′(<var>z</var>) — how responsive the output was. Near zero when the
-        neuron is saturated.</li>
-        <li>(<var>ŷ</var>−<var>y</var>) — the error, with its sign.</li>
       </ul>
-      <div class="note note--warn" style="margin-top:14px">
-        <p style="font-size:18px">A saturated neuron has a near-zero derivative even when the error
-        is large, so it barely moves. This is the vanishing-gradient problem.</p>
+      <div class="note note--warn" style="margin-top:8px">
+        <p style="font-size:17px">When σ(z) is close to 0 or 1, σ′(z) is close to zero. The neuron
+        then barely changes, even when the error is large. This is the vanishing-gradient
+        problem.</p>
       </div>
     </div>
   </div>
-  <div class="srcnote">All values computed, not estimated. Course reference: Module 1.4.</div>
+  <div class="srcnote">All values computed. The <em>Train one step</em> button does this
+  calculation for all four rows and uses the average. Course reference: Module 1.4.</div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Show that the update is ordinary arithmetic with a readable
-    structure, not an opaque procedure.</p>
-    <p>Walk the three factors of the derivative from right to left. Each says something sensible,
-    and together they explain both why learning works and why it sometimes stalls.</p>
+    <p><strong>Objective.</strong> Show that a training step is ordinary arithmetic, not an opaque
+    procedure.</p>
+    <p>Walk through the four stages in order: compute the prediction, measure the error, find the
+    direction, update the parameters. At stage 3, explain the three factors of the derivative. Each
+    has a plain meaning, and together they explain why learning works and why it sometimes
+    stalls.</p>
+    <p><em>On the mathematics:</em> nobody needs to derive the derivative themselves. What matters
+    is what it tells you: the direction in which the error gets smaller.</p>
     <p><em>Question for the room:</em> "If ŷ is 0.995 and the target is 0, the error is nearly
-    maximal. What is the size of the update?" Answer: tiny, because σ′ = 0.995 × 0.005 ≈ 0.005.
-    This is why modern networks mostly use activation functions that do not saturate.</p>
+    maximal. How large is the update?" Answer: tiny, because σ′ = 0.995 × 0.005 ≈ 0.005. This is
+    why modern networks mostly use activation functions that do not saturate.</p>
+    <p><strong>Difference from the widget:</strong> the slide computes one row. The <em>Train one
+    step</em> button on the previous slide computes the derivatives for all four rows and updates
+    the parameters with their average.</p>
     <p>Course reference: Module 1.4, exercise 1.2.</p>
   </div></template>
 </section>
 
-<!-- ============ 8 · XOR ============ -->
+<!-- ============ 8 · SEVERAL LAYERS ============ -->
 <section class="slide">
-  <p class="eyebrow">1.5 · The limit of one neuron</p>
-  <h2>Why depth is necessary</h2>
+  <p class="eyebrow">Part 1 · Learning</p>
+  <h2>Why a network needs several layers</h2>
   <div class="cols">
     <div>
-      <p>Replace AND with exclusive-or and the same neuron fails — not through bad luck, but
-      because no parameters exist.</p>
+      <p>With exclusive-or (XOR) the result is 1 when exactly one input is 1. No parameters exist
+      with which a single neuron gets all four cases right:</p>
       <pre class="mono" style="font-size:16px;line-height:1.7;background:var(--surface-2);padding:14px 18px;border-radius:8px;border:1px solid var(--rule)">
 (0,0) → 0  requires            b  &lt; 0
 (1,0) → 1  requires      w₁ +  b  &gt; 0
@@ -296,89 +350,100 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
 add 2nd and 3rd:    w₁ + w₂ + 2b  &gt; 0
 add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
 
-<b>contradiction — no solution</b></pre>
+<b>Contradiction: there is no solution.</b></pre>
     </div>
     <div class="center">
-      <p>The limitation is geometric. One neuron draws one straight line and classifies by which
-      side a point falls on. XOR's two positive cases sit on opposite corners, and no single line
-      separates them from the negatives.</p>
-      <p>Feeding the inputs to several neurons in parallel, then combining their outputs, carves
-      the plane into regions a single line cannot.</p>
+      <p>A neuron draws a straight line through the plane of the inputs and classifies each point
+      by which side it falls on. For XOR, the two cases with result 1 sit at opposite corners. No
+      single line separates them from the other two.</p>
+      <p>Several neurons side by side, whose outputs a further neuron combines, divide the plane
+      more finely. This intermediate layer is called a hidden layer.</p>
       <div class="note">
-        <p style="font-size:18px">Without the squashing function, stacked layers collapse
-        algebraically into one layer. The small bend each activation introduces is what lets depth
-        buy expressive power.</p>
+        <p style="font-size:18px">For this, each neuron needs a non-linear function such as σ.
+        Without it, several layers could be combined arithmetically into one, and extra layers
+        would add nothing.</p>
       </div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Motivate hidden layers from a demonstrated impossibility rather
-    than by assertion.</p>
-    <p>The algebra is short enough to walk through live and is more convincing than the picture.
-    Add the second and third inequalities, then the first and fourth, and the contradiction
-    appears.</p>
-    <p><strong>Caveat.</strong> The universal approximation theorem says a wide enough single
-    hidden layer can approximate any continuous function. It says nothing about whether gradient
-    descent will find it, how much data that needs, or whether it generalises. Depth has proven far
-    more economical than width in practice.</p>
+    <p><strong>Objective.</strong> Explain why neural networks have several layers, from a
+    demonstrated impossibility rather than by assertion.</p>
+    <p>A neuron outputs 1 when the sum z is greater than zero. The algebra is short enough to walk
+    through live: add the second and third conditions, then the first and fourth. The two results
+    contradict each other.</p>
+    <p><strong>Caveat.</strong> The universal approximation theorem says that a single hidden layer,
+    if wide enough, can approximate any continuous function. It says nothing about whether training
+    will find that solution, how much data that needs, or whether it carries over to new inputs. In
+    practice depth has proved far more economical than width.</p>
     <p>Course reference: Module 1.5.</p>
   </div></template>
 </section>
 
-<!-- ============ 9 · SELF-SUPERVISION ============ -->
+<!-- ============ 9 · TRAINING A LANGUAGE MODEL ============ -->
 <section class="slide">
-  <p class="eyebrow">1.9 · From supervised to self-supervised</p>
-  <h2>Where the training data comes from</h2>
+  <p class="eyebrow">Part 1 · Training</p>
+  <h2>Language models learn to predict the next token</h2>
   <div class="cols cols--wide-left">
     <div>
-      <p>Supervised learning needs labelled examples, and labelling is expensive. A model with
-      10<sup>11</sup> parameters cannot be trained on anything a labelling effort could realistically
-      produce.</p>
-      <p>Language models avoid the constraint by constructing the targets from the data itself: take
-      any passage, hide what comes next, and ask the model to predict it. The correct answer is
-      what the author wrote. No annotation is needed and the supply of text is enormous.</p>
-      <p><strong>Two details that are usually lost in summaries.</strong></p>
-      <ul>
-        <li>The loss is <em>cross-entropy</em>: minus the logarithm of the probability assigned to
-        the token that actually occurred. It punishes ruling a possibility out.</li>
-        <li>A single pass over a sequence produces a prediction at <em>every</em> position at once,
-        so one pass over a 1 000-token document yields 1 000 training signals.</li>
-      </ul>
+      <p style="font-size:19px">Supervised learning needs examples with target answers written by
+      people. For a model with around 10<sup>11</sup> parameters, not enough such examples can be
+      produced.</p>
+      <p style="font-size:19px">Language models therefore take the target answer from the text
+      itself: the model sees the beginning of a text and has to predict how it continues. The
+      correct answer is what actually follows in the text. This is called self-supervised
+      learning.</p>
+      <p style="font-size:19px">What is predicted each time is the next token: a word or part of a
+      word. The next slide shows how text is split into tokens.</p>
+      <div class="note note--practice">
+        <p style="font-size:18px"><strong>In practice:</strong> The model learns to produce
+        plausible continuations. Whether a continuation is true is not part of this training
+        objective.</p>
+      </div>
     </div>
     <div class="center">
       <div class="card">
-        <h3>The entire instruction</h3>
+        <h3>The training objective</h3>
         <p style="font-size:20px;color:var(--ink)">Predict the next token.</p>
-        <p style="margin-top:12px">Applied across roughly 10<sup>13</sup> tokens of text.</p>
-        <p style="margin-top:12px">No stage explains grammar, facts, or what good writing looks
-        like. Whatever the model does, it does because doing so reduced that one quantity.</p>
+        <p style="margin-top:12px">Applied to around 10<sup>13</sup> tokens of text.</p>
+        <p style="margin-top:12px">Grammar, facts and style are not taught separately. The model
+        acquires them to the extent that they help predict the next token.</p>
       </div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Explain where the scale comes from, and set up the honest limit
-    that the course returns to repeatedly.</p>
-    <p>The parallel-position detail matters: people often picture one prediction per pass, which
-    makes the training cost seem impossible. Causal masking is what permits it, and we meet that in
-    the attention section.</p>
-    <p><em>Question:</em> "A model gives the correct token probability 0.6; another gives it 0.0001
-    in one case and 0.6 in another. Which has lower average loss?" Work it: −log(0.3) ≈ 1.2 beats
-    the average of −log(0.6) and −log(0.0001) ≈ 4.9. The objective strongly discourages confident
-    exclusion.</p>
-    <p>Course reference: Module 1.9.</p>
+    <p><strong>Objective.</strong> Explain how a language model is trained, why so much text can be
+    used for it, and what the training objective does not contain.</p>
+    <p><strong>Two details for questions.</strong> The loss is cross-entropy: minus the logarithm
+    of the probability the model gave to the token that actually followed. And one pass produces a
+    prediction at every position at once, so a text of 1 000 tokens yields 1 000 training signals.
+    Masking makes that possible (slide "Attention").</p>
+    <p><em>Question (optional):</em> "Model A gives the correct token probability 0.3 in each of
+    two cases. Model B gives it 0.6 in the first case and 0.0001 in the second. Which has the lower
+    average loss?" Working: A: −ln 0.3 ≈ 1.20. B: (0.51 + 9.21) / 2 ≈ 4.86. Model A is far better
+    although it is never confident. Cross-entropy punishes heavily for nearly ruling out something
+    that then happens. This is why models spread probability widely over many possible
+    continuations.</p>
+    <p><strong>Post-training.</strong> This pretraining is followed by post-training. It teaches
+    the model the conversational format and shapes tone, helpfulness and refusal behaviour. It
+    changes the model's tendencies; it does not add a step that checks statements for
+    correctness.</p>
+    <p>Course reference: Module 1.9, exercise 1.4; post-training Module 5.1.</p>
   </div></template>
 </section>
 
-<!-- ============ 10 · TOKENS ============ -->
+<!-- ============ 10 · TOKENISATION ============ -->
 <section class="slide">
-  <p class="eyebrow">2.1 · Tokenisation</p>
-  <h2>The model does not read words</h2>
-  <p class="lead" style="margin-bottom:22px">One sentence carries the next three sections.</p>
-  <div style="font-size:26px;font-family:var(--mono);color:var(--ink);margin-bottom:26px">
+  <p class="eyebrow">Part 1 · Processing text</p>
+  <h2>Tokenisation: text is split into tokens</h2>
+  <p class="tiny" style="margin:2px 0 6px;font-size:15px">Example sentence for the next
+  slides:</p>
+  <div style="font-size:24px;font-family:var(--mono);color:var(--ink);margin-bottom:4px">
     The nightly run failed because it timed out.
   </div>
-  <div class="step" style="margin-bottom:18px">
-    <p class="tiny" style="margin-bottom:6px">tokens — alternating shades mark the boundaries</p>
+  <p class="tiny" style="margin-bottom:12px"><em>run</em> is ambiguous (a scheduled run, or the
+  verb), and <em>it</em> needs a referent.</p>
+  <div class="step" style="margin-bottom:14px">
+    <p class="tiny" style="margin-bottom:6px">Tokens — alternating shades mark the boundaries</p>
     <div style="display:flex;flex-wrap:wrap;gap:4px;font-family:var(--mono);font-size:18px">
       <span style="background:var(--accent-soft);padding:5px 8px;border-radius:4px">The</span>
       <span style="background:var(--surface-2);padding:5px 8px;border-radius:4px"> night</span>
@@ -392,69 +457,73 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
       <span style="background:var(--surface-2);padding:5px 8px;border-radius:4px">.</span>
     </div>
   </div>
-  <div class="step" style="margin-bottom:22px">
-    <p class="tiny" style="margin-bottom:6px">token ids — the only thing the network receives</p>
+  <div class="step" style="margin-bottom:12px">
+    <p class="tiny" style="margin-bottom:5px">Token ids — the only thing the model receives</p>
     <div class="mono" style="font-size:17px;color:var(--ink-soft)">
       976 · 13046 · 398 · 1629 · 4745 · 1606 · 480 · 26212 · 836 · 13
     </div>
   </div>
-  <div class="step cols" style="gap:28px">
-    <div class="card"><h3>Frequency sets granularity</h3>
-      <p>Common sequences became single tokens when the vocabulary was built. Rare ones did
-      not.</p></div>
-    <div class="card"><h3>The space belongs to the token</h3>
-      <p><span class="mono">&nbsp;run</span> and <span class="mono">run</span> are different
-      entries with different ids and separately learned parameters.</p></div>
-    <div class="card"><h3>Letters are not visible</h3>
-      <p>The model cannot see inside a token, which is why counting letters and long-number
-      arithmetic fail.</p></div>
+  <div class="step">
+    <p class="tiny" style="margin-bottom:6px;color:var(--practice);font-weight:600">In practice</p>
+    <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:20px;font-size:17px">
+      <div class="card"><h3>Letters are not visible</h3>
+        <p>The model cannot see inside a token. Counting letters and arithmetic on long numbers are
+        therefore unreliable.</p></div>
+      <div class="card"><h3>Cost and size in tokens</h3>
+        <p>Prices and the size of the context window are measured in tokens, not in words or
+        pages.</p></div>
+      <div class="card"><h3>Languages differ</h3>
+        <p>The vocabulary was built mainly from English text. The same content in many other
+        languages, German included, takes more tokens.</p></div>
+    </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Establish tokens as the unit of processing, of context, and
-    later of cost.</p>
-    <p>Advance the steps one at a time. The split of "nightly" is illustrative — whether a given
-    word survives as one token depends on the corpus the vocabulary was built from and differs
-    between tokenisers.</p>
-    <p><em>Demonstration if you have a screen and connectivity:</em> paste a paragraph into an
-    online tokeniser in English and in another language the room works in, and read out the two
-    counts. This lands better than any slide.</p>
-    <p>Course reference: Module 2.1 and 2.5.</p>
+    <p><strong>Objective.</strong> Introduce the token as the unit of processing, of context and of
+    cost.</p>
+    <p>Reveal the steps one at a time. The split of "nightly" is illustrative; how a given word is
+    split differs between tokenisers.</p>
+    <p><strong>Mechanism.</strong> The vocabulary of 100 000 to 200 000 entries is built before
+    training: frequent character sequences are merged step by step into single entries (byte-pair
+    encoding). What is frequent becomes one token; what is rare is split. A leading space belongs
+    to the token, so " run" and "run" are different entries.</p>
+    <p><em>Demonstration if you have connectivity:</em> paste the same paragraph in English and in
+    another language the room works in into an online tokeniser, and compare the two counts.</p>
+    <p>Course reference: Modules 2.1 and 2.5.</p>
   </div></template>
 </section>
 
 <!-- ============ 11 · EMBEDDINGS ============ -->
 <section class="slide">
-  <p class="eyebrow">2.3 · Embeddings</p>
-  <h2>One vector per token, whatever it means</h2>
+  <p class="eyebrow">Part 1 · Processing text</p>
+  <h2>Embeddings: each token becomes a vector</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>The first layer is a table with one row per vocabulary entry; the token's id selects the
-      row. That row is its <strong>static embedding</strong>. Training arranges the rows so that
-      tokens appearing in similar contexts end up with similar vectors — an arrangement nobody
-      designs, which falls out of the prediction objective.</p>
+      <p style="font-size:19px">The model's first layer is a table with one row per token in the
+      vocabulary. The token id selects a row: a list of a few thousand numbers, a vector. That row
+      is called the <strong>static embedding</strong>.</p>
+      <p style="font-size:19px">Training adjusts the rows so that tokens from similar contexts get
+      similar vectors. Nobody designs this arrangement; it follows from the prediction task.</p>
       <div class="note note--warn" style="padding:11px 18px">
-        <p style="font-size:17px">Individual dimensions do not correspond to interpretable
-        properties. Meaningful directions combine many coordinates, and any two-dimensional
-        picture is a projection discarding almost everything.</p>
+        <p style="font-size:17px">Individual numbers in a vector have no readable meaning. Any
+        two-dimensional picture such as the one on the right is a strong simplification.</p>
       </div>
-      <p style="margin-top:14px"><strong>The limitation that matters:</strong> there is one row for
-      <span class="mono">&nbsp;run</span>. In our sentence it is a scheduled job; in <em>we run the
-      migration</em> it is a verb. Both retrieve the same row.</p>
+      <p style="margin-top:12px;font-size:19px"><strong>Limitation:</strong> there is exactly one
+      row for <span class="mono">&nbsp;run</span>. In the example sentence it means a scheduled
+      run; in <em>we run the migration</em> it is a verb. Both retrieve the same row.</p>
     </div>
     <figure style="margin:0">
       <svg class="dgm" viewBox="0 0 560 320" role="img"
-        aria-label="A two-dimensional projection showing a cluster of scheduled-work nouns and a cluster of motion verbs, with the single static embedding of the token run sitting between them because one vector must serve both senses.">
-        <text class="t-ttl" x="12" y="20">A 2-D PROJECTION OF ~4000 DIMENSIONS</text>
+        aria-label="A simplified two-dimensional view with a cluster of scheduled-work nouns and a cluster of motion verbs. The single static embedding of the token run sits between them, because one vector has to serve both senses.">
+        <text class="t-ttl" x="12" y="20">SIMPLIFIED 2-D VIEW OF ~4000 DIMENSIONS</text>
         <circle cx="160" cy="92" r="66" fill="var(--accent)" opacity=".10" stroke="var(--accent)"/>
-        <text class="t-xs" x="160" y="16" text-anchor="middle"></text>
         <circle class="head" cx="128" cy="66" r="4"/><text class="t-mono t-xs" x="100" y="60">job</text>
         <circle class="head" cx="186" cy="80" r="4"/><text class="t-mono t-xs" x="194" y="76">build</text>
-        <circle class="head" cx="132" cy="110" r="4"/><text class="t-mono t-xs" x="96" y="116">deploy</text>
+        <circle class="head" cx="132" cy="110" r="4"/><text class="t-mono t-xs" x="124" y="116" text-anchor="end">deploy</text>
         <circle class="head" cx="188" cy="120" r="4"/><text class="t-mono t-xs" x="196" y="124">task</text>
         <text class="t-xs" x="160" y="178" text-anchor="middle">scheduled-work region</text>
 
         <circle cx="400" cy="240" r="62" fill="var(--accent)" opacity=".10" stroke="var(--accent)"/>
-        <circle class="head" cx="368" cy="218" r="4"/><text class="t-mono t-xs" x="340" y="212">jog</text>
+        <circle class="head" cx="368" cy="218" r="4"/><text class="t-mono t-xs" x="376" y="212">jog</text>
         <circle class="head" cx="426" cy="232" r="4"/><text class="t-mono t-xs" x="434" y="228">sprint</text>
         <circle class="head" cx="372" cy="258" r="4"/><text class="t-mono t-xs" x="330" y="264">walk</text>
         <circle class="head" cx="428" cy="268" r="4"/><text class="t-mono t-xs" x="436" y="272">move</text>
@@ -464,65 +533,68 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
         <text class="t-mono t-ac" x="282" y="162" text-anchor="middle">&ldquo; run&rdquo;</text>
         <line class="flow-a dash" x1="272" y1="168" x2="212" y2="126"/>
         <line class="flow-a dash" x1="292" y1="186" x2="352" y2="214"/>
-        <text class="t-xs" x="282" y="200" text-anchor="middle">one vector, both senses</text>
+        <text class="t-xs" x="310" y="162">one vector for both senses</text>
       </svg>
     </figure>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Give the geometric intuition while heading off the common
-    overclaim about interpretable dimensions.</p>
-    <p>The lone point between the two clusters is the slide's purpose. It sets up the next two
-    slides: attention exists to solve exactly this.</p>
-    <p><strong>Caveat to state plainly.</strong> Research suggests models represent more features
-    than they have dimensions, stored in overlapping non-orthogonal directions. The tidy
-    labelled-axis picture seen in popular accounts is misleading.</p>
+    <p><strong>Objective.</strong> Convey the idea that similar tokens lie close together, while
+    heading off the over-interpretation of individual dimensions.</p>
+    <p>The point between the two clusters is the purpose of the slide: a static embedding contains
+    nothing about which sense is meant in a particular sentence. Attention solves this problem
+    (next slide).</p>
+    <p><strong>Caveat, state it plainly.</strong> Research suggests models represent more features
+    than they have dimensions, in overlapping directions. Pictures with labelled axes, as seen in
+    popular explanations, are misleading.</p>
     <p>Course reference: Module 2.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 12 · INTERACTIVE: ATTENTION ============ -->
+<!-- ============ 12 · ATTENTION (INTERACTIVE) ============ -->
 <section class="slide">
-  <p class="eyebrow">3.2 · Interactive</p>
-  <h2>Attention resolves it</h2>
+  <p class="eyebrow">Part 1 · Processing text</p>
+  <h2>Attention: meaning from context</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Each position emits a query describing what it needs; every position advertises a key
-      describing what it offers; each position receives a weighted blend of the others' values.</p>
-      <p style="font-size:19px">Select <span class="mono">run</span> and see weight land on
-      <span class="mono">nightly</span> — that is what settles the job-instance sense.</p>
-      <p style="font-size:19px">Select <span class="mono">it</span> and see weight land on
-      <span class="mono">run</span> — that is the referent.</p>
+      <p style="font-size:19px">Each position produces a query, describing what information it
+      needs, and a key, describing what information it holds. The better the query of one position
+      matches the key of another, the more of that position's content (its value) is taken
+      over.</p>
+      <p style="font-size:19px">Select <span class="mono">run</span>: the weight falls on
+      <span class="mono">nightly</span>. That settles the sense "scheduled run".</p>
+      <p style="font-size:19px">Select <span class="mono">it</span>: the weight falls on
+      <span class="mono">run</span>. That is the pronoun's referent.</p>
       <div class="note">
-        <p style="font-size:18px">After this operation the vector at <span class="mono">run</span>
-        is no longer the static embedding. It has absorbed context, and the course writes it
-        <span class="mono">h</span> rather than <span class="mono">e(t)</span>.</p>
+        <p style="font-size:18px">Afterwards the vector at the position
+        <span class="mono">run</span> is no longer the static embedding. It contains information
+        from the context and is called a <strong>contextual representation</strong>.</p>
       </div>
     </div>
     <div class="widget" data-widget="attention"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Make the static-versus-contextual distinction tangible, and show
-    co-reference emerging from learned parameters rather than rules.</p>
-    <p>Click through <span class="mono">run</span> then <span class="mono">it</span> and narrate
-    what the weights say. Then click <span class="mono">The</span> and point out that a first token
-    has almost nothing to attend to.</p>
+    <p><strong>Objective.</strong> Make the difference between static embedding and contextual
+    representation tangible, and show that the pronoun's referent emerges from learned parameters
+    rather than programmed rules.</p>
+    <p>Click <span class="mono">run</span> and then <span class="mono">it</span>, and explain the
+    weights. Then click <span class="mono">The</span>: the first token has nothing earlier to draw
+    on.</p>
     <p><strong>Important caveat, state it.</strong> Attention weights show where information was
-    gathered from. They are not an explanation of why the model produced its output, and research
-    has repeatedly cautioned against reading them that way.</p>
-    <p><em>Also mention:</em> the masking. A position cannot see what follows it, which is what lets
-    the loss be computed at every position in one pass.</p>
+    gathered from. They do not explain why the model produced a particular output.</p>
+    <p><em>Also mention:</em> a position sees only what comes before it (masking). That is why
+    training can predict at every position at once. And the computation for attention grows with
+    the square of the context length; long contexts are expensive.</p>
     <p>Course reference: Modules 3.2 and 3.3.</p>
   </div></template>
 </section>
 
-
-<!-- ============ 13 · TRANSFORMER STACK ============ -->
+<!-- ============ 13 · FORWARD PASS ============ -->
 <section class="slide">
-  <p class="eyebrow">3.4–3.5 · The forward pass</p>
-  <h2>One pass, one token</h2>
-  <figure style="margin:6px 0 0;flex:1">
+  <p class="eyebrow">Part 1 · Processing text</p>
+  <h2>The forward pass: from tokens to probabilities</h2>
+  <figure style="margin:6px 0 0">
     <svg class="dgm" viewBox="0 0 1120 400" role="img"
-      aria-label="A full forward pass: text is tokenised and embedded with positional information, flows through many transformer blocks each containing multi-head attention and a feed-forward network with residual connections, and the final position's vector becomes a logit for every vocabulary entry and then a probability distribution.">
+      aria-label="A complete forward pass: text is tokenised and embedded with positional information, flows through many transformer blocks each containing multi-head attention and a feed-forward network, and the final position's vector becomes a raw score for every vocabulary entry and then a probability distribution.">
       <rect class="chip" x="20" y="34" width="150" height="40" rx="5"/>
       <text class="t-sm" x="95" y="59" text-anchor="middle">Text</text>
       <line class="flow" x1="172" y1="54" x2="190" y2="54"/><polygon class="head" points="190,49 200,54 190,59"/>
@@ -534,7 +606,7 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
       <text class="t-xs" x="469" y="67" text-anchor="middle">one vector per token</text>
       <line class="flow" x1="556" y1="54" x2="574" y2="54"/><polygon class="head" points="574,49 584,54 574,59"/>
       <rect class="hl" x="586" y="34" width="514" height="40" rx="5"/>
-      <text class="t-sm" x="843" y="59" text-anchor="middle">the residual stream — one vector per position, refined block by block</text>
+      <text class="t-sm" x="843" y="59" text-anchor="middle">one vector per position, refined from block to block</text>
 
       <line class="flow" x1="469" y1="80" x2="469" y2="98"/><polygon class="head" points="464,98 469,108 474,98"/>
 
@@ -549,11 +621,11 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
       <text class="t-xs" x="644" y="190" text-anchor="middle">processing at each position</text>
       <polyline class="flow" points="190,214 190,234 330,234"/>
       <polyline class="flow" points="470,214 470,234 336,234"/>
-      <text class="t-xs" x="330" y="250" text-anchor="middle">+ residual</text>
+      <text class="t-xs" x="330" y="250" text-anchor="middle">+ input</text>
       <polyline class="flow" points="504,214 504,234 644,234"/>
       <polyline class="flow" points="784,214 784,234 650,234"/>
-      <text class="t-xs" x="644" y="250" text-anchor="middle">+ residual</text>
-      <text class="t-xs" x="500" y="270" text-anchor="middle">layer normalisation around both · residuals keep the gradient alive through 100 layers</text>
+      <text class="t-xs" x="644" y="250" text-anchor="middle">+ input</text>
+      <text class="t-xs" x="500" y="270" text-anchor="middle">extra connections and normalisation keep training stable across many layers</text>
       <polyline class="flow-a" points="796,176 836,176 836,300 469,300 469,316"/>
       <polygon class="head-a" points="464,316 469,326 474,316"/>
       <text class="t-ac t-sm" x="850" y="238">each block's output</text>
@@ -566,63 +638,72 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
       <text class="t-sm" x="932" y="350" text-anchor="middle">logits → softmax → a probability for every token</text>
     </svg>
   </figure>
+  <p style="font-size:19px;margin:6px 0 0;max-width:none">Result of one pass: a probability for
+  each of the roughly 200 000 tokens in the vocabulary. Which token is actually output is decided
+  by a separate step (next slide).</p>
   <div class="srcnote">Course reference: Modules 3.4 and 3.5.</div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Assemble the parts into one picture and establish that the
-    output is a distribution rather than a word.</p>
-    <p>Two things usually surprise people. Only the final position's vector is used to predict —
-    every other position exists to inform it through attention. And the output is roughly 200 000
-    numbers summing to one; choosing among them is a separate step the network does not perform.</p>
-    <p><strong>Division of labour worth naming:</strong> attention moves information between
-    positions, the feed-forward network does processing at a position. The feed-forward layers hold
-    most of the parameters.</p>
-    <p><em>Keep proportionate:</em> residual connections and layer normalisation are load-bearing
-    but do not repay more than a sentence each in a workshop.</p>
+    <p><strong>Objective.</strong> Put the parts together into one picture, and establish that the
+    output is a probability distribution rather than a word.</p>
+    <p>Two things usually surprise people. Only the vector at the last position is used for the
+    prediction; all the other positions contribute to it through attention. And the output is
+    about 200 000 numbers that sum to one; choosing a token from them is a separate step.</p>
+    <p><strong>Division of labour:</strong> attention moves information between positions, the
+    feed-forward network processes it at each position. The feed-forward layers hold most of the
+    parameters.</p>
+    <p><strong>Terms:</strong> logits are the raw score per token; the softmax function turns them
+    into probabilities. "+ input" stands for the residual connection: the input of a sub-step is
+    added to its output. These connections and the normalisation matter for stable training but do
+    not need more than a sentence here.</p>
   </div></template>
 </section>
 
-<!-- ============ 14 · INTERACTIVE: TEMPERATURE ============ -->
+<!-- ============ 14 · SAMPLING AND TEMPERATURE (INTERACTIVE) ============ -->
 <section class="slide">
-  <p class="eyebrow">4.2–4.3 · Interactive</p>
-  <h2>Choosing among the possibilities</h2>
+  <p class="eyebrow">Part 1 · Generating text</p>
+  <h2>Sampling: choosing the next token</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>The forward pass ends with a probability for every token. Temperature reshapes that
-      distribution before one is drawn, by dividing every logit by a constant.</p>
-      <p style="font-size:19px"><strong>Below 1</strong> sharpens: the leading candidate takes a
-      larger share.</p>
-      <p style="font-size:19px"><strong>Above 1</strong> flattens — and flattening promotes the
-      <em>whole</em> vocabulary, not just the runner-up.</p>
-      <div class="note note--warn">
-        <p style="font-size:18px">Push the slider past 1.4 and watch the tail. There are 199 994
-        tokens in it, so a modest increase each aggregates into most of the mass.</p>
+      <p style="font-size:19px">A token is drawn at random from the distribution, weighted by its
+      probability. Temperature reshapes the distribution before the draw.</p>
+      <p style="font-size:19px">Below 1 the distribution becomes sharper, above 1 flatter. A flatter
+      distribution raises the probability of all the other 200 000 or so tokens. From about 1.4
+      they take more than half of the probability between them.</p>
+      <div class="note note--practice" style="margin-top:16px">
+        <p style="font-size:18px"><strong>In practice:</strong> The same request can give a
+        different answer each time. Temperature changes how the choice is made, not what the model
+        knows.</p>
       </div>
     </div>
     <div class="widget" data-widget="temperature"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Replace "temperature is a creativity dial" with a correct
-    account of what it does to the distribution.</p>
-    <p><em>Ask before sliding:</em> "If I raise temperature, which token gains most?" Most people
-    say the second-placed one. Then slide to 1.5 and show the tail at roughly three quarters of the
-    mass. This motivates top-p sampling, which truncates the distribution before drawing.</p>
-    <p><strong>State clearly:</strong> temperature cannot add knowledge or improve judgement. It
-    changes how boldly an existing opinion is sampled. For most working tasks low is right; for
-    generating alternatives to choose between, higher earns its place.</p>
-    <p><strong>And the consequence:</strong> a confidently wrong model at temperature zero gives the
-    same wrong answer every time, which reads as reliability.</p>
+    <p><strong>Objective.</strong> Replace "temperature is a creativity dial" with an accurate
+    description of what it does.</p>
+    <p><strong>Mechanism.</strong> Temperature divides every logit before the softmax function.</p>
+    <p><em>Ask before moving the slider:</em> "Which token gains most when the temperature rises?"
+    Most people name the second candidate. Then move to 1.5: the tail takes about three quarters of
+    the probability, because many very small shares add up. This is why top-p is used as well:
+    before drawing, only the most probable tokens are kept, until their probabilities add up to
+    p.</p>
+    <p><strong>State clearly:</strong> temperature adds no knowledge and does not improve
+    judgement. For most working tasks a low value is right; for generating alternatives to choose
+    from, a higher one is appropriate.</p>
+    <p><strong>Consequence:</strong> a model that gives a wrong answer high probability gives the
+    same wrong answer every time at temperature zero. Consistent answers are therefore no evidence
+    of correctness.</p>
     <p>Course reference: Modules 4.2 to 4.4.</p>
   </div></template>
 </section>
 
 <!-- ============ 15 · AUTOREGRESSION ============ -->
 <section class="slide">
-  <p class="eyebrow">4.6 · Output becomes input</p>
-  <h2>The loop</h2>
-  <figure style="margin:4px 0 0;flex:1">
-    <svg class="dgm" viewBox="0 0 1120 330" role="img"
-      aria-label="Three autoregressive passes continuing the example sentence. Each pass appends one sampled token to the context and runs the whole model again, and after the first pass the generated tokens are indistinguishable from the original prompt.">
-      <g><text class="t-xs" x="20" y="64">pass 1</text>
+  <p class="eyebrow">Part 1 · Generating text</p>
+  <h2>Autoregression: the output becomes part of the input</h2>
+  <figure style="margin:4px 0 0">
+    <svg class="dgm" viewBox="0 0 1120 320" role="img"
+      aria-label="Three steps continuing the example sentence. Each step appends one sampled token to the context and runs the whole model again. From the second step on, the generated tokens in the context cannot be told apart from the original input.">
+      <g><text class="t-xs" x="20" y="64">step 1</text>
         <rect class="chip" x="86" y="46" width="390" height="28" rx="4"/>
         <text class="t-mono" x="98" y="65">The nightly run failed because it</text>
         <line class="flow" x1="482" y1="60" x2="500" y2="60"/><polygon class="head" points="500,55 510,60 500,65"/>
@@ -631,7 +712,7 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
         <line class="flow" x1="644" y1="60" x2="662" y2="60"/><polygon class="head" points="662,55 672,60 662,65"/>
         <rect class="hl" x="674" y="46" width="92" height="28" rx="4"/>
         <text class="t-mono t-ac" x="720" y="65" text-anchor="middle">timed</text></g>
-      <g><text class="t-xs" x="20" y="124">pass 2</text>
+      <g><text class="t-xs" x="20" y="124">step 2</text>
         <rect class="chip" x="86" y="106" width="390" height="28" rx="4"/>
         <text class="t-mono" x="98" y="125">The nightly run failed because it</text>
         <rect class="hl" x="408" y="106" width="68" height="28" rx="4"/>
@@ -642,7 +723,7 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
         <line class="flow" x1="644" y1="120" x2="662" y2="120"/><polygon class="head" points="662,115 672,120 662,125"/>
         <rect class="hl" x="674" y="106" width="92" height="28" rx="4"/>
         <text class="t-mono t-ac" x="720" y="125" text-anchor="middle">out</text></g>
-      <g><text class="t-xs" x="20" y="184">pass 3</text>
+      <g><text class="t-xs" x="20" y="184">step 3</text>
         <rect class="chip" x="86" y="166" width="390" height="28" rx="4"/>
         <text class="t-mono" x="98" y="185">The nightly run failed because it</text>
         <rect class="hl" x="366" y="166" width="110" height="28" rx="4"/>
@@ -656,37 +737,146 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
 
       <polyline class="flow-a" points="770,60 812,60 812,236 250,236 250,206"/>
       <polygon class="head-a" points="245,206 250,196 255,206"/>
-      <text class="t-ac t-sm" x="832" y="126">each sampled token is appended</text>
-      <text class="t-xs" x="832" y="144">and the whole context is sent again</text>
+      <text class="t-ac t-sm" x="832" y="126">each sampled token is appended,</text>
+      <text class="t-xs" x="832" y="144">then the whole context is processed again</text>
 
-      <text class="t-sm" x="20" y="276">After pass 1 the context holds tokens from two sources, and nothing records which is which.</text>
-      <text class="t-sm" x="20" y="300">The model has no field for provenance, and attention has nothing to weight differently.</text>
+      <text class="t-sm" x="20" y="276">From step 2 the context holds tokens from two sources: the input and generated text. Nothing marks which is which.</text>
+      <text class="t-sm" x="20" y="298">To the model, generated text is therefore indistinguishable from text it was given.</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="font-size:18px;max-width:none"><strong>In practice:</strong> Long contexts and long
+    answers cost more time and money. An early mistake stays in the context and shapes what
+    follows. Text from documents sits alongside your instructions with equal standing.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Establish three consequences at once: cost grows with context,
-    errors compound, and generated text is indistinguishable from supplied text.</p>
-    <p>The last point is the hinge for the security section later. There is no marker in the
-    context separating what you typed from what the model wrote or what a document contained.</p>
-    <p><strong>Caveat.</strong> Serving systems cache the key and value vectors for earlier
-    positions, so the arithmetic is not fully repeated. The context is still reprocessed
-    conceptually and the cost still grows with length.</p>
-    <p><em>Connect forward:</em> this is why a generation that starts down a wrong path rarely
-    recovers — the model is being consistent with its own context, which is what it was trained to
-    do.</p>
+    <p><strong>Objective.</strong> Establish three consequences: cost grows with the context,
+    mistakes carry forward, and text in the context carries no mark of where it came from.</p>
+    <p>The last point is the basis for the slide "Prompt injection" in Part 2. Nothing in the
+    context separates what you typed from generated text or from the contents of a document.</p>
+    <p><strong>Caveat.</strong> Serving systems keep intermediate results for earlier positions
+    (the key and value vectors), so not everything is recomputed. The cost still grows with the
+    length of the context.</p>
+    <p><em>Why a wrong path is rarely abandoned:</em> the model continues its own context
+    consistently, which is exactly what it was trained to do. A mistake at the start of an answer
+    therefore tends to be justified rather than corrected.</p>
+    <p>Course reference: Module 4.6.</p>
   </div></template>
 </section>
 
-<!-- ============ 16 · HARNESS BUILD-UP (progressive) ============ -->
+<!-- ============ 16 · PARAMETERS AND CONTEXT ============ -->
 <section class="slide">
-  <p class="eyebrow">5.4 · Model and system</p>
-  <h2>What surrounds the model</h2>
-  <figure style="margin:0;flex:1">
+  <p class="eyebrow">Part 1 · Knowledge and limits</p>
+  <h2>What the model uses: parameters and context</h2>
+  <div class="cols" style="margin-top:14px;flex:none">
+    <div class="card" style="background:var(--accent-soft);border-color:var(--accent)">
+      <h3>Parameters: from training</h3>
+      <ul style="font-size:18px;margin:8px 0 0">
+        <li>Not changed after training. A conversation teaches the model nothing, and corrections
+        are not retained.</li>
+        <li>Contain patterns from the training text. They end at the training data's cutoff date
+        and contain no internal information from your organisation.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Context: sent with every request</h3>
+      <ul style="font-size:18px;margin:8px 0 0">
+        <li>Instructions, files, the conversation so far and tool results: everything the system
+        assembles for this request.</li>
+        <li>Limited by the <strong>context window</strong>, a maximum number of tokens.
+        Instructions and material share this space.</li>
+        <li>What looks like memory is text that software stored and sent again.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note note--practice" style="margin-top:22px">
+    <p style="font-size:19px;max-width:none"><strong>In practice:</strong> What is neither in the
+    parameters nor in the context, the model cannot use. It will still produce a plausible answer.
+    The context is the part you control; Part 2 deals with it in detail.</p>
+  </div>
+  <template class="notes"><div class="nt">
+    <p><strong>Objective.</strong> Name the two sources every answer comes from, and derive the
+    most important limits from them.</p>
+    <p><strong>Inference.</strong> After training the model is only applied. No error is measured
+    and no parameter is changed. Every request, including other people's, works with the same
+    unchanged parameters.</p>
+    <p><strong>It follows:</strong> no memory between conversations; no knowledge of events after
+    the cutoff date; no knowledge of internal processes, names and conventions, unless they are in
+    the context. When information is missing, the model still produces a probable continuation.
+    That is the bridge to the next slide.</p>
+    <p><strong>Context window.</strong> Its size depends on the model; the context slide in Part 2
+    works with 200 000 tokens. A stated size says how much is accepted, not how reliably everything
+    in it is used.</p>
+    <p><em>GitHub Copilot example:</em> an instruction file in the project, such as
+    <span class="mono">.github/copilot-instructions.md</span>, is attached to every request
+    automatically. That is why Copilot seems to know the project's conventions. A newly started
+    chat no longer contains the earlier conversation.</p>
+    <p>Course reference: Modules 1.8 and 4.7.</p>
+  </div></template>
+</section>
+
+<!-- ============ 17 · HALLUCINATION ============ -->
+<section class="slide">
+  <p class="eyebrow">Part 1 · Knowledge and limits</p>
+  <h2>Hallucination: plausible but wrong output</h2>
+  <div class="cols">
+    <div>
+      <p style="font-size:19px">The model produces a probable continuation, token by token. No step
+      in this process checks a statement against facts.</p>
+      <p style="font-size:19px">Example: asked for a function from a software library that appeared
+      rarely or never in the training data, the model produces a plausible function name with
+      plausible arguments. The continuation is probable; the function does not exist.</p>
+      <div class="note">
+        <p style="font-size:18px">Correct and incorrect answers come from the same mechanism.
+        Hallucination therefore cannot be switched off. Effective countermeasures change what is in
+        the context, or check the result.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Where hallucinations concentrate</h3>
+      <ul style="font-size:18px">
+        <li>Specific identifiers: names, version numbers, function names, reference numbers</li>
+        <li>Citations: plausible author and title, but no such source</li>
+        <li>Events after the training cutoff</li>
+        <li>Internal matters of your own organisation</li>
+        <li>Arithmetic and exact counting</li>
+        <li>After disagreement: models tend to give way</li>
+      </ul>
+      <h3 style="margin-top:16px">What helps</h3>
+      <ul style="font-size:18px">
+        <li>Put the actual material in the context</li>
+        <li>Provide a tool that calculates or looks things up (next slide)</li>
+        <li>Require a source for every claim</li>
+        <li>Check results: wrong output is usually <em>almost</em> right</li>
+      </ul>
+    </div>
+  </div>
+  <template class="notes"><div class="nt">
+    <p><strong>Objective.</strong> Present hallucination as an expected consequence of the
+    mechanism rather than an occasional malfunction. The countermeasures then make sense as design
+    decisions about the system, not as appeals to the model.</p>
+    <p><strong>For a sceptical room:</strong> a fluent, false continuation meets the training
+    objective, because it is plausible. Plausibility is related to truth, but it is not the same
+    thing.</p>
+    <p><em>An example from programming:</em> in GitHub Copilot this shows up as a call to a
+    function or option that does not exist in the version of the library in use. It helps to put
+    the actual documentation or source code in the context and to check the result by running it
+    or testing it.</p>
+    <p><em>Link to Part 2:</em> every checking practice in Part 2 follows from this slide.</p>
+    <p>Course reference: Module 4.8.</p>
+  </div></template>
+</section>
+
+<!-- ============ 18 · MODEL AND SYSTEM (PROGRESSIVE) ============ -->
+<section class="slide">
+  <p class="eyebrow">Part 1 · Model and system</p>
+  <h2>Model and system: what surrounds the model</h2>
+  <figure style="margin:0">
     <svg class="dgm" viewBox="0 0 1120 420" role="img"
-      aria-label="A diagram built up in stages: the model alone, then the user request, then context assembly from several sources, then system instructions, then tools, then the execution environment, then the agent feedback loop, then permissions and validation.">
+      aria-label="A diagram built up in stages: the model alone, then the request, then context assembly from several sources, then parsing of the output, then tool execution by the harness, then the agent feedback loop, then permissions and approval.">
       <rect class="box" x="470" y="178" width="180" height="76" rx="6"/>
       <text x="560" y="210" text-anchor="middle">MODEL</text>
-      <text class="t-xs" x="560" y="228" text-anchor="middle">frozen parameters</text>
+      <text class="t-xs" x="560" y="228" text-anchor="middle">fixed parameters</text>
       <text class="t-xs" x="560" y="243" text-anchor="middle">one forward pass</text>
 
       <g class="step">
@@ -710,7 +900,7 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
         <rect class="chip" x="40" y="82" width="150" height="34" rx="4"/>
         <text class="t-xs" x="115" y="104" text-anchor="middle">Your instructions</text>
         <rect class="chip" x="40" y="124" width="150" height="34" rx="4"/>
-        <text class="t-xs" x="115" y="146" text-anchor="middle">Documents, history</text>
+        <text class="t-xs" x="115" y="146" text-anchor="middle">Files, history</text>
         <line class="flow" x1="192" y1="57" x2="330" y2="186"/>
         <line class="flow" x1="192" y1="99" x2="340" y2="186"/>
         <line class="flow" x1="192" y1="141" x2="350" y2="186"/>
@@ -739,7 +929,7 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
       <g class="step">
         <polyline class="flow-a" points="888,346 888,384 382,384 382,246"/>
         <polygon class="head-a" points="377,246 382,236 387,246"/>
-        <text class="t-ac t-sm" x="640" y="400" text-anchor="middle">the result is appended to the context and the model is called again — this is the agent loop</text>
+        <text class="t-ac t-sm" x="640" y="400" text-anchor="middle">the result is appended to the context and the model is called again — the agent loop</text>
       </g>
 
       <g class="step">
@@ -753,93 +943,140 @@ add 1st and 4th:    w₁ + w₂ + 2b  &lt; 0
       </g>
     </svg>
   </figure>
+  <p style="font-size:18px;margin:2px 0 0;max-width:none">The software around the model is called
+  the <strong>harness</strong>. It assembles the context, runs tools and enforces permissions.
+  GitHub Copilot in VS Code is such a system; the model inside it can be swapped.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Build one diagram the audience will carry for the rest of the
-    day, rather than showing several unrelated ones.</p>
-    <p><strong>Advance one step at a time and narrate:</strong></p>
+    <p><strong>Objective.</strong> Build one diagram that carries the audience through the rest of
+    the workshop, instead of showing several unconnected ones.</p>
+    <p><strong>Reveal one step at a time and explain:</strong></p>
     <ul>
-      <li>The model alone — fixed parameters, one forward pass, no memory.</li>
-      <li>Your request arrives.</li>
-      <li>Context assembly — someone decides what the model sees.</li>
-      <li>Other sources feed that assembly; your words are a fraction of it.</li>
+      <li>The model alone: fixed parameters, one forward pass, no memory.</li>
+      <li>The request arrives.</li>
+      <li>The context is assembled: software decides what the model sees.</li>
+      <li>Other sources feed in; your own input is only a small part.</li>
       <li>The output is parsed: ordinary text, or a request to use a tool.</li>
-      <li>The harness executes tools. <em>The model never executes anything.</em></li>
-      <li>Results loop back into the context. That loop is the whole of agency.</li>
+      <li>A tool call is executed by the harness. <em>The model itself executes nothing.</em></li>
+      <li>The result goes back into the context and the model is called again. An agent is exactly
+      this loop.</li>
       <li>Permissions sit on the execution path and determine what is possible at all.</li>
     </ul>
-    <p><em>The point to land:</em> almost everything that distinguishes one AI product from another
-    lives in this picture outside the model box, and most of it is configurable.</p>
-    <p>Course reference: Modules 5.4, 5.8, 5.9.</p>
+    <p><em>Point to make:</em> most of what distinguishes one AI product from another lies outside
+    the model, and much of it can be configured.</p>
+    <p><em>In GitHub Copilot:</em> Copilot assembles the context (attached files, instruction
+    files, depending on settings the open file), offers tools in agent mode, for example to read
+    and change files and to run terminal commands, and asks for approval before certain actions.
+    The model is chosen from a list.</p>
+    <p>Course reference: Modules 5.4, 5.8 and 5.9.</p>
   </div></template>
 </section>
 
-<!-- ============ 17 · HALLUCINATION ============ -->
+<!-- ============ 19 · SUMMARY OF PART 1 ============ -->
 <section class="slide">
-  <p class="eyebrow">4.8 · Why confident errors happen</p>
-  <h2>Nothing in the process checks a claim</h2>
-  <div class="cols">
-    <div>
-      <p>The model computes a probability distribution and a token is drawn from it. There is no
-      step that compares anything against the world, because there is no world in the architecture
-      — only a distribution shaped by text.</p>
-      <p>Asked for a method of a library it never saw, the system produces the most probable
-      continuation. A plausible name with plausible arguments genuinely <em>is</em> the most
-      probable continuation. It simply does not exist.</p>
-      <div class="note">
-        <p style="font-size:18px">This is the same mechanism that produces correct answers,
-        operating where the training data did not constrain it. It cannot be patched out, which is
-        why every effective mitigation is architectural.</p>
-      </div>
-    </div>
-    <div>
-      <h3>Where it concentrates</h3>
-      <ul style="font-size:18.5px">
-        <li>Specific identifiers — names, references, codes</li>
-        <li>Citations: plausible author, plausible title, no such source</li>
-        <li>Anything after the training cutoff</li>
-        <li>Your organisation's private world</li>
-        <li>Arithmetic and exact counting</li>
-        <li>Under disagreement — models tend to concede</li>
-      </ul>
-      <h3 style="margin-top:20px">What actually helps</h3>
-      <ul style="font-size:18.5px">
-        <li>Put the real material in the context</li>
-        <li>Give the system a way to check — a tool that computes or looks up</li>
-        <li>Require a citation for each claim</li>
-        <li>Remember that wrong output is usually <em>almost</em> right</li>
-      </ul>
-    </div>
-  </div>
+  <p class="eyebrow">Part 1 · Summary</p>
+  <h2>What follows from how it works</h2>
+  <table style="margin-top:8px;font-size:16px">
+    <thead><tr><th style="width:44%">Mechanism</th><th>In practice</th></tr></thead>
+    <tbody>
+      <tr><td>Parameters are learned from examples, not programmed</td>
+          <td class="step">Only a test shows whether a model can do a task</td></tr>
+      <tr><td>Training objective: predict the next token</td>
+          <td class="step">Output is plausible, but not checked</td></tr>
+      <tr><td>Text is split into tokens</td>
+          <td class="step">Counting letters and exact arithmetic are unreliable; cost and context
+          are measured in tokens; other languages need more tokens than English</td></tr>
+      <tr><td>The next token is drawn</td>
+          <td class="step">The same request can give different answers</td></tr>
+      <tr><td>Each generated token is appended to the context</td>
+          <td class="step">Long contexts cost more; early mistakes carry forward</td></tr>
+      <tr><td>Fixed parameters, limited context</td>
+          <td class="step">No memory between conversations; recent and internal information is
+          known only if it is in the context</td></tr>
+      <tr><td>No step checks statements</td>
+          <td class="step">Hallucinations are to be expected; results must be checked</td></tr>
+      <tr><td>A system around the model assembles the context and runs tools</td>
+          <td class="step">Much of what is attributed to "the AI" is a setting of the
+          system</td></tr>
+    </tbody>
+  </table>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Reframe hallucination from malfunction to expected behaviour, so
-    that the mitigations make sense as architecture rather than as scolding the model.</p>
-    <p>The strongest line for a sceptical room: a fluent, confident, false continuation is not a
-    failure of the training objective. It is a success by it. The objective rewards plausibility,
-    and plausibility correlates with truth without being identical to it.</p>
-    <p><em>Connect to the afternoon:</em> every verification practice in Part Two follows from this
-    slide.</p>
+    <p><strong>Objective.</strong> Close Part 1. Each row links a mechanism to a consequence the
+    audience can now derive for themselves.</p>
+    <p><strong>Run it like this.</strong> The right-hand column is revealed row by row. Before each
+    reveal, ask: "What does this mean for the work?" and compare the room's answers with the
+    row.</p>
+    <p>The table answers the workshop's opening question: what language models can and cannot do,
+    and why. Part 2 shows how to work with these limits.</p>
   </div></template>
 </section>
 
-<!-- ============ 18 · SECTION: OPERATING ============ -->
+<!-- ============ 20 · SECTION: PART 2 ============ -->
 <section class="slide slide--section">
-  <p class="eyebrow">Part two</p>
-  <h2>Operating the system</h2>
-  <p class="lead" style="margin-top:18px">Model choice · cost · context · autonomy · delegation ·
-  verification</p>
+  <p class="eyebrow">Part 2</p>
+  <h2>What follows in practice</h2>
+  <p class="lead" style="margin-top:18px">GitHub Copilot · Model choice · Cost · Context ·
+  Autonomy · Control · Verification</p>
   <template class="notes"><div class="nt">
-    <p>Section divider. From here the question changes from "what is it doing" to "what should I
-    do".</p>
-    <p>Introduce the running example if the room has not met it: three vendor reports of forty to
-    sixty pages, a spreadsheet of about twelve thousand test measurements, and a four-page
-    comparison memo due before a decision meeting. Everything that follows uses it.</p>
+    <p>Section divider. From here the question is what to do at work.</p>
+    <p>First, an overview of where the concepts appear in GitHub Copilot. Then one running example
+    carries the rest of Part 2: three vendor reports of forty to sixty pages, a spreadsheet of about
+    twelve thousand measurements, and a four-page comparison memo due before a decision
+    meeting.</p>
   </div></template>
 </section>
 
-<!-- ============ 19 · THE RUNNING TASK ============ -->
+<!-- ============ 21 · CONCEPTS IN GITHUB COPILOT ============ -->
 <section class="slide">
-  <p class="eyebrow">The running example</p>
-  <h2>A task worth getting right</h2>
+  <p class="eyebrow">Part 2 · GitHub Copilot</p>
+  <h2>Where the concepts appear in GitHub Copilot</h2>
+  <table style="margin-top:6px;font-size:16px">
+    <thead><tr><th style="width:26%">Concept</th><th>In GitHub Copilot in VS Code</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Model</strong></td>
+          <td>A drop-down list in the chat. Which models appear is set by your organisation.</td></tr>
+      <tr><td><strong>Context</strong></td>
+          <td>Attached files and folders (with <span class="mono">#</span> in the chat box), the
+          conversation so far, and, depending on settings, the open file.</td></tr>
+      <tr><td><strong>Persistent instructions</strong></td>
+          <td>Instruction files in the project, e.g.
+          <span class="mono">.github/copilot-instructions.md</span>; prompt files
+          (<span class="mono">*.prompt.md</span>) for recurring requests.</td></tr>
+      <tr><td><strong>Working modes</strong></td>
+          <td><em>Ask</em>: questions and answers. <em>Plan</em>: a plan before execution.
+          <em>Agent</em>: works on its own with tools.</td></tr>
+      <tr><td><strong>Tools, agent loop</strong></td>
+          <td>In agent mode: reading and changing files, running terminal commands. Extensible
+          through MCP servers.</td></tr>
+      <tr><td><strong>Enforcement</strong></td>
+          <td>Approval of tool calls and terminal commands; organisation policies.</td></tr>
+      <tr><td><strong>Cost</strong></td>
+          <td>GitHub AI Credits, charged by the tokens used (since June 2026). Code completion
+          does not consume credits.</td></tr>
+    </tbody>
+  </table>
+  <div class="srcnote">As of October 2026, from secondary sources. Names change between versions;
+  check them in your own environment before the workshop.</div>
+  <template class="notes"><div class="nt">
+    <p><strong>Objective.</strong> Show where the concepts from Part 1 appear in the tool people
+    will use. The following slides each take up one row.</p>
+    <p><strong>Check before the workshop:</strong> the names of modes and menus in the VS Code
+    version in use; which models the organisation has enabled; which settings, such as approval of
+    terminal commands, are set centrally.</p>
+    <p><strong>Billing.</strong> According to GitHub's announcement of April 2026, GitHub AI Credits
+    replaced premium requests on 1 June 2026. One credit is worth US$0.01, charged by the tokens
+    used. Code completion and next edit suggestions do not consume credits. These details come from
+    search results; GitHub's documentation could not be retrieved directly when this was
+    written.</p>
+    <p><strong>Modes.</strong> Plan produces a plan that you read before execution; it can then be
+    handed to the agent. Older versions offered an <em>Edit</em> mode instead of Plan.</p>
+    <p>Step-by-step guide: the practical guide, <span class="mono">practical-guide/index.html</span>.</p>
+  </div></template>
+</section>
+
+<!-- ============ 22 · THE RUNNING EXAMPLE ============ -->
+<section class="slide">
+  <p class="eyebrow">Part 2 · Example</p>
+  <h2>The running example: a supplier assessment</h2>
   <div class="cols cols--wide-left">
     <div>
       <pre class="mono" style="font-size:17px;line-height:1.8;background:var(--surface-2);padding:18px 22px;border-radius:8px;border:1px solid var(--rule)">
@@ -850,73 +1087,81 @@ vendor-c-report.pdf    38 pages, slides + appendices
 measurements-q3.xlsx   ~12 000 rows
 
 <b>Deliverable</b>
-A four-page memo: comparison table, conflicts
-between claimed and measured performance,
-assumptions, recommendation.</pre>
+A four-page memo: comparison table,
+conflicts between claimed and measured
+performance, assumptions, recommendation.</pre>
     </div>
     <div class="center">
-      <h3>Why this one</h3>
+      <h3>Why this example</h3>
       <ul style="font-size:18.5px">
-        <li>The inputs exceed any context window</li>
+        <li>The inputs are too large for one context window</li>
         <li>The measurements need arithmetic, which a language model does not do reliably</li>
         <li>The reports come from parties with an interest in the outcome</li>
-        <li>It decomposes naturally</li>
+        <li>The task can be split into subtasks</li>
         <li>It recurs every quarter</li>
-        <li>Success can be stated in advance</li>
+        <li>What counts as success can be stated in advance</li>
       </ul>
-      <p style="margin-top:14px;font-size:18px">Nothing about it requires programming.</p>
+      <p style="margin-top:14px;font-size:18px">The task needs no programming knowledge.</p>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Anchor the afternoon in one concrete task so that every
-    technique has somewhere to land.</p>
-    <p>Invite the room to substitute their own equivalent — a tender evaluation, a literature
-    review, a regulatory comparison, a post-incident analysis. The structure is what matters:
-    several long documents, some numbers, a decision at the end.</p>
+    <p><strong>Objective.</strong> Anchor Part 2 in one concrete task, so that every recommendation
+    has a use case.</p>
+    <p>Invite the room to think of their own equivalent: a tender evaluation, a literature review, a
+    comparison of standards, an incident review, or in software development the assessment of
+    several libraries from their documentation and your own measurements. What matters is the
+    shape: several long documents, some numbers, a decision at the end.</p>
+    <p><em>In VS Code:</em> the files sit in a folder that is opened in VS Code; Copilot works with
+    that folder. The practical guide contains a small practice version of this task with an
+    answer key.</p>
   </div></template>
 </section>
 
-<!-- ============ 20 · INTERACTIVE: MODEL CHOICE ============ -->
+<!-- ============ 23 · MODEL CHOICE (INTERACTIVE) ============ -->
 <section class="slide">
-  <p class="eyebrow">8.1 · Interactive</p>
-  <h2>There is no single best model</h2>
+  <p class="eyebrow">Part 2 · Model choice</p>
+  <h2>Model choice: quality, cost and latency</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Three quantities are in tension: output quality, resource cost, and how long you wait.
-      Improving one usually costs another.</p>
-      <p style="font-size:19px">Move the weights to match a task, and watch the ranking change.
-      Nothing about the models changed.</p>
+      <p>Three properties are in tension: quality of output, cost and response time. Improving one
+      usually costs another.</p>
+      <p style="font-size:19px">Adjust the weights to a task and watch the ranking. Nothing about
+      the models changes.</p>
       <div class="note">
-        <p style="font-size:18px">A benchmark ranking encodes someone else's weighting. For your
-        work, the weighting is yours — which is why a public leaderboard narrows a shortlist and
-        cannot settle a choice.</p>
+        <p style="font-size:18px">A benchmark ranking rests on someone else's weighting. It is
+        useful for a shortlist. For your own task, your own test decides.</p>
       </div>
+      <p class="tiny" style="margin-top:12px;font-size:15px">In GitHub Copilot: a drop-down list in
+      the chat. The available models are set by your organisation.</p>
     </div>
     <div class="widget" data-widget="compare"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Replace "which model is best" with "best for what, weighted
-    how".</p>
-    <p>Set quality to 100 and the others to zero: the large high-effort option wins. Now set cost
-    to 100: the small low-effort option wins. Neither answer is wrong; they answer different
-    questions.</p>
+    <p><strong>Objective.</strong> Replace "which model is best?" with "best for what, weighted
+    how?"</p>
+    <p><strong>Run it like this.</strong> Set quality to 100 and cost and speed to zero: "Large,
+    high effort" wins. Then set quality to zero and cost to 100: "Small, low effort" wins. Both
+    results are correct; they answer different questions.</p>
     <p><strong>State plainly that the profiles are illustrative.</strong> They are not measurements
-    of any model, and no real figures are being claimed.</p>
-    <p><strong>Caveat on reasoning effort.</strong> Raising effort helps on tasks with genuine
-    inferential depth and adds cost and latency without benefit on retrieval or reformatting. How
-    much it helps depends on the model, the task and the budget — it is something to measure, not
-    to assume.</p>
+    of real models.</p>
+    <p><strong>Reasoning effort</strong> means extra computation before the answer. It helps on
+    tasks with several reasoning steps; for look-ups or reformatting it only adds cost and response
+    time. How much it helps depends on model and task, and has to be tested.</p>
+    <p><strong>Your own test:</strong> five to ten real tasks with known results, three runs each,
+    criteria fixed beforehand, cost and duration recorded. About half a day of effort.</p>
+    <p><em>In GitHub Copilot:</em> for a comparison, run the same task with two models from the
+    list, each in a new chat.</p>
     <p>Course reference: Modules 8.1 to 8.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 21 · TOKENS VS CREDITS ============ -->
+<!-- ============ 24 · TOKENS AND CREDITS ============ -->
 <section class="slide">
-  <p class="eyebrow">8.4–8.5 · The units</p>
-  <h2>Technical units and commercial units</h2>
+  <p class="eyebrow">Part 2 · Cost</p>
+  <h2>Tokens and credits: two different units</h2>
   <figure style="margin:4px 0 0">
     <svg class="dgm" viewBox="0 0 1120 300" role="img"
-      aria-label="A chain from your instruction through several model calls and tool calls, each consuming input, cached and output tokens, aggregated into provider-defined credits drawn from a monthly allowance.">
+      aria-label="A chain from one instruction through several model and tool calls, each consuming input, cached and output tokens, aggregated into vendor-defined credits drawn from a monthly allowance.">
       <rect class="chip" x="20" y="120" width="150" height="56" rx="5"/>
       <text class="t-sm" x="95" y="144" text-anchor="middle">One instruction</text>
       <text class="t-xs" x="95" y="162" text-anchor="middle">from you</text>
@@ -936,112 +1181,132 @@ assumptions, recommendation.</pre>
       <text class="t-sm" x="767" y="126" text-anchor="middle">Tokens</text>
       <text class="t-xs" x="767" y="146" text-anchor="middle">input · cached · output</text>
       <text class="t-xs" x="767" y="163" text-anchor="middle">+ hidden reasoning tokens</text>
-      <text class="t-xs t-ac" x="767" y="183" text-anchor="middle">a technical fact</text>
+      <text class="t-xs t-ac" x="767" y="183" text-anchor="middle">a technical quantity</text>
 
       <line class="flow-a" x1="864" y1="148" x2="888" y2="148"/><polygon class="head-a" points="888,143 898,148 888,153"/>
       <rect class="box" x="902" y="100" width="196" height="96" rx="6"/>
       <text class="t-sm" x="1000" y="126" text-anchor="middle">Credits</text>
       <text class="t-xs" x="1000" y="146" text-anchor="middle">drawn from an allowance</text>
-      <text class="t-xs" x="1000" y="163" text-anchor="middle">then billed as overage</text>
-      <text class="t-xs t-dg" x="1000" y="183" text-anchor="middle">a policy, set by the vendor</text>
+      <text class="t-xs" x="1000" y="163" text-anchor="middle">overage is charged</text>
+      <text class="t-xs t-dg" x="1000" y="183" text-anchor="middle">a rule set by the vendor</text>
 
-      <text class="t-sm" x="20" y="280">One instruction is not one request, and one request is not one credit. The conversion between the last two boxes is chosen by the provider and can change.</text>
+      <text class="t-sm" x="20" y="280">One instruction can trigger many model calls. How tokens convert into credits is set by the provider and can change.</text>
     </svg>
   </figure>
-  <div class="srcnote">Illustrative call counts. Course reference: Modules 8.4 and 8.5.</div>
+  <div class="note note--practice" style="margin-top:14px">
+    <p style="font-size:18px;max-width:none"><strong>In practice:</strong> The cost of a task
+    depends on how many model calls it triggers and how much context each call carries, not on the
+    number of your instructions.</p>
+  </div>
+  <div class="srcnote">Illustrative call counts. GitHub Copilot has billed in GitHub AI Credits
+  since June 2026 (as of October 2026). Course reference: Modules 8.4 and 8.5.</div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Break the assumption that one question equals one charge.</p>
-    <p>The middle box is the surprise. In an agentic workflow a single sentence can produce twenty
-    model calls, each with its own context, and the allowance is consumed accordingly.</p>
-    <p><strong>Be explicit about what is unverified.</strong> The course's billing figures come
-    from secondary sources; the primary documentation was not reachable when it was written. Four
-    things only your administrator can confirm: which billing model your agreement is on, what the
-    allowance is and whether it pools across the organisation, whether overage is enabled and what
-    happens when the allowance is exhausted, and which report shows consumption to whom.</p>
-    <p><em>Ask the room:</em> "Does anyone know what happens in our organisation when the allowance
-    runs out?" The silence is usually the point.</p>
+    <p><strong>Objective.</strong> Break the assumption that one question equals one unit of
+    billing.</p>
+    <p>The middle box is the surprising part. In an agentic workflow a single sentence can trigger
+    about twenty model calls, each with its own context, and the allowance is drawn down
+    accordingly.</p>
+    <p><strong>GitHub Copilot</strong> (according to GitHub's announcement of April 2026, from
+    secondary sources): since 1 June 2026, billing is in GitHub AI Credits; one credit is worth
+    US$0.01, charged by the tokens used. Licences include a monthly allowance. What happens when it
+    runs out depends on the organisation's settings.</p>
+    <p><strong>Four questions only your administrator can answer:</strong> which billing model the
+    agreement is on; how large the allowance is and whether it is pooled across the organisation;
+    whether overage is permitted and what happens when the allowance is exhausted; which report
+    shows consumption, and who can see it.</p>
+    <p><em>Question for the room:</em> "Does anyone know what happens in our organisation when the
+    allowance runs out?"</p>
   </div></template>
 </section>
 
-<!-- ============ 22 · INTERACTIVE: COST ============ -->
+<!-- ============ 25 · COST OF ONE TASK (INTERACTIVE) ============ -->
 <section class="slide">
-  <p class="eyebrow">8.6–8.7 · Interactive</p>
-  <h2>The same task, four ways</h2>
+  <p class="eyebrow">Part 2 · Cost</p>
+  <h2>The cost of one task: four approaches</h2>
   <div class="cols cols--wide-right">
     <div>
       <p>The supplier assessment, costed with illustrative rates. Toggle caching and watch
       approach 4.</p>
-      <p style="font-size:19px">Of roughly 410 000 input tokens in the agentic run, about 375 000
-      are cached reads — the context barely changes between steps.</p>
+      <p style="font-size:19px">Of roughly 410 000 input tokens in the agentic loop, about 375 000
+      are cached, because the context barely changes between steps. Cached tokens cost about a
+      tenth.</p>
       <div class="note note--practice">
-        <p style="font-size:18px">Now move the review slider. Verification time dwarfs every figure
-        in the table, which reorders the whole problem: the cheapest route is the one that needs
-        fewest corrections, not the one with the smallest token bill.</p>
+        <p style="font-size:18px">Move the review slider: the working time spent checking exceeds
+        the model cost many times over. The cheapest approach is usually the one that needs the
+        fewest corrections.</p>
       </div>
     </div>
     <div class="widget" data-widget="cost"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Two lessons in one widget: caching dominates agentic cost, and
-    model spend is the small term next to human time.</p>
-    <p>Uncheck caching first. Approach 4 moves from about $0.37 to about $1.38 — nearly four times.
-    This is the strongest argument for keeping instruction files and prompt prefixes stable.</p>
-    <p>Then move the review slider to 20 minutes. At a loaded rate of $60 an hour that is $20,
-    roughly fifty times the model cost of the first approach.</p>
-    <p><em>Question:</em> "Given that ratio, is it worth spending twenty minutes curating the
-    context to save one round of correction?" Almost always yes, and that is the afternoon's
-    central practical claim.</p>
-    <p><strong>Caveat.</strong> The rates are deliberately round illustrative figures, not a price
-    list. The method survives a price change; the numbers will not.</p>
+    <p><strong>Objective.</strong> Two points in one widget: caching determines the cost of agentic
+    work, and model cost is small next to working time.</p>
+    <p>First switch caching off. Approach 4 rises from $0.365 to $1.378, nearly four times as much.
+    This is why instruction files and the opening of prompts should stay stable: a change at the
+    start invalidates the cache for everything after it.</p>
+    <p>Then set the review slider to 20 minutes. At a loaded rate of $60 an hour that is $20, about
+    52 times the model cost of approach 1.</p>
+    <p><em>Question:</em> "At that ratio, is it worth spending twenty minutes assembling the
+    context if it saves one round of corrections?" Almost always yes. This is one of the central
+    practical points of Part 2.</p>
+    <p><strong>Caveat.</strong> The rates are rounded illustrative figures, not a price list. The
+    method survives a price change; the numbers do not.</p>
+    <p>Course reference: Modules 8.6 and 8.7.</p>
   </div></template>
 </section>
 
-<!-- ============ 23 · INTERACTIVE: CONTEXT ============ -->
+<!-- ============ 26 · CONTEXT (INTERACTIVE) ============ -->
 <section class="slide">
-  <p class="eyebrow">9.1–9.3 · Interactive</p>
-  <h2>What the model actually sees</h2>
+  <p class="eyebrow">Part 2 · Context</p>
+  <h2>Context: what the model actually sees</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Toggle the sources and watch the window fill. Your question is the orange sliver.</p>
-      <p style="font-size:19px">Switch on <em>three vendor reports (full)</em> and switch off
-      <em>extracted sections</em>. Everything fits — and the four paragraphs that matter are now
-      buried among ninety-four thousand tokens that do not.</p>
+      <p>Toggle the sources and watch the context window fill. Your question is the thin orange
+      strip.</p>
+      <p style="font-size:19px">Switch on <em>Three vendor reports (full)</em> and switch off
+      <em>Extracted sections only</em>. The reports fit in the window, but the relevant sections
+      are now a small part of about 117 000 tokens.</p>
       <div class="note">
-        <p style="font-size:18px">A stated context length says what a system will accept. How
-        reliably it uses material anywhere within that span is a separate question, and the gap
-        varies by model and task.</p>
+        <p style="font-size:18px">A stated context window size says how much a system accepts, not
+        how reliably it uses everything in it. Details in the middle of long contexts are found
+        least reliably.</p>
       </div>
     </div>
     <div class="widget" data-widget="context"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Show that curation beats accumulation, with both reasons: cost
-    and reliability.</p>
-    <p>Demonstrate the swap. Full reports: about 116 000 tokens, question at 0.1 per cent of the
-    context. Extracted sections: about 22 000 tokens for the same question. Fifteen times cheaper
-    per request, and the relevant passages are no longer competing with the rest.</p>
-    <p><strong>Be careful about the explanation.</strong> Do not say attention weights spread
-    evenly as context grows — they do not. What is observed is that retrieving a specific detail
-    becomes less reliable as input lengthens, and that position matters, with the middle of a long
-    context the weakest region. The contributing factors are still being researched.</p>
-    <p><em>Practical close:</em> an exploratory first pass over everything is reasonable; the
-    working pass should use what that found.</p>
+    <p><strong>Objective.</strong> Show that selecting material beats accumulating it, for two
+    reasons: cost and reliability.</p>
+    <p>Demonstrate the switch. Full reports: 116 720 tokens, of which the question is 0.1 per cent.
+    Extracted sections: 22 720 tokens. The request becomes about five times cheaper; the reports'
+    share drops from 100 000 to 6 000 tokens, and the relevant passages no longer sit among a great
+    deal of other material.</p>
+    <p><strong>Be precise in the explanation.</strong> Do not say attention spreads evenly as the
+    context grows; it does not. What is observed is that finding a specific detail becomes less
+    reliable as the input grows, and that position matters, with the middle the weakest region.
+    The causes are still being studied.</p>
+    <p><em>In practice:</em> a first pass over all the material to get oriented is sensible. The
+    actual working pass should use its result, that is, the extracted sections.</p>
+    <p><em>In GitHub Copilot:</em> attach files selectively with <span class="mono">#</span>
+    rather than whole folders; start a new chat for a new topic, because the conversation so far
+    is sent along.</p>
+    <p>Course reference: Modules 9.1 to 9.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 24 · INTERACTION MODES ============ -->
+<!-- ============ 27 · WORKING MODES ============ -->
 <section class="slide">
-  <p class="eyebrow">10.2–10.3 · Autonomy</p>
-  <h2>Where your judgement enters</h2>
-  <figure style="margin:4px 0 0;flex:1">
+  <p class="eyebrow">Part 2 · Autonomy</p>
+  <h2>Working modes: how much the system does on its own</h2>
+  <figure style="margin:4px 0 0">
     <svg class="dgm" viewBox="0 0 1120 350" role="img"
-      aria-label="Four interaction modes arranged by autonomy, each showing where human judgement is applied: conversational judges every answer, planning judges the plan before execution, interactive judges each action, autonomous judges only the final result.">
+      aria-label="Four working modes ordered by autonomy, each showing where a person checks: conversational, every answer; planning, the plan before execution; interactive, every action; autonomous, only the final result.">
       <g><text class="t-sm" x="20" y="72">Conversational</text>
         <rect class="chip" x="200" y="54" width="100" height="32" rx="4"/><text class="t-xs" x="250" y="75" text-anchor="middle">ask</text>
         <line class="flow" x1="302" y1="70" x2="316" y2="70"/><polygon class="head" points="316,65 326,70 316,75"/>
         <rect class="chip" x="328" y="54" width="100" height="32" rx="4"/><text class="t-xs" x="378" y="75" text-anchor="middle">answer</text>
         <circle class="head-a" cx="448" cy="70" r="8"/>
-        <text class="t-xs" x="466" y="74">you judge every turn · nothing acts</text></g>
+        <text class="t-sm" x="466" y="74">you judge every answer · no actions are taken</text></g>
       <g><text class="t-sm" x="20" y="146">Planning</text>
         <rect class="chip" x="200" y="128" width="100" height="32" rx="4"/><text class="t-xs" x="250" y="149" text-anchor="middle">task</text>
         <line class="flow" x1="302" y1="144" x2="316" y2="144"/><polygon class="head" points="316,139 326,144 316,149"/>
@@ -1049,7 +1314,7 @@ assumptions, recommendation.</pre>
         <circle class="head-a" cx="448" cy="144" r="8"/>
         <line class="flow" x1="460" y1="144" x2="484" y2="144"/><polygon class="head" points="484,139 494,144 484,149"/>
         <rect class="chip" x="496" y="128" width="120" height="32" rx="4"/><text class="t-xs" x="556" y="149" text-anchor="middle">then execute</text>
-        <text class="t-xs" x="632" y="148">you judge the plan — cheaply, before the work</text></g>
+        <text class="t-sm" x="632" y="148">you judge the plan before execution</text></g>
       <g><text class="t-sm" x="20" y="220">Interactive</text>
         <rect class="chip" x="200" y="202" width="74" height="32" rx="4"/><text class="t-xs" x="237" y="223" text-anchor="middle">step</text>
         <circle class="head-a" cx="288" cy="218" r="7"/>
@@ -1059,45 +1324,56 @@ assumptions, recommendation.</pre>
         <circle class="head-a" cx="492" cy="218" r="7"/>
         <rect class="chip" x="506" y="202" width="74" height="32" rx="4"/><text class="t-xs" x="543" y="223" text-anchor="middle">step</text>
         <circle class="head-a" cx="594" cy="218" r="7"/>
-        <text class="t-xs" x="614" y="222">you judge each action; mistakes surface early</text></g>
+        <text class="t-sm" x="614" y="222">you judge each action; mistakes surface early</text></g>
       <g><text class="t-sm" x="20" y="294">Autonomous</text>
         <rect class="warn" x="200" y="276" width="394" height="32" rx="4"/>
         <text class="t-xs" x="397" y="297" text-anchor="middle">step · step · step · step · step · step · step · step</text>
         <circle class="head-a" cx="608" cy="292" r="8"/>
-        <text class="t-xs" x="626" y="290">you judge only the result</text>
-        <text class="t-xs t-dg" x="626" y="306">errors compound unobserved</text></g>
-      <text class="t-sm" x="20" y="338">The teal dots are the points at which a mistake can be caught cheaply. Greater autonomy moves them towards the end.</text>
+        <text class="t-sm" x="626" y="289">you judge only the result</text>
+        <text class="t-sm t-dg" x="626" y="306">errors can compound unnoticed</text></g>
+      <text class="t-sm" x="20" y="338">The teal dots show where you check. The more autonomy, the later a mistake is noticed.</text>
     </svg>
   </figure>
+  <p class="tiny" style="margin:6px 0 0;font-size:15px;max-width:none">In GitHub Copilot,
+  <em>Ask</em> corresponds to conversational and <em>Plan</em> to planning. <em>Agent</em> works
+  interactively while you approve actions one at a time, and autonomously when actions are
+  approved automatically.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Give a vocabulary for autonomy that is independent of product
-    labels, and a basis for choosing.</p>
-    <p><strong>Six considerations for the choice:</strong> how ambiguous the task is, how
-    reversible the actions are, what a mistake costs, whether success can be checked
-    automatically, what the tools can reach, and how much undocumented organisational judgement is
-    required.</p>
-    <p><em>Two defaults worth stating:</em> start in the least autonomous mode that could work and
-    escalate once the task proves routine; and use interactive mode for anything done for the first
-    time, because the purpose of a first run is to find out where the process goes wrong.</p>
-    <p><em>Scenario for the room:</em> "Drafting an email that tells two suppliers they were
-    unsuccessful — which mode?" The deciding factor is irreversibility at the send step, not
-    difficulty of drafting.</p>
+    <p><strong>Objective.</strong> Provide a way of describing autonomy that does not depend on
+    product names, and a basis for choosing.</p>
+    <p><strong>Six considerations for the choice:</strong> how unambiguous the task is; how
+    reversible the actions are; what a mistake costs; whether success can be checked
+    automatically; what the tools can reach; how much undocumented organisational judgement is
+    needed.</p>
+    <p><em>Two defaults, state them:</em> start with the least autonomy that can do the job, and
+    raise it only once the task has proved routine. Run anything done for the first time
+    interactively; the purpose of a first run is to find where the process fails.</p>
+    <p><em>Scenario for the room:</em> "Drafting an email that tells two suppliers they were not
+    selected — which mode?" What decides it is that sending cannot be undone, not how hard the
+    draft is.</p>
+    <p><em>In GitHub Copilot</em> (as of October 2026; names change): Ask answers questions and
+    changes nothing. Plan produces a plan that you read before execution, then hands it to the
+    agent. Agent reads and changes files and runs commands; before certain actions, such as
+    terminal commands, Copilot asks for approval. How much is approved automatically is
+    configurable and may be set by the organisation. Before an agent run, make sure changes can be
+    undone, for example with a copy or version control.</p>
+    <p>Course reference: Modules 10.2 and 10.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 25 · ORCHESTRATION ============ -->
+<!-- ============ 28 · DECOMPOSITION ============ -->
 <section class="slide">
-  <p class="eyebrow">11 · Decomposition</p>
-  <h2>Splitting the task</h2>
-  <figure style="margin:0;flex:1">
-    <svg class="dgm" viewBox="0 0 1120 370" role="img"
-      aria-label="An orchestrated workflow: a planner produces a specification you read, three extraction subtasks run in parallel on a small model, a tool computes figures from the spreadsheet, and a synthesis step on a capable model integrates everything.">
+  <p class="eyebrow">Part 2 · Autonomy</p>
+  <h2>Decomposition: splitting a task into subtasks</h2>
+  <figure style="margin:0">
+    <svg class="dgm" viewBox="0 40 1120 322" role="img"
+      aria-label="A decomposed workflow: a planning step produces a specification that you read; three extraction subtasks run in parallel on a small model; a tool computes figures from the spreadsheet; a synthesis step on a capable model brings everything together.">
       <rect class="chip" x="20" y="54" width="130" height="52" rx="5"/>
       <text class="t-sm" x="85" y="76" text-anchor="middle">The task</text>
       <text class="t-xs" x="85" y="93" text-anchor="middle">+ your context</text>
       <line class="flow" x1="152" y1="80" x2="172" y2="80"/><polygon class="head" points="172,75 182,80 172,85"/>
       <rect class="hl" x="184" y="48" width="160" height="64" rx="5"/>
-      <text class="t-sm" x="264" y="74" text-anchor="middle">Planner</text>
+      <text class="t-sm" x="264" y="74" text-anchor="middle">Planning</text>
       <text class="t-xs" x="264" y="91" text-anchor="middle">capable model</text>
       <polyline class="flow-a" points="346,80 372,80 372,144"/><polygon class="head-a" points="367,144 372,154 377,144"/>
       <rect class="box" x="184" y="154" width="376" height="36" rx="5"/>
@@ -1106,7 +1382,7 @@ assumptions, recommendation.</pre>
       <text class="t-xs t-ac" x="604" y="169">you read this</text>
       <text class="t-xs" x="604" y="184">before anything runs</text>
 
-      <text class="t-xs" x="340" y="214" text-anchor="middle">no dependencies between these — they can run at once</text>
+      <text class="t-xs" x="340" y="214" text-anchor="middle">no dependencies between these — they can run in parallel</text>
       <rect class="chip" x="40" y="224" width="140" height="50" rx="5"/>
       <text class="t-xs" x="110" y="245" text-anchor="middle">Extract: report A</text>
       <text class="t-xs" x="110" y="261" text-anchor="middle">small model</text>
@@ -1130,118 +1406,138 @@ assumptions, recommendation.</pre>
       <polygon class="head" points="566,296 571,306 576,296"/>
       <rect class="hl" x="40" y="308" width="606" height="46" rx="5"/>
       <text class="t-sm" x="343" y="328" text-anchor="middle">Synthesis — reconcile, compare, draft</text>
-      <text class="t-xs" x="343" y="344" text-anchor="middle">capable model · the judgement step · where decomposed work usually fails</text>
+      <text class="t-xs" x="343" y="344" text-anchor="middle">capable model · needs judgement · where most errors arise</text>
 
       <rect class="warn" x="680" y="224" width="300" height="64" rx="5"/>
       <text class="t-xs t-dg" x="830" y="248" text-anchor="middle">What each subtask does NOT know</text>
-      <text class="t-xs" x="830" y="266" text-anchor="middle">anything the planner understood but did not</text>
-      <text class="t-xs" x="830" y="281" text-anchor="middle">write into its specification</text>
+      <text class="t-xs" x="830" y="266" text-anchor="middle">anything the planning step understood but did not</text>
+      <text class="t-xs" x="830" y="281" text-anchor="middle">write into the specification</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="font-size:18px;max-width:none"><strong>In practice:</strong> Decomposing pays off when
+    the task is too large for one context, when subtasks differ greatly in difficulty, when parts
+    can run in parallel, or when the work recurs. Otherwise a single model with well-assembled
+    context often gives the better result.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Show decomposition as a real technique with real overheads,
-    rather than as obviously superior.</p>
-    <p>Two things on this diagram matter most. One box is not a model at all — computing a median
-    over twelve thousand rows is arithmetic, and part of what planning buys is noticing which
-    pieces should not involve a model. And the red box names the dominant failure mode: each
-    subtask knows only what its specification says.</p>
-    <p><strong>The costs, stated honestly:</strong> context does not transfer, specification is
-    real work, errors propagate without being revisited, integration is a judgement step often
-    treated as clerical, and sequential dependencies add latency.</p>
-    <p><em>Guidance:</em> decompose when the task exceeds what one context holds well, when
-    subtasks differ markedly in difficulty, when parts can run in parallel, or when the work
-    recurs. A single capable model with a well-curated context beats a badly orchestrated pipeline
-    more often than enthusiasm suggests.</p>
+    <p><strong>Objective.</strong> Present decomposition as a technique with its own costs, not as
+    obviously better.</p>
+    <p>Two elements of the diagram matter most. One box contains no model: computing a median over
+    twelve thousand rows is arithmetic, which a tool does reliably. Part of the value of planning is
+    recognising which steps need no model. The red box names the most common failure: each subtask
+    knows only what is in its specification.</p>
+    <p><strong>The costs of decomposition:</strong> context does not transfer; the specification
+    takes its own effort; errors carry forward without being checked again; synthesis needs
+    judgement but is often treated as routine; steps that depend on each other lengthen the
+    elapsed time.</p>
+    <p><em>Guidance:</em> decompose when the task holds more than one context can take in reliably;
+    when subtasks differ markedly in difficulty; when parts can run in parallel; or when the work
+    recurs. A single capable model with carefully assembled context often gives better results than
+    a poorly coordinated chain.</p>
+    <p><em>In GitHub Copilot:</em> Plan mode covers the planning step; the plan can be read and
+    changed before the agent carries it out.</p>
+    <p>Course reference: Module 11.</p>
   </div></template>
 </section>
 
-<!-- ============ 26 · GUIDANCE VS ENFORCEMENT ============ -->
+<!-- ============ 29 · THREE KINDS OF CONTROL ============ -->
 <section class="slide">
-  <p class="eyebrow">10.5 · Three kinds of control</p>
-  <h2>Asking, arranging, and preventing</h2>
-  <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:24px">
+  <p class="eyebrow">Part 2 · Control</p>
+  <h2>Three kinds of control</h2>
+  <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:24px;flex:none">
     <div class="card">
       <h3 style="color:var(--accent)">Guidance</h3>
-      <p>Instructions, prompts, preferences, the standards in a skill.</p>
+      <p>Prompts, instruction files, the standards in a skill.</p>
       <p style="margin-top:10px"><strong>Determines what is likely.</strong></p>
-      <p style="margin-top:10px;font-size:15.5px">Competes for attention, can be outweighed,
-      compliance is a tendency.</p>
+      <p style="margin-top:10px;font-size:15.5px">Competes with other content in the context and
+      can be outweighed. The model usually follows it, but not reliably.</p>
     </div>
     <div class="card">
       <h3 style="color:var(--practice)">Orchestration</h3>
       <p>The sequence of steps, which model does what, when the loop stops.</p>
       <p style="margin-top:10px"><strong>Determines what ordinarily happens.</strong></p>
-      <p style="margin-top:10px;font-size:15.5px">Makes outcomes much more or less likely without
-      making them impossible.</p>
+      <p style="margin-top:10px;font-size:15.5px">Makes outcomes more or less likely without
+      ruling them out.</p>
     </div>
     <div class="card" style="background:var(--danger-soft);border-color:var(--danger)">
       <h3 style="color:var(--danger)">Enforcement</h3>
-      <p>Credentials, tool permissions, approval gates, sandboxes.</p>
+      <p>Access rights, tool permissions, approval steps, sandboxes.</p>
       <p style="margin-top:10px"><strong>Determines what is possible.</strong></p>
-      <p style="margin-top:10px;font-size:15.5px">Holds regardless of what the model is persuaded
-      to attempt.</p>
+      <p style="margin-top:10px;font-size:15.5px">Holds regardless of what is in the
+      context.</p>
     </div>
   </div>
-  <div class="note note--warn" style="margin-top:28px">
-    <p>Writing <em>do not modify any files</em> in a prompt is guidance: usually followed, and
-    displaceable by a long context or by text inside a document. Running with read-only access is
-    enforcement: a modification is not declined, it is unavailable. The two look alike in a
-    configuration summary and promise entirely different things.</p>
+  <div class="note note--warn" style="margin-top:26px">
+    <p style="max-width:none">Example: <em>Do not modify any files</em> in a prompt is guidance. It
+    is usually followed, but a long context or text inside a document can displace it. Read-only
+    access is enforcement: a change is then not possible.</p>
   </div>
+  <p class="tiny" style="margin-top:12px;font-size:15px;max-width:none">In GitHub Copilot: an
+  instruction file is guidance. Approval of tool calls and terminal commands is enforcement.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Prevent the most consequential category error people make with
-    these systems — believing a system is constrained when it is only being asked.</p>
-    <p>Work the example slowly. Most people have written an instruction of that kind and believed
-    it was a control.</p>
-    <p><em>Question for each requirement in their own work:</em> which of the three does this
-    need? A formatting preference is guidance and needs nothing more. A check that must happen
-    every time is orchestration. Anything whose violation would be costly or irreversible belongs
-    in enforcement.</p>
+    <p><strong>Objective.</strong> Avoid a common and consequential error: assuming a system is
+    restricted when it has only been instructed.</p>
+    <p>Work through the example slowly. Many people have written an instruction of this kind and
+    taken it for a control.</p>
+    <p><em>For each requirement in your own work, ask</em> which of the three it needs. A format
+    preference is guidance and needs nothing more. A check that has to happen every time belongs in
+    orchestration. Anything whose violation would be expensive or irreversible needs
+    enforcement.</p>
+    <p><em>In GitHub Copilot:</em> a line in
+    <span class="mono">.github/copilot-instructions.md</span> does not replace an approval setting.
+    What must not happen is ruled out through permissions, approvals and organisation
+    policies.</p>
     <p>Course reference: Module 10.5.</p>
   </div></template>
 </section>
 
-<!-- ============ 27 · AUTOMATION LADDER ============ -->
+<!-- ============ 30 · HOW MUCH STRUCTURE ============ -->
 <section class="slide">
-  <p class="eyebrow">13.6 · Proportionate effort</p>
+  <p class="eyebrow">Part 2 · Control</p>
   <h2>How much structure is worth building</h2>
-  <table style="margin-top:10px;font-size:17px">
-    <thead><tr><th>Approach</th><th>Setup</th><th>Appropriate when</th></tr></thead>
+  <table style="margin-top:8px;font-size:15.5px">
+    <thead><tr><th>Approach</th><th>Set-up</th><th>Appropriate when</th></tr></thead>
     <tbody>
-      <tr><td>A single conversational request</td><td>None</td><td>One-off, or still working out what you want</td></tr>
-      <tr><td>A structured task specification</td><td>Minutes</td><td>It matters, and the first attempt missed</td></tr>
-      <tr><td>A saved prompt template</td><td>&lt; 1 hour</td><td>The same request recurs in much the same form</td></tr>
+      <tr><td>A single conversational request</td><td>None</td><td>One-off work, or the goal is still open</td></tr>
+      <tr><td>A structured task description</td><td>Minutes</td><td>The result matters and the first attempt missed</td></tr>
+      <tr><td>A saved prompt template</td><td>&lt; 1 hour</td><td>The same request recurs in the same form</td></tr>
       <tr><td>Persistent instructions</td><td>An hour + upkeep</td><td>A preference applies across many tasks</td></tr>
-      <tr><td>A reusable skill</td><td>Half a day + upkeep</td><td>A multi-step procedure with standards, used regularly</td></tr>
-      <tr><td>A tool-supported agent</td><td>Setup + permissions review</td><td>The work needs actions text cannot perform</td></tr>
-      <tr><td>Several coordinated agents</td><td>Substantial</td><td>Subtasks differ markedly, or can run in parallel</td></tr>
-      <tr><td><strong>Conventional software</strong></td><td>Often less than expected</td><td><strong>The procedure is exact and inputs are structured</strong></td></tr>
+      <tr><td>A reusable skill</td><td>Half a day + upkeep</td><td>A multi-step procedure is used regularly</td></tr>
+      <tr><td>An agent with tool access</td><td>Set-up + permissions</td><td>The work needs actions that text alone cannot perform</td></tr>
+      <tr><td>Several coordinated agents</td><td>Substantial</td><td>Subtasks differ markedly or run in parallel</td></tr>
+      <tr><td><strong>Conventional software</strong></td><td>Often less than expected</td><td><strong>The procedure is exact and the inputs are structured</strong></td></tr>
     </tbody>
   </table>
-  <p class="tiny" style="margin-top:12px;font-size:16px;color:var(--ink-soft)">A monthly report
-  extracting four fixed fields from a consistent file does not need a language model: a formula or
-  short script does it deterministically, at no per-run cost, with the same answer each time.</p>
+  <p class="tiny" style="margin-top:10px;font-size:15.5px;color:var(--ink-soft);max-width:none">A
+  monthly report that takes four fixed fields from a file with the same layout every time needs no
+  language model. A formula or a short script does it with the same result every time and no cost
+  per run.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Counter the assumption that more elaborate automation is better,
-    and legitimise not using a model at all.</p>
-    <p>The last row is the one audiences skip. Language models earn their cost where inputs are
-    irregular, judgement is required, or the task cannot be specified exactly in advance. Outside
-    those conditions, conventional automation is more reliable and usually cheaper.</p>
-    <p><strong>The factors that decide:</strong> frequency, variability of inputs, cost of an
-    error, how many people do the work, and whether the task is stable enough to be worth
-    encoding.</p>
+    <p><strong>Objective.</strong> Counter the assumption that more automation is always better.
+    Using no language model at all is a legitimate answer.</p>
+    <p>The last row is regularly overlooked. A language model earns its cost where inputs are
+    irregular, judgement is needed, or the task cannot be specified exactly in advance. Otherwise
+    conventional automation is more reliable and usually cheaper.</p>
+    <p><strong>The deciding factors:</strong> frequency, variability of inputs, cost of a mistake,
+    number of people involved, and whether the task is stable enough to fix in place.</p>
     <p><em>Two failure modes to name:</em> elaborate automation for work done three times a year,
-    and an intricate manual process repeated forty times a month.</p>
+    and a laborious manual process repeated forty times a month.</p>
+    <p><em>In GitHub Copilot</em> (as of October 2026): a saved prompt template is a prompt file
+    (<span class="mono">*.prompt.md</span>); persistent instructions live in instruction files;
+    agent mode works with tools and can be extended through MCP servers. Skills and custom agents
+    are available depending on the version.</p>
+    <p>Course reference: Module 13.6.</p>
   </div></template>
 </section>
 
-<!-- ============ 28 · UNTRUSTED MATERIAL ============ -->
+<!-- ============ 31 · PROMPT INJECTION ============ -->
 <section class="slide">
-  <p class="eyebrow">14.4 · Working with material from outside</p>
-  <h2>A document can address the machine</h2>
-  <figure style="margin:0;flex:1">
+  <p class="eyebrow">Part 2 · Security</p>
+  <h2>Prompt injection: instructions inside documents</h2>
+  <figure style="margin:0">
     <svg class="dgm" viewBox="0 0 1120 320" role="img"
-      aria-label="A supplier hides an instruction in their own report; the assistant opens the document, the hidden text enters the same context as the analyst's instruction, and the resulting memo is steered in the supplier's favour.">
+      aria-label="A supplier hides an instruction in their own report; the assistant opens the document, the hidden text enters the same context as the analyst's instruction, and the resulting memo is tilted in the supplier's favour.">
       <rect class="warn" x="20" y="40" width="190" height="78" rx="5"/>
       <text class="t-sm t-dg" x="115" y="64" text-anchor="middle">1 · Supplier</text>
       <text class="t-xs" x="115" y="82" text-anchor="middle">hides an instruction in</text>
@@ -1249,9 +1545,9 @@ assumptions, recommendation.</pre>
       <text class="t-xs" x="115" y="112" text-anchor="middle">text, or an appendix</text>
       <line class="flow-d" x1="212" y1="78" x2="236" y2="78"/><polygon class="head-d" points="236,73 246,78 236,83"/>
       <rect class="chip" x="248" y="40" width="190" height="78" rx="5"/>
-      <text class="t-sm" x="343" y="64" text-anchor="middle">2 · Looks normal</text>
-      <text class="t-xs" x="343" y="82" text-anchor="middle">when read or printed —</text>
-      <text class="t-xs" x="343" y="98" text-anchor="middle">nobody sees anything</text>
+      <text class="t-sm" x="343" y="64" text-anchor="middle">2 · Not visible</text>
+      <text class="t-xs" x="343" y="82" text-anchor="middle">nothing shows when the</text>
+      <text class="t-xs" x="343" y="98" text-anchor="middle">report is read or printed</text>
       <line class="flow" x1="440" y1="78" x2="464" y2="78"/><polygon class="head" points="464,73 474,78 464,83"/>
       <rect class="chip" x="476" y="40" width="190" height="78" rx="5"/>
       <text class="t-sm" x="571" y="64" text-anchor="middle">3 · You ask</text>
@@ -1266,125 +1562,142 @@ assumptions, recommendation.</pre>
       <polygon class="head" points="566,168 571,178 576,168"/>
 
       <rect class="box" x="248" y="180" width="646" height="76" rx="5"/>
-      <text class="t-ttl" x="268" y="202">5 · THE CONTEXT — ONE SEQUENCE, NO BOUNDARY</text>
+      <text class="t-ttl" x="268" y="202">5 · THE CONTEXT: A SEQUENCE OF TOKENS WITH NO RECORD OF ORIGIN</text>
       <rect class="chip" x="266" y="210" width="280" height="34" rx="4"/>
       <text class="t-xs" x="406" y="232" text-anchor="middle">your instruction</text>
       <rect class="warn" x="556" y="210" width="320" height="34" rx="4"/>
-      <text class="t-xs" x="716" y="226" text-anchor="middle">the supplier's hidden text — same channel,</text>
-      <text class="t-xs" x="716" y="240" text-anchor="middle">same status, indistinguishable</text>
+      <text class="t-xs" x="716" y="226" text-anchor="middle">the supplier's hidden text: to the model,</text>
+      <text class="t-xs" x="716" y="240" text-anchor="middle">indistinguishable from your instruction</text>
 
       <rect class="warn" x="20" y="180" width="190" height="76" rx="5"/>
-      <text class="t-xs t-dg" x="115" y="204" text-anchor="middle">Nothing was breached.</text>
-      <text class="t-xs" x="115" y="222" text-anchor="middle">Nothing was stolen.</text>
-      <text class="t-xs" x="115" y="238" text-anchor="middle">The memo is simply</text>
-      <text class="t-xs" x="115" y="252" text-anchor="middle">wrong, and persuasive.</text>
+      <text class="t-xs t-dg" x="115" y="204" text-anchor="middle">No system was</text>
+      <text class="t-xs t-dg" x="115" y="220" text-anchor="middle">attacked.</text>
+      <text class="t-xs" x="115" y="236" text-anchor="middle">The result: a wrong memo</text>
+      <text class="t-xs" x="115" y="250" text-anchor="middle">that reads convincingly</text>
 
       <text class="t-sm" x="20" y="296">Limiting what the assistant can reach is the only control here that does not depend on the model's behaviour.</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="font-size:18px;max-width:none"><strong>In practice:</strong> Text from outside
+    sources can contain instructions the model follows. Limit what the assistant can reach to what
+    the task needs, and have a person approve actions that cannot be undone.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Make prompt injection concrete in a non-software setting, and
-    connect it to the guidance-versus-enforcement slide.</p>
-    <p>Note who the attacker is: not an intruder, but a party with an obvious commercial motive and
-    legitimate access to the channel. They submitted a document, which is what they were asked to
-    do.</p>
-    <p><strong>Four measures, in descending reliability:</strong> limit what the assistant can
-    reach; keep irreversible actions behind a person; verify from a separate context that does not
-    contain the reasoning which produced the output; convert documents to plain text to strip
-    hidden layers. Instructing the model to ignore embedded instructions is worth including and
-    worth nothing as a control.</p>
+    <p><strong>Objective.</strong> Make prompt injection concrete in a setting outside software
+    development, and connect it to the three kinds of control.</p>
+    <p><strong>Mechanism.</strong> Instructions and data reach the model by the same route, the
+    context, and there nothing records where text came from (slide "Autoregression").</p>
+    <p>Point out who acts here: a party with a commercial interest and legitimate access, not an
+    intruder. They submitted only the document they were asked for.</p>
+    <p><strong>Four measures, in descending order of reliability:</strong> limit what the
+    assistant can reach; reserve irreversible actions for a person; check from a separate context
+    that does not contain the earlier reasoning; convert documents to plain text to remove hidden
+    layers. Telling the model to ignore embedded instructions does no harm, but it is not a reliable
+    control.</p>
+    <p><em>An example from software development:</em> a README file, a comment in a third-party
+    library or a web page that the agent reads can contain instructions. When the agent reads
+    outside material, do not approve terminal commands automatically across the board.</p>
     <p><em>Exercise for the room:</em> "Every incoming proposal is summarised by an assistant that
-    can read the shared drive and append to a tracking sheet. What would you change first?"</p>
+    can read the shared drive and add to a summary spreadsheet. What would you change first?" An
+    obvious answer: restrict the write access, or have a person approve every addition to the
+    spreadsheet.</p>
+    <p>Course reference: Modules 6.1, 6.2 and 14.4.</p>
   </div></template>
 </section>
 
-<!-- ============ 29 · VERIFICATION ============ -->
+<!-- ============ 32 · VERIFICATION ============ -->
 <section class="slide">
-  <p class="eyebrow">14.1–14.3 · Establishing that it is right</p>
-  <h2>Fluency carries no signal</h2>
+  <p class="eyebrow">Part 2 · Verification</p>
+  <h2>Verification: set the criteria before the work</h2>
   <div class="cols cols--wide-left">
     <div>
-      <p>Generated output arrives finished: correct formatting, confident tone, no visible effort.
-      Human reviewers calibrate on exactly those signals, and for this material they are
-      uninformative.</p>
-      <p>In the memo, four figures come from the measurements, one from a vendor's marketing
-      summary, and one was constructed because a number was needed. All six look identical.</p>
-      <h3 style="margin-top:20px">Criteria written before the work</h3>
-      <ul style="font-size:18px">
+      <p style="font-size:19px">Generated text looks finished: clean formatting, a confident tone.
+      People read these features as signs of quality. They say nothing about whether generated text
+      is correct.</p>
+      <p style="font-size:19px">In the memo, four figures come from the measurements, one from a
+      vendor's brochure, and one is invented. All six look the same.</p>
+      <h3 style="margin-top:16px">Criteria written before the work</h3>
+      <ul style="font-size:17.5px">
         <li>Each cited figure matches the cited page or row range</li>
         <li>All four criteria appear for all three vendors</li>
-        <li>No claim without a source; &ldquo;not stated&rdquo; where absent</li>
-        <li>Computed values reproduce when recalculated</li>
-        <li>Vendor claims never presented as measurements</li>
-        <li>Three runs produce the same <em>figures</em>, if not the same prose</li>
+        <li>No claim without a source; "not stated" where information is missing</li>
+        <li>Computed values are confirmed by recalculating them</li>
+        <li>Vendor claims are never presented as measurements</li>
+        <li>Three runs give the same <em>figures</em>, though not the same wording</li>
       </ul>
     </div>
     <div class="center">
       <div class="card">
-        <h3>Why before, not after</h3>
-        <p>Criteria written afterwards tend to describe whatever was produced. Written first, they
-        are a specification — and stating them in the prompt improves the output as well as the
-        review.</p>
+        <h3>Why beforehand</h3>
+        <p>Criteria written afterwards tend to describe what was produced. Written beforehand, they
+        are a specification. Stated in the prompt, they improve the output and make checking
+        easier.</p>
       </div>
       <div class="note note--practice" style="margin-top:18px">
-        <p style="font-size:18px">Design the work so that checking is cheap. A memo whose every
-        figure carries a page reference is checked in minutes; the same memo without references
-        takes an hour, because the checker must first find what to check.</p>
+        <p style="font-size:18px">Design the work so that checking is quick: a memo in which every
+        figure names its source can be checked in minutes. Without sources it takes an hour,
+        because you first have to establish what to check.</p>
       </div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Convert verification from a vague duty into a defined,
-    proportionate activity.</p>
-    <p>The repeatability criterion is the one people omit. Output is sampled, so two runs differ;
-    what must not differ is the facts. Three runs producing three different medians tells you
-    something is wrong with the process before the memo reaches anyone.</p>
-    <p><strong>Proportionate oversight:</strong> exploratory work needs a skim; material informing
-    your own thinking needs spot checks; work circulating to colleagues needs every factual claim
-    traced; anything entering a decision or a contract needs full verification and independent
-    recomputation of numbers.</p>
-    <p><em>Connect back:</em> a separately configured reviewer with a fresh context catches what
-    asking the same conversation to check itself does not — because that conversation has already
-    committed to the claims.</p>
+    <p><strong>Objective.</strong> Turn checking from a vague duty into a defined, proportionate
+    activity.</p>
+    <p>The repeatability criterion is the one most often left out. Because the output is sampled,
+    two runs differ in wording; the figures must not differ. Three runs with three different medians
+    reveal a fault in the process before the memo reaches anyone.</p>
+    <p><strong>Proportionate checking:</strong> exploratory work needs a read-through; material for
+    your own thinking needs spot checks; work that goes to colleagues needs every factual claim
+    traced to its source; anything that feeds a decision or a contract needs a full check with
+    independent recalculation of the figures.</p>
+    <p><em>Link back:</em> a separate check with a fresh context finds more than self-checking in
+    the same conversation. That conversation already contains the claims, and the model continues
+    its context consistently.</p>
+    <p><em>In GitHub Copilot:</em> for checking, start a new chat and attach only the result and
+    the sources.</p>
+    <p>Course reference: Modules 14.1 to 14.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 30 · CLOSE ============ -->
+<!-- ============ 33 · SUMMARY ============ -->
 <section class="slide">
-  <p class="eyebrow">Closing</p>
-  <h2>Four things worth keeping</h2>
+  <p class="eyebrow">Close</p>
+  <h2>Summary</h2>
   <div style="margin-top:10px">
     <div class="step" style="margin-bottom:10px">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">1 · Context is the lever you have</h3>
-      <p>The parameters are fixed. The window is finite and shared between everything. Curation
-      beats accumulation, and most of the afternoon followed from this.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">1 · Assemble the context deliberately</h3>
+      <p style="max-width:none">The parameters are fixed; the context window is limited and shared
+      by everything. Selected material gives better results than as much material as
+      possible.</p></div>
     </div>
     <div class="step" style="margin-bottom:10px">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">2 · The model's cost is the small term</h3>
-      <p>Verification time typically exceeds it by a large factor, so the cheapest route is the one
-      needing fewest corrections — which is rarely the one with the smallest token bill.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">2 · Checking is the largest cost</h3>
+      <p style="max-width:none">It usually exceeds the model cost many times over. The cheapest
+      approach is the one that needs the fewest corrections.</p></div>
     </div>
     <div class="step" style="margin-bottom:10px">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">3 · Earn autonomy rather than granting it</h3>
-      <p>Run supervised until you know where it fails, build a check for that, then let it run.
-      And distinguish asking from preventing.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">3 · Increase autonomy step by step</h3>
+      <p style="max-width:none">Work under supervision until you know where the process fails. Rule
+      out technically what must not happen, rather than only instructing against it.</p></div>
     </div>
     <div class="step">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">4 · Decide what finished means before you start</h3>
-      <p>Criteria written afterwards describe whatever you got. Written first, they improve the
-      work and make checking affordable.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">4 · Decide what "done" means before you start</h3>
+      <p style="max-width:none">Criteria written beforehand improve the result and shorten the
+      checking.</p></div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Objective.</strong> Leave four durable ideas rather than a summary of everything.</p>
-    <p>Return to the opening question — "when an AI tool gives you a wrong answer, what is your
-    theory of why?" — and see whether the answers have changed. They usually have, and the change
-    is the measure of the day.</p>
-    <p><em>Point to the materials:</em> the course text for the full argument, the handout for
-    recall, the practical guide for getting started in the organisation's own environment.</p>
-    <p><strong>Next step to propose:</strong> each participant picks one recurring task and runs
-    the five-stage workshop in Module 14.5 on it within the fortnight, while the material is
-    fresh.</p>
+    <p><strong>Objective.</strong> Leave four ideas the audience can apply in their own work.</p>
+    <p>Return to the opening question: "When an AI tool gives you a wrong answer — how do you
+    explain it?" Compare the answers with those from the start.</p>
+    <p><em>Point to the materials:</em> the handout for reference; the course text for the full
+    account; the practical guide for getting started with GitHub Copilot in VS Code, including an
+    exercise with an answer key.</p>
+    <p><strong>Next step:</strong> each participant picks a recurring task and, within two weeks,
+    applies the five-stage workshop from Module 14.5 to it: specify the task and choose a model;
+    plan and decompose; run it with the right autonomy; make it repeatable; check it and record the
+    cost.</p>
   </div></template>
 </section>
 </div>

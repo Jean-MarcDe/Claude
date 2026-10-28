@@ -91,7 +91,7 @@ window.DECK_DICT = {
     'Option': 'Option',
     'quality': 'Qualität',
     'cost': 'Kosten',
-    'speed': 'Geschwindigkeit',
+    'speed': 'Tempo',
     'latency': 'Antwortzeit',
     'score': 'Punktwert',
     'Illustrative profiles, not measurements. The point is that the ranking changes with the weighting, so &ldquo;best&rdquo; is not a property of a model alone.':

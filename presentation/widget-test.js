@@ -9,9 +9,20 @@ const F='file://' + require('path').resolve(__dirname, process.argv[2] || 'index
   const pg = await ctx.newPage();
   const errs=[]; pg.on('pageerror',e=>errs.push(String(e).slice(0,120)));
   const goTo = async (n) => { await pg.goto('about:blank'); await pg.goto(F+'#'+n,{waitUntil:'load'}); await pg.waitForTimeout(350); };
+  // Widgets are found by name, not by slide number, so inserting a slide does
+  // not silently point a check at the wrong slide. Works for both languages.
+  await pg.goto(F,{waitUntil:'load'});
+  const slideOf = {};
+  for (const w of ['neuron','attention','temperature','compare','cost','context']) {
+    slideOf[w] = await pg.evaluate(name => {
+      const all = [...document.querySelectorAll('.slide')];
+      return all.findIndex(s => s.querySelector('[data-widget="' + name + '"]')) + 1;
+    }, w);
+  }
+  console.log('widget slides:', JSON.stringify(slideOf));
 
-  // --- neuron (slide 6) ---
-  await goTo(6);
+  // --- neuron ---
+  await goTo(slideOf.neuron);
   let before = await pg.textContent('#nloss');
   await pg.click('#nstep');
   let after1 = await pg.textContent('#nloss');
@@ -25,21 +36,21 @@ const F='file://' + require('path').resolve(__dirname, process.argv[2] || 'index
   await pg.fill('#nw1','7.7'); await pg.dispatchEvent('#nw1','input');
   console.log('         slider w1=7.7 ->', await pg.textContent('#ow1'));
 
-  // --- attention (slide 12) ---
-  await goTo(12);
+  // --- attention ---
+  await goTo(slideOf.attention);
   const btns = await pg.$$('#aToks button');
   await btns[5].click(); await pg.waitForTimeout(120);
   const itRow = await pg.$$eval('#aBars .bar', els => els.map(e=>e.textContent.trim().replace(/\s+/g,' ')));
   console.log('attention: "it" attends ->', itRow.slice(0,4).join(' | '));
 
-  // --- temperature (slide 14) ---
-  await goTo(14);
+  // --- temperature ---
+  await goTo(slideOf.temperature);
   const tailAt = async v => { await pg.fill('#tT',v); await pg.dispatchEvent('#tT','input'); await pg.waitForTimeout(120);
     return pg.$eval('.bar--tail .bar__v', e=>e.textContent); };
   console.log(`temperature: tail at T=0.5 ${await tailAt('0.5')} · T=1.0 ${await tailAt('1')} · T=1.5 ${await tailAt('1.5')}`);
 
-  // --- compare (slide 20) ---
-  await goTo(20);
+  // --- compare ---
+  await goTo(slideOf.compare);
   const top = async () => pg.$eval('#mRows tr:first-child td:first-child', e=>e.textContent.trim());
   await pg.fill('#mq','100'); await pg.dispatchEvent('#mq','input');
   await pg.fill('#mc','0'); await pg.dispatchEvent('#mc','input');
@@ -50,8 +61,8 @@ const F='file://' + require('path').resolve(__dirname, process.argv[2] || 'index
   const cWin = await top();
   console.log(`compare: quality-weighted winner "${qWin}" · cost-weighted winner "${cWin}" ${qWin!==cWin?'RANKING FLIPS':'FAIL'}`);
 
-  // --- cost (slide 22) ---
-  await goTo(22);
+  // --- cost ---
+  await goTo(slideOf.cost);
   const agentic = async () => pg.$eval('#kRows tr:nth-child(4) td:nth-child(2)', e=>e.textContent);
   const cached = await agentic();
   await pg.uncheck('#kCache'); await pg.waitForTimeout(120);
@@ -61,8 +72,8 @@ const F='file://' + require('path').resolve(__dirname, process.argv[2] || 'index
   console.log(`cost: agentic cached ${cached} -> uncached ${uncached}`);
   console.log('      ', cmp.replace(/\s+/g,' ').trim().slice(0,110));
 
-  // --- context (slide 23) ---
-  await goTo(23);
+  // --- context ---
+  await goTo(slideOf.context);
   const sum = async () => (await pg.textContent('#cSum')).replace(/\s+/g,' ').trim();
   const curated = await sum();
   await pg.check('#cTog input[data-i="2"]');

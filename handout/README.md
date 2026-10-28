@@ -1,4 +1,4 @@
-# Handout — Tokens to Decisions
+# Handout — How language models work
 
 A compact reference for during and after the workshop: the definitions, relationships and decision
 criteria worth keeping to hand, with section numbers pointing back to the course.
@@ -7,7 +7,7 @@ criteria worth keeping to hand, with section numbers pointing back to the course
 |---|---|
 | `handout.md` | Maintainable source. Edit prose here first. |
 | `handout.html` | Print-first rendering: A4, two-column prose, full-width decision tables. |
-| `handout.pdf` | Generated from the HTML. Seven A4 pages. |
+| `handout.pdf` | Generated from the HTML. Eight A4 pages. |
 | `build-pdf.js` | Regenerates the PDFs. |
 | `de/` | The German edition — same three formats, plus a terminology table. |
 
@@ -37,12 +37,17 @@ Check after editing: `node build-pdf.js`, then look at the page count and at any
 falls across a page break. Tables and note boxes carry `break-inside: avoid`, so a table that no
 longer fits will push itself to the next page and leave a gap rather than split.
 
+Part One ends with a table that pairs each mechanism with its consequence in practice, and Part Two
+opens with a table showing where the concepts appear in GitHub Copilot in VS Code. Both match the
+deck (slides 19 and 21). In the English edition Part Two follows that summary table directly rather
+than starting a new page, which keeps the handout to eight pages.
+
 Terminology follows `../course_style_guide.md` §9, and every claim here is the course's claim —
 nothing in the handout should say anything `../course/` does not.
 
 ## The German edition
 
-`de/` holds a German handout: ten printed pages rather than seven, because German text runs longer
+`de/` holds a German handout: ten printed pages rather than eight, because German text runs longer
 and because it adds a **terminology table** mapping the English terms to the German ones used
 throughout. That table is the reference for all German material, including the deck. The German
 page enables automatic hyphenation, without which compounds leave large gaps in the narrow

@@ -277,7 +277,7 @@ tbody tr:last-child td{border-bottom:0}
     <a href="#s2"><span class="n">2</span><span class="t">Opening a workspace</span><span class="d">Installing nothing you do not need, and why the folder matters</span></a>
     <a href="#s3"><span class="n">3</span><span class="t">Your first conversation</span><span class="d">Where to type, and what happens to what you typed</span></a>
     <a href="#s4"><span class="n">4</span><span class="t">Choosing a model</span><span class="d">What the picker is actually choosing between</span></a>
-    <a href="#s5"><span class="n">5</span><span class="t">The three modes</span><span class="d">Ask, edit and agent — and how much you are judging</span></a>
+    <a href="#s5"><span class="n">5</span><span class="t">The three modes</span><span class="d">Ask, plan and agent — and how much you are judging</span></a>
     <a href="#s6"><span class="n">6</span><span class="t">Giving it the right material</span><span class="d">Attaching files, and why more is not better</span></a>
     <a href="#s7"><span class="n">7</span><span class="t">Seeing what it did</span><span class="d">Reading the context list and the tool output</span></a>
     <a href="#s8"><span class="n">8</span><span class="t">Planning before doing</span><span class="d">Getting the misunderstanding out early and cheaply</span></a>
@@ -574,10 +574,10 @@ tbody tr:last-child td{border-bottom:0}
     <div class="ui__hd"><span class="ui__ttl">Switching mode</span>
       <span class="flag f-verify">Verify</span></div>
     <div class="ui__bd">
-      <p>A dropdown or set of buttons near the chat input, typically offering <strong>Ask</strong>,
-      <strong>Edit</strong> and <strong>Agent</strong>. Some versions label these differently or
-      present agent mode separately. The names have changed before and will again; the three
-      behaviours are what to recognise.</p>
+      <p>A dropdown near the chat input, offering <strong>Ask</strong>, <strong>Plan</strong> and
+      <strong>Agent</strong> in versions current in October 2026. Older versions offered
+      <strong>Edit</strong> in place of Plan. The names have changed before and will again; the
+      three behaviours are what to recognise.</p>
     </div>
   </div>
 
@@ -587,10 +587,10 @@ tbody tr:last-child td{border-bottom:0}
       <tr><td><strong>Ask</strong></td>
         <td>Answers in the chat panel. Changes nothing.</td>
         <td>The answer. Nothing has happened yet.</td></tr>
-      <tr><td><strong>Edit</strong></td>
-        <td>Proposes changes to files you have named, shown as a before-and-after you accept or
-        reject.</td>
-        <td>Each change, individually, before it is applied.</td></tr>
+      <tr><td><strong>Plan</strong></td>
+        <td>Produces a step-by-step plan and changes nothing. You can correct the plan, then hand
+        it to Agent to carry out.</td>
+        <td>The plan, before anything happens.</td></tr>
       <tr><td><strong>Agent</strong></td>
         <td>Decides for itself which files to read, makes changes, runs commands, checks its own
         work, and repeats until it judges the task done.</td>
@@ -598,9 +598,10 @@ tbody tr:last-child td{border-bottom:0}
     </tbody>
   </table></div>
 
-  <p>These map onto the course's four modes of working. Ask is conversational; Edit is
-  interactive; Agent is autonomous. The fourth — planning — is not a separate mode here, but it
-  is available, and section 8 is about getting it.</p>
+  <p>These map onto the course's four modes of working. Ask is conversational and Plan is
+  planning. Agent covers the other two: it works interactively while you approve its actions one
+  at a time, and autonomously when they are approved automatically. Section 8 is about using the
+  planning step well.</p>
 
   <div class="callout c-key"><span class="callout__tag">Which to start in</span>
   <p>Start in the least autonomous mode that could do the job, and use Ask for anything you are
@@ -778,18 +779,18 @@ tbody tr:last-child td{border-bottom:0}
     <div class="ui__hd"><span class="ui__ttl">Getting a plan</span>
       <span class="flag f-stable">Stable</span></div>
     <div class="ui__bd">
-      <p>There is no special button needed. In <strong>Ask</strong> mode, attach the material and
-      ask for the plan rather than the work:</p>
+      <p>Use <strong>Plan</strong> mode if your version has it: it produces a plan and changes
+      nothing. Otherwise, in <strong>Ask</strong> mode, attach the material and ask for the plan
+      rather than the work:</p>
       <pre><code>Before doing anything, write a short plan.
 Restate what you understand the objective to be, in your own words.
 List what you would need to look at, in order.
 List anything you would need from me that you do not have.
 Say what the finished thing will look like.
 Do not start the work.</code></pre>
-      <p>Read it, correct it, and only then switch to Edit or Agent mode and say "proceed with
-      that plan".</p>
-      <p>Some versions of Copilot offer a dedicated planning step or a plan-producing mode. If
-      yours does, use it; the prompt above is what to do when it does not.</p>
+      <p>Read it, correct it, and only then switch to Agent mode and say "proceed with that
+      plan".</p>
+      <p>The prompt also works in Plan mode, where it makes the plan's contents explicit.</p>
     </div>
   </div>
 
@@ -1360,8 +1361,8 @@ supplied.</code></pre>
 
   <h3>Stage four — plan, then agent <span class="num">(10 minutes)</span></h3>
 
-  <p>New conversation again. In <strong>Ask</strong> mode, attach the three files and ask for a
-  plan before any work — the prompt in section 8 will do. Read the restated objective. If it
+  <p>New conversation again. In <strong>Plan</strong> mode, or in <strong>Ask</strong> mode with
+  the prompt from section 8, attach the three files and ask for a plan before any work. Read the restated objective. If it
   describes a different task, correct it now.</p>
 
   <p>Then switch to <strong>Agent</strong> mode and say:</p>

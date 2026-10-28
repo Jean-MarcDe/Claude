@@ -1,7 +1,7 @@
-# Tokens to Decisions — reference handout
+# How language models work — reference handout
 
-A compact reference for during and after the workshop. It does not reproduce the course; it
-records the definitions, relationships and decision criteria that are worth having to hand.
+The definitions, relationships and decision criteria from the workshop, for reference at work. The
+underlying course is *Tokens to Decisions*.
 
 Full course: `../course/index.html` · Deck: `../presentation/index.html` ·
 Getting started in the organisation's environment: `../practical-guide/`
@@ -10,7 +10,7 @@ Section numbers in square brackets point to the course text.
 
 ---
 
-## Part One — how the machine works
+## Part One — how a language model works
 
 ### Learning and training
 
@@ -81,7 +81,8 @@ tokens used similarly sit near one another.
 
 **Contextual representation** — written **h**ᵢ⁽ˡ⁾, the vector at position *i* after layer *l*,
 once attention has mixed in information from other positions. One static embedding, many
-contextual representations — this distinction is the one most worth keeping straight. [3.2]
+contextual representations: the static embedding depends only on the token, the contextual
+representation on the token *and its sentence*. [3.2]
 
 **Attention** — each position emits a query describing what it needs; every position offers a key;
 each receives a weighted blend of the others' values.
@@ -132,8 +133,9 @@ behaviour is trained disposition, not an enforced constraint. [5.1]
 ### Systems around the model
 
 **Harness** — the program surrounding the model: it assembles the context, supplies tool
-definitions, parses output, executes tools, decides when to stop. Two harnesses around the same
-model are two different products. [5.4]
+definitions, parses output, executes tools, decides when to stop. The same model behaves
+differently in different harnesses; much of what is attributed to the model is set by the harness.
+GitHub Copilot in VS Code is such a harness. [5.4]
 
 **Tool / tool calling** — the model emits a structured request naming a tool and arguments; the
 harness checks permissions and runs the code, then appends the result to the context. **The model
@@ -149,11 +151,39 @@ failures, so debug by inspecting what was retrieved. [5.11]
 
 **Prompt injection** — text placed where a model will read it, phrased as instruction. Indirect
 injection arrives inside a document, web page or data record from outside. It works because
-instructions and data share one input channel and nothing records provenance. [6.1, 6.2]
+instructions and data share one input channel and nothing records provenance. It is a property
+of the architecture; no general fix exists at present. [6.1, 6.2]
+
+### What follows from how it works
+
+| Mechanism | In practice |
+|---|---|
+| Parameters are learned from examples | Only a test with known answers shows whether a model can do a task |
+| Training objective: predict the next token | Output is plausible, but not checked |
+| Text is split into tokens | Counting letters and exact arithmetic are unreliable; cost and context are measured in tokens; other languages need more tokens than English |
+| The next token is drawn | The same request can give different answers |
+| Each generated token is appended | Long contexts cost more; early mistakes carry forward; nothing marks where text came from |
+| Fixed parameters, limited context | No memory between conversations; recent and internal information is known only if it is in the context |
+| No step checks statements | Hallucinations are to be expected; results must be checked |
+| A harness surrounds the model | Much of what is attributed to "the AI" is a setting of the system |
 
 ---
 
-## Part Two — operating the system
+## Part Two — what follows in practice
+
+### The concepts in GitHub Copilot
+
+As of October 2026, from secondary sources; names change between versions.
+
+| Concept | In GitHub Copilot in VS Code |
+|---|---|
+| Model | A drop-down list in the chat. Which models appear is set by your organisation. |
+| Context | Attached files and folders (with `#` in the chat box), the conversation so far, and, depending on settings, the open file. |
+| Persistent instructions | Instruction files in the project, e.g. `.github/copilot-instructions.md`; prompt files (`*.prompt.md`) for recurring requests. |
+| Working modes | *Ask*: questions and answers. *Plan*: a plan before execution. *Agent*: works on its own with tools. |
+| Tools, agentic loop | In agent mode: reading and changing files, running terminal commands. Extensible through MCP servers. |
+| Enforcement | Approval of tool calls and terminal commands; organisation policies. |
+| Cost | GitHub AI Credits since 1 June 2026, charged by the tokens used; one credit is US$0.01. Code completion does not consume credits. |
 
 ### Choosing a model
 
@@ -197,8 +227,8 @@ several times input, because generation is sequential. Cached input — a prefix
 already processed — is often around a tenth of input, which is why stable instructions matter
 financially. **Reasoning tokens are billed as output and are often invisible.** [8.4]
 
-> **One instruction is not one request, and one request is not one credit.** An agentic workflow
-> can produce twenty model calls from one sentence. [8.5]
+> **One instruction can trigger many model calls.** An agentic workflow easily turns one sentence
+> into twenty. How tokens convert into credits is set by the vendor. [8.5]
 
 **What increases consumption**
 
@@ -258,7 +288,9 @@ note and open the next with it. [9.4]
 **Choosing** — how ambiguous is the task; how reversible are the actions; what does a mistake
 cost; can success be checked automatically; what can the tools reach; how much undocumented
 judgement is needed. Start at the least autonomous mode that could work; use interactive for
-anything done the first time. [10.2, 10.3]
+anything done the first time. In GitHub Copilot, *Ask* corresponds to conversational and *Plan* to
+planning; *Agent* is interactive or autonomous depending on whether actions are approved one at a
+time or automatically. [10.2, 10.3]
 
 ### Three kinds of control
 
@@ -269,7 +301,8 @@ anything done the first time. [10.2, 10.3]
 | **Enforcement** — permissions, sandbox, approval | What is *possible* | No write access outside the drafts folder |
 
 Writing "do not modify any files" is guidance and can be displaced. Read-only access is
-enforcement and cannot. Put anything costly or irreversible in the third column. [10.5]
+enforcement and cannot. Put anything costly or irreversible in the third row. In GitHub Copilot an
+instruction file is guidance; approval of tool calls is enforcement. [10.5]
 
 ### Planning and delegation
 
@@ -334,7 +367,7 @@ environments require invoking by name instead. [13.2]
 
 **MCP and tools** — adding a server is installing third-party code with the credentials you give
 it. Establish the publisher, pin the version, read the tool descriptions once, scope credentials to
-the minimum, and keep an inventory. A tool the model cannot reach is one it cannot misuse. [13.4]
+the minimum, and keep an inventory. Enable only the tools the task needs. [13.4]
 
 ### How much structure to build
 
@@ -399,7 +432,7 @@ covers most of what people actually want to paste. [14.4]
 The course's annotated reading list is at `../course/resources.html`. The most useful starting
 points:
 
-- **3Blue1Brown**, neural networks and transformers — the best visual explanation available
+- **3Blue1Brown**, neural networks and transformers — a clear visual explanation and a good start
 - **Andrej Karpathy**, *Deep Dive into LLMs like ChatGPT* and *Neural Networks: Zero to Hero*
 - **Anthropic**, *Building effective agents* — design patterns, and when not to use them
 - **Simon Willison**, prompt-injection archive — the running record of this problem
@@ -409,9 +442,10 @@ points:
 vendor's own documentation rather than this handout. GitHub Copilot, VS Code agent customisation,
 the Model Context Protocol and the Agent Skills specification all publish current references.
 
-> **Verification note.** Product behaviour and all commercial figures in the course were compiled
-> in October 2026 from secondary sources, because the primary documentation hosts were not
-> reachable from the environment in which it was written. Confirm before standardising on any of
-> them. Four questions only your administrator can answer: which billing model your agreement is
+> **Verification note.** Product behaviour and all commercial figures in this handout were
+> compiled in October 2026 from secondary sources, because the primary documentation hosts were not
+> reachable from the environment in which it was written. The move to GitHub AI Credits on 1 June
+> 2026 rests on search results about GitHub's announcement of April 2026. Confirm before
+> standardising on any of them. Four questions only your administrator can answer: which billing model your agreement is
 > on, what the allowance is and whether it pools, whether overage is enabled and what happens at
 > exhaustion, and which report shows consumption to whom.

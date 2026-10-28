@@ -1,6 +1,6 @@
-# Foliensatz (deutsch) — Von Tokens zu Entscheidungen
+# Foliensatz (deutsch) — Wie Sprachmodelle funktionieren
 
-Deutsche Fassung des Workshop-Foliensatzes: 30 Folien, Notizen zu jeder Folie, 14 schrittweise
+Deutsche Fassung des Workshop-Foliensatzes: 33 Folien, Notizen zu jeder Folie, 22 schrittweise
 aufgedeckte Elemente und sechs interaktive Darstellungen.
 
 ## Verwendung
@@ -18,13 +18,32 @@ Netzwerkverbindung erforderlich.
 | `D` | Helle / dunkle Ansicht |
 | `?` oder `H` | Tastaturhilfe |
 
-Die Foliennummer steht in der Adresse: `index.html#16` öffnet unmittelbar die Folie zum Harness.
+Die Foliennummer steht in der Adresse: `index.html#18` öffnet unmittelbar die Folie zum Harness.
+
+## Aufbau des Vortrags
+
+**Teil 1 — Wie ein Sprachmodell funktioniert (Folien 3–19).** Programmierte Regeln und gelernte
+Parameter; ein Neuron; Training als schrittweise Anpassung; ein Trainingsschritt im Detail; warum
+mehrere Schichten nötig sind; die Vorhersage des nächsten Tokens als Trainingsziel; Tokenisierung;
+Embeddings; Attention; der Vorwärtslauf; Sampling und Temperatur; Autoregression; Parameter und
+Kontext; Halluzination; Modell und System (Harness). Folie 19 fasst Teil 1 in einer Tabelle
+zusammen, die jedem Mechanismus seine Folge für die Praxis zuordnet.
+
+**Teil 2 — Was daraus für die Praxis folgt (Folien 20–33).** Die Begriffe in GitHub Copilot in
+VS Code; das durchgehende Beispiel; Modellauswahl; Tokens und Credits; Kosten einer Aufgabe;
+Kontext; Arbeitsmodi; Zerlegung; drei Arten von Kontrolle; angemessener Aufwand; Prompt Injection;
+Prüfung; Zusammenfassung.
+
+Die Reihenfolge folgt einer Argumentationslinie: was Lernen ist, wie ein Sprachmodell trainiert
+wird, wie es Text verarbeitet und erzeugt, was es deshalb weiß und nicht weiß, und was es umgibt.
+Hat ein Mechanismus eine unmittelbare Folge für die Praxis, steht sie auf der Folie in einem orange
+umrandeten Kasten **Folge für die Praxis**. Teil 2 baut auf diesen Folgen auf.
 
 ## Aufbau der Dateien
 
 | Datei | Inhalt |
 |---|---|
-| `index.html` | Die 30 Folien, ihre SVG-Diagramme und die Notizen |
+| `index.html` | Die 33 Folien, ihre SVG-Diagramme und die Notizen |
 | `deck.de.js` | Deutsche Zeichenketten für die Widgets und die Oberfläche |
 | `../deck.css` | Gemeinsames Layout und Farbschema beider Sprachfassungen |
 | `../deck.js` | Gemeinsame Engine und die sechs Widgets |
@@ -42,8 +61,11 @@ Fassungen identisch und stehen ausschließlich in `../deck.js`.
 ## Sprachliche Festlegungen
 
 Der Text folgt dem Register technischer Dokumentation: sachlich, deklarativ, ein Begriff je
-Konzept. Zuspitzungen und rhetorische Fragen in Folientexten werden vermieden; die Notizen
-enthalten Fragen an das Publikum, weil sie dort eine didaktische Funktion haben.
+Konzept, kurze Sätze. Folientitel benennen das jeweilige Konzept („Tokenisierung: Text wird in
+Tokens zerlegt“) und sind keine Schlagzeilen. Zuspitzungen, Wortspiele und rhetorische Fragen in
+Folientexten werden vermieden; die Notizen enthalten Fragen an das Publikum, weil sie dort eine
+didaktische Funktion haben. Die Kennzeichnung oberhalb des Titels nennt Teil und Abschnitt des
+Vortrags; die Kursmodule stehen in den Notizen.
 
 Die Begriffszuordnung Englisch–Deutsch steht im Referenzblatt unter
 [`../../handout/de/handout.html`](../../handout/de/handout.html), Abschnitt *Terminologie*. Sie
@@ -54,6 +76,16 @@ gesamten Kurs analysiert, und die Beispielwerte der Attention- und Temperatur-Da
 genau diesen Satz abgestimmt. Eine Übersetzung hätte erfundene Gewichte erfordert. Folie 10 enthält
 die deutsche Entsprechung, und die Notizen dieser Folie behandeln die Tokenisierung des Deutschen,
 die mehr Tokens je Inhalt benötigt.
+
+## GitHub Copilot
+
+Folie 21 ordnet die Begriffe aus Teil 1 den Funktionen von GitHub Copilot in VS Code zu
+(Modellauswahl, Kontext, Anweisungsdateien, Modi Ask/Plan/Agent, Tools, Freigaben, Abrechnung in
+GitHub AI Credits). Die Folien in Teil 2 greifen das jeweils in einer Zeile oder in den Notizen
+auf. Diese Angaben sind Stand Oktober 2026 und stammen aus Sekundärquellen, weil die
+Dokumentationsserver von GitHub und VS Code aus der Arbeitsumgebung nicht erreichbar waren. Vor
+dem Workshop in der eigenen Installation prüfen: Bezeichnungen der Modi, freigegebene Modelle,
+zentrale Vorgaben für Freigaben.
 
 ## Nach einer Änderung prüfen
 

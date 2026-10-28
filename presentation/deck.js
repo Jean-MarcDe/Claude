@@ -37,6 +37,10 @@
     var t = Number(x).toFixed(n);
     return LANG === 'de' ? t.replace('.', ',') : t;
   }
+  // dollar amounts: $0.365 in English, 0,365 $ in German
+  function usd(x, n) {
+    return LANG === 'de' ? dec(x, n) + '&nbsp;$' : '$' + dec(x, n);
+  }
 
   // ---------------------------------------------------------
   // Engine
@@ -441,7 +445,7 @@
     function draw() {
       var rows = calc();
       root.querySelector('#kRows').innerHTML = rows.map(function (r) {
-        return '<tr><td>' + r.n + '</td><td class="num">$' + dec(r.v, 3) +
+        return '<tr><td>' + r.n + '</td><td class="num">' + usd(r.v, 3) +
           '</td><td class="num">' + (r.v * 100).toFixed(0) + '</td></tr>';
       }).join('');
       var human = rev / 60 * wage;

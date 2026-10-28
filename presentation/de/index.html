@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Von Tokens zu Entscheidungen — Foliensatz</title>
+<title>Wie Sprachmodelle funktionieren — Foliensatz</title>
 <link rel="stylesheet" href="../deck.css">
 </head>
 <body>
@@ -11,82 +11,97 @@
 <div id="progress"></div>
 <div id="stage">
 
-<!-- ============ 1 · TITLE ============ -->
+<!-- ============ 1 · TITEL ============ -->
 <section class="slide slide--title">
-  <p class="eyebrow">Ein Workshop über moderne KI</p>
-  <h1>Von Tokens zu Entscheidungen</h1>
+  <p class="eyebrow">Workshop</p>
+  <h1>Wie Sprachmodelle funktionieren</h1>
   <div class="rule"></div>
-  <p class="lead">Wie Sprachmodelle arbeiten und was daraus folgt, wenn man sie für
-  die eigene Arbeit einsetzt.</p>
+  <p class="lead">Die Grundbegriffe moderner KI und was aus ihnen folgt: was Sprachmodelle
+  leisten können, was nicht, und was das für die Arbeit mit GitHub Copilot in VS Code
+  bedeutet.</p>
   <p class="tiny" style="margin-top:28px"><b>→</b> oder <b>Leertaste</b> weiter ·
   <b>S</b> Notizen · <b>?</b> alle Tasten</p>
   <template class="notes"><div class="nt">
-    <p><strong>Einordnung zu Beginn.</strong> Der Foliensatz begleitet den Kurstext und ersetzt
-    ihn nicht. Der Text erklärt, die Folien veranschaulichen, das Referenzblatt dient dem Nachlesen.</p>
-    <p><strong>Erwartungen früh klären:</strong> An keiner Stelle wird programmiert, und es wird
-    keine Mathematik über die Schulalgebra hinaus verwendet. Es wird gerechnet, aber niemand muss
-    Code schreiben.</p>
-    <p><em>Einstiegsfrage an das Publikum:</em> „Wenn ein KI-Werkzeug eine falsche Antwort liefert
-    — welche Erklärung haben Sie dafür?“ Zwei bis drei Antworten sammeln und am Ende darauf
+    <p><strong>Einordnung.</strong> Der Workshop hat zwei Teile. Teil 1 erklärt, wie ein
+    Sprachmodell arbeitet. Teil 2 zeigt, was daraus für die tägliche Arbeit folgt, mit GitHub
+    Copilot in VS Code als Werkzeug.</p>
+    <p><strong>Erwartungen klären.</strong> Es wird nicht programmiert. An wenigen Stellen wird
+    gerechnet: eine gewichtete Summe, eine Ableitung, ein Logarithmus. Jede Rechnung wird in
+    Worten erklärt, und niemand muss sie selbst ausführen.</p>
+    <p><em>Einstiegsfrage an das Publikum:</em> „Wenn ein KI-Werkzeug eine falsche Antwort
+    liefert — wie erklären Sie sich das?“ Zwei bis drei Antworten sammeln und am Ende darauf
     zurückkommen.</p>
-    <p><em>Zur Sprache:</em> Die Beispielsätze und die Widgets sind englisch. Der Kurs analysiert
-    einen bestimmten englischen Satz, und die Beispielwerte sind darauf abgestimmt. Die Folie zu
-    Spracheffekten geht darauf ein.</p>
+    <p><em>Zur Sprache:</em> Der Beispielsatz und die Beispieltokens in den Widgets sind
+    englisch. Der Kurs analysiert genau diesen Satz, und die Beispielwerte sind darauf abgestimmt.
+    Die Folie „Tokenisierung“ geht darauf ein.</p>
+    <p>Begleitmaterial: das Referenzblatt (deutsch) zum Nachschlagen, der Kurstext (englisch) für
+    die ausführliche Darstellung.</p>
   </div></template>
 </section>
 
-<!-- ============ 2 · WHY MECHANISM ============ -->
+<!-- ============ 2 · AUFBAU ============ -->
 <section class="slide">
-  <p class="eyebrow">Warum zuerst die Funktionsweise</p>
-  <h2>Zwei Wege, ein Werkzeug zu erlernen</h2>
-  <div class="cols" style="margin-top:20px">
+  <p class="eyebrow">Überblick</p>
+  <h2>Aufbau des Workshops</h2>
+  <div class="cols" style="margin-top:18px;flex:none">
     <div class="card">
-      <h3>Über Faustregeln</h3>
-      <p>So formulieren. Diese Anweisung ergänzen. Das neuere Modell nehmen. Alles anhängen,
-      was vorhanden ist.</p>
-      <p style="margin-top:12px">Funktioniert, bis es nicht mehr funktioniert, und hilft dann
-      nicht weiter.</p>
+      <h3>Teil 1 · Wie ein Sprachmodell funktioniert</h3>
+      <ul style="font-size:18px;margin:10px 0 0">
+        <li>Lernen aus Beispielen</li>
+        <li>Wie ein Sprachmodell trainiert wird</li>
+        <li>Verarbeitung von Text: Tokens, Embeddings, Attention</li>
+        <li>Erzeugung von Text: Sampling, Autoregression</li>
+        <li>Wissen und Grenzen des Modells</li>
+        <li>Das Modell und das System um das Modell</li>
+      </ul>
     </div>
-    <div class="card" style="background:var(--accent-soft);border-color:var(--accent)">
-      <h3>Über die Funktionsweise</h3>
-      <p>Wer weiß, was das System mit der Eingabe macht, kann die Faustregeln selbst
-      ableiten.</p>
-      <p style="margin-top:12px">Das Wissen überträgt sich auf Werkzeuge, die es beim Erlernen
-      noch nicht gab.</p>
+    <div class="card" style="background:var(--practice-soft);border-color:var(--practice)">
+      <h3>Teil 2 · Was daraus für die Praxis folgt</h3>
+      <ul style="font-size:18px;margin:10px 0 0">
+        <li>Die Begriffe in GitHub Copilot</li>
+        <li>Modellauswahl und Kosten</li>
+        <li>Kontext gezielt zusammenstellen</li>
+        <li>Arbeitsmodi und Autonomie</li>
+        <li>Kontrolle und Sicherheit</li>
+        <li>Prüfung der Ergebnisse</li>
+      </ul>
     </div>
   </div>
-  <div class="note" style="margin-top:26px">
-    <p>Ablauf: vormittags die Funktionsweise, nachmittags ihre Anwendung.</p>
+  <div class="note" style="margin-top:24px">
+    <p style="max-width:none">Jede Empfehlung in Teil 2 folgt aus einem Mechanismus in Teil 1. Wer den Mechanismus
+    kennt, kann die Empfehlung auch auf andere und neue Werkzeuge übertragen.</p>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Begründen, warum ein Publikum, das praktische Hinweise
-    erwartet, den Vormittag auf die Funktionsweise verwendet.</p>
-    <p>Das Argument: Jede praktische Empfehlung der zweiten Hälfte folgt aus einem Sachverhalt der
-    ersten. Alle Dokumente anzuhängen ist aus einem bestimmten, erklärbaren Grund ungeeignet. Ein
-    Modell kann aus einem bestimmten, erklärbaren Grund keine Tabellenspalte summieren.</p>
-    <p><em>Bei Ungeduld im Publikum:</em> ein konkretes Ergebnis bis zur Mittagspause zusagen —
-    die Teilnehmenden können dann vorhersagen, welche Aufgaben fehlschlagen werden, bevor sie sie
-    versuchen.</p>
+    <p><strong>Lernziel.</strong> Den Zusammenhang der beiden Teile erklären.</p>
+    <p>Begründung für Teil 1: Praktische Hinweise ohne Kenntnis des Mechanismus helfen nur,
+    solange die Situation gleich bleibt. Zwei Beispiele aus Teil 2: Alle verfügbaren Dokumente
+    anzuhängen verschlechtert die Ergebnisse, und ein Sprachmodell kann eine Tabellenspalte nicht
+    zuverlässig summieren. Beides hat einen Grund, der in Teil 1 erklärt wird.</p>
+    <p><em>Falls das Publikum auf Praxis wartet:</em> Das Ziel von Teil 1 ist, vorhersagen zu
+    können, welche Aufgaben ein Sprachmodell zuverlässig erledigt und welche nicht, bevor man es
+    ausprobiert.</p>
   </div></template>
 </section>
 
-<!-- ============ 3 · SECTION: THE MACHINE ============ -->
+<!-- ============ 3 · ABSCHNITT TEIL 1 ============ -->
 <section class="slide slide--section">
-  <p class="eyebrow">Teil eins</p>
-  <h2>Funktionsweise des Modells</h2>
-  <p class="lead" style="margin-top:18px">Lernen · Tokens · Attention · Erzeugung · Systeme</p>
+  <p class="eyebrow">Teil 1</p>
+  <h2>Wie ein Sprachmodell funktioniert</h2>
+  <p class="lead" style="margin-top:18px">Lernen · Training · Verarbeitung von Text ·
+  Erzeugung von Text · Wissen und Grenzen · Modell und System</p>
   <template class="notes"><div class="nt">
-    <p>Abschnittstrenner. Mit den Übungen etwa zwei Stunden.</p>
+    <p>Abschnittstrenner. Teil 1 erklärt den Mechanismus. Wo eine Folie eine unmittelbare Folge
+    für die Praxis hat, steht sie in einem orange umrandeten Kasten unten auf der Folie.</p>
   </div></template>
 </section>
 
-<!-- ============ 4 · RULES VS PARAMETERS ============ -->
+<!-- ============ 4 · REGELN UND PARAMETER ============ -->
 <section class="slide">
-  <p class="eyebrow">1 · Lernen statt Programmieren</p>
-  <h2>Die Pfeile tauschen die Richtung</h2>
-  <figure style="margin:10px 0 0;flex:1">
+  <p class="eyebrow">Teil 1 · Lernen</p>
+  <h2>Programmierte Regeln und gelernte Parameter</h2>
+  <figure style="margin:10px 0 0">
     <svg class="dgm" viewBox="0 0 1120 330" role="img"
-      aria-label="Herkömmliche Software erhält Regeln und Daten als Eingabe und erzeugt Antworten. Überwachtes Lernen erhält Daten und Sollantworten als Eingabe und erzeugt Parameter, die anschließend wie ein Programm verwendet werden.">
+      aria-label="Herkömmliche Software erhält Regeln und Daten als Eingabe und erzeugt Antworten. Überwachtes Lernen erhält Eingaben und Sollausgaben und erzeugt Parameter, die anschließend wie ein Programm verwendet werden.">
       <text class="t-ttl" x="20" y="26">HERKÖMMLICHE SOFTWARE &mdash; EIN MENSCH SCHREIBT DIE REGELN</text>
       <rect class="chip" x="20" y="44" width="170" height="44" rx="5"/>
       <text class="t-sm" x="105" y="71" text-anchor="middle">Regeln (Code)</text>
@@ -100,12 +115,12 @@
       <line class="flow" x1="430" y1="96" x2="470" y2="96"/><polygon class="head" points="470,91 480,96 470,101"/>
       <rect class="hl" x="482" y="68" width="170" height="56" rx="5"/>
       <text x="567" y="101" text-anchor="middle">Antworten</text>
-      <text class="t-sm" x="676" y="90">Die Regel ist lesbar: Sie lässt</text>
+      <text class="t-sm" x="676" y="90">Die Regeln sind lesbar: Sie lassen</text>
       <text class="t-sm" x="676" y="108">sich prüfen und ändern.</text>
 
       <line class="axis" x1="20" y1="168" x2="1100" y2="168"/>
 
-      <text class="t-ttl" x="20" y="200">ÜBERWACHTES LERNEN &mdash; EINE SUCHE FINDET DIE PARAMETER</text>
+      <text class="t-ttl" x="20" y="200">ÜBERWACHTES LERNEN &mdash; EIN TRAININGSVERFAHREN BESTIMMT DIE PARAMETER</text>
       <rect class="chip" x="20" y="218" width="170" height="44" rx="5"/>
       <text class="t-sm" x="105" y="245" text-anchor="middle">Eingaben</text>
       <rect class="chip" x="20" y="274" width="170" height="44" rx="5"/>
@@ -119,49 +134,58 @@
       <line class="flow" x1="430" y1="270" x2="470" y2="270"/><polygon class="head" points="470,265 480,270 470,275"/>
       <rect class="hl" x="482" y="242" width="170" height="56" rx="5"/>
       <text x="567" y="268" text-anchor="middle">Parameter <tspan class="t-mono">&#952;</tspan></text>
-      <text class="t-sm" x="567" y="286" text-anchor="middle">(ein Zahlenfeld)</text>
+      <text class="t-sm" x="567" y="286" text-anchor="middle">(viele Zahlen)</text>
       <line class="flow-a dash" x1="654" y1="270" x2="694" y2="270"/><polygon class="head-a" points="694,265 704,270 694,275"/>
       <rect class="box" x="706" y="242" width="180" height="56" rx="5"/>
       <text class="t-sm" x="796" y="275" text-anchor="middle">wie ein Programm genutzt</text>
       <text class="t-sm" x="906" y="254">Nicht lesbar. Das Verhalten</text>
-      <text class="t-sm" x="906" y="272">lässt sich nur durch Messung</text>
+      <text class="t-sm" x="906" y="272">lässt sich nur durch Tests</text>
       <text class="t-sm" x="906" y="290">feststellen.</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="max-width:none"><strong>Folge für die Praxis:</strong> Ob ein Modell eine Aufgabe beherrscht, lässt sich
+    nicht nachlesen. Es lässt sich nur durch Tests mit Beispielen feststellen, deren richtige
+    Antwort bekannt ist.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Festhalten, dass die Regeln eines gelernten Systems ein
-    Ergebnis sind und keine Eingabe, und dass niemand sie gelesen hat.</p>
-    <p><strong>Mechanismus.</strong> In der unteren Zeile werden Beispiele aus Eingaben und
-    zugehörigen Sollausgaben vorgegeben; ein Suchverfahren passt Zahlen innerhalb einer flexiblen
-    Funktion an, bis sie diese Beispiele reproduziert.</p>
+    <p><strong>Lernziel.</strong> Festhalten, dass ein gelerntes System keine geschriebenen Regeln
+    hat. Sein Verhalten steckt in Zahlen, den Parametern, die ein Trainingsverfahren aus Beispielen
+    ermittelt hat. Niemand hat diese Zahlen gelesen oder könnte sie lesen.</p>
+    <p><strong>Mechanismus.</strong> In der unteren Zeile werden Beispiele vorgegeben, jeweils eine
+    Eingabe mit der gewünschten Ausgabe. Ein Suchverfahren passt die Zahlen in einer flexiblen
+    Funktion so lange an, bis die Funktion diese Beispiele reproduziert.</p>
     <p><strong>Einschränkung:</strong> Überwachtes Lernen ist eines von mehreren Verfahren.
-    Sprachmodelle werden selbstüberwacht trainiert; das folgt in wenigen Folien.</p>
-    <p><em>Folgerung:</em> Aus diesem Grund ist für alles, was auf solchen Systemen aufbaut, die
-    Evaluation und nicht die Inspektion das Qualitätskriterium.</p>
+    Sprachmodelle werden selbstüberwacht trainiert; das folgt auf der Folie „Sprachmodelle lernen,
+    das nächste Token vorherzusagen“.</p>
+    <p><em>Folgerung:</em> Für alles, was auf solchen Systemen aufbaut, ist der Test das
+    Qualitätskriterium, nicht die Inspektion. Das kehrt in Teil 2 bei der Modellauswahl und bei der
+    Prüfung wieder.</p>
     <p>Kursbezug: Modul 1.1.</p>
   </div></template>
 </section>
 
-<!-- ============ 5 · THE NEURON ============ -->
+<!-- ============ 5 · DAS NEURON ============ -->
 <section class="slide">
-  <p class="eyebrow">1.2 · Eine parametrisierte Funktion</p>
-  <h2>Das kleinste brauchbare Beispiel</h2>
+  <p class="eyebrow">Teil 1 · Lernen</p>
+  <h2>Ein Neuron: eine Funktion mit drei Parametern</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Die logische UND-Verknüpfung hat vier Fälle, und die Ergebnisse sind bekannt. Das
-      Verfahren lässt sich dadurch überprüfen.</p>
+      <p>Als Beispiel dient die logische UND-Verknüpfung. Sie hat vier Fälle mit bekanntem
+      Ergebnis; jedes Zwischenergebnis lässt sich daher überprüfen.</p>
       <p class="mono" style="font-size:19px;color:var(--ink)">(0,0) → 0&nbsp;&nbsp; (0,1) → 0<br>
       (1,0) → 0&nbsp;&nbsp; (1,1) → 1</p>
-      <p style="margin-top:18px">Ein Neuron bildet eine gewichtete Summe, addiert eine Konstante
-      und leitet das Ergebnis durch eine Funktion, die es auf den Bereich 0 bis 1 staucht.</p>
+      <p style="margin-top:18px">Ein Neuron multipliziert jede Eingabe mit einem Gewicht, addiert
+      die Ergebnisse und eine Konstante, den Bias, und bildet die Summe auf einen Wert zwischen
+      0 und 1 ab.</p>
       <p class="mono" style="font-size:18px;color:var(--ink)">z = w₁x₁ + w₂x₂ + b<br>ŷ = σ(z)</p>
       <p style="font-size:18px">Die drei Zahlen <var>w</var><sub>1</sub>,
-      <var>w</var><sub>2</sub> und <var>b</var> sind die Parameter. Nur sie werden durch das
-      Training verändert.</p>
+      <var>w</var><sub>2</sub> und <var>b</var> sind die Parameter. Das Training verändert nur
+      diese Zahlen.</p>
     </div>
     <figure style="margin:0">
       <svg class="dgm" viewBox="0 0 620 320" role="img"
-        aria-label="Ein Neuron: zwei Eingaben werden mit Gewichten multipliziert, mit einem Bias summiert und durch eine Sigmoidfunktion geleitet, die eine Vorhersage erzeugt. Daneben dasselbe Neuron als gerade Trennlinie in der Eingabeebene, die den einen positiven UND-Fall von den drei negativen trennt.">
+        aria-label="Ein Neuron: zwei Eingaben werden mit Gewichten multipliziert, mit einem Bias summiert und durch eine Sigmoidfunktion geleitet, die eine Vorhersage erzeugt. Darunter dasselbe Neuron als gerade Trennlinie in der Ebene der Eingaben, die den einen Fall mit Ergebnis 1 von den drei Fällen mit Ergebnis 0 trennt.">
         <circle class="chip" cx="46" cy="92" r="19"/><text class="t-mono" x="46" y="98" text-anchor="middle">x₁</text>
         <circle class="chip" cx="46" cy="176" r="19"/><text class="t-mono" x="46" y="182" text-anchor="middle">x₂</text>
         <line class="flow" x1="66" y1="97" x2="150" y2="124"/>
@@ -178,131 +202,157 @@
         <line class="flow" x1="292" y1="134" x2="310" y2="134"/><polygon class="head" points="310,129 320,134 310,139"/>
         <rect class="hl" x="322" y="108" width="92" height="52" rx="5"/>
         <text class="t-mono" x="368" y="131" text-anchor="middle">σ(z)</text>
-        <text class="t-xs" x="368" y="148" text-anchor="middle">staucht auf (0,1)</text>
+        <text class="t-xs" x="368" y="148" text-anchor="middle">auf (0,1)</text>
         <line class="flow" x1="416" y1="134" x2="434" y2="134"/><polygon class="head" points="434,129 444,134 434,139"/>
         <circle class="box" cx="468" cy="134" r="21"/><text class="t-mono" x="468" y="140" text-anchor="middle">ŷ</text>
 
-        <line class="axis" x1="40" y1="296" x2="300" y2="296"/>
-        <line class="axis" x1="40" y1="296" x2="40" y2="246"/>
-        <text class="t-xs" x="296" y="312" text-anchor="end">dasselbe Neuron ist eine Gerade in der Eingabeebene</text>
+        <line class="axis" x1="50" y1="304" x2="214" y2="304"/>
+        <line class="axis" x1="50" y1="304" x2="50" y2="232"/>
+        <text class="t-mono t-xs" x="220" y="308">x₁</text>
+        <text class="t-mono t-xs" x="50" y="226" text-anchor="middle">x₂</text>
+        <circle class="chip" cx="76" cy="290" r="6"/>
+        <circle class="chip" cx="176" cy="290" r="6"/>
+        <circle class="chip" cx="76" cy="248" r="6"/>
+        <circle class="head-a" cx="176" cy="248" r="7"/>
+        <line class="flow-a dash" x1="112" y1="234" x2="212" y2="286"/>
+        <text class="t-xs" x="252" y="258">Dasselbe Neuron als Gerade in der Ebene der</text>
+        <text class="t-xs" x="252" y="274">Eingaben: Sie trennt den Fall (1,1) mit Ergebnis 1</text>
+        <text class="t-xs" x="252" y="290">von den drei Fällen mit Ergebnis 0.</text>
       </svg>
     </figure>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Eine parametrisierte Funktion zeigen, die klein genug ist, um
-    sie vollständig zu überblicken, bevor eine mit Milliarden Parametern folgt.</p>
-    <p><strong>Mechanismus.</strong> Die Sigmoidfunktion erfüllt zwei Zwecke: Sie macht die Ausgabe
-    als Wert zwischen „nein“ und „ja“ lesbar, und sie ist glatt. Letzteres ist erforderlich, weil
-    das Trainingsverfahren Ableitungen benötigt.</p>
+    <p><strong>Lernziel.</strong> Eine Funktion mit Parametern zeigen, die klein genug ist, um sie
+    vollständig zu überblicken, bevor eine mit Milliarden Parametern folgt.</p>
+    <p><strong>Mechanismus.</strong> Die Funktion σ heißt Sigmoidfunktion. Sie erfüllt zwei
+    Zwecke: Sie macht die Ausgabe als Wert zwischen „nein“ (0) und „ja“ (1) lesbar, und sie ist
+    glatt, also ohne Sprünge. Letzteres ist nötig, weil das Trainingsverfahren Ableitungen
+    braucht.</p>
+    <p><strong>Diagramm unten.</strong> Das Neuron gibt einen Wert über 0,5 aus, wenn z größer als
+    null ist. Die Grenze z = 0 ist eine Gerade in der Ebene der beiden Eingaben. Für UND gibt es
+    eine Gerade, die den Punkt (1,1) von den anderen drei trennt.</p>
     <p><em>Kernaussage:</em> Die UND-Verknüpfung ließe sich direkt hinschreiben. Der Zweck ist zu
-    beobachten, wie ein Suchverfahren sie ohne Vorgabe findet — an einem Problem, bei dem nichts
+    beobachten, wie ein Verfahren sie ohne Vorgabe findet, an einem Problem, bei dem nichts
     verborgen bleibt.</p>
     <p>Kursbezug: Modul 1.2.</p>
   </div></template>
 </section>
 
-<!-- ============ 6 · INTERACTIVE: NEURON ============ -->
+<!-- ============ 6 · TRAINING (INTERAKTIV) ============ -->
 <section class="slide">
-  <p class="eyebrow">1.2–1.4 · Interaktiv</p>
-  <h2>Das Neuron lernen lassen</h2>
+  <p class="eyebrow">Teil 1 · Lernen</p>
+  <h2>Training: Parameter schrittweise anpassen</h2>
   <div class="cols cols--wide-right" style="margin-top:4px">
     <div>
-      <p>Die drei Regler verschieben und die Vorhersagen beobachten. Anschließend das
-      Trainingsverfahren die Regler bewegen lassen.</p>
-      <p style="font-size:19px"><strong>Zuerst:</strong> Lassen sich von Hand Werte finden, die
-      alle vier Zeilen richtig machen? Dabei fällt auf, wie die Parameter zusammenwirken — eine
-      Zeile zu korrigieren verschlechtert eine andere.</p>
-      <p style="font-size:19px"><strong>Danach:</strong> <em>Ein Schritt</em> drücken und den
-      mittleren Verlust beobachten. Jeder Druck berechnet einen Gradienten und verschiebt alle
-      drei Parameter.</p>
-      <div class="note" style="margin-top:18px">
-        <p style="font-size:18px">Das ist der vollständige Lernalgorithmus. Ein aktuelles großes
-        Modell führt dieselbe Rechnung auf einer anderen Funktion in der Größenordnung von
-        10<sup>20</sup> Mal aus.</p>
+      <p style="font-size:19px">Die drei Regler verschieben und die Vorhersagen beobachten. Der
+      Verlust misst, wie weit die Vorhersagen von den Sollwerten entfernt sind.</p>
+      <p style="font-size:19px"><strong>Zuerst:</strong> Werte von Hand suchen, die alle vier
+      Zeilen richtig machen. Eine Zeile zu verbessern verschlechtert oft eine andere.</p>
+      <p style="font-size:19px"><strong>Danach:</strong> <em>Ein Schritt</em> drücken. Jeder
+      Schritt verschiebt alle drei Parameter ein Stück in die Richtung, in der der mittlere
+      Verlust sinkt.</p>
+      <div class="note" style="margin-top:14px">
+        <p style="font-size:18px">Dieses Verfahren heißt Gradientenabstieg. Große Sprachmodelle
+        werden nach demselben Prinzip trainiert, mit rund 10<sup>11</sup> Parametern und
+        10<sup>13</sup> Tokens Text.</p>
       </div>
     </div>
     <div class="widget" data-widget="neuron"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> „Das Modell lernt“ durch ein konkretes Verfahren ersetzen,
-    das die Teilnehmenden in Betrieb gesehen haben.</p>
-    <p><strong>Durchführung.</strong> Zunächst etwa neunzig Sekunden selbst einstellen lassen. Die
-    Mühe der Handeinstellung ist beabsichtigt, denn sie begründet den Bedarf an einem Verfahren.
-    Anschließend <em>Ein Schritt</em> langsam fünf- bis sechsmal drücken und den mittleren Verlust
-    jedes Mal vorlesen.</p>
-    <p><em>Frage vor „50 Schritte“:</em> „Wie werden die Gewichte aussehen, wenn das Neuron die
-    UND-Verknüpfung gelernt hat?“ Antwort: zwei große positive Gewichte und ein Bias, der sie
-    aufhebt, solange nicht beide Eingaben vorliegen — eine erkennbare Kodierung der Konjunktion,
-    die niemand vorgegeben hat.</p>
-    <p><strong>Einschränkung.</strong> Reales Training schätzt den Gradienten aus einer kleinen
-    Zufallsstichprobe statt aus dem gesamten Datenbestand und verwendet Verfeinerungen wie Momentum.
-    Der grundsätzliche Ablauf bleibt derselbe.</p>
+    <p><strong>Lernziel.</strong> „Das Modell lernt“ durch ein konkretes Verfahren ersetzen, das
+    die Teilnehmenden selbst gesehen haben.</p>
+    <p><strong>Durchführung.</strong> Zunächst etwa neunzig Sekunden von Hand einstellen lassen.
+    Die Schwierigkeit ist beabsichtigt: Sie zeigt, warum ein automatisches Verfahren nötig ist.
+    Anschließend <em>Ein Schritt</em> langsam fünf- bis sechsmal drücken und jedes Mal den
+    mittleren Verlust vorlesen.</p>
+    <p><em>Frage vor „50 Schritte“:</em> „Wie werden die Parameter aussehen, wenn das Neuron die
+    UND-Verknüpfung gelernt hat?“ Antwort: zwei große positive Gewichte und ein negativer Bias.
+    Die Summe wird nur dann positiv, wenn beide Eingaben 1 sind. Niemand hat diese Lösung
+    vorgegeben; das Verfahren hat sie gefunden.</p>
+    <p><strong>Einschränkung.</strong> Reales Training schätzt die Richtung aus einer kleinen
+    Zufallsstichprobe der Daten (einem Batch) und verwendet Verfeinerungen wie Momentum. Das
+    Prinzip bleibt dasselbe.</p>
     <p>Kursbezug: Module 1.3 und 1.4.</p>
   </div></template>
 </section>
 
-<!-- ============ 7 · ONE GRADIENT STEP ============ -->
+<!-- ============ 7 · EIN TRAININGSSCHRITT ============ -->
 <section class="slide">
-  <p class="eyebrow">1.4 · Ein Schritt, vollständig</p>
-  <h2>Was „Ein Schritt“ bewirkt hat</h2>
+  <p class="eyebrow">Teil 1 · Lernen</p>
+  <h2>Ein Trainingsschritt im Detail</h2>
   <div class="cols">
     <div>
-      <p>Vierte Zeile, Startparameter, Lernrate 1,0:</p>
-      <pre class="mono" style="font-size:16.5px;line-height:1.75;background:var(--surface-2);padding:16px 20px;border-radius:8px;border:1px solid var(--rule)">
-z   = 0.5(1) + (−0.4)(1) + 0.2   = 0.30000
-ŷ   = σ(0.30000)                 = 0.57444
-L   = ½(0.57444 − 1)²            = 0.09055
+      <pre class="mono" style="font-size:15px;line-height:1.6;margin:4px 0 0;background:var(--surface-2);padding:14px 18px;border-radius:8px;border:1px solid var(--rule)">
+Zeile (1,1), Soll y = 1 · Startwerte · Lernrate η = 1
 
-δ   = (ŷ − y)·σ′(z)              = −0.10403
-∂L/∂w₁ = δ·x₁                    = −0.10403
+<b>1  Vorhersage</b>
+   z  = 0,5·1 + (−0,4)·1 + 0,2   =  0,30000
+   ŷ  = σ(0,30000)               =  0,57444
+<b>2  Fehler</b>
+   L  = ½·(0,57444 − 1)²         =  0,09055
+<b>3  Richtung</b>
+   δ  = (ŷ − y)·σ′(z)            = −0,10403
+   Ableitungen für w₁, w₂, b     = −0,10403
+   (δ·x₁, δ·x₂ und δ; hier ist x₁ = x₂ = 1)
+<b>4  Anpassung</b>
+   w₁ neu = 0,5  − 1·(−0,10403)  =  0,60403
+   w₂ neu = −0,4 − 1·(−0,10403)  = −0,29597
+   b  neu = 0,2  − 1·(−0,10403)  =  0,30403
 
-w₁ ← 0.5 − 1.0(−0.10403)         = 0.60403
-w₂ ← −0.4 − 1.0(−0.10403)        = −0.29597
-b  ← 0.2 − 1.0(−0.10403)         = 0.30403
-
-<b>neues L</b>                          <b>= 0.06180</b></pre>
+<b>Neuer Verlust dieser Zeile      =  0,06180</b></pre>
     </div>
     <div class="center">
-      <h3>Die Ableitung lesen</h3>
-      <p>∂<var>L</var>/∂<var>w</var><sub>1</sub> =
+      <h3>Was die Ableitung angibt</h3>
+      <p style="font-size:19px">Die Ableitung ∂<var>L</var>/∂<var>w</var><sub>1</sub> gibt an,
+      wie sich der Verlust ändert, wenn <var>w</var><sub>1</sub> ein wenig verändert wird. Ihr
+      Vorzeichen bestimmt die Richtung der Anpassung, ihr Betrag die Größe.</p>
+      <p style="font-size:19px">∂<var>L</var>/∂<var>w</var><sub>1</sub> =
       (<var>ŷ</var>−<var>y</var>) · <var>σ</var>′(<var>z</var>) · <var>x</var><sub>1</sub></p>
-      <ul>
-        <li><var>x</var><sub>1</sub> — wie stark dieses Gewicht hier beteiligt war. Eingabe
-        null, keine Änderung.</li>
-        <li><var>σ</var>′(<var>z</var>) — wie empfindlich die Ausgabe reagiert hat. Nahe null,
-        wenn das Neuron gesättigt ist.</li>
-        <li>(<var>ŷ</var>−<var>y</var>) — der Fehler, mit Vorzeichen.</li>
+      <ul style="font-size:18px">
+        <li>(<var>ŷ</var>−<var>y</var>): der Fehler mit Vorzeichen.</li>
+        <li><var>σ</var>′(<var>z</var>): wie stark die Ausgabe auf eine Änderung von
+        <var>z</var> reagiert.</li>
+        <li><var>x</var><sub>1</sub>: wie stark das Gewicht beteiligt war. Bei Eingabe 0 keine
+        Änderung.</li>
       </ul>
-      <div class="note note--warn" style="margin-top:14px">
-        <p style="font-size:18px">Ein gesättigtes Neuron hat auch bei großem Fehler eine
-        Ableitung nahe null und bewegt sich daher kaum. Das ist das Problem des verschwindenden
-        Gradienten.</p>
+      <div class="note note--warn" style="margin-top:8px">
+        <p style="font-size:17px">Liegt σ(z) nahe 0 oder 1, ist σ′(z) nahe null. Das Neuron wird
+        dann auch bei großem Fehler kaum angepasst. Dieses Problem heißt verschwindender
+        Gradient.</p>
       </div>
     </div>
   </div>
-  <div class="srcnote">Alle Werte berechnet, nicht geschätzt. Kursbezug: Modul 1.4.</div>
+  <div class="srcnote">Alle Werte berechnet. Die Schaltfläche „Ein Schritt“ führt diese Rechnung
+  für alle vier Zeilen aus und verwendet den Mittelwert. Kursbezug: Modul 1.4.</div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Zeigen, dass die Anpassung gewöhnliche Arithmetik mit lesbarer
-    Struktur ist und kein undurchsichtiges Verfahren.</p>
-    <p>Die drei Faktoren der Ableitung von rechts nach links durchgehen. Jeder hat eine
-    nachvollziehbare Bedeutung, und zusammen erklären sie, warum das Lernen funktioniert und warum
-    es mitunter stockt.</p>
-    <p><em>Frage an das Publikum:</em> „Wenn ŷ = 0,995 und der Sollwert 0 ist, ist der Fehler
-    nahezu maximal. Wie groß ist die Anpassung?“ Antwort: sehr klein, denn
-    σ′ = 0,995 × 0,005 ≈ 0,005. Aus diesem Grund verwenden moderne Netze überwiegend
+    <p><strong>Lernziel.</strong> Zeigen, dass ein Trainingsschritt gewöhnliche Arithmetik ist und
+    kein undurchsichtiges Verfahren.</p>
+    <p>Die vier Stufen der Reihe nach durchgehen: Vorhersage berechnen, Fehler messen, Richtung
+    bestimmen, Parameter anpassen. Bei Stufe 3 die drei Faktoren der Ableitung erklären. Jeder hat
+    eine anschauliche Bedeutung, und zusammen erklären sie, warum das Lernen funktioniert und warum
+    es manchmal stockt.</p>
+    <p><em>Zur Mathematik:</em> Niemand muss die Ableitung selbst bilden. Wichtig ist nur, was sie
+    angibt: die Richtung, in der der Fehler kleiner wird.</p>
+    <p><em>Frage an das Publikum:</em> „Wenn ŷ = 0,995 ist und der Sollwert 0, ist der Fehler fast
+    maximal. Wie groß ist die Anpassung?“ Antwort: sehr klein, denn
+    σ′ = 0,995 × 0,005 ≈ 0,005. Deshalb verwenden heutige Netze überwiegend
     Aktivierungsfunktionen, die nicht sättigen.</p>
+    <p><strong>Unterschied zum Widget:</strong> Die Folie rechnet eine Zeile. Die Schaltfläche
+    „Ein Schritt“ auf der vorigen Folie berechnet die Ableitungen für alle vier Zeilen und passt
+    die Parameter mit deren Mittelwert an.</p>
     <p>Kursbezug: Modul 1.4, Übung 1.2.</p>
   </div></template>
 </section>
 
-<!-- ============ 8 · XOR ============ -->
+<!-- ============ 8 · MEHRERE SCHICHTEN ============ -->
 <section class="slide">
-  <p class="eyebrow">1.5 · Die Grenze eines einzelnen Neurons</p>
-  <h2>Warum Tiefe erforderlich ist</h2>
+  <p class="eyebrow">Teil 1 · Lernen</p>
+  <h2>Warum ein Netz mehrere Schichten braucht</h2>
   <div class="cols">
     <div>
-      <p>Ersetzt man UND durch das Exklusiv-Oder, scheitert dasselbe Neuron — nicht zufällig,
-      sondern weil keine passenden Parameter existieren.</p>
+      <p>Beim Exklusiv-Oder (XOR) ist das Ergebnis 1, wenn genau eine Eingabe 1 ist. Für XOR gibt
+      es keine Parameter, mit denen ein einzelnes Neuron alle vier Fälle richtig zuordnet:</p>
       <pre class="mono" style="font-size:16px;line-height:1.7;background:var(--surface-2);padding:14px 18px;border-radius:8px;border:1px solid var(--rule)">
 (0,0) → 0  verlangt            b  &lt; 0
 (1,0) → 1  verlangt      w₁ +  b  &gt; 0
@@ -312,95 +362,103 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
 2. und 3. addiert:  w₁ + w₂ + 2b  &gt; 0
 1. und 4. addiert:  w₁ + w₂ + 2b  &lt; 0
 
-<b>Widerspruch — keine Lösung</b></pre>
+<b>Widerspruch: Es gibt keine Lösung.</b></pre>
     </div>
     <div class="center">
-      <p>Die Einschränkung ist geometrisch. Ein Neuron zieht eine Gerade und ordnet danach zu,
-      auf welcher Seite ein Punkt liegt. Die beiden positiven Fälle des Exklusiv-Oder liegen an
-      gegenüberliegenden Ecken; keine einzelne Gerade trennt sie von den negativen.</p>
-      <p>Leitet man die Eingaben parallel an mehrere Neuronen und verknüpft deren Ausgaben, entsteht
-      eine Unterteilung der Ebene, die eine einzelne Gerade nicht erzeugen kann.</p>
+      <p>Ein Neuron zieht eine Gerade durch die Ebene der Eingaben und ordnet jeden Punkt nach
+      seiner Seite zu. Die beiden Fälle mit Ergebnis 1 liegen bei XOR an gegenüberliegenden Ecken.
+      Keine einzelne Gerade trennt sie von den beiden anderen.</p>
+      <p>Mehrere Neuronen nebeneinander, deren Ausgaben ein weiteres Neuron verknüpft, unterteilen
+      die Ebene feiner. Diese Zwischenschicht heißt verborgene Schicht.</p>
       <div class="note">
-        <p style="font-size:18px">Ohne die stauchende Funktion lassen sich gestapelte Schichten
-        algebraisch zu einer einzigen zusammenfassen. Erst der kleine Knick, den jede Aktivierung
-        einführt, macht Tiefe zu einem Gewinn an Ausdrucksstärke.</p>
+        <p style="font-size:18px">Dafür braucht jedes Neuron eine nichtlineare Funktion wie σ.
+        Ohne sie ließen sich mehrere Schichten rechnerisch zu einer einzigen zusammenfassen, und
+        zusätzliche Schichten brächten nichts.</p>
       </div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Verborgene Schichten aus einer gezeigten Unmöglichkeit
-    begründen statt durch Behauptung.</p>
-    <p>Die Rechnung ist kurz genug, um sie live durchzugehen, und überzeugt mehr als die
-    Abbildung. Die zweite und dritte Ungleichung addieren, dann die erste und vierte — der
-    Widerspruch wird sichtbar.</p>
-    <p><strong>Einschränkung.</strong> Der universelle Approximationssatz besagt, dass eine
-    ausreichend breite einzelne verborgene Schicht jede stetige Funktion annähern kann. Er sagt
-    nichts darüber, ob der Gradientenabstieg sie findet, wie viele Daten dafür nötig sind oder ob
-    sie generalisiert. In der Praxis hat sich Tiefe als deutlich sparsamer erwiesen als Breite.</p>
+    <p><strong>Lernziel.</strong> Begründen, warum neuronale Netze aus mehreren Schichten
+    bestehen, und zwar mit einer gezeigten Unmöglichkeit statt mit einer Behauptung.</p>
+    <p>Ein Neuron gibt 1 aus, wenn die Summe z größer als null ist. Die Rechnung ist kurz genug,
+    um sie live durchzugehen: die zweite und dritte Bedingung addieren, dann die erste und vierte.
+    Die beiden Ergebnisse widersprechen sich.</p>
+    <p><strong>Einschränkung.</strong> Der universelle Approximationssatz besagt, dass schon eine
+    ausreichend breite verborgene Schicht jede stetige Funktion annähern kann. Er sagt nichts
+    darüber, ob das Training diese Lösung findet, wie viele Daten dafür nötig sind oder ob sie auf
+    neue Eingaben übertragbar ist. In der Praxis sind tiefe Netze deutlich sparsamer als
+    breite.</p>
     <p>Kursbezug: Modul 1.5.</p>
   </div></template>
 </section>
 
-<!-- ============ 9 · SELF-SUPERVISION ============ -->
+<!-- ============ 9 · TRAINING EINES SPRACHMODELLS ============ -->
 <section class="slide">
-  <p class="eyebrow">1.9 · Von überwacht zu selbstüberwacht</p>
-  <h2>Woher die Trainingsdaten stammen</h2>
+  <p class="eyebrow">Teil 1 · Training</p>
+  <h2>Sprachmodelle lernen, das nächste Token vorherzusagen</h2>
   <div class="cols cols--wide-left">
     <div>
-      <p>Überwachtes Lernen benötigt annotierte Beispiele, und Annotation ist teuer. Ein Modell
-      mit 10<sup>11</sup> Parametern lässt sich damit nicht trainieren.</p>
-      <p>Sprachmodelle bilden die Zielwerte daher aus den Daten selbst: einen Textabschnitt nehmen,
-      die Fortsetzung verdecken, diese vorhersagen lassen. Die richtige Antwort ist das, was die
-      verfassende Person geschrieben hat. Annotation entfällt, und Text ist in großer Menge
-      verfügbar.</p>
-      <p><strong>Zwei Einzelheiten, die meist entfallen.</strong></p>
-      <ul>
-        <li>Die Verlustfunktion ist die <em>Kreuzentropie</em>: minus der Logarithmus der
-        Wahrscheinlichkeit des tatsächlich aufgetretenen Tokens. Sie bestraft das Ausschließen
-        einer Möglichkeit.</li>
-        <li>Ein Durchlauf erzeugt an <em>jeder</em> Position zugleich eine Vorhersage: 1000 Tokens
-        liefern 1000 Trainingssignale.</li>
-      </ul>
+      <p style="font-size:19px">Überwachtes Lernen braucht Beispiele mit Sollantworten, die
+      Menschen erstellen. Für ein Modell mit rund 10<sup>11</sup> Parametern lassen sich nicht
+      genug solcher Beispiele erstellen.</p>
+      <p style="font-size:19px">Sprachmodelle nehmen die Sollantwort deshalb aus dem Text selbst:
+      Das Modell sieht einen Textanfang und soll vorhersagen, wie der Text weitergeht. Die richtige
+      Antwort ist das, was im Text tatsächlich folgt. Dieses Verfahren heißt selbstüberwachtes
+      Lernen.</p>
+      <p style="font-size:19px">Vorhergesagt wird jeweils das nächste Token, also ein Wort oder
+      ein Wortteil. Die nächste Folie zeigt, wie Text in Tokens zerlegt wird.</p>
+      <div class="note note--practice">
+        <p style="font-size:18px"><strong>Folge für die Praxis:</strong> Das Modell lernt,
+        plausible Fortsetzungen zu erzeugen. Ob eine Fortsetzung zutrifft, ist nicht Teil dieses
+        Trainingsziels.</p>
+      </div>
     </div>
     <div class="center">
       <div class="card">
-        <h3>Die vollständige Vorgabe</h3>
+        <h3>Das Trainingsziel</h3>
         <p style="font-size:20px;color:var(--ink)">Sage das nächste Token vorher.</p>
-        <p style="margin-top:12px">Angewendet auf etwa 10<sup>13</sup> Tokens Text.</p>
-        <p style="margin-top:12px">An keiner Stelle werden Grammatik, Fakten oder Merkmale guten
-        Schreibens erklärt. Alles, was das Modell tut, tut es, weil es diese eine Größe verringert
-        hat.</p>
+        <p style="margin-top:12px">Angewendet auf rund 10<sup>13</sup> Tokens Text.</p>
+        <p style="margin-top:12px">Grammatik, Fakten und Stil werden nicht eigens vermittelt. Das
+        Modell erwirbt sie, soweit sie helfen, das nächste Token vorherzusagen.</p>
       </div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Erklären, woher die Größenordnung stammt, und die Grenze
-    einführen, auf die der Kurs mehrfach zurückkommt.</p>
-    <p>Die Parallelität der Positionen ist wesentlich: Häufig wird eine Vorhersage je Durchlauf
-    angenommen, was die Trainingskosten unmöglich erscheinen lässt. Möglich wird es durch die
-    kausale Maskierung, die im Abschnitt zu Attention behandelt wird.</p>
-    <p><em>Frage:</em> „Ein Modell gibt dem richtigen Token die Wahrscheinlichkeit 0,6; ein
-    anderes gibt ihm in einem Fall 0,0001 und in einem anderen 0,6. Welches hat den geringeren
-    mittleren Verlust?“ Nachrechnen: −log(0,3) ≈ 1,2 ist besser als der Mittelwert aus −log(0,6)
-    und −log(0,0001) ≈ 4,9. Die Zielfunktion spricht deutlich gegen den zuversichtlichen
-    Ausschluss einer Möglichkeit.</p>
-    <p>Kursbezug: Modul 1.9.</p>
+    <p><strong>Lernziel.</strong> Erklären, wie ein Sprachmodell trainiert wird, warum dafür so
+    viel Text nutzbar ist und was das Trainingsziel nicht enthält.</p>
+    <p><strong>Zwei Einzelheiten für Nachfragen.</strong> Der Verlust heißt Kreuzentropie: minus
+    der Logarithmus der Wahrscheinlichkeit, die das Modell dem tatsächlich folgenden Token gegeben
+    hat. Und ein Durchlauf liefert an jeder Position zugleich eine Vorhersage, sodass ein Text mit
+    1000 Tokens 1000 Trainingssignale ergibt. Möglich macht das die Maskierung (Folie
+    „Attention“).</p>
+    <p><em>Frage (optional):</em> „Modell A gibt dem richtigen Token in zwei Fällen jeweils die
+    Wahrscheinlichkeit 0,3. Modell B gibt ihm im ersten Fall 0,6 und im zweiten 0,0001. Welches hat
+    den geringeren mittleren Verlust?“ Rechnung: A: −ln 0,3 ≈ 1,20. B: (0,51 + 9,21) / 2 ≈ 4,86.
+    Modell A ist deutlich besser, obwohl es nie sicher ist. Die Kreuzentropie bestraft es stark,
+    eine Möglichkeit fast auszuschließen, die dann eintritt. Deshalb verteilen Modelle
+    Wahrscheinlichkeit breit über viele mögliche Fortsetzungen.</p>
+    <p><strong>Nachtraining.</strong> Auf dieses Vortraining (Pretraining) folgt ein Nachtraining.
+    Es bringt dem Modell das Dialogformat bei und formt Tonfall, Hilfsbereitschaft und
+    Ablehnungsverhalten. Es verändert Neigungen des Modells; einen Schritt, der Aussagen auf
+    Richtigkeit prüft, fügt es nicht hinzu.</p>
+    <p>Kursbezug: Modul 1.9, Übung 1.4; Nachtraining Modul 5.1.</p>
   </div></template>
 </section>
 
-<!-- ============ 10 · TOKENS ============ -->
+<!-- ============ 10 · TOKENISIERUNG ============ -->
 <section class="slide">
-  <p class="eyebrow">2.1 · Tokenisierung</p>
-  <h2>Das Modell liest keine Wörter</h2>
-  <p class="lead" style="margin-bottom:8px;font-size:21px">Ein Satz trägt die nächsten drei
-  Abschnitte.</p>
+  <p class="eyebrow">Teil 1 · Verarbeitung von Text</p>
+  <h2>Tokenisierung: Text wird in Tokens zerlegt</h2>
+  <p class="tiny" style="margin:2px 0 6px;font-size:15px">Beispielsatz für die folgenden
+  Folien:</p>
   <div style="font-size:24px;font-family:var(--mono);color:var(--ink);margin-bottom:4px">
     The nightly run failed because it timed out.
   </div>
   <p class="tiny" style="margin-bottom:12px">„Der nächtliche Lauf schlug fehl, weil er das
-  Zeitlimit überschritt.“ <em>run</em> ist mehrdeutig, <em>it</em> braucht einen Bezug.</p>
+  Zeitlimit überschritt.“ <em>run</em> ist mehrdeutig (Lauf oder laufen), und <em>it</em>
+  braucht einen Bezug.</p>
   <div class="step" style="margin-bottom:14px">
-    <p class="tiny" style="margin-bottom:6px">Tokens — die abwechselnden Flächen markieren die Grenzen</p>
+    <p class="tiny" style="margin-bottom:6px">Tokens — die wechselnden Farben markieren die Grenzen</p>
     <div style="display:flex;flex-wrap:wrap;gap:4px;font-family:var(--mono);font-size:18px">
       <span style="background:var(--accent-soft);padding:5px 8px;border-radius:4px">The</span>
       <span style="background:var(--surface-2);padding:5px 8px;border-radius:4px"> night</span>
@@ -415,72 +473,79 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
     </div>
   </div>
   <div class="step" style="margin-bottom:12px">
-    <p class="tiny" style="margin-bottom:5px">Token-Kennungen — mehr erhält das Netz nicht</p>
+    <p class="tiny" style="margin-bottom:5px">Token-Kennungen — nur diese Zahlen erhält das Modell</p>
     <div class="mono" style="font-size:17px;color:var(--ink-soft)">
       976 · 13046 · 398 · 1629 · 4745 · 1606 · 480 · 26212 · 836 · 13
     </div>
   </div>
-  <div class="step cols" style="gap:24px;font-size:17px">
-    <div class="card"><h3>Häufigkeit bestimmt die Granularität</h3>
-      <p>Häufige Zeichenfolgen wurden zu einzelnen Tokens, seltene nicht.</p></div>
-    <div class="card"><h3>Das Leerzeichen gehört zum Token</h3>
-      <p><span class="mono">&nbsp;run</span> und <span class="mono">run</span> sind verschiedene
-      Einträge mit eigenen Kennungen und Parametern.</p></div>
-    <div class="card"><h3>Buchstaben sind nicht sichtbar</h3>
-      <p>Das Modell sieht nicht in ein Token hinein. Deshalb scheitern Buchstabenzählen und das
-      Rechnen mit langen Zahlen.</p></div>
+  <div class="step">
+    <p class="tiny" style="margin-bottom:6px;color:var(--practice);font-weight:600">Folgen für die Praxis</p>
+    <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:20px;font-size:17px">
+      <div class="card"><h3>Buchstaben sind nicht sichtbar</h3>
+        <p>Das Modell sieht nicht in ein Token hinein. Buchstaben zählen und Rechnen mit langen
+        Zahlen sind deshalb unzuverlässig.</p></div>
+      <div class="card"><h3>Kosten und Umfang in Tokens</h3>
+        <p>Preise und die Größe des Kontextfensters werden in Tokens gemessen, nicht in Wörtern
+        oder Seiten.</p></div>
+      <div class="card"><h3>Deutsch braucht mehr Tokens</h3>
+        <p>Das Vokabular entstand überwiegend aus englischem Text. Derselbe Inhalt ergibt auf
+        Deutsch mehr Tokens.</p></div>
+    </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Das Token als Einheit der Verarbeitung, des Kontexts und
-    später der Kosten einführen.</p>
-    <p>Die Schritte einzeln aufdecken. Die Zerlegung von „nightly“ ist beispielhaft — ob ein
-    bestimmtes Wort ein einzelnes Token bleibt, hängt vom Korpus ab, aus dem das Vokabular gebildet
-    wurde, und unterscheidet sich zwischen Tokenizern.</p>
-    <p><strong>Für ein deutschsprachiges Publikum hier ansprechen:</strong> Das Beispiel ist
-    englisch, weil der Kurs genau diesen Satz durchgehend analysiert. Deutsch ist von der
-    Tokenisierung stärker betroffen: Komposita und längere Wortformen werden in mehrere Tokens
-    zerlegt, sodass derselbe Inhalt mehr Tokens benötigt. Das wirkt auf die Kosten und darauf, wie
-    viel Material in das Kontextfenster passt.</p>
-    <p><em>Vorführung, sofern Bildschirm und Internetzugang vorhanden:</em> denselben Absatz auf
-    Deutsch und auf Englisch in einen Online-Tokenizer einfügen und beide Werte vorlesen. Das wirkt
-    stärker als jede Folie.</p>
+    <p><strong>Lernziel.</strong> Das Token als Einheit der Verarbeitung, des Kontexts und der
+    Kosten einführen.</p>
+    <p>Die Schritte einzeln aufdecken. Die Zerlegung von „nightly“ ist ein Beispiel; wie ein
+    bestimmtes Wort zerlegt wird, unterscheidet sich zwischen Tokenizern.</p>
+    <p><strong>Mechanismus.</strong> Das Vokabular mit 100.000 bis 200.000 Einträgen entsteht vor
+    dem Training: Häufige Zeichenfolgen werden schrittweise zu einem Eintrag zusammengefasst
+    (Byte-Pair-Encoding). Häufiges wird zu einem Token, Seltenes wird zerlegt. Ein führendes
+    Leerzeichen gehört zum Token; „ run“ und „run“ sind verschiedene Einträge.</p>
+    <p><strong>Für ein deutschsprachiges Publikum ansprechen:</strong> Das Beispiel ist englisch,
+    weil der Kurs genau diesen Satz durchgehend analysiert. Deutsche Komposita und Wortformen
+    werden häufiger zerlegt, sodass derselbe Inhalt mehr Tokens braucht. Das wirkt auf die Kosten
+    und darauf, wie viel Material in das Kontextfenster passt. Den Faktor für eigene Texte messen
+    statt schätzen.</p>
+    <p><em>Vorführung, sofern Internetzugang vorhanden:</em> denselben Absatz auf Deutsch und auf
+    Englisch in einen Online-Tokenizer einfügen und beide Werte vergleichen.</p>
     <p>Kursbezug: Module 2.1 und 2.5.</p>
   </div></template>
 </section>
 
 <!-- ============ 11 · EMBEDDINGS ============ -->
 <section class="slide">
-  <p class="eyebrow">2.3 · Embeddings</p>
-  <h2>Ein Vektor je Token, unabhängig von der Bedeutung</h2>
+  <p class="eyebrow">Teil 1 · Verarbeitung von Text</p>
+  <h2>Embeddings: Jedes Token wird zu einem Vektor</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Die erste Schicht ist eine Tabelle mit einer Zeile je Vokabulareintrag; die
-      Token-Kennung wählt die Zeile aus. Diese Zeile ist das <strong>statische Embedding</strong>.
-      Das Training ordnet die Zeilen so an, dass Tokens aus ähnlichen Kontexten ähnliche Vektoren
-      erhalten — das entwirft niemand, es folgt aus der Vorhersageaufgabe.</p>
+      <p style="font-size:19px">Die erste Schicht des Modells ist eine Tabelle mit einer Zeile je
+      Token im Vokabular. Die Token-Kennung wählt eine Zeile aus: eine Liste von einigen tausend
+      Zahlen, ein Vektor. Diese Zeile heißt <strong>statisches Embedding</strong>.</p>
+      <p style="font-size:19px">Das Training passt die Zeilen so an, dass Tokens aus ähnlichen
+      Zusammenhängen ähnliche Vektoren erhalten. Diese Anordnung entwirft niemand; sie ergibt sich
+      aus der Vorhersageaufgabe.</p>
       <div class="note note--warn" style="padding:11px 18px">
-        <p style="font-size:17px">Einzelne Dimensionen entsprechen keinen interpretierbaren
-        Eigenschaften. Bedeutungstragende Richtungen setzen sich aus vielen Koordinaten zusammen;
-        jede 2-D-Abbildung ist eine Projektion, die nahezu alles verwirft.</p>
+        <p style="font-size:17px">Einzelne Zahlen eines Vektors haben keine ablesbare Bedeutung.
+        Jede zweidimensionale Darstellung wie rechts ist eine starke Vereinfachung.</p>
       </div>
-      <p style="margin-top:12px"><strong>Die maßgebliche Einschränkung:</strong> Es gibt genau
-      eine Zeile für <span class="mono">&nbsp;run</span>. Im Beispielsatz ist es ein geplanter
-      Lauf, in <em>we run the migration</em> ein Verb. Beide rufen dieselbe Zeile ab.</p>
+      <p style="margin-top:12px;font-size:19px"><strong>Einschränkung:</strong> Es gibt genau
+      eine Zeile für <span class="mono">&nbsp;run</span>. Im Beispielsatz ist ein geplanter Lauf
+      gemeint, in <em>we run the migration</em> ein Verb. Beide Male wird dieselbe Zeile
+      abgerufen.</p>
     </div>
     <figure style="margin:0">
       <svg class="dgm" viewBox="0 0 560 320" role="img"
-        aria-label="Eine zweidimensionale Projektion mit einer Gruppe von Substantiven für geplante Arbeitsabläufe und einer Gruppe von Bewegungsverben. Das einzelne statische Embedding des Tokens run liegt dazwischen, weil ein Vektor beide Bedeutungen abdecken muss.">
-        <text class="t-ttl" x="12" y="20">EINE 2-D-PROJEKTION VON CA. 4000 DIMENSIONEN</text>
+        aria-label="Eine vereinfachte zweidimensionale Darstellung mit einer Gruppe von Substantiven für geplante Arbeitsabläufe und einer Gruppe von Bewegungsverben. Das einzige statische Embedding des Tokens run liegt dazwischen, weil ein Vektor beide Bedeutungen abdecken muss.">
+        <text class="t-ttl" x="12" y="20">VEREINFACHTE 2-D-DARSTELLUNG VON CA. 4000 DIMENSIONEN</text>
         <circle cx="160" cy="92" r="66" fill="var(--accent)" opacity=".10" stroke="var(--accent)"/>
-        <text class="t-xs" x="160" y="16" text-anchor="middle"></text>
         <circle class="head" cx="128" cy="66" r="4"/><text class="t-mono t-xs" x="100" y="60">job</text>
         <circle class="head" cx="186" cy="80" r="4"/><text class="t-mono t-xs" x="194" y="76">build</text>
-        <circle class="head" cx="132" cy="110" r="4"/><text class="t-mono t-xs" x="96" y="116">deploy</text>
+        <circle class="head" cx="132" cy="110" r="4"/><text class="t-mono t-xs" x="124" y="116" text-anchor="end">deploy</text>
         <circle class="head" cx="188" cy="120" r="4"/><text class="t-mono t-xs" x="196" y="124">task</text>
         <text class="t-xs" x="160" y="178" text-anchor="middle">Bereich „geplanter Arbeitsablauf“</text>
 
         <circle cx="400" cy="240" r="62" fill="var(--accent)" opacity=".10" stroke="var(--accent)"/>
-        <circle class="head" cx="368" cy="218" r="4"/><text class="t-mono t-xs" x="340" y="212">jog</text>
+        <circle class="head" cx="368" cy="218" r="4"/><text class="t-mono t-xs" x="376" y="212">jog</text>
         <circle class="head" cx="426" cy="232" r="4"/><text class="t-mono t-xs" x="434" y="228">sprint</text>
         <circle class="head" cx="372" cy="258" r="4"/><text class="t-mono t-xs" x="330" y="264">walk</text>
         <circle class="head" cx="428" cy="268" r="4"/><text class="t-mono t-xs" x="436" y="272">move</text>
@@ -490,69 +555,71 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
         <text class="t-mono t-ac" x="282" y="162" text-anchor="middle">&ldquo; run&rdquo;</text>
         <line class="flow-a dash" x1="272" y1="168" x2="212" y2="126"/>
         <line class="flow-a dash" x1="292" y1="186" x2="352" y2="214"/>
-        <text class="t-xs" x="282" y="200" text-anchor="middle">ein Vektor, beide Bedeutungen</text>
+        <text class="t-xs" x="310" y="162">ein Vektor für beide Bedeutungen</text>
       </svg>
     </figure>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Die geometrische Vorstellung vermitteln und zugleich der
-    verbreiteten Überinterpretation einzelner Dimensionen vorbeugen.</p>
-    <p>Der einzelne Punkt zwischen den beiden Gruppen ist der Zweck dieser Folie. Er leitet zu den
-    nächsten beiden über: Attention existiert, um genau dieses Problem zu lösen.</p>
+    <p><strong>Lernziel.</strong> Die Vorstellung vermitteln, dass ähnliche Tokens nahe
+    beieinanderliegen, und zugleich vor der Überinterpretation einzelner Dimensionen warnen.</p>
+    <p>Der Punkt zwischen den beiden Gruppen ist der Kern der Folie: Ein statisches Embedding
+    enthält keine Information darüber, welche Bedeutung im konkreten Satz gemeint ist. Dieses
+    Problem löst Attention (nächste Folie).</p>
     <p><strong>Einschränkung, ausdrücklich nennen.</strong> Untersuchungen deuten darauf hin, dass
-    Modelle mehr Merkmale repräsentieren, als sie Dimensionen haben, abgelegt in einander
-    überlagernden, nicht orthogonalen Richtungen. Die aufgeräumte Darstellung mit beschrifteten
-    Achsen aus populären Darstellungen ist irreführend.</p>
+    Modelle mehr Merkmale darstellen, als sie Dimensionen haben, in sich überlagernden Richtungen.
+    Darstellungen mit beschrifteten Achsen, wie sie in populären Erklärungen vorkommen, sind
+    irreführend.</p>
     <p>Kursbezug: Modul 2.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 12 · INTERACTIVE: ATTENTION ============ -->
+<!-- ============ 12 · ATTENTION (INTERAKTIV) ============ -->
 <section class="slide">
-  <p class="eyebrow">3.2 · Interaktiv</p>
-  <h2>Attention löst die Mehrdeutigkeit auf</h2>
+  <p class="eyebrow">Teil 1 · Verarbeitung von Text</p>
+  <h2>Attention: Bedeutung aus dem Kontext</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Jede Position erzeugt eine Anfrage (query), die beschreibt, welche Information sie
-      benötigt; jede Position bietet einen Schlüssel (key) an, der beschreibt, welche Information
-      sie trägt; jede Position erhält eine gewichtete Mischung der Werte (values) der übrigen.</p>
-      <p style="font-size:19px"><span class="mono">run</span> auswählen: Gewicht fällt auf
-      <span class="mono">nightly</span> — damit ist die Bedeutung „geplanter Lauf“ festgelegt.</p>
-      <p style="font-size:19px"><span class="mono">it</span> auswählen: Gewicht fällt auf
-      <span class="mono">run</span> — das ist der Bezug des Pronomens.</p>
+      <p style="font-size:19px">Jede Position erzeugt eine Anfrage (query), die beschreibt, welche
+      Information sie benötigt, und einen Schlüssel (key), der beschreibt, welche Information sie
+      enthält. Je besser die Anfrage einer Position zum Schlüssel einer anderen passt, desto mehr
+      von deren Inhalt (value) wird übernommen.</p>
+      <p style="font-size:19px"><span class="mono">run</span> auswählen: Das Gewicht liegt auf
+      <span class="mono">nightly</span>. Damit ist die Bedeutung „geplanter Lauf“ festgelegt.</p>
+      <p style="font-size:19px"><span class="mono">it</span> auswählen: Das Gewicht liegt auf
+      <span class="mono">run</span>. Das ist der Bezug des Pronomens.</p>
       <div class="note">
-        <p style="font-size:18px">Nach diesem Vorgang ist der Vektor an der Position
-        <span class="mono">run</span> nicht mehr das statische Embedding. Er hat Kontext
-        aufgenommen; der Kurs schreibt ihn <span class="mono">h</span> statt
-        <span class="mono">e(t)</span>.</p>
+        <p style="font-size:18px">Danach ist der Vektor an der Position
+        <span class="mono">run</span> nicht mehr das statische Embedding. Er enthält Information
+        aus dem Kontext und heißt <strong>kontextuelle Repräsentation</strong>.</p>
       </div>
     </div>
     <div class="widget" data-widget="attention"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Die Unterscheidung zwischen statisch und kontextuell greifbar
-    machen und zeigen, dass der Pronomenbezug aus gelernten Parametern hervorgeht und nicht aus
-    Regeln.</p>
+    <p><strong>Lernziel.</strong> Den Unterschied zwischen statischem Embedding und kontextueller
+    Repräsentation greifbar machen und zeigen, dass der Bezug des Pronomens aus gelernten
+    Parametern entsteht, nicht aus programmierten Regeln.</p>
     <p>Nacheinander <span class="mono">run</span> und <span class="mono">it</span> anklicken und
-    die Gewichte erläutern. Anschließend <span class="mono">The</span> anklicken und darauf
-    hinweisen, dass ein erstes Token fast nichts hat, worauf es zugreifen könnte.</p>
-    <p><strong>Wesentliche Einschränkung, ausdrücklich nennen.</strong> Attention-Gewichte zeigen,
-    woher Information bezogen wurde. Sie erklären nicht, warum das Modell seine Ausgabe erzeugt
-    hat; in der Forschung wird wiederholt vor dieser Lesart gewarnt.</p>
-    <p><em>Ebenfalls erwähnen:</em> die Maskierung. Eine Position kann nicht sehen, was ihr folgt.
-    Erst dadurch lässt sich der Verlust in einem Durchlauf an jeder Position berechnen.</p>
+    die Gewichte erläutern. Dann <span class="mono">The</span> anklicken: Das erste Token hat
+    nichts Früheres, worauf es zugreifen könnte.</p>
+    <p><strong>Wichtige Einschränkung, ausdrücklich nennen.</strong> Attention-Gewichte zeigen,
+    woher Information bezogen wurde. Sie erklären nicht, warum das Modell eine bestimmte Ausgabe
+    erzeugt.</p>
+    <p><em>Ebenfalls erwähnen:</em> Eine Position sieht nur, was vor ihr steht (Maskierung).
+    Deshalb kann im Training an jeder Position gleichzeitig vorhergesagt werden. Und der
+    Rechenaufwand von Attention wächst mit dem Quadrat der Kontextlänge; lange Kontexte sind
+    teuer.</p>
     <p>Kursbezug: Module 3.2 und 3.3.</p>
   </div></template>
 </section>
 
-
-<!-- ============ 13 · TRANSFORMER STACK ============ -->
+<!-- ============ 13 · VORWÄRTSLAUF ============ -->
 <section class="slide">
-  <p class="eyebrow">3.4–3.5 · Der Vorwärtslauf</p>
-  <h2>Ein Durchlauf, ein Token</h2>
-  <figure style="margin:6px 0 0;flex:1">
+  <p class="eyebrow">Teil 1 · Verarbeitung von Text</p>
+  <h2>Der Vorwärtslauf: von Tokens zu Wahrscheinlichkeiten</h2>
+  <figure style="margin:6px 0 0">
     <svg class="dgm" viewBox="0 0 1120 400" role="img"
-      aria-label="Ein vollständiger Vorwärtslauf: Text wird tokenisiert und mit Positionsinformation eingebettet, durchläuft viele Transformer-Blöcke mit jeweils Multi-Head-Attention und einem Feed-Forward-Netz samt Residualverbindungen; der Vektor der letzten Position wird zu einem Logit je Vokabulareintrag und anschließend zu einer Wahrscheinlichkeitsverteilung.">
+      aria-label="Ein vollständiger Vorwärtslauf: Text wird tokenisiert und mit Positionsinformation eingebettet, durchläuft viele Transformer-Blöcke mit jeweils Multi-Head-Attention und einem Feed-Forward-Netz; der Vektor der letzten Position wird zu einem Rohwert je Token im Vokabular und anschließend zu einer Wahrscheinlichkeitsverteilung.">
       <rect class="chip" x="20" y="34" width="150" height="40" rx="5"/>
       <text class="t-sm" x="95" y="59" text-anchor="middle">Text</text>
       <line class="flow" x1="172" y1="54" x2="190" y2="54"/><polygon class="head" points="190,49 200,54 190,59"/>
@@ -564,7 +631,7 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
       <text class="t-xs" x="469" y="67" text-anchor="middle">ein Vektor je Token</text>
       <line class="flow" x1="556" y1="54" x2="574" y2="54"/><polygon class="head" points="574,49 584,54 574,59"/>
       <rect class="hl" x="586" y="34" width="514" height="40" rx="5"/>
-      <text class="t-sm" x="843" y="59" text-anchor="middle">Residualstrom — ein Vektor je Position, Block für Block verfeinert</text>
+      <text class="t-sm" x="843" y="59" text-anchor="middle">je Position ein Vektor, der von Block zu Block verfeinert wird</text>
 
       <line class="flow" x1="469" y1="80" x2="469" y2="98"/><polygon class="head" points="464,98 469,108 474,98"/>
 
@@ -579,11 +646,11 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
       <text class="t-xs" x="644" y="190" text-anchor="middle">Verarbeitung an jeder Position</text>
       <polyline class="flow" points="190,214 190,234 330,234"/>
       <polyline class="flow" points="470,214 470,234 336,234"/>
-      <text class="t-xs" x="330" y="250" text-anchor="middle">+ Residual</text>
+      <text class="t-xs" x="330" y="250" text-anchor="middle">+ Eingabe</text>
       <polyline class="flow" points="504,214 504,234 644,234"/>
       <polyline class="flow" points="784,214 784,234 650,234"/>
-      <text class="t-xs" x="644" y="250" text-anchor="middle">+ Residual</text>
-      <text class="t-xs" x="500" y="270" text-anchor="middle">Normalisierung um beide · Residuen erhalten den Gradienten über 100 Schichten</text>
+      <text class="t-xs" x="644" y="250" text-anchor="middle">+ Eingabe</text>
+      <text class="t-xs" x="500" y="270" text-anchor="middle">Zusätzliche Verbindungen und Normalisierung halten das Training über viele Schichten stabil</text>
       <polyline class="flow-a" points="796,176 836,176 836,300 469,300 469,316"/>
       <polygon class="head-a" points="464,316 469,326 474,316"/>
       <text class="t-ac t-sm" x="850" y="238">die Ausgabe jedes Blocks</text>
@@ -596,67 +663,73 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
       <text class="t-sm" x="932" y="350" text-anchor="middle">Logits → Softmax → eine Wahrscheinlichkeit je Token</text>
     </svg>
   </figure>
+  <p style="font-size:19px;margin:6px 0 0;max-width:none">Ergebnis eines Durchlaufs: eine
+  Wahrscheinlichkeit für jedes der rund 200.000 Tokens im Vokabular. Welches Token tatsächlich
+  ausgegeben wird, bestimmt ein eigener Schritt (nächste Folie).</p>
   <div class="srcnote">Kursbezug: Module 3.4 und 3.5.</div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Die Bestandteile zu einem Bild zusammensetzen und festhalten,
-    dass die Ausgabe eine Verteilung ist und kein Wort.</p>
-    <p>Zwei Punkte überraschen regelmäßig. Zur Vorhersage wird nur der Vektor der letzten Position
-    verwendet — alle übrigen Positionen dienen dazu, ihn über Attention zu informieren. Und die
-    Ausgabe besteht aus etwa 200.000 Zahlen mit der Summe eins; die Auswahl daraus ist ein
-    gesonderter Schritt, den das Netz nicht ausführt.</p>
-    <p><strong>Arbeitsteilung, ausdrücklich benennen:</strong> Attention bewegt Information
-    zwischen Positionen, das Feed-Forward-Netz verarbeitet an einer Position. In den
-    Feed-Forward-Schichten liegt der größte Teil der Parameter.</p>
-    <p><em>Angemessen knapp halten:</em> Residualverbindungen und Normalisierung sind wesentlich,
-    rechtfertigen in einem Workshop aber jeweils nicht mehr als einen Satz.</p>
+    <p><strong>Lernziel.</strong> Die Bestandteile zu einem Bild zusammenfügen und festhalten,
+    dass die Ausgabe eine Wahrscheinlichkeitsverteilung ist und kein Wort.</p>
+    <p>Zwei Punkte überraschen regelmäßig. Für die Vorhersage wird nur der Vektor der letzten
+    Position verwendet; alle übrigen Positionen tragen über Attention zu ihm bei. Und die Ausgabe
+    besteht aus etwa 200.000 Zahlen mit der Summe eins; die Auswahl eines Tokens daraus ist ein
+    eigener Schritt.</p>
+    <p><strong>Aufgabenteilung:</strong> Attention bewegt Information zwischen Positionen, das
+    Feed-Forward-Netz verarbeitet sie an jeder Position. In den Feed-Forward-Schichten liegt der
+    größte Teil der Parameter.</p>
+    <p><strong>Begriffe:</strong> Logits sind die Rohwerte je Token; die Softmax-Funktion wandelt
+    sie in Wahrscheinlichkeiten um. „+ Eingabe“ steht für die Residualverbindung: Die Eingabe
+    eines Teilschritts wird zu seiner Ausgabe addiert. Diese Verbindungen und die Normalisierung
+    sind für stabiles Training wichtig, brauchen hier aber nicht mehr als einen Satz.</p>
   </div></template>
 </section>
 
-<!-- ============ 14 · INTERACTIVE: TEMPERATURE ============ -->
+<!-- ============ 14 · SAMPLING UND TEMPERATUR (INTERAKTIV) ============ -->
 <section class="slide">
-  <p class="eyebrow">4.2–4.3 · Interaktiv</p>
-  <h2>Auswahl unter den Möglichkeiten</h2>
+  <p class="eyebrow">Teil 1 · Erzeugung von Text</p>
+  <h2>Sampling: Auswahl des nächsten Tokens</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Der Vorwärtslauf endet mit einer Wahrscheinlichkeit je Token. Die Temperatur formt diese
-      Verteilung um, bevor gezogen wird, indem sie jedes Logit durch eine Konstante teilt.</p>
-      <p style="font-size:19px"><strong>Unter 1</strong> verschärft: Der führende Kandidat erhält
-      einen größeren Anteil.</p>
-      <p style="font-size:19px"><strong>Über 1</strong> flacht ab — und das Abflachen hebt das
-      <em>gesamte</em> Vokabular an, nicht nur den Zweitplatzierten.</p>
-      <div class="note note--warn">
-        <p style="font-size:18px">Den Regler über 1,4 schieben und den Rest beobachten. Er
-        enthält 199.994 Tokens; ein geringer Zuwachs je Token summiert sich daher zum überwiegenden
-        Teil der Masse.</p>
+      <p style="font-size:19px">Aus der Verteilung wird ein Token zufällig gezogen, gewichtet nach
+      seiner Wahrscheinlichkeit. Die Temperatur verändert die Verteilung vor dem Ziehen.</p>
+      <p style="font-size:19px">Unter 1 wird die Verteilung schärfer, über 1 flacher. Eine
+      flachere Verteilung erhöht die Wahrscheinlichkeit aller übrigen rund 200.000 Tokens. Ab etwa
+      1,4 erhalten sie zusammen mehr als die Hälfte der Wahrscheinlichkeit.</p>
+      <div class="note note--practice" style="margin-top:16px">
+        <p style="font-size:18px"><strong>Folge für die Praxis:</strong> Dieselbe Anfrage kann bei
+        jedem Durchlauf eine andere Antwort ergeben. Die Temperatur verändert die Auswahl, nicht
+        das Wissen des Modells.</p>
       </div>
     </div>
     <div class="widget" data-widget="temperature"></div>
   </div>
   <template class="notes"><div class="nt">
     <p><strong>Lernziel.</strong> Die Vorstellung „Temperatur ist ein Kreativitätsregler“ durch
-    eine zutreffende Beschreibung ihrer Wirkung auf die Verteilung ersetzen.</p>
+    eine genaue Beschreibung ihrer Wirkung ersetzen.</p>
+    <p><strong>Mechanismus.</strong> Die Temperatur teilt jedes Logit vor der Softmax-Funktion.</p>
     <p><em>Frage vor dem Verschieben:</em> „Welches Token gewinnt am meisten, wenn die Temperatur
-    steigt?“ Meist wird der Zweitplatzierte genannt. Anschließend auf 1,5 schieben und den Rest bei
-    etwa drei Vierteln der Masse zeigen. Daraus folgt der Bedarf an Top-p-Sampling, das die
-    Verteilung vor dem Ziehen abschneidet.</p>
-    <p><strong>Deutlich sagen:</strong> Die Temperatur fügt kein Wissen hinzu und verbessert kein
-    Urteilsvermögen. Sie verändert, wie freizügig aus einer vorhandenen Einschätzung gezogen wird.
-    Für die meisten Arbeitsaufgaben ist ein niedriger Wert richtig; zum Erzeugen von Alternativen,
-    unter denen ausgewählt werden soll, ist ein höherer angebracht.</p>
-    <p><strong>Folgerung:</strong> Ein zuversichtlich falsches Modell liefert bei Temperatur null
-    jedes Mal dieselbe falsche Antwort, was wie Zuverlässigkeit wirkt.</p>
+    steigt?“ Meist wird der zweite Kandidat genannt. Dann auf 1,5 schieben: Der Rest erhält etwa
+    drei Viertel der Wahrscheinlichkeit, weil sich viele sehr kleine Anteile summieren. Deshalb
+    wird zusätzlich Top-p eingesetzt: Vor dem Ziehen werden nur die wahrscheinlichsten Tokens
+    behalten, bis ihre Wahrscheinlichkeiten zusammen p ergeben.</p>
+    <p><strong>Klarstellen:</strong> Die Temperatur fügt kein Wissen hinzu und verbessert kein
+    Urteil. Für die meisten Arbeitsaufgaben ist ein niedriger Wert richtig; zum Erzeugen von
+    Alternativen, unter denen man auswählt, ist ein höherer angebracht.</p>
+    <p><strong>Folgerung:</strong> Ein Modell, das bei einer falschen Antwort eine hohe
+    Wahrscheinlichkeit vergibt, liefert bei Temperatur null jedes Mal dieselbe falsche Antwort.
+    Gleichbleibende Antworten belegen daher keine Richtigkeit.</p>
     <p>Kursbezug: Module 4.2 bis 4.4.</p>
   </div></template>
 </section>
 
 <!-- ============ 15 · AUTOREGRESSION ============ -->
 <section class="slide">
-  <p class="eyebrow">4.6 · Ausgabe wird Eingabe</p>
-  <h2>Die Schleife</h2>
-  <figure style="margin:4px 0 0;flex:1">
-    <svg class="dgm" viewBox="0 0 1120 330" role="img"
-      aria-label="Drei autoregressive Durchläufe, die den Beispielsatz fortsetzen. Jeder Durchlauf hängt ein gezogenes Token an den Kontext an und führt das gesamte Modell erneut aus; nach dem ersten Durchlauf sind die erzeugten Tokens von der ursprünglichen Eingabe nicht mehr zu unterscheiden.">
-      <g><text class="t-xs" x="20" y="64">Lauf 1</text>
+  <p class="eyebrow">Teil 1 · Erzeugung von Text</p>
+  <h2>Autoregression: Die Ausgabe wird Teil der Eingabe</h2>
+  <figure style="margin:4px 0 0">
+    <svg class="dgm" viewBox="0 0 1120 320" role="img"
+      aria-label="Drei Schritte, die den Beispielsatz fortsetzen. Jeder Schritt hängt ein gezogenes Token an den Kontext an und führt das gesamte Modell erneut aus. Ab dem zweiten Schritt sind die erzeugten Tokens im Kontext nicht von der ursprünglichen Eingabe zu unterscheiden.">
+      <g><text class="t-xs" x="20" y="64">Schritt 1</text>
         <rect class="chip" x="86" y="46" width="390" height="28" rx="4"/>
         <text class="t-mono" x="98" y="65">The nightly run failed because it</text>
         <line class="flow" x1="482" y1="60" x2="500" y2="60"/><polygon class="head" points="500,55 510,60 500,65"/>
@@ -665,7 +738,7 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
         <line class="flow" x1="644" y1="60" x2="662" y2="60"/><polygon class="head" points="662,55 672,60 662,65"/>
         <rect class="hl" x="674" y="46" width="92" height="28" rx="4"/>
         <text class="t-mono t-ac" x="720" y="65" text-anchor="middle">timed</text></g>
-      <g><text class="t-xs" x="20" y="124">Lauf 2</text>
+      <g><text class="t-xs" x="20" y="124">Schritt 2</text>
         <rect class="chip" x="86" y="106" width="390" height="28" rx="4"/>
         <text class="t-mono" x="98" y="125">The nightly run failed because it</text>
         <rect class="hl" x="408" y="106" width="68" height="28" rx="4"/>
@@ -676,7 +749,7 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
         <line class="flow" x1="644" y1="120" x2="662" y2="120"/><polygon class="head" points="662,115 672,120 662,125"/>
         <rect class="hl" x="674" y="106" width="92" height="28" rx="4"/>
         <text class="t-mono t-ac" x="720" y="125" text-anchor="middle">out</text></g>
-      <g><text class="t-xs" x="20" y="184">Lauf 3</text>
+      <g><text class="t-xs" x="20" y="184">Schritt 3</text>
         <rect class="chip" x="86" y="166" width="390" height="28" rx="4"/>
         <text class="t-mono" x="98" y="185">The nightly run failed because it</text>
         <rect class="hl" x="366" y="166" width="110" height="28" rx="4"/>
@@ -690,36 +763,146 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
 
       <polyline class="flow-a" points="770,60 812,60 812,236 250,236 250,206"/>
       <polygon class="head-a" points="245,206 250,196 255,206"/>
-      <text class="t-ac t-sm" x="832" y="126">jedes gezogene Token wird angehängt</text>
-      <text class="t-xs" x="832" y="144">und der gesamte Kontext erneut gesendet</text>
+      <text class="t-ac t-sm" x="832" y="126">jedes gezogene Token wird angehängt,</text>
+      <text class="t-xs" x="832" y="144">dann wird der ganze Kontext erneut verarbeitet</text>
 
-      <text class="t-sm" x="20" y="276">Nach Lauf 1 enthält der Kontext Tokens aus zwei Quellen, ohne jede Kennzeichnung der Herkunft.</text>
-      <text class="t-sm" x="20" y="300">Das Modell hat kein Feld für die Herkunft, und Attention hat nichts, was sie anders gewichten könnte.</text>
+      <text class="t-sm" x="20" y="276">Ab Schritt 2 enthält der Kontext Tokens aus zwei Quellen: Eingabe und erzeugter Text. Die Herkunft ist nicht gekennzeichnet.</text>
+      <text class="t-sm" x="20" y="298">Für das Modell ist erzeugter Text daher nicht von eingegebenem Text zu unterscheiden.</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="font-size:18px;max-width:none"><strong>Folgen für die Praxis:</strong> Lange Kontexte und lange
+    Antworten kosten mehr Zeit und Geld. Ein früher Fehler bleibt im Kontext und prägt die
+    Fortsetzung. Text aus Dokumenten steht gleichrangig neben Ihren Anweisungen.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Drei Konsequenzen zugleich festhalten: Die Kosten wachsen mit
-    dem Kontext, Fehler verstärken sich, und erzeugter Text ist von zugeliefertem nicht zu
-    unterscheiden.</p>
-    <p>Der letzte Punkt ist die Grundlage für den späteren Abschnitt zur Sicherheit. Im Kontext
-    gibt es keine Markierung, die Eingegebenes von Erzeugtem oder von Dokumentinhalten trennt.</p>
-    <p><strong>Einschränkung.</strong> Produktivsysteme speichern die Key- und Value-Vektoren
-    früherer Positionen zwischen, sodass die Rechnung nicht vollständig wiederholt wird.
-    Konzeptionell wird der Kontext dennoch erneut verarbeitet, und die Kosten wachsen weiterhin mit
-    der Länge.</p>
-    <p><em>Vorausweis:</em> Aus diesem Grund kehrt eine Erzeugung, die einen falschen Weg
-    eingeschlagen hat, selten zurück — das Modell bleibt gegenüber seinem eigenen Kontext
-    konsistent, und genau darauf wurde es trainiert.</p>
+    <p><strong>Lernziel.</strong> Drei Folgen festhalten: Die Kosten wachsen mit dem Kontext,
+    Fehler setzen sich fort, und Text im Kontext trägt keine Kennzeichnung seiner Herkunft.</p>
+    <p>Der letzte Punkt ist die Grundlage für die Folie „Prompt Injection“ in Teil 2. Im Kontext
+    gibt es keine Markierung, die Ihre Eingaben, erzeugten Text und Dokumentinhalte trennt.</p>
+    <p><strong>Einschränkung.</strong> Produktivsysteme speichern Zwischenergebnisse früherer
+    Positionen (die Key- und Value-Vektoren), sodass nicht alles neu gerechnet wird. Die Kosten
+    wachsen trotzdem mit der Länge des Kontexts.</p>
+    <p><em>Warum ein falscher Weg selten verlassen wird:</em> Das Modell setzt seinen eigenen
+    Kontext stimmig fort, und genau darauf ist es trainiert. Ein Fehler am Anfang einer Antwort
+    wird deshalb eher begründet als korrigiert.</p>
+    <p>Kursbezug: Modul 4.6.</p>
   </div></template>
 </section>
 
-<!-- ============ 16 · HARNESS BUILD-UP (progressive) ============ -->
+<!-- ============ 16 · PARAMETER UND KONTEXT ============ -->
 <section class="slide">
-  <p class="eyebrow">5.4 · Modell und System</p>
-  <h2>Was das Modell umgibt</h2>
-  <figure style="margin:0;flex:1">
+  <p class="eyebrow">Teil 1 · Wissen und Grenzen</p>
+  <h2>Was das Modell verwendet: Parameter und Kontext</h2>
+  <div class="cols" style="margin-top:14px;flex:none">
+    <div class="card" style="background:var(--accent-soft);border-color:var(--accent)">
+      <h3>Parameter: aus dem Training</h3>
+      <ul style="font-size:18px;margin:8px 0 0">
+        <li>Werden nach dem Training nicht mehr verändert. Ein Dialog bringt dem Modell nichts
+        bei, und Korrekturen werden nicht behalten.</li>
+        <li>Enthalten Muster aus dem Trainingstext. Sie enden mit dem Stichtag der Trainingsdaten
+        und enthalten keine internen Informationen Ihrer Organisation.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Kontext: mit jeder Anfrage gesendet</h3>
+      <ul style="font-size:18px;margin:8px 0 0">
+        <li>Anweisungen, Dateien, bisheriger Dialog und Tool-Ergebnisse: alles, was das System für
+        diese Anfrage zusammenstellt.</li>
+        <li>Begrenzt durch das <strong>Kontextfenster</strong>, eine Höchstzahl an Tokens.
+        Anweisungen und Material teilen sich diesen Platz.</li>
+        <li>Was wie Erinnerung wirkt, ist Text, den die Software gespeichert und erneut
+        mitgeschickt hat.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note note--practice" style="margin-top:22px">
+    <p style="font-size:19px;max-width:none"><strong>Folge für die Praxis:</strong> Was weder in den Parametern
+    noch im Kontext steht, kann das Modell nicht verwenden. Es erzeugt dann trotzdem eine
+    plausible Antwort. Den Kontext können Sie selbst gestalten; Teil 2 behandelt das
+    ausführlich.</p>
+  </div>
+  <template class="notes"><div class="nt">
+    <p><strong>Lernziel.</strong> Die beiden Quellen benennen, aus denen jede Antwort entsteht,
+    und daraus die wichtigsten Grenzen ableiten.</p>
+    <p><strong>Inferenz.</strong> Nach dem Training wird das Modell nur noch angewendet. Es wird
+    kein Fehler gemessen und kein Parameter verändert. Jede Anfrage, auch die anderer Nutzer,
+    arbeitet mit denselben unveränderten Parametern.</p>
+    <p><strong>Daraus folgt:</strong> kein Gedächtnis zwischen Dialogen; kein Wissen über
+    Ereignisse nach dem Stichtag; kein Wissen über interne Abläufe, Namen und Konventionen — es sei
+    denn, sie stehen im Kontext. Fehlt eine Information, erzeugt das Modell trotzdem eine
+    wahrscheinliche Fortsetzung. Das ist der Übergang zur nächsten Folie.</p>
+    <p><strong>Kontextfenster.</strong> Die Größe hängt vom Modell ab; die Kontext-Folie in Teil 2
+    rechnet mit 200.000 Tokens. Eine angegebene Größe sagt, wie viel angenommen wird, nicht, wie
+    zuverlässig alles darin verwendet wird.</p>
+    <p><em>Beispiel GitHub Copilot:</em> Eine Anweisungsdatei im Projekt, etwa
+    <span class="mono">.github/copilot-instructions.md</span>, wird jeder Anfrage automatisch
+    beigefügt. Daher wirkt es, als kenne Copilot die Konventionen des Projekts. Ein Chat, der neu
+    begonnen wird, enthält den bisherigen Dialog nicht mehr.</p>
+    <p>Kursbezug: Module 1.8 und 4.7.</p>
+  </div></template>
+</section>
+
+<!-- ============ 17 · HALLUZINATION ============ -->
+<section class="slide">
+  <p class="eyebrow">Teil 1 · Wissen und Grenzen</p>
+  <h2>Halluzination: plausible, aber falsche Ausgaben</h2>
+  <div class="cols">
+    <div>
+      <p style="font-size:19px">Das Modell erzeugt Token für Token eine wahrscheinliche
+      Fortsetzung. Kein Schritt in diesem Verfahren gleicht eine Aussage mit Fakten ab.</p>
+      <p style="font-size:19px">Beispiel: Gefragt nach einer Funktion einer Programmbibliothek,
+      die in den Trainingsdaten selten oder gar nicht vorkam, erzeugt das Modell einen plausiblen
+      Funktionsnamen mit plausiblen Argumenten. Die Fortsetzung ist wahrscheinlich, die Funktion
+      existiert aber nicht.</p>
+      <div class="note">
+        <p style="font-size:18px">Richtige und falsche Antworten entstehen durch denselben
+        Mechanismus. Halluzination lässt sich deshalb nicht abschalten. Wirksame Gegenmaßnahmen
+        verändern, was im Kontext steht, oder prüfen das Ergebnis.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Wo Halluzinationen gehäuft auftreten</h3>
+      <ul style="font-size:18px">
+        <li>Konkrete Bezeichner: Namen, Versionsnummern, Funktionsnamen, Aktenzeichen</li>
+        <li>Quellenangaben: plausibler Autor und Titel, aber keine solche Quelle</li>
+        <li>Ereignisse nach dem Stichtag der Trainingsdaten</li>
+        <li>Interne Sachverhalte der eigenen Organisation</li>
+        <li>Rechnen und exaktes Zählen</li>
+        <li>Nach Widerspruch: Modelle neigen dazu nachzugeben</li>
+      </ul>
+      <h3 style="margin-top:16px">Was hilft</h3>
+      <ul style="font-size:18px">
+        <li>Das tatsächliche Material in den Kontext geben</li>
+        <li>Ein Tool bereitstellen, das rechnet oder nachschlägt (nächste Folie)</li>
+        <li>Zu jeder Aussage eine Quellenangabe verlangen</li>
+        <li>Ergebnisse prüfen: Falsche Ausgaben sind meist <em>beinahe</em> richtig</li>
+      </ul>
+    </div>
+  </div>
+  <template class="notes"><div class="nt">
+    <p><strong>Lernziel.</strong> Halluzination als erwartbare Folge des Mechanismus verstehen und
+    nicht als gelegentliche Fehlfunktion. Dann werden die Gegenmaßnahmen als Gestaltung des
+    Systems verständlich und nicht als Ermahnung an das Modell.</p>
+    <p><strong>Für ein skeptisches Publikum:</strong> Eine flüssige, falsche Fortsetzung erfüllt
+    das Trainingsziel, denn sie ist plausibel. Plausibilität hängt mit Wahrheit zusammen, ist aber
+    nicht dasselbe.</p>
+    <p><em>Beispiel aus der Programmierung:</em> In GitHub Copilot zeigt sich das als Aufruf einer
+    Funktion oder Option, die es in der verwendeten Version einer Bibliothek nicht gibt. Hilfreich
+    ist, die tatsächliche Dokumentation oder den Quelltext in den Kontext zu geben und das Ergebnis
+    durch Ausführen oder Tests zu prüfen.</p>
+    <p><em>Verbindung zu Teil 2:</em> Jede Prüfpraxis in Teil 2 folgt aus dieser Folie.</p>
+    <p>Kursbezug: Modul 4.8.</p>
+  </div></template>
+</section>
+
+<!-- ============ 18 · MODELL UND SYSTEM (SCHRITTWEISE) ============ -->
+<section class="slide">
+  <p class="eyebrow">Teil 1 · Modell und System</p>
+  <h2>Modell und System: was das Modell umgibt</h2>
+  <figure style="margin:0">
     <svg class="dgm" viewBox="0 0 1120 420" role="img"
-      aria-label="Ein schrittweise aufgebautes Diagramm: zunächst das Modell allein, dann die Anfrage, dann die Zusammenstellung des Kontexts aus mehreren Quellen, dann die Systemanweisungen, dann die Tools, dann die Ausführungsumgebung, dann die Rückkopplungsschleife des Agenten, dann Berechtigungen und Prüfung.">
+      aria-label="Ein schrittweise aufgebautes Diagramm: zunächst das Modell allein, dann die Anfrage, dann die Zusammenstellung des Kontexts aus mehreren Quellen, dann die Auswertung der Ausgabe, dann die Ausführung von Tools durch den Harness, dann die Rückkopplungsschleife des Agenten, dann Berechtigungen und Freigabe.">
       <rect class="box" x="470" y="178" width="180" height="76" rx="6"/>
       <text x="560" y="210" text-anchor="middle">MODELL</text>
       <text class="t-xs" x="560" y="228" text-anchor="middle">unveränderliche Parameter</text>
@@ -746,7 +929,7 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
         <rect class="chip" x="40" y="82" width="150" height="34" rx="4"/>
         <text class="t-xs" x="115" y="104" text-anchor="middle">Ihre Anweisungen</text>
         <rect class="chip" x="40" y="124" width="150" height="34" rx="4"/>
-        <text class="t-xs" x="115" y="146" text-anchor="middle">Dokumente, Verlauf</text>
+        <text class="t-xs" x="115" y="146" text-anchor="middle">Dateien, Verlauf</text>
         <line class="flow" x1="192" y1="57" x2="330" y2="186"/>
         <line class="flow" x1="192" y1="99" x2="340" y2="186"/>
         <line class="flow" x1="192" y1="141" x2="350" y2="186"/>
@@ -789,99 +972,147 @@ b  ← 0.2 − 1.0(−0.10403)         = 0.30403
       </g>
     </svg>
   </figure>
+  <p style="font-size:18px;margin:2px 0 0;max-width:none">Die Software um das Modell heißt
+  <strong>Harness</strong>. Sie stellt den Kontext zusammen, führt Tools aus und setzt
+  Berechtigungen durch. GitHub Copilot in VS Code ist ein solches System; das Modell darin ist
+  austauschbar.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Ein einziges Diagramm aufbauen, das die Teilnehmenden durch
-    den restlichen Tag trägt, statt mehrere unverbundene zu zeigen.</p>
+    <p><strong>Lernziel.</strong> Ein Diagramm aufbauen, das durch den restlichen Workshop trägt,
+    statt mehrere unverbundene zu zeigen.</p>
     <p><strong>Schritt für Schritt aufdecken und dabei erläutern:</strong></p>
     <ul>
-      <li>Das Modell allein — feste Parameter, ein Vorwärtslauf, kein Gedächtnis.</li>
+      <li>Das Modell allein: feste Parameter, ein Vorwärtslauf, kein Gedächtnis.</li>
       <li>Die Anfrage trifft ein.</li>
-      <li>Zusammenstellung des Kontexts — jemand entscheidet, was das Modell sieht.</li>
-      <li>Weitere Quellen fließen in diese Zusammenstellung ein; die eigene Eingabe ist ein
-      Bruchteil davon.</li>
+      <li>Der Kontext wird zusammengestellt: Die Software entscheidet, was das Modell sieht.</li>
+      <li>Weitere Quellen fließen ein; die eigene Eingabe ist nur ein kleiner Teil davon.</li>
       <li>Die Ausgabe wird ausgewertet: gewöhnlicher Text oder die Anforderung eines Tools.</li>
-      <li>Der Harness führt Tools aus. <em>Das Modell führt nichts aus.</em></li>
-      <li>Die Ergebnisse gehen zurück in den Kontext. Diese Schleife ist alles, was „Agent“
-      bedeutet.</li>
-      <li>Berechtigungen liegen auf dem Ausführungspfad und bestimmen, was überhaupt möglich
+      <li>Ein Tool-Aufruf wird vom Harness ausgeführt. <em>Das Modell selbst führt nichts
+      aus.</em></li>
+      <li>Das Ergebnis geht zurück in den Kontext, und das Modell wird erneut aufgerufen. Ein
+      Agent ist genau diese Schleife.</li>
+      <li>Berechtigungen liegen auf dem Ausführungsweg und bestimmen, was überhaupt möglich
       ist.</li>
     </ul>
-    <p><em>Kernaussage:</em> Nahezu alles, was ein KI-Produkt von einem anderen unterscheidet,
-    liegt in diesem Bild außerhalb des Modellkastens — und das meiste davon ist konfigurierbar.</p>
-    <p>Kursbezug: Module 5.4, 5.8, 5.9.</p>
+    <p><em>Kernaussage:</em> Die meisten Unterschiede zwischen KI-Produkten liegen außerhalb des
+    Modells, und vieles davon lässt sich einstellen.</p>
+    <p><em>In GitHub Copilot:</em> Copilot stellt den Kontext zusammen (angehängte Dateien,
+    Anweisungsdateien, je nach Einstellung die geöffnete Datei), bietet im Agent-Modus Tools an,
+    etwa zum Lesen und Ändern von Dateien und zum Ausführen von Terminalbefehlen, und fragt vor
+    bestimmten Aktionen nach Freigabe. Das Modell wählt man in einer Liste aus.</p>
+    <p><em>Begriff:</em> „Harness“ hat keine gängige deutsche Entsprechung; gemeint ist das
+    Rahmenprogramm um das Modell.</p>
+    <p>Kursbezug: Module 5.4, 5.8 und 5.9.</p>
   </div></template>
 </section>
 
-<!-- ============ 17 · HALLUCINATION ============ -->
+<!-- ============ 19 · ZUSAMMENFASSUNG TEIL 1 ============ -->
 <section class="slide">
-  <p class="eyebrow">4.8 · Warum zuversichtliche Fehler entstehen</p>
-  <h2>Kein Schritt des Verfahrens prüft eine Aussage</h2>
-  <div class="cols">
-    <div>
-      <p>Das Modell berechnet eine Wahrscheinlichkeitsverteilung, aus der ein Token gezogen
-      wird. Es gibt keinen Schritt, der etwas mit der Wirklichkeit abgleicht, denn die Architektur
-      enthält keine Wirklichkeit — nur eine durch Text geformte Verteilung.</p>
-      <p>Nach einer Funktion einer nie gesehenen Programmbibliothek gefragt, erzeugt das System die
-      wahrscheinlichste Fortsetzung. Ein plausibler Name mit plausiblen Argumenten <em>ist</em>
-      tatsächlich die wahrscheinlichste Fortsetzung. Er existiert nur nicht.</p>
-      <div class="note">
-        <p style="font-size:18px">Es handelt sich um denselben Mechanismus, der korrekte
-        Antworten erzeugt, angewendet dort, wo die Trainingsdaten ihn nicht eingeschränkt haben. Er
-        lässt sich nicht nachträglich abstellen; deshalb ist jede wirksame Gegenmaßnahme
-        struktureller Art.</p>
-      </div>
-    </div>
-    <div>
-      <h3>Wo es gehäuft auftritt</h3>
-      <ul style="font-size:18.5px">
-        <li>Konkrete Bezeichner — Namen, Aktenzeichen, Codes</li>
-        <li>Quellenangaben: plausibler Autor, plausibler Titel, keine solche Quelle</li>
-        <li>Alles nach dem Ende der Trainingsdaten</li>
-        <li>Interne Sachverhalte der eigenen Organisation</li>
-        <li>Rechnen und exaktes Zählen</li>
-        <li>Bei Widerspruch — Modelle neigen zum Nachgeben</li>
-      </ul>
-      <h3 style="margin-top:20px">Was tatsächlich hilft</h3>
-      <ul style="font-size:18.5px">
-        <li>Das tatsächliche Material in den Kontext geben</li>
-        <li>Eine Prüfmöglichkeit bereitstellen — ein Tool, das rechnet oder nachschlägt</li>
-        <li>Zu jeder Aussage eine Quellenangabe verlangen</li>
-        <li>Beachten, dass falsche Ausgaben meist <em>beinahe</em> richtig sind</li>
-      </ul>
-    </div>
-  </div>
+  <p class="eyebrow">Teil 1 · Zusammenfassung</p>
+  <h2>Was aus der Funktionsweise folgt</h2>
+  <table style="margin-top:8px;font-size:16px">
+    <thead><tr><th style="width:44%">Mechanismus</th><th>Folge für die Praxis</th></tr></thead>
+    <tbody>
+      <tr><td>Parameter werden aus Beispielen gelernt, nicht programmiert</td>
+          <td class="step">Ob ein Modell eine Aufgabe beherrscht, zeigt nur ein Test</td></tr>
+      <tr><td>Trainingsziel: das nächste Token vorhersagen</td>
+          <td class="step">Ausgaben sind plausibel, aber nicht geprüft</td></tr>
+      <tr><td>Text wird in Tokens zerlegt</td>
+          <td class="step">Buchstaben zählen und exaktes Rechnen sind unzuverlässig; Kosten und
+          Kontext werden in Tokens gemessen; Deutsch braucht mehr Tokens</td></tr>
+      <tr><td>Das nächste Token wird gezogen</td>
+          <td class="step">Dieselbe Anfrage kann verschiedene Antworten ergeben</td></tr>
+      <tr><td>Jedes erzeugte Token wird an den Kontext angehängt</td>
+          <td class="step">Lange Kontexte kosten mehr; frühe Fehler setzen sich fort</td></tr>
+      <tr><td>Feste Parameter, begrenzter Kontext</td>
+          <td class="step">Kein Gedächtnis zwischen Dialogen; neuere und interne Informationen
+          sind nur bekannt, wenn sie im Kontext stehen</td></tr>
+      <tr><td>Kein Schritt prüft Aussagen</td>
+          <td class="step">Halluzinationen sind zu erwarten; Ergebnisse müssen geprüft
+          werden</td></tr>
+      <tr><td>Ein System um das Modell stellt den Kontext zusammen und führt Tools aus</td>
+          <td class="step">Vieles, was man „der KI“ zuschreibt, ist eine Einstellung des
+          Systems</td></tr>
+    </tbody>
+  </table>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Halluzination von einer Fehlfunktion zu einem erwartbaren
-    Verhalten umdeuten, damit die Gegenmaßnahmen als Architekturentscheidungen verständlich werden
-    und nicht als Ermahnung an das Modell.</p>
-    <p>Das stärkste Argument für ein skeptisches Publikum: Eine flüssige, zuversichtliche, falsche
-    Fortsetzung ist kein Versagen gegenüber der Trainingszielfunktion, sondern ein Erfolg nach
-    ihrem Maßstab. Die Zielfunktion belohnt Plausibilität, und Plausibilität hängt mit Wahrheit
-    zusammen, ohne mit ihr identisch zu sein.</p>
-    <p><em>Verbindung zum Nachmittag:</em> Jede Prüfpraxis in Teil zwei folgt aus dieser Folie.</p>
+    <p><strong>Lernziel.</strong> Teil 1 abschließen. Jede Zeile verbindet einen Mechanismus mit
+    einer Folge, die die Teilnehmenden inzwischen selbst ableiten können.</p>
+    <p><strong>Durchführung.</strong> Die rechte Spalte wird zeilenweise aufgedeckt. Vor jedem
+    Aufdecken fragen: „Was folgt daraus für die Arbeit?“ Die Antworten des Publikums mit der Zeile
+    vergleichen.</p>
+    <p>Die Tabelle beantwortet die Ausgangsfrage des Workshops: was Sprachmodelle leisten können
+    und was nicht, und warum. Teil 2 zeigt, wie man mit diesen Grenzen arbeitet.</p>
   </div></template>
 </section>
 
-<!-- ============ 18 · SECTION: OPERATING ============ -->
+<!-- ============ 20 · ABSCHNITT TEIL 2 ============ -->
 <section class="slide slide--section">
-  <p class="eyebrow">Teil zwei</p>
-  <h2>Betrieb des Systems</h2>
-  <p class="lead" style="margin-top:18px">Modellauswahl · Kosten · Kontext · Autonomie ·
-  Delegation · Prüfung</p>
+  <p class="eyebrow">Teil 2</p>
+  <h2>Was daraus für die Praxis folgt</h2>
+  <p class="lead" style="margin-top:18px">GitHub Copilot · Modellauswahl · Kosten · Kontext ·
+  Autonomie · Kontrolle · Prüfung</p>
   <template class="notes"><div class="nt">
-    <p>Abschnittstrenner. Ab hier wechselt die Frage von „Was tut das System?“ zu „Was sollte
-    ich tun?“.</p>
-    <p>Das durchgehende Beispiel einführen, falls noch nicht geschehen: drei Herstellerberichte von
-    vierzig bis sechzig Seiten, eine Tabelle mit etwa zwölftausend Messwerten und eine vierseitige
-    Vergleichsvorlage, fällig vor einer Entscheidungssitzung. Alles Folgende bezieht sich
-    darauf.</p>
+    <p>Abschnittstrenner. Ab hier geht es um die Frage, was man bei der Arbeit tun sollte.</p>
+    <p>Zuerst zeigt eine Übersicht, wo die Begriffe in GitHub Copilot vorkommen. Danach trägt ein
+    durchgehendes Beispiel den Rest von Teil 2: drei Herstellerberichte von vierzig bis sechzig
+    Seiten, eine Tabelle mit etwa zwölftausend Messwerten und eine vierseitige Vergleichsvorlage,
+    fällig vor einer Entscheidungssitzung.</p>
   </div></template>
 </section>
 
-<!-- ============ 19 · THE RUNNING TASK ============ -->
+<!-- ============ 21 · BEGRIFFE IN GITHUB COPILOT ============ -->
 <section class="slide">
-  <p class="eyebrow">Das durchgehende Beispiel</p>
-  <h2>Eine Aufgabe, bei der es auf Richtigkeit ankommt</h2>
+  <p class="eyebrow">Teil 2 · GitHub Copilot</p>
+  <h2>Wo die Begriffe in GitHub Copilot vorkommen</h2>
+  <table style="margin-top:6px;font-size:16px">
+    <thead><tr><th style="width:26%">Begriff</th><th>In GitHub Copilot in VS Code</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Modell</strong></td>
+          <td>Auswahlliste im Chat. Welche Modelle erscheinen, legt die Organisation fest.</td></tr>
+      <tr><td><strong>Kontext</strong></td>
+          <td>Angehängte Dateien und Ordner (mit <span class="mono">#</span> im Eingabefeld), der
+          bisherige Chat, je nach Einstellung die geöffnete Datei.</td></tr>
+      <tr><td><strong>Dauerhafte Anweisungen</strong></td>
+          <td>Anweisungsdateien im Projekt, z.&nbsp;B.
+          <span class="mono">.github/copilot-instructions.md</span>; Prompt-Dateien
+          (<span class="mono">*.prompt.md</span>) für wiederkehrende Anfragen.</td></tr>
+      <tr><td><strong>Arbeitsmodi</strong></td>
+          <td><em>Ask</em>: Fragen und Antworten. <em>Plan</em>: Plan vor der Ausführung.
+          <em>Agent</em>: arbeitet selbstständig mit Tools.</td></tr>
+      <tr><td><strong>Tools, Agentenschleife</strong></td>
+          <td>Im Agent-Modus: Dateien lesen und ändern, Terminalbefehle ausführen. Erweiterbar über
+          MCP-Server.</td></tr>
+      <tr><td><strong>Technische Beschränkung</strong></td>
+          <td>Freigabe von Tool-Aufrufen und Terminalbefehlen; Vorgaben der Organisation.</td></tr>
+      <tr><td><strong>Kosten</strong></td>
+          <td>GitHub AI Credits, nach verbrauchten Tokens berechnet (seit Juni 2026). Die
+          Code-Vervollständigung verbraucht keine Credits.</td></tr>
+    </tbody>
+  </table>
+  <div class="srcnote">Stand Oktober 2026, aus Sekundärquellen. Bezeichnungen ändern sich
+  zwischen Versionen; vor dem Workshop in der eigenen Umgebung prüfen.</div>
+  <template class="notes"><div class="nt">
+    <p><strong>Lernziel.</strong> Zeigen, wo die Begriffe aus Teil 1 im eigenen Werkzeug
+    vorkommen. Die folgenden Folien greifen jeweils eine Zeile auf.</p>
+    <p><strong>Vor dem Workshop prüfen:</strong> die Bezeichnungen der Modi und Menüs in der
+    eingesetzten VS-Code-Version; welche Modelle die Organisation freigegeben hat; welche
+    Einstellungen, etwa zur Freigabe von Terminalbefehlen, zentral vorgegeben sind.</p>
+    <p><strong>Abrechnung.</strong> Laut Ankündigung von GitHub vom April 2026 ersetzen seit dem
+    1. Juni 2026 GitHub AI Credits die bisherigen Premium-Anfragen. Ein Credit entspricht 0,01 US$;
+    berechnet wird nach verbrauchten Tokens. Code-Vervollständigung und Next Edit Suggestions
+    verbrauchen keine Credits. Diese Angaben stammen aus Suchergebnissen; die Dokumentation von
+    GitHub war beim Verfassen nicht direkt abrufbar.</p>
+    <p><strong>Modi.</strong> Plan erzeugt einen Plan, den man vor der Ausführung liest; danach
+    lässt er sich an den Agent übergeben. Ältere Versionen boten statt Plan einen Modus
+    <em>Edit</em> an.</p>
+    <p>Ausführliche Anleitung: Praxisleitfaden (englisch), <span class="mono">practical-guide/index.html</span>.</p>
+  </div></template>
+</section>
+
+<!-- ============ 22 · DAS DURCHGEHENDE BEISPIEL ============ -->
+<section class="slide">
+  <p class="eyebrow">Teil 2 · Beispiel</p>
+  <h2>Das durchgehende Beispiel: eine Lieferantenbewertung</h2>
   <div class="cols cols--wide-left">
     <div>
       <pre class="mono" style="font-size:17px;line-height:1.8;background:var(--surface-2);padding:18px 22px;border-radius:8px;border:1px solid var(--rule)">
@@ -899,64 +1130,75 @@ Leistung, Annahmen, Empfehlung.</pre>
     <div class="center">
       <h3>Warum dieses Beispiel</h3>
       <ul style="font-size:18.5px">
-        <li>Die Eingaben übersteigen jedes Kontextfenster</li>
+        <li>Die Eingaben sind zu groß für ein Kontextfenster</li>
         <li>Die Messwerte erfordern Rechnen, was ein Sprachmodell nicht zuverlässig leistet</li>
         <li>Die Berichte stammen von Parteien mit eigenem Interesse am Ergebnis</li>
-        <li>Die Aufgabe lässt sich natürlich zerlegen</li>
+        <li>Die Aufgabe lässt sich in Teilaufgaben zerlegen</li>
         <li>Sie wiederholt sich jedes Quartal</li>
-        <li>Der Erfolg lässt sich vorab festlegen</li>
+        <li>Was als Erfolg gilt, lässt sich vorab festlegen</li>
       </ul>
-      <p style="margin-top:14px;font-size:18px">Nichts daran erfordert Programmierkenntnisse.</p>
+      <p style="margin-top:14px;font-size:18px">Für die Aufgabe sind keine Programmierkenntnisse
+      nötig.</p>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Den Nachmittag an einer konkreten Aufgabe verankern, damit
-    jede Technik einen Anwendungsfall hat.</p>
-    <p>Die Teilnehmenden einladen, ein eigenes Gegenstück einzusetzen — eine Angebotsbewertung,
-    eine Literaturauswertung, einen Normenvergleich, eine Nachbetrachtung zu einem Vorfall.
-    Maßgeblich ist die Struktur: mehrere lange Dokumente, einige Zahlen, am Ende eine
+    <p><strong>Lernziel.</strong> Teil 2 an einer konkreten Aufgabe verankern, damit jede
+    Empfehlung einen Anwendungsfall hat.</p>
+    <p>Die Teilnehmenden ein eigenes Gegenstück überlegen lassen: eine Angebotsbewertung, eine
+    Literaturauswertung, einen Normenvergleich, eine Nachbetrachtung zu einem Vorfall, oder in der
+    Softwareentwicklung die Bewertung mehrerer Bibliotheken anhand ihrer Dokumentation und eigener
+    Messungen. Maßgeblich ist die Struktur: mehrere lange Dokumente, einige Zahlen, am Ende eine
     Entscheidung.</p>
+    <p><em>In VS Code:</em> Die Dateien liegen in einem Ordner, der in VS Code geöffnet wird;
+    Copilot arbeitet mit diesem Ordner. Der Praxisleitfaden enthält eine kleine Übungsversion
+    dieser Aufgabe mit Lösung.</p>
   </div></template>
 </section>
 
-<!-- ============ 20 · INTERACTIVE: MODEL CHOICE ============ -->
+<!-- ============ 23 · MODELLAUSWAHL (INTERAKTIV) ============ -->
 <section class="slide">
-  <p class="eyebrow">8.1 · Interaktiv</p>
-  <h2>Es gibt kein generell bestes Modell</h2>
+  <p class="eyebrow">Teil 2 · Modellauswahl</p>
+  <h2>Modellauswahl: Qualität, Kosten und Antwortzeit</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Drei Größen stehen in Spannung zueinander: Qualität der Ausgabe, Ressourcenkosten und
-      Wartezeit. Eine zu verbessern geht meist zulasten einer anderen.</p>
+      <p>Drei Eigenschaften stehen in Spannung: Qualität der Ausgabe, Kosten und Antwortzeit.
+      Eine zu verbessern geht meist zulasten einer anderen.</p>
       <p style="font-size:19px">Die Gewichte an eine Aufgabe anpassen und die Rangfolge
-      beobachten. An den Modellen hat sich dabei nichts geändert.</p>
+      beobachten. An den Modellen ändert sich dabei nichts.</p>
       <div class="note">
-        <p style="font-size:18px">Eine Benchmark-Rangliste enthält die Gewichtung einer anderen
-        Partei. Für die eigene Arbeit ist die Gewichtung die eigene. Deshalb grenzt eine
-        öffentliche Rangliste eine Vorauswahl ein, entscheidet die Auswahl aber nicht.</p>
+        <p style="font-size:18px">Eine Benchmark-Rangliste beruht auf der Gewichtung anderer. Sie
+        eignet sich für eine Vorauswahl. Für die eigene Aufgabe entscheidet ein eigener Test.</p>
       </div>
+      <p class="tiny" style="margin-top:12px;font-size:15px">In GitHub Copilot: Auswahlliste im
+      Chat. Die verfügbaren Modelle legt die Organisation fest.</p>
     </div>
     <div class="widget" data-widget="compare"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Die Frage „Welches Modell ist das beste?“ durch „Das beste
-    wofür, bei welcher Gewichtung?“ ersetzen.</p>
-    <p>Qualität auf 100 und die übrigen auf null setzen: Die große Option mit hohem Aufwand
-    gewinnt. Nun Kosten auf 100 setzen: Die kleine Option mit geringem Aufwand gewinnt. Keine der
-    beiden Antworten ist falsch; sie beantworten verschiedene Fragen.</p>
-    <p><strong>Ausdrücklich sagen, dass die Profile beispielhaft sind.</strong> Sie sind keine
-    Messungen an realen Modellen, und es werden keine tatsächlichen Werte behauptet.</p>
-    <p><strong>Einschränkung zum Reasoning Effort.</strong> Ein höherer Aufwand hilft bei Aufgaben
-    mit tatsächlicher Schlussfolgerungstiefe und erhöht bei Abruf oder Umformatierung nur Kosten
-    und Antwortzeit. Das Ausmaß des Nutzens hängt von Modell, Aufgabe und Budget ab — es ist zu
-    messen und nicht anzunehmen.</p>
+    <p><strong>Lernziel.</strong> Die Frage „Welches Modell ist das beste?“ ersetzen durch „Das
+    beste wofür, bei welcher Gewichtung?“</p>
+    <p><strong>Durchführung.</strong> Qualität auf 100, Kosten und Geschwindigkeit auf null:
+    „Groß, hoher Aufwand“ gewinnt. Dann Qualität auf null und Kosten auf 100: „Klein, geringer
+    Aufwand“ gewinnt. Beide Ergebnisse sind richtig; sie beantworten verschiedene Fragen.</p>
+    <p><strong>Ausdrücklich sagen, dass die Profile Beispielwerte sind.</strong> Sie sind keine
+    Messungen an realen Modellen.</p>
+    <p><strong>Reasoning Effort</strong> bezeichnet zusätzliche Rechenzeit vor der Antwort. Er
+    hilft bei Aufgaben mit mehreren Denkschritten; bei Nachschlagen oder Umformatieren erhöht er
+    nur Kosten und Antwortzeit. Wie viel er hilft, hängt von Modell und Aufgabe ab und ist zu
+    testen.</p>
+    <p><strong>Eigener Test:</strong> fünf bis zehn reale Aufgaben mit bekanntem Ergebnis, je drei
+    Durchläufe, Kriterien vorher festlegen, Kosten und Dauer mitschreiben. Aufwand etwa ein halber
+    Tag.</p>
+    <p><em>In GitHub Copilot:</em> Für einen Vergleich dieselbe Aufgabe nacheinander mit zwei
+    Modellen aus der Auswahlliste ausführen, jeweils in einem neuen Chat.</p>
     <p>Kursbezug: Module 8.1 bis 8.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 21 · TOKENS VS CREDITS ============ -->
+<!-- ============ 24 · TOKENS UND CREDITS ============ -->
 <section class="slide">
-  <p class="eyebrow">8.4–8.5 · Die Einheiten</p>
-  <h2>Technische und kommerzielle Einheiten</h2>
+  <p class="eyebrow">Teil 2 · Kosten</p>
+  <h2>Tokens und Credits: zwei verschiedene Einheiten</h2>
   <figure style="margin:4px 0 0">
     <svg class="dgm" viewBox="0 0 1120 300" role="img"
       aria-label="Eine Kette von der Anweisung über mehrere Modell- und Tool-Aufrufe, die jeweils Eingabe-, zwischengespeicherte und Ausgabe-Tokens verbrauchen, zusammengefasst zu anbieterdefinierten Credits aus einem monatlichen Kontingent.">
@@ -985,116 +1227,129 @@ Leistung, Annahmen, Empfehlung.</pre>
       <rect class="box" x="902" y="100" width="196" height="96" rx="6"/>
       <text class="t-sm" x="1000" y="126" text-anchor="middle">Credits</text>
       <text class="t-xs" x="1000" y="146" text-anchor="middle">aus einem Kontingent entnommen</text>
-      <text class="t-xs" x="1000" y="163" text-anchor="middle">darüber hinaus berechnet</text>
-      <text class="t-xs t-dg" x="1000" y="183" text-anchor="middle">eine Richtlinie des Anbieters</text>
+      <text class="t-xs" x="1000" y="163" text-anchor="middle">Mehrverbrauch wird berechnet</text>
+      <text class="t-xs t-dg" x="1000" y="183" text-anchor="middle">eine Regel des Anbieters</text>
 
-      <text class="t-sm" x="20" y="280">Eine Anweisung ist nicht eine Anfrage, und eine Anfrage ist nicht ein Credit. Die Umrechnung zwischen den letzten beiden Kästen legt der Anbieter fest; sie kann sich ändern.</text>
+      <text class="t-sm" x="20" y="280">Eine Anweisung kann viele Modellaufrufe auslösen. Wie Tokens in Credits umgerechnet werden, legt der Anbieter fest; die Regel kann sich ändern.</text>
     </svg>
   </figure>
-  <div class="srcnote">Beispielhafte Anzahl der Aufrufe. Kursbezug: Module 8.4 und 8.5.</div>
+  <div class="note note--practice" style="margin-top:14px">
+    <p style="font-size:18px;max-width:none"><strong>Folge für die Praxis:</strong> Die Kosten einer Aufgabe
+    hängen davon ab, wie viele Modellaufrufe sie auslöst und wie viel Kontext jeder Aufruf
+    enthält, nicht von der Zahl Ihrer Anweisungen.</p>
+  </div>
+  <div class="srcnote">Beispielhafte Anzahl der Aufrufe. GitHub Copilot rechnet seit Juni 2026 in
+  GitHub AI Credits ab (Stand Oktober 2026). Kursbezug: Module 8.4 und 8.5.</div>
   <template class="notes"><div class="nt">
     <p><strong>Lernziel.</strong> Die Annahme auflösen, dass eine Frage einer Abrechnungseinheit
     entspricht.</p>
     <p>Der mittlere Kasten ist der überraschende Teil. In einem agentischen Ablauf kann ein
-    einzelner Satz zwanzig Modellaufrufe mit jeweils eigenem Kontext erzeugen, und das Kontingent
-    wird entsprechend belastet.</p>
-    <p><strong>Deutlich sagen, was ungeprüft ist.</strong> Die Abrechnungsangaben des Kurses
-    stammen aus Sekundärquellen; die primäre Dokumentation war beim Verfassen nicht erreichbar.
-    Vier Punkte kann nur die eigene Administration bestätigen: welches Abrechnungsmodell der
-    Vertrag vorsieht, wie hoch das Kontingent ist und ob es organisationsweit zusammengefasst wird,
-    ob eine Überschreitung zugelassen ist und was bei Erschöpfung geschieht, und welcher Bericht
-    den Verbrauch wem gegenüber ausweist.</p>
+    einzelner Satz etwa zwanzig Modellaufrufe mit jeweils eigenem Kontext auslösen, und das
+    Kontingent wird entsprechend belastet.</p>
+    <p><strong>GitHub Copilot</strong> (laut Ankündigung von GitHub vom April 2026, aus
+    Sekundärquellen): Seit dem 1. Juni 2026 wird in GitHub AI Credits abgerechnet; ein Credit
+    entspricht 0,01 US$, berechnet nach verbrauchten Tokens. Die Lizenzen enthalten ein monatliches
+    Kontingent. Was bei dessen Erschöpfung geschieht, hängt von den Einstellungen der Organisation
+    ab.</p>
+    <p><strong>Vier Fragen, die nur die eigene Administration beantworten kann:</strong> welches
+    Abrechnungsmodell der Vertrag vorsieht; wie hoch das Kontingent ist und ob es
+    organisationsweit zusammengefasst wird; ob eine Überschreitung zugelassen ist und was bei
+    Erschöpfung geschieht; welcher Bericht den Verbrauch ausweist und wer ihn sehen kann.</p>
     <p><em>Frage an das Publikum:</em> „Weiß jemand, was in unserer Organisation geschieht, wenn
-    das Kontingent aufgebraucht ist?“ Das Schweigen ist in der Regel die Aussage.</p>
+    das Kontingent aufgebraucht ist?“</p>
   </div></template>
 </section>
 
-<!-- ============ 22 · INTERACTIVE: COST ============ -->
+<!-- ============ 25 · KOSTEN EINER AUFGABE (INTERAKTIV) ============ -->
 <section class="slide">
-  <p class="eyebrow">8.6–8.7 · Interaktiv</p>
-  <h2>Dieselbe Aufgabe, vier Wege</h2>
+  <p class="eyebrow">Teil 2 · Kosten</p>
+  <h2>Kosten einer Aufgabe: vier Vorgehensweisen</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Die Lieferantenbewertung, kalkuliert mit beispielhaften Preisen. Die Zwischenspeicherung
-      umschalten und Vorgehen 4 beobachten.</p>
-      <p style="font-size:19px">Von etwa 410.000 Eingabe-Tokens des agentischen Durchlaufs sind
-      rund 375.000 zwischengespeicherte Lesevorgänge — der Kontext ändert sich zwischen den
-      Schritten kaum.</p>
+      <p>Die Lieferantenbewertung, gerechnet mit beispielhaften Preisen. Die Zwischenspeicherung
+      (Caching) umschalten und Vorgehen 4 beobachten.</p>
+      <p style="font-size:19px">Von etwa 410.000 Eingabe-Tokens der agentischen Schleife sind rund
+      375.000 zwischengespeichert, weil sich der Kontext zwischen den Schritten kaum ändert.
+      Zwischengespeicherte Tokens kosten etwa ein Zehntel.</p>
       <div class="note note--practice">
-        <p style="font-size:18px">Nun den Prüfregler verschieben. Die Prüfzeit übersteigt jeden
-        Wert in der Tabelle deutlich. Damit verschiebt sich die gesamte Fragestellung: Der
-        günstigste Weg ist derjenige, der die wenigsten Korrekturen erfordert, und nicht der mit
-        der kleinsten Token-Rechnung.</p>
+        <p style="font-size:18px">Den Prüfregler verschieben: Die Arbeitszeit für die Prüfung
+        übersteigt die Modellkosten um ein Vielfaches. Am günstigsten ist meist das Vorgehen, nach
+        dem am wenigsten korrigiert werden muss.</p>
       </div>
     </div>
     <div class="widget" data-widget="cost"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Zwei Aussagen in einem Widget: Die Zwischenspeicherung
-    bestimmt die agentischen Kosten, und die Modellkosten sind der kleine Posten neben der
-    Arbeitszeit.</p>
-    <p>Zuerst die Zwischenspeicherung abschalten. Vorgehen 4 steigt von etwa 0,37 $ auf etwa
-    1,38 $ — nahezu das Vierfache. Das ist das stärkste Argument dafür, Anweisungsdateien und
-    Prompt-Präfixe stabil zu halten.</p>
+    <p><strong>Lernziel.</strong> Zwei Aussagen mit einem Widget: Die Zwischenspeicherung bestimmt
+    die Kosten agentischer Abläufe, und die Modellkosten sind klein gegenüber der Arbeitszeit.</p>
+    <p>Zuerst die Zwischenspeicherung abschalten. Vorgehen 4 steigt von 0,365 $ auf 1,378 $, fast
+    das Vierfache. Deshalb sollten Anweisungsdateien und der Anfang von Prompts stabil bleiben:
+    Eine Änderung am Anfang macht den Zwischenspeicher für alles Folgende ungültig.</p>
     <p>Anschließend den Prüfregler auf 20 Minuten stellen. Bei einem Vollkostensatz von 60 $ je
-    Stunde sind das 20 $, etwa das Fünfzigfache der Modellkosten des ersten Vorgehens.</p>
+    Stunde sind das 20 $, etwa das 52-Fache der Modellkosten von Vorgehen 1.</p>
     <p><em>Frage:</em> „Lohnt es sich bei diesem Verhältnis, zwanzig Minuten in die Zusammenstellung
-    des Kontexts zu investieren, um eine Korrekturrunde zu sparen?“ Nahezu immer ja — das ist die
-    zentrale praktische Aussage des Nachmittags.</p>
-    <p><strong>Einschränkung.</strong> Die Preise sind bewusst gerundete Beispielwerte und keine
-    Preisliste. Das Verfahren übersteht eine Preisänderung, die Zahlen nicht.</p>
+    des Kontexts zu investieren, wenn dadurch eine Korrekturrunde entfällt?“ Fast immer ja. Das ist
+    eine der zentralen praktischen Aussagen von Teil 2.</p>
+    <p><strong>Einschränkung.</strong> Die Preise sind gerundete Beispielwerte und keine
+    Preisliste. Das Rechenverfahren bleibt gültig, wenn sich Preise ändern; die Zahlen nicht.</p>
+    <p>Kursbezug: Module 8.6 und 8.7.</p>
   </div></template>
 </section>
 
-<!-- ============ 23 · INTERACTIVE: CONTEXT ============ -->
+<!-- ============ 26 · KONTEXT (INTERAKTIV) ============ -->
 <section class="slide">
-  <p class="eyebrow">9.1–9.3 · Interaktiv</p>
-  <h2>Was das Modell tatsächlich sieht</h2>
+  <p class="eyebrow">Teil 2 · Kontext</p>
+  <h2>Kontext: was das Modell tatsächlich sieht</h2>
   <div class="cols cols--wide-right">
     <div>
-      <p>Die Quellen umschalten und beobachten, wie sich das Fenster füllt. Die eigene Frage ist
-      der schmale orange Streifen.</p>
+      <p>Die Quellen ein- und ausschalten und beobachten, wie sich das Kontextfenster füllt. Die
+      eigene Frage ist der schmale orange Streifen.</p>
       <p style="font-size:19px"><em>Drei Herstellerberichte (vollständig)</em> einschalten und
-      <em>Nur die entnommenen Abschnitte</em> abschalten. Alles passt hinein — und die vier
-      maßgeblichen Absätze liegen nun zwischen vierundneunzigtausend Tokens, die es nicht sind.</p>
+      <em>Nur die entnommenen Abschnitte</em> ausschalten. Die Berichte passen in das Fenster, aber
+      die maßgeblichen Abschnitte sind nun ein kleiner Teil von rund 117.000 Tokens.</p>
       <div class="note">
-        <p style="font-size:18px">Eine angegebene Kontextlänge beschreibt, was ein System
-        entgegennimmt. Wie zuverlässig es Material an beliebiger Stelle darin verwendet, ist eine
-        andere Frage; der Unterschied hängt von Modell und Aufgabe ab.</p>
+        <p style="font-size:18px">Die angegebene Größe eines Kontextfensters sagt, wie viel ein
+        System annimmt, nicht, wie zuverlässig es alles darin verwendet. Angaben in der Mitte
+        langer Kontexte werden am unzuverlässigsten gefunden.</p>
       </div>
     </div>
     <div class="widget" data-widget="context"></div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Zeigen, dass gezielte Auswahl besser ist als Anhäufung, und
-    zwar aus beiden Gründen: Kosten und Zuverlässigkeit.</p>
-    <p>Den Wechsel vorführen. Vollständige Berichte: etwa 116.000 Tokens, die Frage bei 0,1 Prozent
-    des Kontexts. Entnommene Abschnitte: etwa 22.000 Tokens für dieselbe Frage. Je Anfrage
-    fünfzehnmal günstiger, und die maßgeblichen Abschnitte stehen nicht mehr in Konkurrenz zum
-    Rest.</p>
-    <p><strong>Bei der Erklärung genau bleiben.</strong> Nicht sagen, die Attention-Gewichte
-    verteilten sich mit wachsendem Kontext gleichmäßig — das tun sie nicht. Beobachtet wird, dass
-    das Auffinden einer bestimmten Angabe mit zunehmender Eingabelänge unzuverlässiger wird und
-    dass die Position eine Rolle spielt, wobei die Mitte eines langen Kontexts der schwächste
-    Bereich ist. Die beitragenden Faktoren werden weiterhin untersucht.</p>
-    <p><em>Praktischer Abschluss:</em> Ein erkundender erster Durchgang über das gesamte Material
-    ist sinnvoll; der eigentliche Arbeitsdurchgang sollte dessen Ergebnis verwenden.</p>
+    <p><strong>Lernziel.</strong> Zeigen, dass gezielte Auswahl besser ist als Anhäufung, und zwar
+    aus zwei Gründen: Kosten und Zuverlässigkeit.</p>
+    <p>Den Wechsel vorführen. Vollständige Berichte: 116.720 Tokens, die Frage macht 0,1 Prozent
+    davon aus. Entnommene Abschnitte: 22.720 Tokens. Die Anfrage wird dadurch etwa fünfmal
+    günstiger; der Anteil der Berichte sinkt von 100.000 auf 6.000 Tokens, und die maßgeblichen
+    Abschnitte stehen nicht mehr zwischen viel anderem Material.</p>
+    <p><strong>Bei der Erklärung genau bleiben.</strong> Nicht sagen, die Attention verteile sich
+    mit wachsendem Kontext gleichmäßig; das tut sie nicht. Beobachtet wird, dass das Auffinden
+    einer bestimmten Angabe mit zunehmender Länge unzuverlässiger wird und dass die Position eine
+    Rolle spielt, wobei die Mitte der schwächste Bereich ist. Die Ursachen werden noch
+    untersucht.</p>
+    <p><em>Praktisch:</em> Ein erster Durchgang über das gesamte Material zur Orientierung ist
+    sinnvoll. Der eigentliche Arbeitsdurchgang sollte mit dessen Ergebnis arbeiten, also mit den
+    entnommenen Abschnitten.</p>
+    <p><em>In GitHub Copilot:</em> Dateien gezielt mit <span class="mono">#</span> anhängen statt
+    ganze Ordner; bei einem neuen Thema einen neuen Chat beginnen, weil der bisherige Dialog
+    mitgesendet wird.</p>
+    <p>Kursbezug: Module 9.1 bis 9.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 24 · INTERACTION MODES ============ -->
+<!-- ============ 27 · ARBEITSMODI ============ -->
 <section class="slide">
-  <p class="eyebrow">10.2–10.3 · Autonomie</p>
-  <h2>Wo Ihr Urteil einfließt</h2>
-  <figure style="margin:4px 0 0;flex:1">
+  <p class="eyebrow">Teil 2 · Autonomie</p>
+  <h2>Arbeitsmodi: wie viel das System selbstständig tut</h2>
+  <figure style="margin:4px 0 0">
     <svg class="dgm" viewBox="0 0 1120 350" role="img"
-      aria-label="Vier Arbeitsmodi nach Autonomiegrad geordnet, jeweils mit der Stelle, an der menschliches Urteil einfließt: im Dialog jede Antwort, bei Planung der Plan vor der Ausführung, interaktiv jede Aktion, autonom nur das Endergebnis.">
+      aria-label="Vier Arbeitsmodi nach Grad der Autonomie geordnet, jeweils mit der Stelle, an der ein Mensch prüft: im Dialog jede Antwort, bei Planung der Plan vor der Ausführung, interaktiv jede Aktion, autonom nur das Endergebnis.">
       <g><text class="t-sm" x="20" y="72">Dialog</text>
         <rect class="chip" x="200" y="54" width="100" height="32" rx="4"/><text class="t-xs" x="250" y="75" text-anchor="middle">Frage</text>
         <line class="flow" x1="302" y1="70" x2="316" y2="70"/><polygon class="head" points="316,65 326,70 316,75"/>
         <rect class="chip" x="328" y="54" width="100" height="32" rx="4"/><text class="t-xs" x="378" y="75" text-anchor="middle">Antwort</text>
         <circle class="head-a" cx="448" cy="70" r="8"/>
-        <text class="t-xs" x="466" y="74">Sie beurteilen jede Antwort · nichts handelt</text></g>
+        <text class="t-sm" x="466" y="74">Sie beurteilen jede Antwort · es werden keine Aktionen ausgeführt</text></g>
       <g><text class="t-sm" x="20" y="146">Planung</text>
         <rect class="chip" x="200" y="128" width="100" height="32" rx="4"/><text class="t-xs" x="250" y="149" text-anchor="middle">Aufgabe</text>
         <line class="flow" x1="302" y1="144" x2="316" y2="144"/><polygon class="head" points="316,139 326,144 316,149"/>
@@ -1102,7 +1357,7 @@ Leistung, Annahmen, Empfehlung.</pre>
         <circle class="head-a" cx="448" cy="144" r="8"/>
         <line class="flow" x1="460" y1="144" x2="484" y2="144"/><polygon class="head" points="484,139 494,144 484,149"/>
         <rect class="chip" x="496" y="128" width="120" height="32" rx="4"/><text class="t-xs" x="556" y="149" text-anchor="middle">dann ausführen</text>
-        <text class="t-xs" x="632" y="148">Sie beurteilen den Plan — günstig, vor der Arbeit</text></g>
+        <text class="t-sm" x="632" y="148">Sie beurteilen den Plan vor der Ausführung</text></g>
       <g><text class="t-sm" x="20" y="220">Interaktiv</text>
         <rect class="chip" x="200" y="202" width="74" height="32" rx="4"/><text class="t-xs" x="237" y="223" text-anchor="middle">Schritt</text>
         <circle class="head-a" cx="288" cy="218" r="7"/>
@@ -1112,40 +1367,52 @@ Leistung, Annahmen, Empfehlung.</pre>
         <circle class="head-a" cx="492" cy="218" r="7"/>
         <rect class="chip" x="506" y="202" width="74" height="32" rx="4"/><text class="t-xs" x="543" y="223" text-anchor="middle">Schritt</text>
         <circle class="head-a" cx="594" cy="218" r="7"/>
-        <text class="t-xs" x="614" y="222">Sie beurteilen jede Aktion; Fehler zeigen sich früh</text></g>
+        <text class="t-sm" x="614" y="222">Sie beurteilen jede Aktion; Fehler zeigen sich früh</text></g>
       <g><text class="t-sm" x="20" y="294">Autonom</text>
         <rect class="warn" x="200" y="276" width="394" height="32" rx="4"/>
         <text class="t-xs" x="397" y="297" text-anchor="middle">Schritt · Schritt · Schritt · Schritt · Schritt · Schritt · Schritt</text>
         <circle class="head-a" cx="608" cy="292" r="8"/>
-        <text class="t-xs" x="626" y="290">Sie beurteilen nur das Ergebnis</text>
-        <text class="t-xs t-dg" x="626" y="306">Fehler verstärken sich unbemerkt</text></g>
-      <text class="t-sm" x="20" y="338">Die türkisen Punkte markieren die Stellen, an denen ein Fehler günstig auffällt. Mehr Autonomie verschiebt sie ans Ende.</text>
+        <text class="t-sm" x="626" y="289">Sie beurteilen nur das Ergebnis</text>
+        <text class="t-sm t-dg" x="626" y="306">Fehler können sich unbemerkt fortsetzen</text></g>
+      <text class="t-sm" x="20" y="338">Die türkisen Punkte zeigen, wo Sie prüfen. Je mehr Autonomie, desto später wird ein Fehler bemerkt.</text>
     </svg>
   </figure>
+  <p class="tiny" style="margin:6px 0 0;font-size:15px;max-width:none">In GitHub Copilot
+  entspricht <em>Ask</em> dem Dialog und <em>Plan</em> der Planung. <em>Agent</em> arbeitet
+  interaktiv, solange Sie Aktionen einzeln freigeben, und autonom, wenn Aktionen automatisch
+  freigegeben werden.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Eine von Produktbezeichnungen unabhängige Begrifflichkeit für
-    Autonomie bereitstellen und eine Grundlage für die Auswahl.</p>
-    <p><strong>Sechs Kriterien für die Auswahl:</strong> wie eindeutig die Aufgabe ist, wie
-    umkehrbar die Aktionen sind, welche Kosten ein Fehler verursacht, ob der Erfolg automatisch
-    geprüft werden kann, worauf die Tools zugreifen können und wie viel nicht dokumentiertes
-    organisatorisches Urteilsvermögen erforderlich ist.</p>
-    <p><em>Zwei Grundregeln, ausdrücklich nennen:</em> mit dem geringsten Autonomiegrad beginnen,
-    der die Aufgabe erfüllen kann, und erst erhöhen, wenn sich die Aufgabe als Routine erweist; und
-    für alles, was zum ersten Mal ausgeführt wird, den interaktiven Modus verwenden, denn der Zweck
-    eines ersten Durchlaufs ist festzustellen, an welcher Stelle der Ablauf fehlschlägt.</p>
-    <p><em>Fallbeispiel für das Publikum:</em> „Eine E-Mail entwerfen, die zwei Lieferanten die
-    Absage mitteilt — welcher Modus?“ Entscheidend ist die Nicht-Umkehrbarkeit beim Versand, nicht
-    die Schwierigkeit des Entwurfs.</p>
+    <p><strong>Lernziel.</strong> Eine von Produktnamen unabhängige Einteilung nach Autonomie
+    bereitstellen und eine Grundlage für die Auswahl.</p>
+    <p><strong>Sechs Kriterien für die Auswahl:</strong> wie eindeutig die Aufgabe ist; wie
+    umkehrbar die Aktionen sind; was ein Fehler kostet; ob sich der Erfolg automatisch prüfen
+    lässt; worauf die Tools zugreifen können; wie viel nicht dokumentiertes Urteilsvermögen der
+    Organisation nötig ist.</p>
+    <p><em>Zwei Grundregeln, ausdrücklich nennen:</em> mit dem geringsten Grad an Autonomie
+    beginnen, der die Aufgabe erfüllen kann, und ihn erst erhöhen, wenn sich die Aufgabe als
+    Routine erwiesen hat. Alles, was zum ersten Mal ausgeführt wird, interaktiv ausführen; ein
+    erster Durchlauf soll zeigen, an welcher Stelle der Ablauf fehlschlägt.</p>
+    <p><em>Fallbeispiel für das Publikum:</em> „Eine E-Mail entwerfen, die zwei Lieferanten absagt
+    — welcher Modus?“ Entscheidend ist, dass sich der Versand nicht rückgängig machen lässt, nicht
+    wie schwierig der Entwurf ist.</p>
+    <p><em>In GitHub Copilot</em> (Stand Oktober 2026; Bezeichnungen ändern sich): Ask
+    beantwortet Fragen und ändert nichts. Plan erstellt einen Plan, den man vor der Ausführung
+    liest, und übergibt ihn dann an den Agent. Agent liest und ändert Dateien und führt Befehle
+    aus; vor bestimmten Aktionen, etwa Terminalbefehlen, fragt Copilot nach Freigabe. Wie viel
+    automatisch freigegeben wird, ist einstellbar und kann von der Organisation vorgegeben sein.
+    Vor einem Agent-Lauf sicherstellen, dass sich Änderungen rückgängig machen lassen, etwa durch
+    eine Kopie oder eine Versionsverwaltung.</p>
+    <p>Kursbezug: Module 10.2 und 10.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 25 · ORCHESTRATION ============ -->
+<!-- ============ 28 · ZERLEGUNG ============ -->
 <section class="slide">
-  <p class="eyebrow">11 · Zerlegung</p>
-  <h2>Die Aufgabe aufteilen</h2>
-  <figure style="margin:0;flex:1">
-    <svg class="dgm" viewBox="0 0 1120 370" role="img"
-      aria-label="Ein orchestrierter Ablauf: Ein Planungsschritt erzeugt eine Spezifikation, die gelesen wird; drei Extraktionsteilaufgaben laufen parallel auf einem kleinen Modell; ein Tool berechnet Kennzahlen aus der Tabelle; ein Zusammenführungsschritt auf einem leistungsfähigen Modell integriert alles.">
+  <p class="eyebrow">Teil 2 · Autonomie</p>
+  <h2>Zerlegung: eine Aufgabe in Teilaufgaben aufteilen</h2>
+  <figure style="margin:0">
+    <svg class="dgm" viewBox="0 40 1120 322" role="img"
+      aria-label="Ein zerlegter Ablauf: Ein Planungsschritt erzeugt eine Spezifikation, die gelesen wird; drei Extraktionsteilaufgaben laufen parallel auf einem kleinen Modell; ein Tool berechnet Kennzahlen aus der Tabelle; ein Zusammenführungsschritt auf einem leistungsfähigen Modell fügt alles zusammen.">
       <rect class="chip" x="20" y="54" width="130" height="52" rx="5"/>
       <text class="t-sm" x="85" y="76" text-anchor="middle">Die Aufgabe</text>
       <text class="t-xs" x="85" y="93" text-anchor="middle">+ Ihr Kontext</text>
@@ -1157,7 +1424,7 @@ Leistung, Annahmen, Empfehlung.</pre>
       <rect class="box" x="184" y="154" width="376" height="36" rx="5"/>
       <text class="t-xs" x="372" y="177" text-anchor="middle">Plan · Spezifikation der Teilaufgaben · Abnahmekriterien</text>
       <circle class="head-a" cx="586" cy="172" r="9"/>
-      <text class="t-xs t-ac" x="604" y="169">das lesen Sie</text>
+      <text class="t-xs t-ac" x="604" y="169">das lesen Sie,</text>
       <text class="t-xs" x="604" y="184">bevor etwas ausgeführt wird</text>
 
       <text class="t-xs" x="340" y="214" text-anchor="middle">keine Abhängigkeiten untereinander — parallel ausführbar</text>
@@ -1184,7 +1451,7 @@ Leistung, Annahmen, Empfehlung.</pre>
       <polygon class="head" points="566,296 571,306 576,296"/>
       <rect class="hl" x="40" y="308" width="606" height="46" rx="5"/>
       <text class="t-sm" x="343" y="328" text-anchor="middle">Zusammenführung — abgleichen, vergleichen, entwerfen</text>
-      <text class="t-xs" x="343" y="344" text-anchor="middle">leistungsfähiges Modell · der Beurteilungsschritt · hier scheitert zerlegte Arbeit meist</text>
+      <text class="t-xs" x="343" y="344" text-anchor="middle">leistungsfähiges Modell · erfordert Urteilsvermögen · hier entstehen die meisten Fehler</text>
 
       <rect class="warn" x="680" y="224" width="300" height="64" rx="5"/>
       <text class="t-xs t-dg" x="830" y="248" text-anchor="middle">Was jede Teilaufgabe NICHT weiß</text>
@@ -1192,115 +1459,134 @@ Leistung, Annahmen, Empfehlung.</pre>
       <text class="t-xs" x="830" y="281" text-anchor="middle">Spezifikation geschrieben hat</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="font-size:18px;max-width:none"><strong>Folge für die Praxis:</strong> Zerlegen lohnt sich, wenn die
+    Aufgabe zu groß für einen Kontext ist, wenn Teilaufgaben sehr unterschiedlich schwer sind, wenn
+    Teile parallel laufen können oder wenn sich die Arbeit wiederholt. Sonst liefert ein einzelnes
+    Modell mit gut zusammengestelltem Kontext oft das bessere Ergebnis.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Zerlegung als Verfahren mit tatsächlichem Zusatzaufwand
-    darstellen und nicht als offensichtlich überlegen.</p>
-    <p>Zwei Elemente des Diagramms sind besonders wichtig. Ein Kasten enthält überhaupt kein
-    Modell — einen Median über zwölftausend Zeilen zu berechnen ist Arithmetik, und ein Teil des
-    Nutzens der Planung besteht darin zu erkennen, welche Schritte ohne Modell auskommen sollten.
-    Der rote Kasten benennt den häufigsten Fehlerfall: Jede Teilaufgabe weiß nur das, was in ihrer
-    Spezifikation steht.</p>
-    <p><strong>Die Kosten, offen benannt:</strong> Kontext wird nicht übertragen, die Spezifikation
-    ist eigener Aufwand, Fehler setzen sich ohne erneute Prüfung fort, die Zusammenführung ist ein
-    Beurteilungsschritt, der häufig als Routine behandelt wird, und sequenzielle Abhängigkeiten
-    erhöhen die Durchlaufzeit.</p>
-    <p><em>Empfehlung:</em> zerlegen, wenn die Aufgabe übersteigt, was ein Kontext zuverlässig
-    aufnimmt, wenn sich Teilaufgaben deutlich im Schwierigkeitsgrad unterscheiden, wenn Teile
-    parallel laufen können oder wenn sich die Arbeit wiederholt. Ein einzelnes leistungsfähiges
-    Modell mit sorgfältig zusammengestelltem Kontext liefert häufiger bessere Ergebnisse als eine
-    schlecht orchestrierte Kette.</p>
+    <p><strong>Lernziel.</strong> Zerlegung als Verfahren mit eigenem Aufwand darstellen und nicht
+    als selbstverständlich besser.</p>
+    <p>Zwei Elemente des Diagramms sind besonders wichtig. Ein Kasten enthält kein Modell: Einen
+    Median über zwölftausend Zeilen zu berechnen ist Arithmetik, die ein Tool zuverlässig
+    erledigt. Ein Teil des Nutzens der Planung besteht darin zu erkennen, welche Schritte ohne
+    Modell auskommen. Der rote Kasten zeigt den häufigsten Fehler: Jede Teilaufgabe weiß nur, was
+    in ihrer Spezifikation steht.</p>
+    <p><strong>Kosten der Zerlegung:</strong> Kontext wird nicht übertragen; die Spezifikation
+    kostet eigenen Aufwand; Fehler setzen sich ohne erneute Prüfung fort; die Zusammenführung
+    erfordert Urteilsvermögen, wird aber oft als Routine behandelt; aufeinander aufbauende Schritte
+    verlängern die Durchlaufzeit.</p>
+    <p><em>Empfehlung:</em> zerlegen, wenn die Aufgabe mehr umfasst, als ein Kontext zuverlässig
+    aufnimmt; wenn sich Teilaufgaben deutlich im Schwierigkeitsgrad unterscheiden; wenn Teile
+    parallel laufen können; oder wenn sich die Arbeit wiederholt. Ein einzelnes leistungsfähiges
+    Modell mit sorgfältig zusammengestelltem Kontext liefert häufig bessere Ergebnisse als eine
+    schlecht abgestimmte Kette.</p>
+    <p><em>In GitHub Copilot:</em> Der Plan-Modus übernimmt den Planungsschritt; der Plan lässt
+    sich lesen und ändern, bevor der Agent ihn ausführt.</p>
+    <p>Kursbezug: Modul 11.</p>
   </div></template>
 </section>
 
-<!-- ============ 26 · GUIDANCE VS ENFORCEMENT ============ -->
+<!-- ============ 29 · DREI ARTEN VON KONTROLLE ============ -->
 <section class="slide">
-  <p class="eyebrow">10.5 · Drei Arten von Kontrolle</p>
-  <h2>Bitten, Anordnen, Verhindern</h2>
-  <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:24px">
+  <p class="eyebrow">Teil 2 · Kontrolle</p>
+  <h2>Drei Arten von Kontrolle</h2>
+  <div class="cols" style="grid-template-columns:1fr 1fr 1fr;gap:24px;flex:none">
     <div class="card">
       <h3 style="color:var(--accent)">Anweisung</h3>
-      <p>Anweisungen, Prompts, Voreinstellungen, die Vorgaben in einem Skill.</p>
+      <p>Prompts, Anweisungsdateien, Vorgaben in einem Skill.</p>
       <p style="margin-top:10px"><strong>Bestimmt, was wahrscheinlich ist.</strong></p>
-      <p style="margin-top:10px;font-size:15.5px">Steht in Konkurrenz um Aufmerksamkeit, kann
-      überwogen werden; die Befolgung ist eine Tendenz.</p>
+      <p style="margin-top:10px;font-size:15.5px">Konkurriert mit anderem Inhalt im Kontext und
+      kann überlagert werden. Das Modell befolgt sie meist, aber nicht sicher.</p>
     </div>
     <div class="card">
       <h3 style="color:var(--practice)">Orchestrierung</h3>
       <p>Die Abfolge der Schritte, welches Modell was ausführt, wann die Schleife endet.</p>
       <p style="margin-top:10px"><strong>Bestimmt, was üblicherweise geschieht.</strong></p>
-      <p style="margin-top:10px;font-size:15.5px">Macht Ergebnisse deutlich wahrscheinlicher oder
-      unwahrscheinlicher, ohne sie unmöglich zu machen.</p>
+      <p style="margin-top:10px;font-size:15.5px">Macht Ergebnisse wahrscheinlicher oder
+      unwahrscheinlicher, ohne sie auszuschließen.</p>
     </div>
     <div class="card" style="background:var(--danger-soft);border-color:var(--danger)">
       <h3 style="color:var(--danger)">Technische Beschränkung</h3>
-      <p>Zugangsdaten, Tool-Berechtigungen, Freigabeschritte, Sandboxes.</p>
+      <p>Zugriffsrechte, Tool-Berechtigungen, Freigabeschritte, Sandboxes.</p>
       <p style="margin-top:10px"><strong>Bestimmt, was möglich ist.</strong></p>
-      <p style="margin-top:10px;font-size:15.5px">Gilt unabhängig davon, wozu das Modell veranlasst
-      wird.</p>
+      <p style="margin-top:10px;font-size:15.5px">Gilt unabhängig davon, was im Kontext
+      steht.</p>
     </div>
   </div>
-  <div class="note note--warn" style="margin-top:28px">
-    <p><em>Verändere keine Dateien</em> in einem Prompt ist eine Anweisung: meist befolgt und
-    durch einen langen Kontext oder durch Text in einem Dokument verdrängbar. Der Betrieb mit
-    Nur-Lese-Zugriff ist eine technische Beschränkung: Eine Änderung wird nicht abgelehnt, sie ist
-    nicht verfügbar. In einer Konfigurationsübersicht sehen beide gleich aus und sagen völlig
-    Verschiedenes zu.</p>
+  <div class="note note--warn" style="margin-top:26px">
+    <p style="max-width:none">Beispiel: <em>Verändere keine Dateien</em> in einem Prompt ist eine Anweisung. Sie wird
+    meist befolgt, kann aber durch einen langen Kontext oder durch Text in einem Dokument verdrängt
+    werden. Ein Nur-Lese-Zugriff ist eine technische Beschränkung: Eine Änderung ist dann nicht
+    möglich.</p>
   </div>
+  <p class="tiny" style="margin-top:12px;font-size:15px;max-width:none">In GitHub Copilot: Eine
+  Anweisungsdatei ist eine Anweisung. Die Freigabe von Tool-Aufrufen und Terminalbefehlen ist eine
+  technische Beschränkung.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Den folgenreichsten Kategorienfehler im Umgang mit diesen
-    Systemen vermeiden — die Annahme, ein System sei beschränkt, obwohl es nur gebeten wird.</p>
-    <p>Das Beispiel langsam durchgehen. Die meisten haben eine solche Anweisung bereits
-    geschrieben und sie für eine Kontrolle gehalten.</p>
-    <p><em>Frage zu jeder Anforderung in der eigenen Arbeit:</em> Welche der drei Arten ist hier
-    erforderlich? Eine Formatvorgabe ist eine Anweisung und braucht nicht mehr. Eine Prüfung, die
-    jedes Mal stattfinden muss, ist Orchestrierung. Alles, dessen Verletzung teuer oder nicht
-    umkehrbar wäre, gehört zur technischen Beschränkung.</p>
+    <p><strong>Lernziel.</strong> Einen häufigen und folgenreichen Denkfehler vermeiden:
+    anzunehmen, ein System sei beschränkt, obwohl es nur angewiesen wurde.</p>
+    <p>Das Beispiel langsam durchgehen. Viele haben eine solche Anweisung schon geschrieben und sie
+    für eine Kontrolle gehalten.</p>
+    <p><em>Für jede Anforderung in der eigenen Arbeit fragen,</em> welche der drei Arten nötig
+    ist. Eine Formatvorgabe ist eine Anweisung und braucht nicht mehr. Eine Prüfung, die jedes Mal
+    stattfinden muss, gehört in die Orchestrierung. Alles, dessen Verletzung teuer oder nicht
+    umkehrbar wäre, braucht eine technische Beschränkung.</p>
+    <p><em>In GitHub Copilot:</em> Eine Zeile in
+    <span class="mono">.github/copilot-instructions.md</span> ersetzt keine Freigabe-Einstellung.
+    Was nicht geschehen darf, wird über Berechtigungen, Freigaben und Vorgaben der Organisation
+    ausgeschlossen.</p>
     <p>Kursbezug: Modul 10.5.</p>
   </div></template>
 </section>
 
-<!-- ============ 27 · AUTOMATION LADDER ============ -->
+<!-- ============ 30 · WIE VIEL STRUKTUR ============ -->
 <section class="slide">
-  <p class="eyebrow">13.6 · Angemessener Aufwand</p>
+  <p class="eyebrow">Teil 2 · Kontrolle</p>
   <h2>Wie viel Struktur sich lohnt</h2>
   <table style="margin-top:8px;font-size:15.5px">
     <thead><tr><th>Vorgehen</th><th>Einrichtung</th><th>Angemessen, wenn</th></tr></thead>
     <tbody>
       <tr><td>Einzelne Anfrage im Dialog</td><td>Keine</td><td>Einmalige Arbeit, oder das Ziel ist noch offen</td></tr>
-      <tr><td>Strukturierte Aufgabenspezifikation</td><td>Minuten</td><td>Es darauf ankommt und der erste Versuch fehlschlug</td></tr>
+      <tr><td>Strukturierte Aufgabenbeschreibung</td><td>Minuten</td><td>Es auf das Ergebnis ankommt und der erste Versuch fehlschlug</td></tr>
       <tr><td>Gespeicherte Prompt-Vorlage</td><td>&lt; 1 Stunde</td><td>Dieselbe Anfrage in gleicher Form wiederkehrt</td></tr>
       <tr><td>Dauerhafte Anweisungen</td><td>Eine Stunde + Pflege</td><td>Eine Vorgabe für viele Aufgaben gilt</td></tr>
       <tr><td>Wiederverwendbarer Skill</td><td>Halber Tag + Pflege</td><td>Ein mehrstufiges Verfahren regelmäßig genutzt wird</td></tr>
-      <tr><td>Agent mit Tool-Zugriff</td><td>Einrichtung + Berechtigungen</td><td>Aktionen nötig sind, die Text nicht leisten kann</td></tr>
+      <tr><td>Agent mit Tool-Zugriff</td><td>Einrichtung + Berechtigungen</td><td>Aktionen nötig sind, die Text allein nicht leisten kann</td></tr>
       <tr><td>Mehrere abgestimmte Agenten</td><td>Erheblich</td><td>Teilaufgaben sich stark unterscheiden oder parallel laufen</td></tr>
-      <tr><td><strong>Herkömmliche Software</strong></td><td>Oft geringer als erwartet</td><td><strong>Das Verfahren exakt und die Eingaben strukturiert sind</strong></td></tr>
+      <tr><td><strong>Herkömmliche Software</strong></td><td>Oft geringer als erwartet</td><td><strong>Das Verfahren exakt festliegt und die Eingaben strukturiert sind</strong></td></tr>
     </tbody>
   </table>
-  <p class="tiny" style="margin-top:10px;font-size:15.5px;color:var(--ink-soft)">Ein
+  <p class="tiny" style="margin-top:10px;font-size:15.5px;color:var(--ink-soft);max-width:none">Ein
   Monatsbericht, der vier feste Felder aus einer gleichbleibenden Datei entnimmt, benötigt kein
-  Sprachmodell: Eine Formel oder ein kurzes Skript leistet das deterministisch, ohne Kosten je
-  Durchlauf und mit jedes Mal demselben Ergebnis.</p>
+  Sprachmodell. Eine Formel oder ein kurzes Skript erledigt das mit jedes Mal demselben Ergebnis
+  und ohne Kosten je Durchlauf.</p>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Der Annahme entgegenwirken, aufwendigere Automatisierung sei
-    besser, und es als zulässige Antwort darstellen, gar kein Modell zu verwenden.</p>
-    <p>Die letzte Zeile wird vom Publikum regelmäßig übergangen. Sprachmodelle rechtfertigen ihre
-    Kosten, wo Eingaben unregelmäßig sind, Urteilsvermögen erforderlich ist oder die Aufgabe sich
-    nicht vorab exakt spezifizieren lässt. Außerhalb dieser Bedingungen ist herkömmliche
-    Automatisierung zuverlässiger und meist günstiger.</p>
-    <p><strong>Die entscheidenden Faktoren:</strong> Häufigkeit, Variabilität der Eingaben,
-    Fehlerkosten, Anzahl der Beteiligten und die Frage, ob die Aufgabe stabil genug ist, um
-    festgeschrieben zu werden.</p>
+    <p><strong>Lernziel.</strong> Der Annahme entgegenwirken, mehr Automatisierung sei immer
+    besser. Gar kein Sprachmodell zu verwenden ist eine zulässige Antwort.</p>
+    <p>Die letzte Zeile wird regelmäßig übersehen. Ein Sprachmodell lohnt sich, wo Eingaben
+    unregelmäßig sind, Urteilsvermögen nötig ist oder sich die Aufgabe nicht vorab genau festlegen
+    lässt. Sonst ist herkömmliche Automatisierung zuverlässiger und meist günstiger.</p>
+    <p><strong>Die entscheidenden Faktoren:</strong> Häufigkeit, Unterschiedlichkeit der Eingaben,
+    Fehlerkosten, Zahl der Beteiligten und die Frage, ob die Aufgabe stabil genug ist, um sie
+    festzuschreiben.</p>
     <p><em>Zwei Fehlentwicklungen benennen:</em> aufwendige Automatisierung für eine Arbeit, die
     dreimal im Jahr anfällt, und ein umständlicher manueller Ablauf, der vierzigmal im Monat
     wiederholt wird.</p>
+    <p><em>In GitHub Copilot</em> (Stand Oktober 2026): Eine gespeicherte Prompt-Vorlage ist eine
+    Prompt-Datei (<span class="mono">*.prompt.md</span>); dauerhafte Anweisungen stehen in
+    Anweisungsdateien; der Agent-Modus arbeitet mit Tools und lässt sich über MCP-Server erweitern.
+    Skills und eigene Agenten sind je nach Version verfügbar.</p>
+    <p>Kursbezug: Modul 13.6.</p>
   </div></template>
 </section>
 
-<!-- ============ 28 · UNTRUSTED MATERIAL ============ -->
+<!-- ============ 31 · PROMPT INJECTION ============ -->
 <section class="slide">
-  <p class="eyebrow">14.4 · Umgang mit Material aus externer Quelle</p>
-  <h2>Ein Dokument kann die Maschine ansprechen</h2>
-  <figure style="margin:0;flex:1">
+  <p class="eyebrow">Teil 2 · Sicherheit</p>
+  <h2>Prompt Injection: Anweisungen in Dokumenten</h2>
+  <figure style="margin:0">
     <svg class="dgm" viewBox="0 0 1120 320" role="img"
       aria-label="Ein Lieferant verbirgt eine Anweisung im eigenen Bericht; der Assistent öffnet das Dokument, der verborgene Text gelangt in denselben Kontext wie die Anweisung der auswertenden Person, und die entstehende Vorlage wird zugunsten des Lieferanten beeinflusst.">
       <rect class="warn" x="20" y="40" width="190" height="78" rx="5"/>
@@ -1310,9 +1596,9 @@ Leistung, Annahmen, Empfehlung.</pre>
       <text class="t-xs" x="115" y="112" text-anchor="middle">Text oder ein Anhang</text>
       <line class="flow-d" x1="212" y1="78" x2="236" y2="78"/><polygon class="head-d" points="236,73 246,78 236,83"/>
       <rect class="chip" x="248" y="40" width="190" height="78" rx="5"/>
-      <text class="t-sm" x="343" y="64" text-anchor="middle">2 · Wirkt unauffällig</text>
-      <text class="t-xs" x="343" y="82" text-anchor="middle">beim Lesen oder Drucken —</text>
-      <text class="t-xs" x="343" y="98" text-anchor="middle">niemand bemerkt etwas</text>
+      <text class="t-sm" x="343" y="64" text-anchor="middle">2 · Nicht sichtbar</text>
+      <text class="t-xs" x="343" y="82" text-anchor="middle">beim Lesen oder Drucken</text>
+      <text class="t-xs" x="343" y="98" text-anchor="middle">fällt nichts auf</text>
       <line class="flow" x1="440" y1="78" x2="464" y2="78"/><polygon class="head" points="464,73 474,78 464,83"/>
       <rect class="chip" x="476" y="40" width="190" height="78" rx="5"/>
       <text class="t-sm" x="571" y="64" text-anchor="middle">3 · Sie fragen</text>
@@ -1327,132 +1613,145 @@ Leistung, Annahmen, Empfehlung.</pre>
       <polygon class="head" points="566,168 571,178 576,168"/>
 
       <rect class="box" x="248" y="180" width="646" height="76" rx="5"/>
-      <text class="t-ttl" x="268" y="202">5 · DER KONTEXT — EINE SEQUENZ, KEINE GRENZE</text>
+      <text class="t-ttl" x="268" y="202">5 · DER KONTEXT: EINE FOLGE VON TOKENS OHNE HERKUNFTSANGABE</text>
       <rect class="chip" x="266" y="210" width="280" height="34" rx="4"/>
       <text class="t-xs" x="406" y="232" text-anchor="middle">Ihre Anweisung</text>
       <rect class="warn" x="556" y="210" width="320" height="34" rx="4"/>
-      <text class="t-xs" x="716" y="226" text-anchor="middle">der verborgene Text des Lieferanten — gleicher</text>
-      <text class="t-xs" x="716" y="240" text-anchor="middle">Kanal, gleicher Status, nicht unterscheidbar</text>
+      <text class="t-xs" x="716" y="226" text-anchor="middle">der verborgene Text des Lieferanten: für das</text>
+      <text class="t-xs" x="716" y="240" text-anchor="middle">Modell nicht von Ihrer Anweisung zu unterscheiden</text>
 
       <rect class="warn" x="20" y="180" width="190" height="76" rx="5"/>
-      <text class="t-xs t-dg" x="115" y="204" text-anchor="middle">Nichts wurde kompromittiert.</text>
-      <text class="t-xs" x="115" y="222" text-anchor="middle">Nichts wurde entwendet.</text>
-      <text class="t-xs" x="115" y="238" text-anchor="middle">Die Vorlage ist lediglich</text>
-      <text class="t-xs" x="115" y="252" text-anchor="middle">falsch — und überzeugend.</text>
+      <text class="t-xs t-dg" x="115" y="204" text-anchor="middle">Kein System wurde</text>
+      <text class="t-xs t-dg" x="115" y="220" text-anchor="middle">angegriffen.</text>
+      <text class="t-xs" x="115" y="236" text-anchor="middle">Ergebnis: eine falsche</text>
+      <text class="t-xs" x="115" y="250" text-anchor="middle">Vorlage, die überzeugend wirkt</text>
 
       <text class="t-sm" x="20" y="296">Den Zugriff des Assistenten zu begrenzen ist hier die einzige Kontrolle, die nicht vom Verhalten des Modells abhängt.</text>
     </svg>
   </figure>
+  <div class="note note--practice" style="margin-top:auto">
+    <p style="font-size:18px;max-width:none"><strong>Folge für die Praxis:</strong> Text aus externen Quellen kann
+    Anweisungen enthalten, die das Modell befolgt. Den Zugriff des Assistenten auf das Nötige
+    beschränken und Aktionen, die sich nicht rückgängig machen lassen, von einer Person freigeben
+    lassen.</p>
+  </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Prompt Injection in einem Zusammenhang außerhalb der
-    Softwareentwicklung konkret machen und mit der Folie zu Anweisung und technischer Beschränkung
-    verbinden.</p>
-    <p>Auf die handelnde Partei hinweisen: kein Eindringling, sondern ein Beteiligter mit
-    offensichtlichem wirtschaftlichem Interesse und berechtigtem Zugang zum Kanal. Er hat ein
-    Dokument eingereicht — genau das, worum er gebeten wurde.</p>
+    <p><strong>Lernziel.</strong> Prompt Injection an einem Beispiel außerhalb der
+    Softwareentwicklung konkret machen und mit den drei Arten von Kontrolle verbinden.</p>
+    <p><strong>Mechanismus.</strong> Anweisungen und Daten erreichen das Modell über denselben
+    Weg, den Kontext, und dort ist die Herkunft nicht gekennzeichnet (Folie „Autoregression“).</p>
+    <p>Auf die handelnde Partei hinweisen: ein Beteiligter mit wirtschaftlichem Interesse und
+    berechtigtem Zugang, kein Angreifer von außen. Er hat nur das Dokument eingereicht, um das er
+    gebeten wurde.</p>
     <p><strong>Vier Maßnahmen, nach abnehmender Verlässlichkeit:</strong> den Zugriff des
     Assistenten begrenzen; nicht umkehrbare Aktionen einer Person vorbehalten; aus einem getrennten
-    Kontext prüfen, der die erzeugende Herleitung nicht enthält; Dokumente in reinen Text
-    umwandeln, um verborgene Ebenen zu entfernen. Das Modell anzuweisen, eingebettete Anweisungen
-    zu ignorieren, ist sinnvoll aufzunehmen und als Kontrolle wertlos.</p>
+    Kontext prüfen, der die bisherige Herleitung nicht enthält; Dokumente in reinen Text umwandeln,
+    um verborgene Ebenen zu entfernen. Das Modell anzuweisen, eingebettete Anweisungen zu
+    ignorieren, schadet nicht, ist aber keine verlässliche Kontrolle.</p>
+    <p><em>Beispiel aus der Softwareentwicklung:</em> Eine README-Datei, ein Kommentar in einer
+    fremden Bibliothek oder eine Webseite, die der Agent liest, kann Anweisungen enthalten. Liest
+    der Agent fremdes Material, Terminalbefehle daher nicht pauschal automatisch freigeben.</p>
     <p><em>Übung für das Publikum:</em> „Jedes eingehende Angebot wird von einem Assistenten
-    zusammengefasst, der das gemeinsame Laufwerk lesen und an eine Übersichtstabelle anfügen kann.
-    Was würden Sie zuerst ändern?“</p>
+    zusammengefasst, der das gemeinsame Laufwerk lesen und eine Übersichtstabelle ergänzen kann.
+    Was würden Sie zuerst ändern?“ Naheliegende Antwort: den Schreibzugriff einschränken oder jede
+    Ergänzung der Tabelle von einer Person freigeben lassen.</p>
+    <p>Kursbezug: Module 6.1, 6.2 und 14.4.</p>
   </div></template>
 </section>
 
-<!-- ============ 29 · VERIFICATION ============ -->
+<!-- ============ 32 · PRÜFUNG ============ -->
 <section class="slide">
-  <p class="eyebrow">14.1–14.3 · Feststellen, dass es richtig ist</p>
-  <h2>Sprachliche Qualität sagt nichts über Richtigkeit</h2>
+  <p class="eyebrow">Teil 2 · Prüfung</p>
+  <h2>Prüfung: Kriterien vor der Arbeit festlegen</h2>
   <div class="cols cols--wide-left">
     <div>
-      <p>Erzeugte Ausgaben wirken fertig: korrekte Formatierung, sicherer Ton, keine sichtbare
-      Mühe. Menschliche Prüfende richten sich an genau diesen Merkmalen aus, und bei diesem Material
-      sind sie ohne Aussagekraft.</p>
-      <p>In der Vorlage stammen vier Zahlen aus den Messwerten, eine aus der Werbebroschüre eines
-      Herstellers, und eine wurde gebildet, weil eine Zahl benötigt wurde. Alle sechs sehen gleich
-      aus.</p>
-      <h3 style="margin-top:20px">Kriterien, vor der Arbeit festgelegt</h3>
-      <ul style="font-size:18px">
+      <p style="font-size:19px">Erzeugte Texte wirken fertig: saubere Formatierung, sicherer Ton.
+      Menschen nehmen diese Merkmale als Zeichen von Qualität. Über die Richtigkeit eines
+      erzeugten Textes sagen sie nichts aus.</p>
+      <p style="font-size:19px">In der Vorlage stammen vier Zahlen aus den Messwerten, eine aus der
+      Werbebroschüre eines Herstellers, und eine ist erfunden. Alle sechs sehen gleich aus.</p>
+      <h3 style="margin-top:16px">Kriterien, vor der Arbeit festgelegt</h3>
+      <ul style="font-size:17.5px">
         <li>Jede genannte Zahl stimmt mit der angegebenen Seite oder dem Zeilenbereich überein</li>
         <li>Alle vier Kriterien erscheinen für alle drei Hersteller</li>
         <li>Keine Aussage ohne Quelle; „nicht angegeben“, wo eine Angabe fehlt</li>
-        <li>Berechnete Werte lassen sich bei erneuter Rechnung reproduzieren</li>
+        <li>Berechnete Werte lassen sich durch erneutes Rechnen bestätigen</li>
         <li>Herstellerangaben werden nie als Messwerte dargestellt</li>
         <li>Drei Durchläufe liefern dieselben <em>Zahlen</em>, wenn auch nicht denselben Text</li>
       </ul>
     </div>
     <div class="center">
       <div class="card">
-        <h3>Warum vorher und nicht nachher</h3>
-        <p>Nachträglich formulierte Kriterien beschreiben in der Regel das, was entstanden ist.
-        Vorab formuliert sind sie eine Spezifikation — und im Prompt genannt verbessern sie sowohl
-        die Ausgabe als auch die Prüfung.</p>
+        <h3>Warum vorher</h3>
+        <p>Nachträglich formulierte Kriterien beschreiben meist das, was entstanden ist. Vorab
+        formuliert sind sie eine Spezifikation. Im Prompt genannt verbessern sie die Ausgabe und
+        erleichtern die Prüfung.</p>
       </div>
       <div class="note note--practice" style="margin-top:18px">
-        <p style="font-size:18px">Die Arbeit so anlegen, dass die Prüfung günstig ist. Eine
-        Vorlage, in der jede Zahl eine Seitenangabe trägt, ist in Minuten geprüft; dieselbe Vorlage
-        ohne Angaben erfordert eine Stunde, da zunächst zu ermitteln ist, was zu prüfen ist.</p>
+        <p style="font-size:18px">Die Arbeit so anlegen, dass die Prüfung wenig Zeit kostet: Eine
+        Vorlage, in der jede Zahl ihre Quelle nennt, ist in Minuten geprüft. Ohne Quellenangaben
+        dauert es eine Stunde, weil erst ermittelt werden muss, was zu prüfen ist.</p>
       </div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Die Prüfung von einer unbestimmten Pflicht in eine definierte,
-    angemessene Tätigkeit überführen.</p>
-    <p>Das Kriterium der Wiederholbarkeit wird am häufigsten ausgelassen. Die Ausgabe wird gezogen,
-    daher unterscheiden sich zwei Durchläufe; nicht unterscheiden dürfen sich die Sachangaben. Drei
-    Durchläufe mit drei verschiedenen Medianen zeigen einen Fehler im Ablauf, bevor die Vorlage
-    jemanden erreicht.</p>
+    <p><strong>Lernziel.</strong> Prüfung als festgelegte, angemessene Tätigkeit darstellen statt
+    als unbestimmte Pflicht.</p>
+    <p>Das Kriterium der Wiederholbarkeit wird am häufigsten vergessen. Weil die Ausgabe gezogen
+    wird, unterscheiden sich zwei Durchläufe im Wortlaut; die Zahlen dürfen sich nicht
+    unterscheiden. Drei Durchläufe mit drei verschiedenen Medianen zeigen einen Fehler im Ablauf,
+    bevor die Vorlage jemanden erreicht.</p>
     <p><strong>Angemessener Prüfumfang:</strong> Erkundende Arbeit erfordert eine Durchsicht;
     Material für die eigene Meinungsbildung erfordert Stichproben; Arbeit, die an Kolleginnen und
     Kollegen geht, erfordert die Rückführung jeder Sachaussage auf ihre Quelle; alles, was in eine
     Entscheidung oder einen Vertrag eingeht, erfordert eine vollständige Prüfung mit unabhängiger
     Nachrechnung der Zahlen.</p>
-    <p><em>Rückbezug:</em> Eine gesondert eingerichtete Prüfinstanz mit frischem Kontext findet,
-    was die Selbstprüfung im selben Dialog nicht findet — denn dieser Dialog hat sich auf die
-    Aussagen bereits festgelegt.</p>
+    <p><em>Rückbezug:</em> Eine eigens eingerichtete Prüfung mit frischem Kontext findet mehr als
+    eine Selbstprüfung im selben Dialog. Dieser Dialog enthält die Aussagen bereits, und das Modell
+    setzt seinen Kontext stimmig fort.</p>
+    <p><em>In GitHub Copilot:</em> Für die Prüfung einen neuen Chat beginnen und nur das Ergebnis
+    und die Quellen anhängen.</p>
+    <p>Kursbezug: Module 14.1 bis 14.3.</p>
   </div></template>
 </section>
 
-<!-- ============ 30 · CLOSE ============ -->
+<!-- ============ 33 · ABSCHLUSS ============ -->
 <section class="slide">
   <p class="eyebrow">Abschluss</p>
-  <h2>Vier Punkte zum Mitnehmen</h2>
+  <h2>Zusammenfassung</h2>
   <div style="margin-top:10px">
     <div class="step" style="margin-bottom:10px">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">1 · Der Kontext ist der verfügbare Hebel</h3>
-      <p>Die Parameter sind fest, das Fenster begrenzt und von allem geteilt. Gezielte Auswahl
-      ist besser als Anhäufung; der größte Teil des Nachmittags folgte daraus.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">1 · Den Kontext gezielt zusammenstellen</h3>
+      <p style="max-width:none">Die Parameter sind fest, das Kontextfenster ist begrenzt und wird von allem geteilt.
+      Ausgewähltes Material liefert bessere Ergebnisse als möglichst viel Material.</p></div>
     </div>
     <div class="step" style="margin-bottom:10px">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">2 · Die Modellkosten sind der kleine Posten</h3>
-      <p>Die Prüfzeit übersteigt sie meist um ein Vielfaches. Der günstigste Weg ist der mit den
-      wenigsten Korrekturen — selten der mit der kleinsten Token-Rechnung.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">2 · Die Prüfzeit ist der größte Kostenposten</h3>
+      <p style="max-width:none">Sie übersteigt die Modellkosten meist um ein Vielfaches. Am günstigsten ist das Vorgehen,
+      nach dem am wenigsten korrigiert werden muss.</p></div>
     </div>
     <div class="step" style="margin-bottom:10px">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">3 · Autonomie schrittweise zulassen</h3>
-      <p>Beaufsichtigt ausführen, bis bekannt ist, wo der Ablauf fehlschlägt; dafür eine Prüfung
-      einrichten, dann selbstständig laufen lassen. Bitten ist nicht Verhindern.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">3 · Autonomie schrittweise erhöhen</h3>
+      <p style="max-width:none">Zuerst beaufsichtigt arbeiten, bis bekannt ist, wo der Ablauf fehlschlägt. Was nicht
+      geschehen darf, technisch ausschließen und nicht nur per Anweisung untersagen.</p></div>
     </div>
     <div class="step">
-      <div class="card" style="padding:14px 20px"><h3 style="font-size:18px">4 · Vor Beginn festlegen, was „fertig“ bedeutet</h3>
-      <p>Nachträglich formulierte Kriterien beschreiben das Entstandene. Vorab formuliert
-      verbessern sie die Arbeit und machen die Prüfung bezahlbar.</p></div>
+      <div class="card" style="padding:14px 20px"><h3 style="font-size:19px">4 · Vor Beginn festlegen, was „fertig“ bedeutet</h3>
+      <p style="max-width:none">Vorab formulierte Kriterien verbessern das Ergebnis und verkürzen die Prüfung.</p></div>
     </div>
   </div>
   <template class="notes"><div class="nt">
-    <p><strong>Lernziel.</strong> Vier tragfähige Gedanken hinterlassen statt einer
-    Zusammenfassung von allem.</p>
-    <p>Auf die Einstiegsfrage zurückkommen — „Wenn ein KI-Werkzeug eine falsche Antwort liefert,
-    welche Erklärung haben Sie dafür?“ — und prüfen, ob sich die Antworten geändert haben. In der
-    Regel haben sie das, und diese Änderung ist das Ergebnis des Tages.</p>
-    <p><em>Auf die Materialien hinweisen:</em> der Kurstext für die vollständige Darstellung, das
-    Referenzblatt zum Nachschlagen, der Praxisleitfaden für den Einstieg in der eigenen
-    Arbeitsumgebung.</p>
+    <p><strong>Lernziel.</strong> Vier Gedanken mitgeben, die die Teilnehmenden in der eigenen
+    Arbeit anwenden können.</p>
+    <p>Auf die Einstiegsfrage zurückkommen: „Wenn ein KI-Werkzeug eine falsche Antwort liefert —
+    wie erklären Sie sich das?“ Die Antworten mit denen vom Anfang vergleichen.</p>
+    <p><em>Auf die Materialien hinweisen:</em> das Referenzblatt (deutsch) zum Nachschlagen; der
+    Kurstext (englisch) für die vollständige Darstellung; der Praxisleitfaden (englisch) für den
+    Einstieg in GitHub Copilot in VS Code, mit einer Übung samt Lösung.</p>
     <p><strong>Nächster Schritt:</strong> Jede teilnehmende Person wählt eine wiederkehrende
-    Aufgabe und führt den fünfstufigen Workshop aus Modul 14.5 innerhalb von zwei Wochen daran
-    durch, solange der Stoff präsent ist.</p>
+    Aufgabe und wendet innerhalb von zwei Wochen den fünfstufigen Ablauf aus Modul 14.5 darauf an:
+    Aufgabe festlegen und Modell wählen; planen und zerlegen; mit passender Autonomie ausführen;
+    wiederholbar machen; prüfen und Kosten erfassen.</p>
   </div></template>
 </section>
 </div>

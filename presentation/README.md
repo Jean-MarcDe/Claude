@@ -1,4 +1,4 @@
-# Workshop deck — Tokens to Decisions
+# Workshop deck — How language models work
 
 A browser-based presentation supporting an instructor-led version of the course. It illustrates
 mechanisms that are hard to see from text alone; the course text explains them, and the handout is
@@ -20,7 +20,7 @@ graphics. It works on a disconnected laptop in a workshop room.
 | `D` | Light / dark theme |
 | `?` or `H` | Keyboard help |
 
-The slide number is in the URL, so `index.html#16` opens the harness slide directly. That is the
+The slide number is in the URL, so `index.html#18` opens the harness slide directly. That is the
 simplest way to resume after a break or to jump to a specific diagram during a discussion.
 
 ### Projection
@@ -47,11 +47,11 @@ chromium --headless --print-to-pdf=deck.pdf \
 
 | File | Contents |
 |---|---|
-| `index.html` | All 30 slides, their SVG diagrams, and speaker notes in `<template class="notes">` blocks |
+| `index.html` | All 33 slides, their SVG diagrams, and speaker notes in `<template class="notes">` blocks |
 | `deck.css` | Visual language, layout, print rules, theme tokens |
 | `deck.js` | Navigation engine, progressive disclosure, notes panel, and the six interactive widgets |
 | `deck-test.js` | Walks every slide with steps revealed; reports overflow, missing notes, console errors |
-| `widget-test.js` | Drives all six widgets and prints what they produced |
+| `widget-test.js` | Finds all six widgets by name, drives them and prints what they produced |
 | `svg-fit-test.js` | Finds diagram labels that have outgrown their boxes |
 | `de/` | The German edition — its own slides and string table, this engine and stylesheet |
 
@@ -60,20 +60,31 @@ engine and changing the palette does not require touching the slides.
 
 ## Structure
 
-Thirty slides in two acts, following the course's learning progression rather than its section
-numbering.
+Thirty-three slides in two parts. Each slide title names the concept it covers, and the small label
+above it says which part and section of the talk the slide belongs to.
 
-**Act one — how the machine works (slides 3–17).** Rules versus learned parameters; a neuron and
-what training does to it; why one neuron is not enough; self-supervision; tokens; embeddings;
-attention; the forward pass; sampling; autoregression; the harness; why confident errors happen.
+**Part 1 — how a language model works (slides 3–19).** Programmed rules and learned parameters; a
+neuron; training as step-by-step adjustment; one training step in detail; why several layers are
+needed; next-token prediction as the training objective; tokenisation; embeddings; attention; the
+forward pass; sampling and temperature; autoregression; what the model uses (parameters and
+context); hallucination; the model and the system around it (the harness). Slide 19 closes the part
+with a table that pairs each mechanism with its consequence for practice.
 
-**Act two — operating the system (slides 18–30).** The running task; model choice; tokens against
-credits; what one task costs; what the model actually sees; interaction modes; decomposition;
-guidance against enforcement; how much structure to build; untrusted material; verification.
+**Part 2 — what follows in practice (slides 20–33).** Where the concepts appear in GitHub Copilot in
+VS Code; the running example; model choice; tokens and credits; the cost of one task; what the
+model actually sees; working modes and autonomy; decomposition; three kinds of control; how much
+structure to build; prompt injection; verification; summary.
+
+The order follows one line of argument: what learning is, how a language model is trained, how it
+processes and generates text, what it therefore knows and does not know, and what surrounds it.
+Each mechanism slide whose mechanism has a direct practical consequence states it in an orange
+**In practice** box at the bottom, and Part 2 builds on those consequences.
 
 Each slide carries speaker notes giving the learning objective, the mechanism being shown, the
 caveats worth stating aloud, a reference back to the course section, and in most cases a question
-to put to the room before revealing an answer. Open them with `S`.
+to put to the room before revealing an answer. Where the slide concerns GitHub Copilot, the notes
+say how the concept appears there and what to check in your own installation. Open the notes with
+`S`.
 
 ## The interactive widgets
 
@@ -86,9 +97,9 @@ money, the rates are stated on the slide and chosen round for legibility.
 | 6 | Neuron learning AND | Learning is arithmetic on three numbers; one gradient step lowers the loss |
 | 12 | Attention | A token's representation is built from other positions, and which ones |
 | 14 | Temperature | Raising it promotes the whole vocabulary, so the tail dominates |
-| 20 | Model comparison | The ranking flips with the weighting, so "best" is not a property of a model |
-| 22 | Cost of one task | Caching dominates agentic cost; verification time dwarfs model cost |
-| 23 | Context composition | Curation beats accumulation, for cost and for reliability |
+| 23 | Model comparison | The ranking flips with the weighting, so "best" is not a property of a model |
+| 25 | Cost of one task | Caching dominates agentic cost; verification time dwarfs model cost |
+| 26 | Context composition | Curation beats accumulation, for cost and for reliability |
 
 Running them live is worth more than describing them. The notes for each say how to work the
 demonstration and what to ask before revealing the result.
@@ -139,7 +150,7 @@ the dashed transformer block, so compare the two decks rather than expecting zer
 
 ## The German edition
 
-`de/` holds a German deck with the same 30 slides. It shares this `deck.css` and `deck.js`; only
+`de/` holds a German deck with the same 33 slides. It shares this `deck.css` and `deck.js`; only
 the slides and a string table are its own.
 
 `deck.js` reads the language from `<html lang>` and looks every visible string up in

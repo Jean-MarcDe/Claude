@@ -51,7 +51,7 @@ const { chromium } = require('playwright');
       bad.push(`slide ${r.idx} "${r.h1.slice(0,38)}" ${vOver?`V-OVERFLOW ${r.scrollH}/${r.clientH} `:''}${hOver?`H-OVERFLOW ${r.scrollW}/${r.clientW} `:''}${!r.hasNotes?'NO-NOTES ':''}${r.steps!==r.shown?`steps ${r.shown}/${r.steps}`:''}`);
     }
   }
-  console.log(bad.length ? 'LAYOUT ISSUES:\n  ' + bad.join('\n  ') : 'all 30 slides fit, all have notes, all steps reveal');
+  console.log(bad.length ? 'LAYOUT ISSUES:\n  ' + bad.join('\n  ') : `all ${n} slides fit, all have notes, all steps reveal`);
   console.log('console errors:', errs.length ? errs : 'none');
   await b.close();
 })();

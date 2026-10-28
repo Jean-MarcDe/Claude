@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Von Tokens zu Entscheidungen — Referenzblatt</title>
-<meta name="description" content="Kompakte druckbare Referenz zum Kurs Tokens to Decisions: Funktionsweise von Sprachmodellen und ihr Betrieb.">
+<title>Wie Sprachmodelle funktionieren — Referenzblatt</title>
+<meta name="description" content="Kompakte druckbare Referenz zum Workshop: wie Sprachmodelle funktionieren und was daraus für die Arbeit mit GitHub Copilot folgt.">
 <style>
 /* ============================================================
    Tokens to Decisions — reference handout
@@ -203,6 +203,12 @@ a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accen
   .cols{column-gap:8mm}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+/* The glossary follows Part Two directly instead of starting a new page; its
+   table may break between rows. */
+.part.part--flow{break-before:auto; page-break-before:auto; margin-top:16pt}
+.part--flow table{break-inside:auto; page-break-inside:auto}
+.part--flow tr{break-inside:avoid; page-break-inside:avoid}
+@media print{.part--flow table{break-inside:auto !important; page-break-inside:auto !important}}
 </style>
 <style>
 /* Deutsche Fassung: Silbentrennung, weil Komposita in schmalen Spalten sonst
@@ -217,11 +223,10 @@ caption .q{hyphens:auto}
 
 <header class="masthead">
   <p class="eyebrow">Referenzblatt</p>
-  <h1>Von Tokens zu Entscheidungen</h1>
-  <p class="standfirst">Die Definitionen, Zusammenhänge und Entscheidungskriterien, die im
-  Arbeitsalltag nachgeschlagen werden. Das Blatt wiederholt den Kurs nicht; es ist das, was nach dem
-  Kurs zur Hand bleibt. Die Ziffern am rechten Rand verweisen auf den Kursabschnitt, der den Eintrag
-  entwickelt.</p>
+  <h1>Wie Sprachmodelle funktionieren</h1>
+  <p class="standfirst">Die Definitionen, Zusammenhänge und Entscheidungskriterien des Workshops zum
+  Nachschlagen im Arbeitsalltag. Die Ziffern am rechten Rand verweisen auf den Abschnitt des
+  englischen Kurses <em>Tokens to Decisions</em>, der den Eintrag ausführlich behandelt.</p>
   <ul class="wayfinding">
     <li><b>Kurs (englisch)</b> <code>../../course/index.html</code></li>
     <li><b>Foliensatz</b> <code>../../presentation/de/index.html</code></li>
@@ -230,7 +235,7 @@ caption .q{hyphens:auto}
 </header>
 
 <section class="part">
-<h2>Teil Eins · Funktionsweise des Modells</h2>
+<h2>Teil Eins · Wie ein Sprachmodell funktioniert</h2>
 
 <div class="note"><span class="lbl">Zur Sprache</span><p>Der Kurs ist auf Englisch verfasst. Dieses
 Blatt verwendet die im deutschsprachigen Fachgebrauch üblichen Begriffe und nennt bei der ersten
@@ -259,8 +264,8 @@ Parameter. Davon zu unterscheiden sind <dfn>Hyperparameter</dfn> — Anzahl der 
 Batch-Größe —, die vor dem Training festgelegt und nicht gelernt werden.</p>
 
 <p class="formula">z = w₁x₁ + w₂x₂ + b
-ŷ = σ(z) = 1 / (1 + e<sup>−z</sup>)<span class="ann">Eine Einheit, zwei Eingaben. Alles, was ein
-neuronales Netz tut, ist dieser Vorgang, vielfach wiederholt.</span></p>
+ŷ = σ(z) = 1 / (1 + e<sup>−z</sup>)<span class="ann">Eine Einheit mit zwei Eingaben. Ein neuronales
+Netz besteht aus sehr vielen solcher Einheiten, in Schichten angeordnet.</span></p>
 
 <p class="def"><span class="term">Verlustfunktion</span> <span class="ref">1.3, 1.9</span> — eine
 einzelne Zahl, die angibt, wie falsch eine Vorhersage war, und zugleich die vollständige
@@ -277,8 +282,8 @@ verläuft das Training sehr langsam; ist sie zu groß, überschreitet jeder Schr
 Praxis wird der Gradient aus einem kleinen zufälligen Batch geschätzt und nicht aus dem gesamten
 Datenbestand.</p>
 
-<p class="formula">w ← w − η · ∂L/∂w<span class="ann">η ist die Lernrate. Diese eine Zeile, über
-Monate auf 10<sup>11</sup> Parameter angewendet, ist das gesamte Training.</span></p>
+<p class="formula">w ← w − η · ∂L/∂w<span class="ann">η ist die Lernrate. Das Training eines großen
+Sprachmodells wendet diese Regel wiederholt auf rund 10<sup>11</sup> Parameter an.</span></p>
 
 <p class="def"><span class="term">Backpropagation</span> <span class="ref">1.6</span> — ein
 Verfahren, das alle benötigten Ableitungen in einem einzigen Rückwärtslauf berechnet, mit etwa dem
@@ -329,17 +334,16 @@ Darstellungen sind Projektionen, die nahezu die gesamte Struktur verwerfen.</p><
 <p class="def"><span class="term">Kontextuelle Repräsentation</span> <span class="ref">3.2</span> —
 geschrieben <strong>h</strong><sub>i</sub><sup>(l)</sup>, der Vektor an Position <em>i</em> nach
 Schicht <em>l</em>, nachdem Attention Informationen aus anderen Positionen eingemischt hat. Ein
-statisches Embedding je Token, viele kontextuelle Repräsentationen. Diese Unterscheidung ist die
-wichtigste in Teil Eins: Das erste ist eine Eigenschaft eines Wortes, das zweite eine Eigenschaft
-eines Wortes <em>in einem Satz</em>.</p>
+statisches Embedding je Token, viele kontextuelle Repräsentationen: Das statische Embedding hängt nur
+vom Token ab, die kontextuelle Repräsentation vom Token <em>und seinem Satz</em>.</p>
 
 <p class="def"><span class="term">Attention</span> <span class="ref">3.2, 3.3</span> — jede Position
 erzeugt eine Anfrage (query), die beschreibt, welche Information sie benötigt; jede Position bietet
 einen Schlüssel (key) an, der beschreibt, welche Information sie trägt; jede Position erhält eine
 gewichtete Mischung der Werte (values) der übrigen Positionen. Die Skalierung mit √d<sub>k</sub> hält
 die Softmax-Funktion außerhalb ihres gesättigten Bereichs, in dem die Gradienten verschwinden. Der
-Aufwand wächst quadratisch mit der Sequenzlänge; lange Kontexte sind deshalb teuer und nicht nur
-groß.</p>
+Aufwand wächst quadratisch mit der Sequenzlänge; lange Kontexte sind deshalb
+rechenaufwendig.</p>
 
 <p class="formula">Attention(Q,K,V) = softmax( QKᵀ / √d<sub>k</sub> ) V<span class="ann">Attention-Gewichte
 zeigen, woher Information bezogen wurde. Sie sind keine Erklärung der Ausgabe und sollten nicht als
@@ -364,7 +368,8 @@ Tokens, deren Wahrscheinlichkeiten sich zu p summieren; deshalb wird das Verfahr
 zusammen mit der Temperatur eingesetzt.</p>
 
 <p class="formula">p(t) = e<sup>z<sub>t</sub>/T</sup> / Σ e<sup>z<sub>t′</sub>/T</sup><span class="ann">Eine
-höhere Temperatur macht ein Modell nicht kreativer. Sie macht es weniger auswählend.</span></p>
+höhere Temperatur fügt kein Wissen hinzu. Sie verteilt die Auswahl auf mehr Tokens, auch auf
+unpassende.</span></p>
 
 <p class="def"><span class="term">Autoregression</span> <span class="ref">4.6</span> — ein Token je
 Vorwärtslauf. Das Token wird an den Kontext angehängt, anschließend läuft der gesamte Vorgang erneut.
@@ -399,9 +404,9 @@ Beschränkung.</p>
 <div class="cols">
 <p class="def"><span class="term">Harness</span> <span class="ref">5.4</span> — das Programm, das das
 Modell umgibt: Es stellt den Kontext zusammen, liefert die Tool-Definitionen, wertet die Ausgabe aus,
-führt Tool-Aufrufe durch und entscheidet über den Abbruch. Zwei Harnesses um dasselbe Modell sind
-zwei verschiedene Produkte, und das meiste, was dem Modell zugeschrieben wird, stammt aus dem
-Harness.</p>
+führt Tool-Aufrufe durch und entscheidet über den Abbruch. Dasselbe Modell verhält sich in
+verschiedenen Harnesses unterschiedlich; vieles, was dem Modell zugeschrieben wird, legt der Harness
+fest. GitHub Copilot in VS Code ist ein solcher Harness.</p>
 
 <p class="def"><span class="term">Tool und Tool-Aufruf</span> <span class="ref">5.8</span> — das
 Modell gibt eine strukturierte Anforderung aus, die ein Tool und dessen Argumente benennt; der
@@ -411,9 +416,9 @@ nicht vertrauenswürdige Eingaben.</p>
 
 <p class="def"><span class="term">Agentische Schleife</span> <span class="ref">5.9</span> —
 beobachten, entscheiden, handeln, wiederholen, bis eine Abbruchbedingung erfüllt ist. Die
-Zuverlässigkeit hängt weniger vom Modell ab als von der Qualität der Rückmeldung innerhalb der
-Schleife: Eine Schleife, die ihr eigenes Ergebnis prüfen kann, konvergiert; eine Schleife ohne diese
-Möglichkeit entfernt sich vom Ziel.</p>
+Zuverlässigkeit hängt stark von der Rückmeldung innerhalb der Schleife ab: Kann die Schleife ihr
+Ergebnis prüfen, etwa durch Tests oder Nachrechnen, nähert sie sich dem Ziel; ohne diese Rückmeldung
+setzen sich Fehler leicht fort.</p>
 
 <p class="def"><span class="term">Retrieval (RAG)</span> <span class="ref">5.11</span> — Dokumente
 werden einmalig eingebettet, zu einer Frage werden die nächstgelegenen Abschnitte ermittelt und in
@@ -425,13 +430,44 @@ daher zu prüfen, was abgerufen wurde, und nicht die Frage umzuformulieren.</p>
 der dort platziert wird, wo ein Modell ihn liest, und als Anweisung formuliert ist. Bei der
 <dfn>indirekten</dfn> Variante steht der Text in einem Dokument, einer Webseite oder einem Datensatz
 aus externer Quelle. Das Verfahren funktioniert, weil Anweisungen und Daten denselben Eingabekanal
-verwenden und die Architektur die Herkunft nicht festhält; es ist eine strukturelle Eigenschaft und
-kein Fehler, für den eine Korrektur aussteht.</p>
+verwenden und die Architektur die Herkunft nicht festhält. Es handelt sich um eine Eigenschaft der
+Architektur; eine allgemeine Korrektur gibt es derzeit nicht.</p>
 </div>
+
+<table style="margin-top:12pt">
+<caption>Was aus der Funktionsweise folgt <span class="q">— Zusammenfassung von Teil Eins</span></caption>
+<thead><tr><th>Mechanismus</th><th>Folge für die Praxis</th></tr></thead>
+<tbody>
+<tr><td class="k">Parameter werden aus Beispielen gelernt</td><td>Ob ein Modell eine Aufgabe beherrscht, zeigt nur ein Test mit bekannten Antworten</td></tr>
+<tr><td class="k">Trainingsziel: das nächste Token vorhersagen</td><td>Ausgaben sind plausibel, aber nicht geprüft</td></tr>
+<tr><td class="k">Text wird in Tokens zerlegt</td><td>Buchstaben zählen und exaktes Rechnen sind unzuverlässig; Kosten und Kontext werden in Tokens gemessen; Deutsch braucht mehr Tokens</td></tr>
+<tr><td class="k">Das nächste Token wird gezogen</td><td>Dieselbe Anfrage kann verschiedene Antworten ergeben</td></tr>
+<tr><td class="k">Jedes erzeugte Token wird angehängt</td><td>Lange Kontexte kosten mehr; frühe Fehler setzen sich fort; die Herkunft von Text ist nicht gekennzeichnet</td></tr>
+<tr><td class="k">Feste Parameter, begrenzter Kontext</td><td>Kein Gedächtnis zwischen Dialogen; neuere und interne Informationen sind nur bekannt, wenn sie im Kontext stehen</td></tr>
+<tr><td class="k">Kein Schritt prüft Aussagen</td><td>Halluzinationen sind zu erwarten; Ergebnisse müssen geprüft werden</td></tr>
+<tr><td class="k">Ein Harness umgibt das Modell</td><td>Vieles, was man „der KI“ zuschreibt, ist eine Einstellung des Systems</td></tr>
+</tbody>
+</table>
 </section>
 
 <section class="part">
-<h2>Teil Zwei · Betrieb des Systems</h2>
+<h2>Teil Zwei · Was daraus für die Praxis folgt</h2>
+
+<h3>Die Begriffe in GitHub Copilot</h3>
+
+<table>
+<caption>Wo die Begriffe in GitHub Copilot in VS Code vorkommen <span class="q">— Stand Oktober 2026, aus Sekundärquellen; Bezeichnungen ändern sich zwischen Versionen</span></caption>
+<thead><tr><th>Begriff</th><th>In GitHub Copilot in VS Code</th></tr></thead>
+<tbody>
+<tr><td class="k">Modell</td><td>Auswahlliste im Chat. Welche Modelle erscheinen, legt die Organisation fest.</td></tr>
+<tr><td class="k">Kontext</td><td>Angehängte Dateien und Ordner (mit <code>#</code> im Eingabefeld), der bisherige Chat, je nach Einstellung die geöffnete Datei.</td></tr>
+<tr><td class="k">Dauerhafte Anweisungen</td><td>Anweisungsdateien im Projekt, z.&nbsp;B. <code>.github/copilot-instructions.md</code>; Prompt-Dateien (<code>*.prompt.md</code>) für wiederkehrende Anfragen.</td></tr>
+<tr><td class="k">Arbeitsmodi</td><td><em>Ask</em>: Fragen und Antworten. <em>Plan</em>: Plan vor der Ausführung. <em>Agent</em>: arbeitet selbstständig mit Tools.</td></tr>
+<tr><td class="k">Tools, agentische Schleife</td><td>Im Agent-Modus: Dateien lesen und ändern, Terminalbefehle ausführen. Erweiterbar über MCP-Server.</td></tr>
+<tr><td class="k">Technische Beschränkung</td><td>Freigabe von Tool-Aufrufen und Terminalbefehlen; Vorgaben der Organisation.</td></tr>
+<tr><td class="k">Kosten</td><td>GitHub AI Credits seit 1. Juni 2026, berechnet nach verbrauchten Tokens; 1 Credit = 0,01 US$. Die Code-Vervollständigung verbraucht keine Credits.</td></tr>
+</tbody>
+</table>
 
 <h3>Modellauswahl</h3>
 
@@ -484,9 +520,9 @@ beantworten kann.</p>
 <tr><td class="k">Credit</td><td>Eine Verrechnungseinheit mit festgelegtem Wert</td><td>Den Anbieter, durch Richtlinie und änderbar</td></tr>
 <tr><td class="k">Kontingent</td><td>Credits je Lizenz und Abrechnungszeitraum</td><td>Den Vertrag Ihrer Organisation</td></tr>
 </tbody>
-<tfoot><tr><td colspan="3">Eine Anweisung ist nicht eine Anfrage, und eine Anfrage ist nicht ein
-Credit. Ein agentischer Arbeitsablauf kann aus einem einzelnen Satz zwanzig Modellaufrufe erzeugen.
-<span class="ref">8.5</span></td></tr></tfoot>
+<tfoot><tr><td colspan="3">Eine Anweisung kann viele Modellaufrufe auslösen; ein agentischer Ablauf
+erzeugt aus einem einzelnen Satz leicht zwanzig. Wie Tokens in Credits umgerechnet werden, legt der
+Anbieter fest. <span class="ref">8.5</span></td></tr></tfoot>
 </table>
 
 <div class="cols">
@@ -516,8 +552,8 @@ menschliche Prüfung und die Kosten eines Fehlers, der unbemerkt bleibt. <span c
 <p class="def"><span class="term">Inhalt des Kontexts</span> <span class="ref">9.1</span> — der
 System-Prompt des Anbieters, die Tool-Definitionen, Ihre dauerhaften Anweisungen, Material aus Ihrer
 Arbeitsumgebung, abgerufene Abschnitte, der bisherige Dialog und zuletzt Ihre Eingabe. Ihre Eingabe
-ist davon ein kleiner Anteil. Die meisten Qualitätsprobleme sind Kontextprobleme, und die meisten
-Kontextprobleme betreffen Bestandteile, die nicht sichtbar sind.</p>
+ist davon ein kleiner Anteil. Viele Qualitätsprobleme gehen auf den Kontext zurück, oft auf
+Bestandteile, die in der Oberfläche nicht sichtbar sind.</p>
 
 <p><strong>Lange Sitzungen.</strong> Harnesses behandeln das Anwachsen unterschiedlich: Manche
 verwerfen die frühesten Schritte, manche fassen fortlaufend zusammen, manche rufen gezielt ab, viele
@@ -562,7 +598,9 @@ einer kurzen Übergabenotiz zu beenden und die folgende damit zu beginnen. <span
 <tfoot><tr><td colspan="3">Die Auswahl richtet sich nach sechs Fragen: Wie eindeutig ist die Aufgabe?
 Wie umkehrbar sind die Aktionen? Welche Kosten verursacht ein Fehler? Lässt sich der Erfolg
 automatisch prüfen? Worauf können die Tools zugreifen? Wie viel nicht dokumentiertes Urteilsvermögen
-ist erforderlich? <span class="ref">10.2, 10.3</span></td></tr></tfoot>
+ist erforderlich? In GitHub Copilot entspricht <em>Ask</em> dem Dialog und <em>Plan</em> der Planung;
+<em>Agent</em> arbeitet interaktiv oder autonom, je nachdem, ob Aktionen einzeln oder automatisch
+freigegeben werden. <span class="ref">10.2, 10.3</span></td></tr></tfoot>
 </table>
 
 <table class="three">
@@ -576,7 +614,9 @@ ist erforderlich? <span class="ref">10.2, 10.3</span></td></tr></tfoot>
 <tfoot><tr><td colspan="3">Die Formulierung „verändere keine Dateien“ ist eine Anweisung, und eine
 Anweisung kann durch alles andere im Kontext verdrängt werden, auch durch Text, der in einem Dokument
 eingetroffen ist. Ein Nur-Lese-Zugriff ist eine technische Beschränkung und kann es nicht. Alles, was
-teuer oder nicht umkehrbar ist, gehört in die dritte Zeile.</td></tr></tfoot>
+teuer oder nicht umkehrbar ist, gehört in die dritte Zeile. In GitHub Copilot ist eine
+Anweisungsdatei eine Anweisung, die Freigabe von Tool-Aufrufen eine technische
+Beschränkung.</td></tr></tfoot>
 </table>
 
 <h3>Planung, Zerlegung und Delegation</h3>
@@ -627,7 +667,7 @@ orchestrierte Kette.</p>
 </table>
 
 <div class="cols">
-<p><strong>Die Rangfolge der Anweisungen besteht, und sie ist eine Disposition.</strong>
+<p><strong>Rangfolge der Anweisungen.</strong>
 <span class="ref">12.1</span> Anbieter trainieren Modelle in der Regel darauf, Anweisungen aus dem
 Systemkanal Vorrang vor Benutzereingaben einzuräumen und Benutzereingaben Vorrang vor Inhalten aus
 Dokumenten. Diese Ordnung hält überwiegend. Sie ist antrainiertes Verhalten und keine erzwungene
@@ -636,8 +676,8 @@ Widersprüche sind daher zu beseitigen und nicht einer Rangfolge zu überlassen.
 
 <p><strong>Ein Stilprofil wirkt, wenn es Entscheidungen benennt</strong> <span class="ref">12.2, 12.4</span>
 — Stimme, Tempus, Person, Schreibweise von Überschriften, Satzlänge, zu vermeidende Wörter — statt
-gutes Schreiben allgemein zu beschreiben. „Schreibe klar“ ändert nichts; „einen Absatz nie mit
-<em>Darüber hinaus</em> beginnen“ ändert etwas. Das Profil ist vierteljährlich zu prüfen und zu
+gutes Schreiben allgemein zu beschreiben. „Schreibe klar“ ist zu allgemein, um etwas zu bewirken;
+„einen Absatz nie mit <em>Darüber hinaus</em> beginnen“ ist eine prüfbare Vorgabe. Das Profil ist vierteljährlich zu prüfen und zu
 kürzen: Jede Zeile wird mit jeder Anfrage übermittelt, und Anweisungen, die nicht mehr zutreffen,
 verdrängen solche, die zutreffen.</p>
 </div>
@@ -673,8 +713,8 @@ den Aufruf über den Namen, was an der Gestaltung des Inhalts nichts ändert.</p
 <p>Es handelt sich um fremden Code, der mit den erteilten Zugangsdaten ausgeführt wird. Zu klären
 sind der Herausgeber, eine feste Version, die einmalige Durchsicht der Tool-Beschreibungen — sie
 gelangen in den Kontext und sind eine Angriffsfläche für Prompt Injection —, die Beschränkung der
-Zugangsdaten auf das Notwendige und ein Verzeichnis des Installierten. Ein Tool, das das Modell nicht
-erreichen kann, kann es nicht missbrauchen. <span class="ref">13.4</span></p></div>
+Zugangsdaten auf das Notwendige und ein Verzeichnis des Installierten. Nur die Tools freigeben, die
+für die Aufgabe nötig sind. <span class="ref">13.4</span></p></div>
 </div>
 
 <table class="three">
@@ -706,8 +746,8 @@ verfassende es anwenden und zum selben Urteil gelangen könnte.</p>
 
 <div class="note act"><span class="lbl">Prüfbarkeit einplanen</span><p>Ein Dokument, in dem jede
 Zahl ihre Quelle nennt, ist in Minuten geprüft. Dasselbe Dokument ohne Quellenangaben erfordert eine
-Stunde, da zunächst zu ermitteln ist, was überhaupt zu prüfen ist. Nachvollziehbarkeit einzufordern
-ist daher eine Entscheidung über den Prüfaufwand und keine Frage der Formatierung.</p></div>
+Stunde, da zunächst zu ermitteln ist, was überhaupt zu prüfen ist. Quellenangaben zu verlangen senkt
+daher den Prüfaufwand erheblich.</p></div>
 </div>
 
 <table>
@@ -751,7 +791,7 @@ was tatsächlich eingefügt werden soll.</p>
 </div>
 </section>
 
-<section class="part">
+<section class="part part--flow">
 <h2>Terminologie</h2>
 
 <p style="max-width:132mm">Die deutschsprachige Fachliteratur verwendet für einen Teil dieser
@@ -763,6 +803,7 @@ anschlussfähig bleiben.</p>
 <thead><tr><th>Englisch</th><th>In diesem Dokument</th><th>Anmerkung</th></tr></thead>
 <tbody>
 <tr><td class="k">machine learning</td><td>maschinelles Lernen</td><td></td></tr>
+<tr><td class="k">self-supervised learning</td><td>selbstüberwachtes Lernen</td><td>Zielwerte stammen aus dem Text selbst</td></tr>
 <tr><td class="k">neural network</td><td>neuronales Netz</td><td></td></tr>
 <tr><td class="k">weights / bias</td><td>Gewichte / Bias</td><td>„Bias“ unübersetzt, da etabliert</td></tr>
 <tr><td class="k">loss</td><td>Verlustfunktion</td><td></td></tr>
@@ -776,6 +817,7 @@ anschlussfähig bleiben.</p>
 <tr><td class="k">contextual representation</td><td>kontextuelle Repräsentation</td><td></td></tr>
 <tr><td class="k">attention</td><td>Attention</td><td>„Aufmerksamkeitsmechanismus“ bei Ersterwähnung</td></tr>
 <tr><td class="k">context window</td><td>Kontextfenster</td><td></td></tr>
+<tr><td class="k">sampling</td><td>Sampling (Ziehen)</td><td>Auswahl des nächsten Tokens</td></tr>
 <tr><td class="k">temperature</td><td>Temperatur</td><td></td></tr>
 <tr><td class="k">hallucination</td><td>Halluzination</td><td></td></tr>
 <tr><td class="k">harness</td><td>Harness (Rahmenprogramm)</td><td>kein etablierter deutscher Begriff</td></tr>
@@ -801,8 +843,8 @@ anschlussfähig bleiben.</p>
 steht unter <code>../../course/resources.html</code>. Die fünf wichtigsten Einstiegspunkte sind
 englischsprachig:</p>
 <ul class="tight">
-<li><strong>3Blue1Brown</strong>, neuronale Netze und Transformer — die beste verfügbare visuelle
-Darstellung dieses Stoffs und der geeignete Einstieg.</li>
+<li><strong>3Blue1Brown</strong>, neuronale Netze und Transformer — eine anschauliche visuelle
+Darstellung dieses Stoffs und ein geeigneter Einstieg.</li>
 <li><strong>Andrej Karpathy</strong>, <em>Deep Dive into LLMs like ChatGPT</em> für den gesamten
 Ablauf und <em>Neural Networks: Zero to Hero</em> für den Aufbau von Grund auf.</li>
 <li><strong>Anthropic</strong>, <em>Building effective agents</em> — Entwurfsmuster und ein
@@ -820,9 +862,10 @@ und die Agent-Skills-Spezifikation veröffentlichen jeweils eine eigene Referenz
 aktualisiert wird, als ein Kurs es kann.</p>
 
 <div class="note warn"><span class="lbl">Hinweis zur Überprüfung</span><p>Produktverhalten und alle
-kommerziellen Angaben dieses Kurses wurden im Oktober 2026 aus Sekundärquellen zusammengestellt, da
-die primären Dokumentationsserver aus der Arbeitsumgebung nicht erreichbar waren. Vor einer
-verbindlichen Festlegung sind sie zu bestätigen. Vier Fragen kann nur die eigene Administration
+kommerziellen Angaben dieses Blatts wurden im Oktober 2026 aus Sekundärquellen zusammengestellt, da
+die primären Dokumentationsserver aus der Arbeitsumgebung nicht erreichbar waren. Die Umstellung auf
+GitHub AI Credits zum 1. Juni 2026 beruht auf Suchergebnissen zur Ankündigung von GitHub vom April
+2026. Vor einer verbindlichen Festlegung sind die Angaben zu bestätigen. Vier Fragen kann nur die eigene Administration
 beantworten: welches Abrechnungsmodell der Vertrag vorsieht; wie hoch das Kontingent ist und ob es
 organisationsweit zusammengefasst wird; ob eine Überschreitung zugelassen ist und was bei Erschöpfung
 geschieht; und welcher Bericht den Verbrauch wem gegenüber ausweist.</p></div>

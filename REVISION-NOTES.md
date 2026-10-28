@@ -5,6 +5,114 @@ Most recent first.
 
 ---
 
+# Revision 6 — the German deck as the main presentation
+
+The German deck is the material that will be presented to colleagues. The brief: present the
+concepts clearly and in a logical order, with no witty phrases or headline-style titles, in language
+that is easy to follow, and connect them to what language models can and cannot do in practice with
+GitHub Copilot in VS Code. The English deck and both handouts were brought into line so the editions
+stay parallel.
+
+## Titles and wording
+
+Every slide title now names its concept. The label above the title gives the part and section of
+the talk (*Teil 1 · Verarbeitung von Text*) instead of English course module numbers, which meant
+nothing to the audience and ran out of order (5.4 before 4.8, 10.5 after 11). Module references
+remain in the speaker notes.
+
+| Was | Now |
+|---|---|
+| Die Pfeile tauschen die Richtung | Programmierte Regeln und gelernte Parameter |
+| Das Modell liest keine Wörter | Tokenisierung: Text wird in Tokens zerlegt |
+| Die Schleife | Autoregression: Die Ausgabe wird Teil der Eingabe |
+| Kein Schritt des Verfahrens prüft eine Aussage | Halluzination: plausible, aber falsche Ausgaben |
+| Bitten, Anordnen, Verhindern | Drei Arten von Kontrolle |
+| Ein Dokument kann die Maschine ansprechen | Prompt Injection: Anweisungen in Dokumenten |
+| Sprachliche Qualität sagt nichts über Richtigkeit | Prüfung: Kriterien vor der Arbeit festlegen |
+
+Pointed phrasing was removed from slides and notes: "Funktioniert, bis es nicht mehr
+funktioniert", "Er existiert nur nicht", "Nichts wurde kompromittiert. Nichts wurde entwendet",
+"Das Schweigen ist in der Regel die Aussage", "Bitten ist nicht Verhindern", the chiasmus about
+instructions, requests and credits, and several superlatives. Sentences are shorter, and terms
+(Verlust, Sigmoidfunktion, Logits, Residualverbindung, Harness) are explained where they first
+appear. The course title on the slides is now descriptive: *Wie Sprachmodelle funktionieren* /
+*How language models work*. The course itself keeps its name.
+
+## Order and structure — 33 slides, was 30
+
+- **A term was used before it was defined.** The training slide said "predict the next token" one
+  slide before tokens were introduced. It now says what a token is and points ahead.
+- **Limitation before remedy.** Hallucination now comes before the harness slide, as in the course
+  (4.8 before 5.4): first what the model cannot do, then what the surrounding system does about it.
+- **New slide 16, parameters and context.** The deck had no slide for the concept that explains
+  most practical limits: fixed parameters with a cutoff and no internal knowledge, a limited
+  context, no memory beyond what software re-sends. Built from course §1.8 and §4.7.
+- **New slide 19, what follows from how it works.** A table pairing each mechanism with its
+  consequence for practice, revealed row by row so the room can predict each one first. It answers
+  the workshop's question — what language models can and cannot do, and why — before Part 2 begins.
+- **New slide 21, the concepts in GitHub Copilot.** The deck never mentioned Copilot or VS Code.
+  The slide maps model choice, context, instruction files, modes, tools, approvals and billing to
+  the product; Part 2 slides refer to it in one line or in the notes.
+- **"Folge für die Praxis" / "In practice" boxes** at the foot of each mechanism slide with a
+  direct consequence, and on three Part 2 slides that had empty space and no stated conclusion.
+- Slide 2 is now an outline of the two parts. The old version argued for the approach with a
+  rhetorical contrast and promised a morning/afternoon split that did not match the 90-minute
+  timing in the README.
+
+## Corrections
+
+| Where | Was | Now |
+|---|---|---|
+| Training slide, notes | Cross-entropy question gave the first model 0.6, then computed −log(0.3) | First model gives 0.3 in both cases, as in course exercise 1.4 |
+| Model choice, notes | "Now set cost to 100: the small low-effort option wins" | Only true with quality at zero; with quality still at 100, Small high effort wins 80.0 to 79.0. Instruction corrected |
+| Context, notes | "Fifteen times cheaper per request" | About five times (116 720 vs 22 720 tokens); only the documents' share falls from 100 000 to 6 000 |
+| Cost, notes | "$0.37" (a double rounding of 0.3646) | $0.365, as the widget shows |
+| Training step slide | Titled as what the button did, but computed one row | Labelled as one row; the button averages the four rows |
+| Neuron slide | Caption promised a dividing line in the input plane over empty axes | The four points and the line are drawn |
+| Training slide | "the same calculation … 10²⁰ times" | The course's own figures: about 10¹¹ parameters and 10¹³ tokens |
+| Title notes | "No maths beyond school algebra" | Says which calculations appear: a weighted sum, one derivative, one logarithm |
+| Embedding diagram (both decks) | Three labels overlapped a point or a dashed line | Moved |
+| German widget | "Geschwindigkeit" overlapped its slider | "Tempo" |
+| German widget | "$0,365" in the table beside "20,00 $" in the text | "0,365 $"; English output unchanged |
+| German print | Widgets printed "Interactive element — see the live deck" | German label |
+| Practical guide §5, §8 | Modes Ask, Edit, Agent | Ask, Plan, Agent; Edit noted as the older name |
+
+## GitHub Copilot facts added
+
+Same constraint as before: `docs.github.com` and `code.visualstudio.com` do not resolve from this
+environment. Web search works and returns summaries.
+
+| Claim | Where | Basis | Confidence |
+|---|---|---|---|
+| GitHub AI Credits replaced premium requests on 1 June 2026; one credit = US$0.01; charged by tokens; code completion consumes none | Deck slides 21 and 24, both handouts | Search summaries of GitHub's announcement of 27 April 2026 and later coverage | Good on the change and the unit; plan allowances not used |
+| VS Code chat offers Ask, Plan and Agent; Plan hands its plan to Agent | Slides 21, 27, 28; handouts; practical guide | Search summary of GitHub's Copilot Chat documentation | Good; names change between versions |
+| `.github/copilot-instructions.md`, `*.prompt.md` | Slides 16, 21, 29, 30 | Search summary of VS Code custom-instructions documentation | Good |
+| Approval of tool calls and terminal commands | Slides 21, 27, 29 | General product behaviour; no search result confirmed the setting names | Described generally, no setting names given |
+
+## Tests
+
+- `widget-test.js` finds each widget by its `data-widget` name instead of a fixed slide number, so
+  inserting slides no longer points a check at the wrong slide. `deck-test.js` reports the actual
+  slide count.
+- Both decks: 33 slides fit the 720px frame, all have notes, all 22 steps reveal, no console errors.
+  `svg-fit-test.js` reports the same two known false positives on slide 13 in both. All six widgets
+  produce their intended results. Printing gives 33 pages.
+- Every slide of both decks was rendered and inspected in the light theme, a sample in the dark
+  theme.
+- Handouts: German 10 pages (the glossary now follows Part Two instead of starting a page); English
+  8 pages, was 7, because of the two added tables.
+
+## What remains
+
+- **Check the Copilot details in your own installation before presenting:** mode names, which
+  models are enabled, which approval settings are set centrally.
+- **The course text was not revised.** Module 1.4 still says training repeats the calculation "on
+  the order of 10²⁰ times"; what is being counted is unclear, and the deck no longer uses the
+  figure. The course's other claims used here were checked against it.
+- **Timings are estimates.** The deck has not been run with a group in this form.
+
+---
+
 # Revision 5 — German editions of the deck and the handout
 
 Two of the four materials now exist in German: the workshop deck and the reference handout. The

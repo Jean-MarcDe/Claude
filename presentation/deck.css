@@ -19,7 +19,6 @@
   --accent:#06697b;          /* mechanism */
   --accent-soft:#d8ecef;
   --practice:#8c4a0c;        /* practice, decisions */
-  --practice-soft:#f6ead f;
   --practice-soft:#f6eadf;
   --danger:#99232a;
   --danger-soft:#f7e4e4;
@@ -313,4 +312,5 @@ button:focus-visible, input:focus-visible, a:focus-visible{
     content:"Interactive element — see the live deck";
     display:block; font-size:13px; color:#666; font-style:italic; margin-top:8px;
   }
+  html[lang="de"] .widget::after{content:"Interaktives Element — im Browser vorführen"}
 }

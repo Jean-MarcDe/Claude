@@ -22,8 +22,8 @@ than as the default setting.
 | | For | Form | Time |
 |---|---|---|---|
 | **[The course](course/index.html)** | Reading and working through, alone or over several sessions | Four HTML pages, ~42,000 words, 20 diagrams, 20 exercises, a 5-stage workshop | A day, or seven sittings |
-| **[The deck](presentation/index.html)** | Teaching it to a room | 30 slides, 6 interactive demonstrations, speaker notes throughout | 90 minutes, or two 50-minute halves |
-| **[The handout](handout/handout.html)** | Keeping beside you afterwards | 7 printed pages of definitions and decision tables | Consulted, not read |
+| **[The deck](presentation/index.html)** | Teaching it to a room | 33 slides, 6 interactive demonstrations, speaker notes throughout | About two hours (estimate), or two sessions of about an hour |
+| **[The handout](handout/handout.html)** | Keeping beside you afterwards | 8 printed pages of definitions and decision tables | Consulted, not read |
 | **[The practical guide](practical-guide/index.html)** | Actually doing it, on a real tool | 14 sections plus a 40-minute exercise with an answer key | An afternoon |
 
 **In German:** the deck and the handout also exist as
@@ -45,7 +45,7 @@ at the section that does not.
   handout. Part One is there when something in Part Two does not sit right.
 - **Someone on your team has never opened an editor** — the practical guide, on its own. It is
   written to stand alone and links back where interest arises.
-- **Half a day and a team to convince** — the deck's second act, then the practical guide's
+- **Half a day and a team to convince** — the deck's second part, then the practical guide's
   exercise run live. The exercise is built so that a plausible wrong answer and a good one look
   visibly different, which is the argument that lands.
 
@@ -63,7 +63,7 @@ at the section that does not.
 | [`presentation/`](presentation/) | The workshop deck — `index.html`, `deck.css`, `deck.js`, and [its README](presentation/README.md) on running, projecting and printing it |
 | [`handout/`](handout/) | The reference handout as Markdown, printable HTML and PDF, with [a build script](handout/build-pdf.js) |
 | [`practical-guide/`](practical-guide/) | The GitHub Copilot companion and its `exercise/` folder — data, a supplier brief, acceptance criteria and an exact answer key |
-| [`presentation/de/`](presentation/de/) | **Foliensatz (deutsch)** — the same 30 slides, sharing the English engine and stylesheet |
+| [`presentation/de/`](presentation/de/) | **Foliensatz (deutsch)** — the same 33 slides, sharing the English engine and stylesheet |
 | [`handout/de/`](handout/de/) | **Referenzblatt (deutsch)** — ten A4 pages in Markdown, HTML and PDF, with the terminology table |
 | [`REVISION-NOTES.md`](REVISION-NOTES.md) | What changed across revisions, and what remains unverified |
 
@@ -83,7 +83,7 @@ The course and the practical guide load three fonts from Google Fonts and degrad
 without them.
 
 ```
-node handout/build-pdf.js              # both handout PDFs (7 pages EN, 10 pages DE)
+node handout/build-pdf.js              # both handout PDFs (8 pages EN, 10 pages DE)
 node handout/build-pdf.js de           # just the German one
 ```
 

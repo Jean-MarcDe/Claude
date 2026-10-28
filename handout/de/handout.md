@@ -1,8 +1,7 @@
-# Von Tokens zu Entscheidungen — Referenzblatt
+# Wie Sprachmodelle funktionieren — Referenzblatt
 
-Kompakte Referenz zum Kurs *Tokens to Decisions*. Das Dokument wiederholt den Kurs nicht, sondern
-hält die Definitionen, Zusammenhänge und Entscheidungskriterien fest, die man im Arbeitsalltag
-nachschlägt.
+Die Definitionen, Zusammenhänge und Entscheidungskriterien des Workshops zum Nachschlagen im
+Arbeitsalltag. Grundlage ist der englische Kurs *Tokens to Decisions*.
 
 Vollständiger Kurs (englisch): `../../course/index.html` · Foliensatz: `../../presentation/de/index.html` ·
 Englische Fassung dieses Blatts: `../handout.html`
@@ -15,7 +14,7 @@ Originalbegriff. Abschnitt *Terminologie* am Ende enthält die vollständige Zuo
 
 ---
 
-## Teil Eins — Funktionsweise des Modells
+## Teil Eins — Wie ein Sprachmodell funktioniert
 
 ### Lernen und Training
 
@@ -98,9 +97,8 @@ ordnet die Zeilen so an, dass ähnlich verwendete Tokens benachbart liegen.
 
 **Kontextuelle Repräsentation** — geschrieben **h**ᵢ⁽ˡ⁾, der Vektor an Position *i* nach Schicht *l*,
 nachdem Attention Informationen aus anderen Positionen eingemischt hat. Ein statisches Embedding je
-Token, viele kontextuelle Repräsentationen. Diese Unterscheidung ist die wichtigste in Teil Eins:
-Das erste ist eine Eigenschaft eines Wortes, das zweite eine Eigenschaft eines Wortes *in einem
-Satz*. [3.2]
+Token, viele kontextuelle Repräsentationen: Das statische Embedding hängt nur vom Token ab, die
+kontextuelle Repräsentation vom Token *und seinem Satz*. [3.2]
 
 **Attention** (Aufmerksamkeitsmechanismus) — jede Position erzeugt eine Anfrage (query), die
 beschreibt, welche Information sie benötigt; jede Position bietet einen Schlüssel (key); jede
@@ -111,7 +109,7 @@ Position erhält eine gewichtete Mischung der Werte (values) der übrigen Positi
 > ```
 >
 > Die Skalierung mit √dₖ hält die Softmax-Funktion außerhalb ihres gesättigten Bereichs. Der Aufwand
-> wächst quadratisch mit der Sequenzlänge. Attention-Gewichte zeigen, woher Information bezogen
+> wächst quadratisch mit der Sequenzlänge; lange Kontexte sind deshalb rechenaufwendig. Attention-Gewichte zeigen, woher Information bezogen
 > wurde; sie sind **keine** Erklärung der Ausgabe. [3.2, 3.3]
 
 **Transformer** — gestapelte Blöcke, die jeweils Multi-Head-Attention mit einem
@@ -161,7 +159,9 @@ technisch erzwungene Beschränkung. [5.1]
 
 **Harness** (Rahmenprogramm) — das Programm, das das Modell umgibt: Es stellt den Kontext zusammen,
 liefert die Tool-Definitionen, wertet die Ausgabe aus, führt Tools aus und entscheidet über den
-Abbruch. Zwei Harnesses um dasselbe Modell sind zwei verschiedene Produkte. [5.4]
+Abbruch. Dasselbe Modell verhält sich in verschiedenen Harnesses unterschiedlich; vieles, was dem
+Modell zugeschrieben wird, legt der Harness fest. GitHub Copilot in VS Code ist ein solcher Harness.
+[5.4]
 
 **Tool / Tool-Aufruf** — das Modell gibt eine strukturierte Anforderung aus, die ein Tool und dessen
 Argumente benennt; der Harness prüft die Berechtigungen, führt den Code aus und hängt das Ergebnis an
@@ -180,11 +180,39 @@ abgerufen wurde. [5.11]
 **Prompt Injection** — Text, der dort platziert wird, wo ein Modell ihn liest, und als Anweisung
 formuliert ist. Bei der **indirekten** Variante steht der Text in einem Dokument, einer Webseite oder
 einem Datensatz aus externer Quelle. Das Verfahren funktioniert, weil Anweisungen und Daten denselben
-Eingabekanal verwenden und die Herkunft nicht festgehalten wird. [6.1, 6.2]
+Eingabekanal verwenden und die Herkunft nicht festgehalten wird. Es handelt sich um eine Eigenschaft
+der Architektur; eine allgemeine Korrektur gibt es derzeit nicht. [6.1, 6.2]
+
+### Was aus der Funktionsweise folgt
+
+| Mechanismus | Folge für die Praxis |
+|---|---|
+| Parameter werden aus Beispielen gelernt | Ob ein Modell eine Aufgabe beherrscht, zeigt nur ein Test mit bekannten Antworten |
+| Trainingsziel: das nächste Token vorhersagen | Ausgaben sind plausibel, aber nicht geprüft |
+| Text wird in Tokens zerlegt | Buchstaben zählen und exaktes Rechnen sind unzuverlässig; Kosten und Kontext werden in Tokens gemessen; Deutsch braucht mehr Tokens |
+| Das nächste Token wird gezogen | Dieselbe Anfrage kann verschiedene Antworten ergeben |
+| Jedes erzeugte Token wird angehängt | Lange Kontexte kosten mehr; frühe Fehler setzen sich fort; die Herkunft von Text ist nicht gekennzeichnet |
+| Feste Parameter, begrenzter Kontext | Kein Gedächtnis zwischen Dialogen; neuere und interne Informationen sind nur bekannt, wenn sie im Kontext stehen |
+| Kein Schritt prüft Aussagen | Halluzinationen sind zu erwarten; Ergebnisse müssen geprüft werden |
+| Ein Harness umgibt das Modell | Vieles, was man „der KI“ zuschreibt, ist eine Einstellung des Systems |
 
 ---
 
-## Teil Zwei — Betrieb des Systems
+## Teil Zwei — Was daraus für die Praxis folgt
+
+### Die Begriffe in GitHub Copilot
+
+Stand Oktober 2026, aus Sekundärquellen; Bezeichnungen ändern sich zwischen Versionen.
+
+| Begriff | In GitHub Copilot in VS Code |
+|---|---|
+| Modell | Auswahlliste im Chat. Welche Modelle erscheinen, legt die Organisation fest. |
+| Kontext | Angehängte Dateien und Ordner (mit `#` im Eingabefeld), der bisherige Chat, je nach Einstellung die geöffnete Datei. |
+| Dauerhafte Anweisungen | Anweisungsdateien im Projekt, z. B. `.github/copilot-instructions.md`; Prompt-Dateien (`*.prompt.md`) für wiederkehrende Anfragen. |
+| Arbeitsmodi | *Ask*: Fragen und Antworten. *Plan*: Plan vor der Ausführung. *Agent*: arbeitet selbstständig mit Tools. |
+| Tools, agentische Schleife | Im Agent-Modus: Dateien lesen und ändern, Terminalbefehle ausführen. Erweiterbar über MCP-Server. |
+| Technische Beschränkung | Freigabe von Tool-Aufrufen und Terminalbefehlen; Vorgaben der Organisation. |
+| Kosten | GitHub AI Credits seit 1. Juni 2026, berechnet nach verbrauchten Tokens; 1 Credit = 0,01 US$. Die Code-Vervollständigung verbraucht keine Credits. |
 
 ### Modellauswahl
 
@@ -232,8 +260,8 @@ Zwischengespeicherte Eingabe — ein Präfix, das der Anbieter bereits verarbeit
 etwa ein Zehntel der Eingabe. Daraus folgt der finanzielle Wert stabiler Anweisungen. **Tokens für
 Zwischenberechnungen werden als Ausgabe abgerechnet und sind oft nicht sichtbar.** [8.4]
 
-> **Eine Anweisung ist nicht eine Anfrage, und eine Anfrage ist nicht ein Credit.** Ein agentischer
-> Arbeitsablauf kann aus einem Satz zwanzig Modellaufrufe erzeugen. [8.5]
+> **Eine Anweisung kann viele Modellaufrufe auslösen.** Ein agentischer Ablauf erzeugt aus einem Satz
+> leicht zwanzig. Wie Tokens in Credits umgerechnet werden, legt der Anbieter fest. [8.5]
 
 **Was den Verbrauch erhöht**
 
@@ -296,7 +324,9 @@ beenden und die folgende damit zu beginnen. [9.4]
 verursacht ein Fehler? Lässt sich der Erfolg automatisch prüfen? Worauf können die Tools zugreifen?
 Wie viel nicht dokumentiertes Urteilsvermögen ist erforderlich? Zu beginnen ist mit dem geringsten
 Autonomiegrad, der die Aufgabe erfüllen kann; für jeden ersten Durchlauf ist der interaktive Modus zu
-verwenden. [10.2, 10.3]
+verwenden. In GitHub Copilot entspricht *Ask* dem Dialog und *Plan* der Planung; *Agent* arbeitet
+interaktiv oder autonom, je nachdem, ob Aktionen einzeln oder automatisch freigegeben werden.
+[10.2, 10.3]
 
 ### Drei Arten von Kontrolle
 
@@ -308,7 +338,8 @@ verwenden. [10.2, 10.3]
 
 Die Formulierung „verändere keine Dateien“ ist eine Anweisung und kann verdrängt werden. Ein
 Nur-Lese-Zugriff ist eine technische Beschränkung und kann es nicht. Alles, was teuer oder nicht
-umkehrbar ist, gehört in die dritte Zeile. [10.5]
+umkehrbar ist, gehört in die dritte Zeile. In GitHub Copilot ist eine Anweisungsdatei eine
+Anweisung, die Freigabe von Tool-Aufrufen eine technische Beschränkung. [10.5]
 
 ### Planung und Delegation
 
@@ -378,8 +409,7 @@ Umgebungen verlangen stattdessen den Aufruf über den Namen. [13.2]
 **MCP und Tools** — einen Server hinzuzufügen bedeutet, fremden Code mit den erteilten
 Zugangsdaten zu installieren. Zu klären sind der Herausgeber, eine feste Version, die einmalige
 Durchsicht der Tool-Beschreibungen, die Beschränkung der Zugangsdaten auf das Notwendige und ein
-Verzeichnis des Installierten. Ein Tool, das das Modell nicht erreichen kann, kann es nicht
-missbrauchen. [13.4]
+Verzeichnis des Installierten. Nur die Tools freigeben, die für die Aufgabe nötig sind. [13.4]
 
 ### Umfang der zu erstellenden Struktur
 
@@ -451,6 +481,7 @@ englischsprachige Quellen — einschließlich des Kurses selbst — anschlussfä
 | Englisch | In diesem Dokument | Anmerkung |
 |---|---|---|
 | machine learning | maschinelles Lernen | |
+| self-supervised learning | selbstüberwachtes Lernen | Zielwerte stammen aus dem Text selbst |
 | neural network | neuronales Netz | |
 | weights / bias | Gewichte / Bias | „Bias“ unübersetzt, da etabliert |
 | loss | Verlustfunktion | |
@@ -464,6 +495,7 @@ englischsprachige Quellen — einschließlich des Kurses selbst — anschlussfä
 | contextual representation | kontextuelle Repräsentation | |
 | attention | Attention | „Aufmerksamkeitsmechanismus“ bei Ersterwähnung |
 | context window | Kontextfenster | |
+| sampling | Sampling (Ziehen) | Auswahl des nächsten Tokens |
 | temperature | Temperatur | |
 | hallucination | Halluzination | |
 | harness | Harness (Rahmenprogramm) | kein etablierter deutscher Begriff |
@@ -486,7 +518,7 @@ englischsprachige Quellen — einschließlich des Kurses selbst — anschlussfä
 Die kommentierte Quellensammlung des Kurses mit 46 Einträgen steht unter
 `../../course/resources.html`. Die wichtigsten Einstiegspunkte sind englischsprachig:
 
-- **3Blue1Brown**, neuronale Netze und Transformer — die beste verfügbare visuelle Darstellung
+- **3Blue1Brown**, neuronale Netze und Transformer — eine anschauliche visuelle Darstellung
 - **Andrej Karpathy**, *Deep Dive into LLMs like ChatGPT* und *Neural Networks: Zero to Hero*
 - **Anthropic**, *Building effective agents* — Entwurfsmuster und Hinweise, wann sie ungeeignet sind
 - **Simon Willison**, Sammlung zu Prompt Injection — fortlaufende Dokumentation des Problems
@@ -497,9 +529,11 @@ die jeweils aktuelle Dokumentation des Anbieters heranzuziehen und nicht dieses 
 Copilot, die Agentenkonfiguration von VS Code, das Model Context Protocol und die
 Agent-Skills-Spezifikation veröffentlichen jeweils eigene Referenzen.
 
-> **Hinweis zur Überprüfung.** Produktverhalten und alle kommerziellen Angaben dieses Kurses wurden
+> **Hinweis zur Überprüfung.** Produktverhalten und alle kommerziellen Angaben dieses Blatts wurden
 > im Oktober 2026 aus Sekundärquellen zusammengestellt, da die primären Dokumentationsserver aus der
-> Arbeitsumgebung nicht erreichbar waren. Vor einer verbindlichen Festlegung sind sie zu bestätigen.
+> Arbeitsumgebung nicht erreichbar waren. Die Umstellung auf GitHub AI Credits zum 1. Juni 2026
+> beruht auf Suchergebnissen zur Ankündigung von GitHub vom April 2026. Vor einer verbindlichen
+> Festlegung sind die Angaben zu bestätigen.
 > Vier Fragen kann nur die eigene Administration beantworten: welches Abrechnungsmodell der Vertrag
 > vorsieht; wie hoch das Kontingent ist und ob es organisationsweit zusammengefasst wird; ob eine
 > Überschreitung zugelassen ist und was bei Erschöpfung geschieht; und welcher Bericht den Verbrauch

@@ -6,9 +6,9 @@ const { chromium } = require('playwright');
 const path = require('path');
 
 const EDITIONS = {
-  en: { dir: '.',   label: 'Tokens to Decisions — reference handout',
+  en: { dir: '.',   label: 'How language models work — reference handout',
         page: 'Page %p of %t' },
-  de: { dir: 'de',  label: 'Von Tokens zu Entscheidungen — Referenzblatt',
+  de: { dir: 'de',  label: 'Wie Sprachmodelle funktionieren — Referenzblatt',
         page: 'Seite %p von %t' }
 };
 
