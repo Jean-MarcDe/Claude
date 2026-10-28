@@ -24,6 +24,7 @@
   --danger-soft:#f7e4e4;
   --ok:#1b6340;
   --ok-soft:#dfefe7;
+  --on-accent:#ffffff;       /* text on accent and practice fills */
 
   --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
@@ -52,6 +53,7 @@
   --danger-soft:#381c1f;
   --ok:#63bf92;
   --ok-soft:#11301e;
+  --on-accent:#0b1116;
   color-scheme: dark;
 }
 
@@ -202,7 +204,7 @@ input[type=range]{
 }
 button{
   font-family:var(--sans); font-size:15px; font-weight:600;
-  background:var(--accent); color:#fff; border:0; border-radius:6px;
+  background:var(--accent); color:var(--on-accent); border:0; border-radius:6px;
   padding:9px 16px; cursor:pointer;
 }
 button:hover{filter:brightness(1.08)}
@@ -235,7 +237,7 @@ button:focus-visible, input:focus-visible, a:focus-visible{
 .budget{display:flex; gap:2px; height:44px; border-radius:6px;
   overflow:hidden; background:var(--surface-3); margin:10px 0}
 .budget__seg{display:flex; align-items:center; justify-content:center;
-  font-family:var(--mono); font-size:12px; color:#fff; overflow:hidden;
+  font-family:var(--mono); font-size:12px; color:var(--on-accent); overflow:hidden;
   white-space:nowrap; transition:flex-grow .3s ease}
 @media (prefers-reduced-motion:reduce){.budget__seg{transition:none}}
 .toggles{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}

@@ -376,12 +376,14 @@
       SRC.forEach(function (s) {
         if (!s.on) return;
         var col = s.practice ? 'var(--practice)' : 'var(--accent)';
+        // faint segments carry dark-on-light (or light-on-dark) ink so labels stay legible
+        var ink = s.o >= .5 ? 'var(--on-accent)' : 'var(--ink)';
         html += '<div class="budget__seg" style="flex-grow:' + s.tok +
-          ';background:' + col + ';opacity:' + s.o + '" title="' + s.label + '">' +
+          ';background:' + col + ';opacity:' + s.o + ';color:' + ink + '" title="' + s.label + '">' +
           (s.tok / used > .08 ? Math.round(s.tok / WINDOW * 100) + '%' : '') + '</div>';
       });
       html += '<div class="budget__seg" style="flex-grow:' + head +
-        ';background:var(--rule-strong)">' +
+        ';background:var(--rule-strong);color:var(--ink)">' +
         (head / WINDOW > .08
            ? trf('headroom %1%', Math.round(head / WINDOW * 100)) : '') + '</div>';
       root.querySelector('#cBar').innerHTML = html;
