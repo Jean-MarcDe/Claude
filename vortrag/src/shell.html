@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vom Token zur Entscheidung</title>
+<!-- Erzeugt mit build.py aus src/. Nicht von Hand bearbeiten – Quelle ändern und neu bauen. -->
+<style>
+/* === SCHRIFTEN (eingebettet, damit die Datei offline läuft) === */
+/*{{FONTS}}*/
+/*{{CSS}}*/
+.slide > .rv { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+  <main class="deck-stage" id="deckStage">
+    <div class="chrome top"><span id="secLabel"></span><span>Vom Token zur Entscheidung</span></div>
+<!--{{SLIDES}}-->
+    <div class="chrome bot"><span>? = Tastenhilfe · O = Übersicht</span><span class="pg" id="pgLabel"></span></div>
+    <div class="progress" id="progress"></div>
+  </main>
+</div>
+
+<!-- UI außerhalb der Bühne -->
+<div class="overview ui" id="overview"><div class="grid"></div></div>
+<div class="help ui" id="help">
+  <div><b>→ Leertaste</b> nächster Schritt / nächste Folie</div>
+  <div><b>←</b> zurück</div>
+  <div><b>↓ ↑</b> Folie vor / zurück ohne Schritte</div>
+  <div><b>Pos1 Ende</b> erste / letzte Folie</div>
+  <div><b>O</b> Übersicht aller Folien</div>
+  <div><b>F</b> Vollbild</div>
+  <div><b>E</b> Texte bearbeiten, Strg/Cmd+S exportiert</div>
+  <div><b>? H</b> diese Hilfe</div>
+</div>
+<div class="edit-hotzone ui"></div>
+<button class="edit-toggle ui" id="editToggle" title="Edit-Modus (E)">EDIT</button>
+
+<script>
+/*{{JS}}*/
+</script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!-- =====================================================
+     01 · TITEL
+     ===================================================== -->
+<section class="slide" data-sec="Moderne AI · Theorie und Anwendung">
+  {{LAND_LIGHT}}
+  <div class="rv">
+    <div class="title-h" style="font-size:150px">
+      <div><span class="tok">Vom</span><span class="tok hot">Token</span></div>
+      <div><span class="tok b">zur</span><span class="tok c">Ent</span><span class="tok">scheid</span><span class="tok b">ung</span></div>
+    </div>
+    <p class="label" style="margin-top:44px">Text → Tokens → Vektoren → Wahrscheinlichkeiten → nächstes Token</p>
+    <p class="lede" style="margin-top:20px;max-width:980px">Wie ein LLM funktioniert, was es deshalb kann und nicht kann – und wie man es mit <b>GitHub Copilot</b> richtig einsetzt.</p>
+    <p class="label" style="margin-top:56px;color:var(--ink)">Jean-Marc Debarnot · 11. November 2026</p>
+  </div>
+</section>
+
+<!-- =====================================================
+     02 · AGENDA
+     ===================================================== -->
+<section class="slide" data-sec="Überblick">
+  <div class="kick">90 Minuten, zwei Teile</div>
+  <h2>Jede Praxisregel folgt aus <em>einem Mechanismus.</em></h2>
+  <div class="body">
+    <div class="cols stretch">
+      <div class="card">
+        <span class="tag">Teil 1 · ca. 40 min</span>
+        <h3>Mechanik: Wie ein LLM funktioniert</h3>
+        <ul class="b tight">
+          <li>Neural Network, Training, Gradient Descent, Backpropagation</li>
+          <li>Tokens, Embeddings, Attention, Transformer</li>
+          <li>Sampling, Context Window, Hallucination</li>
+          <li>Harness, Tools, Agentic Loop</li>
+        </ul>
+      </div>
+      <div class="card fill">
+        <span class="tag">Teil 2 · ca. 45 min</span>
+        <h3>Praxis: GitHub Copilot richtig einsetzen</h3>
+        <ul class="b tight">
+          <li>Modellwahl, AI Credits, Deutsch vs. Englisch</li>
+          <li>Context Engineering und Prompting</li>
+          <li>Instructions, Skills, Custom Agents, MCP, Hooks, Plugins</li>
+          <li>Sicherheit und Verification</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mt">Sechs <b class="red">Live-Demos</b> unterwegs. Alle Begriffe stehen noch einmal im Handbuch zum Nachschlagen.</p>
+  </div>
+</section>
+
+<!-- =====================================================
+     03 · BEGRIFFE EINORDNEN
+     ===================================================== -->
+<section class="slide" data-sec="Überblick">
+  <div class="kick">Einordnung</div>
+  <h2>AI, Machine Learning, LLM: <em>was ist was?</em></h2>
+  <div class="body cols w46">
+    <svg class="dg" viewBox="0 0 700 620">
+      <rect class="box" x="4" y="4" width="692" height="612"/>
+      <text class="ttl" x="28" y="46">Artificial Intelligence</text>
+      <rect class="boxt" x="40" y="80" width="620" height="510"/>
+      <text class="ttl" x="64" y="122">Machine Learning</text>
+      <rect class="box" x="76" y="156" width="548" height="408"/>
+      <text class="ttl" x="100" y="198">Deep Learning · Neural Networks</text>
+      <rect class="boxt" x="112" y="232" width="476" height="306"/>
+      <text class="ttl" x="136" y="274">Generative AI</text>
+      <rect class="boxr" x="148" y="308" width="404" height="204"/>
+      <text class="ttl w" x="172" y="352">Large Language Models</text>
+      <text class="w" x="172" y="396">Claude · GPT · Gemini</text>
+      <text class="w" x="172" y="432">Transformer-Architektur</text>
+      <text class="w" x="172" y="468">sagt das nächste Token vorher</text>
+    </svg>
+    <div class="stack">
+      <p><b>Artificial Intelligence</b> – Sammelbegriff: Systeme, die Aufgaben lösen, für die man Intelligenz erwarten würde.</p>
+      <p class="step"><b>Machine Learning</b> – die Regeln werden nicht programmiert, sondern aus Beispielen gelernt.</p>
+      <p class="step"><b>Deep Learning</b> – Machine Learning mit vielschichtigen Neural Networks.</p>
+      <p class="step"><b>Generative AI</b> – Modelle, die neue Inhalte erzeugen: Text, Code, Bilder.</p>
+      <p class="step"><b>LLM</b> – ein sehr großes Neural Network, trainiert auf Text. <b class="red">Darum geht es heute.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     04 · KAPITEL 1
+     ===================================================== -->
+<section class="slide dark" data-sec="Teil 1 · Mechanik">
+  {{LAND}}
+  <div class="rv">
+    <div class="sec-num">01</div>
+    <div class="sec-title">Wie ein LLM funktioniert</div>
+    <p class="sec-sub">Vom einzelnen Neuron bis zum System, das Tools aufruft. Ohne Vorwissen, aber ohne Abkürzungen.</p>
+  </div>
+</section>
+
+<!-- =====================================================
+     05 · REGELN VS. PARAMETER
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Machine Learning</div>
+  <h2>Programmierte Regeln vs. <em>gelernte Parameter</em></h2>
+  <div class="body">
+    <div class="cols stretch">
+      <div class="card">
+        <span class="tag">Klassische Software</span>
+        <h3>Ein Mensch schreibt die Regel</h3>
+<pre class="code mt-s"><span class="k">if</span> betreff.contains(<span class="s">"Gewinn"</span>)
+   <span class="k">and</span> absender <span class="k">not in</span> kontakte:
+    <span class="k">return</span> SPAM</pre>
+        <p class="mt-s">Exakt, nachvollziehbar, testbar. Versagt bei allem, was niemand vorhergesehen hat.</p>
+      </div>
+      <div class="card fill">
+        <span class="tag">Machine Learning</span>
+        <h3>Ein Suchverfahren findet die Regel</h3>
+<pre class="code mt-s" style="background:#1f1f1d"><span class="c"># 1 Mio. Mails, jede mit Label</span>
+model = train(mails, labels)
+model(neue_mail)  <span class="c"># → 0.97 SPAM</span></pre>
+        <p class="mt-s">Die „Regel“ sind Zahlen: <b>Parameter</b>. Niemand hat sie geschrieben, niemand kann sie direkt lesen.</p>
+      </div>
+    </div>
+    <div class="take mt step">Ob ein Modell eine Aufgabe beherrscht, steht in keiner Spezifikation. Das zeigt nur ein Test mit bekannten Antworten.</div>
+  </div>
+</section>
+
+<!-- =====================================================
+     06 · NEURON
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Neural Network</div>
+  <h2>Ein Neuron: eine Funktion mit <em>drei Parametern</em></h2>
+  <div class="body cols w64">
+    <svg class="dg" viewBox="0 0 1000 520">
+      <circle class="node" cx="90" cy="130" r="54"/><text x="90" y="138" text-anchor="middle">x₁</text>
+      <circle class="node" cx="90" cy="390" r="54"/><text x="90" y="398" text-anchor="middle">x₂</text>
+      <line class="ln" x1="144" y1="146" x2="402" y2="240"/><line class="ln" x1="144" y1="374" x2="402" y2="280"/>
+      <text x="240" y="162" fill="#ff3300" style="fill:var(--red);font-weight:700">· w₁</text>
+      <text x="240" y="376" style="fill:var(--red);font-weight:700">· w₂</text>
+      <rect class="boxf" x="402" y="170" width="220" height="180"/>
+      <text class="ttl w" x="512" y="246" text-anchor="middle">Σ + b</text>
+      <text class="w" x="512" y="290" text-anchor="middle">gewichtete</text><text class="w" x="512" y="318" text-anchor="middle">Summe</text>
+      <line class="ln" x1="622" y1="260" x2="700" y2="260"/>
+      <rect class="boxr" x="700" y="190" width="150" height="140"/>
+      <path d="M720 300 C 760 300, 780 220, 830 220" stroke="#fff" stroke-width="5" fill="none"/>
+      <text class="lbl" x="775" y="372" text-anchor="middle">Activation</text>
+      <line class="ln" x1="850" y1="260" x2="930" y2="260"/><path d="M930 260 l-18 -11 v22z"/>
+      <text class="ttl" x="962" y="269" text-anchor="middle">ŷ</text>
+      <text class="lbl" x="512" y="480" text-anchor="middle">Weights w₁, w₂ und Bias b werden gelernt</text>
+    </svg>
+    <div class="stack">
+      <p class="formula">z = w₁x₁ + w₂x₂ + <b>b</b></p>
+      <p class="formula">ŷ = σ(z)</p>
+      <p class="step"><b>Weights</b> gewichten die Eingaben, der <b>Bias</b> verschiebt die Summe. Zusammen: die <b>Parameter</b>.</p>
+      <p class="step">Die <b>Activation Function</b> ist nichtlinear. Ohne sie ließe sich jedes noch so tiefe Netz zu einer einzigen Schicht zusammenrechnen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     07 · NETZ
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Neural Network</div>
+  <h2>Viele Neuronen in Layers: <em>mehr ist es nicht</em></h2>
+  <div class="body cols w64">
+    <svg class="dg" viewBox="0 0 1000 540">
+      <g class="lnd" style="stroke-dasharray:none;stroke:#bdbdb6;stroke-width:1.5">
+        <path d="M110 120L370 80M110 120L370 210M110 120L370 340M110 120L370 470M110 270L370 80M110 270L370 210M110 270L370 340M110 270L370 470M110 420L370 80M110 420L370 210M110 420L370 340M110 420L370 470"/>
+        <path d="M370 80L630 80M370 80L630 210M370 80L630 340M370 80L630 470M370 210L630 80M370 210L630 210M370 210L630 340M370 210L630 470M370 340L630 80M370 340L630 210M370 340L630 340M370 340L630 470M370 470L630 80M370 470L630 210M370 470L630 340M370 470L630 470"/>
+        <path d="M630 80L890 200M630 210L890 200M630 340L890 200M630 470L890 200M630 80L890 350M630 210L890 350M630 340L890 350M630 470L890 350"/>
+      </g>
+      <g><circle class="node" cx="110" cy="120" r="30"/><circle class="node" cx="110" cy="270" r="30"/><circle class="node" cx="110" cy="420" r="30"/></g>
+      <g><circle class="node" cx="370" cy="80" r="30"/><circle class="node" cx="370" cy="210" r="30"/><circle class="node" cx="370" cy="340" r="30"/><circle class="node" cx="370" cy="470" r="30"/></g>
+      <g><circle class="node" cx="630" cy="80" r="30"/><circle class="node" cx="630" cy="210" r="30"/><circle class="node" cx="630" cy="340" r="30"/><circle class="node" cx="630" cy="470" r="30"/></g>
+      <g><circle class="node noder" cx="890" cy="200" r="30"/><circle class="node noder" cx="890" cy="350" r="30"/></g>
+      <text x="110" y="530" text-anchor="middle">Input</text><text x="500" y="530" text-anchor="middle">Hidden Layers</text><text x="890" y="530" text-anchor="middle">Output</text>
+    </svg>
+    <div class="stack">
+      <div><div class="big" style="font-size:150px">10¹¹</div><p class="label">Parameter in einem aktuellen großen LLM – Größenordnung</p></div>
+      <p class="step">Jede Linie ist ein <b>Weight</b>. Frühe Layers erkennen einfache Muster, spätere kombinieren sie zu abstrakteren.</p>
+      <p class="step small muted"><b>Hyperparameter</b> (Anzahl Layers, Learning Rate) legt ein Mensch vor dem Training fest. Sie werden nicht gelernt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     08 · TRAINING LOOP
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Training</div>
+  <h2>Training: vier Schritte, <em>milliardenfach wiederholt</em></h2>
+  <div class="body">
+    <div class="cols c4 stretch">
+      <div class="card"><span class="tag">1 · Forward Pass</span><h3>Vorhersage berechnen</h3><p>Eingabe durch alle Layers schicken. Ergebnis: ŷ.</p></div>
+      <div class="card step"><span class="tag">2 · Loss</span><h3>Fehler messen</h3><p>Eine einzige Zahl: Wie falsch war ŷ gegenüber dem Soll y?</p></div>
+      <div class="card step"><span class="tag">3 · Backpropagation</span><h3>Schuld verteilen</h3><p>Für jeden Parameter: Wie stark hat er zum Fehler beigetragen?</p></div>
+      <div class="card hot step"><span class="tag">4 · Gradient Descent</span><h3>Parameter anpassen</h3><p>Jeden Parameter ein kleines Stück in die Richtung schieben, die den Loss senkt.</p></div>
+    </div>
+    <div class="cols mt step">
+      <p>Der <b>Loss</b> ist die vollständige Spezifikation des Trainingsziels. Was er nicht misst, lernt das Modell nicht gezielt.</p>
+      <p>In der Praxis wird der Gradient aus einem kleinen zufälligen <b>Batch</b> geschätzt, nicht aus allen Daten: Stochastic Gradient Descent.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     09 · GRADIENT DESCENT (DEMO)
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Training</div>
+  <h2>Gradient Descent: <em>bergab, Schritt für Schritt</em></h2>
+  <div class="body cols w64">
+    <div class="demo" data-demo="gd"></div>
+    <div class="stack">
+      <p class="formula" style="font-size:36px">w ← w − <b>η</b> · ∂L/∂w</p>
+      <p><b>Gradient</b> = Steigung des Loss bezüglich eines Parameters. Er zeigt bergauf, also geht man in die Gegenrichtung.</p>
+      <p><b>Learning Rate η</b> = Schrittweite.</p>
+      <ul class="b tight small">
+        <li>η = 0,05: kommt an, aber zäh</li>
+        <li>η = 0,5: ein Schritt ins Minimum</li>
+        <li>η = 0,9: pendelt hin und her</li>
+        <li>η &gt; 1: divergiert</li>
+      </ul>
+      <p class="small muted">Real: nicht eine Achse, sondern 10¹¹ gleichzeitig.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     10 · BACKPROPAGATION
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Training</div>
+  <h2>Backpropagation <em>rechnet</em>, Gradient Descent <em>ändert</em></h2>
+  <div class="body">
+    <svg class="dg" viewBox="0 0 1700 300">
+      <rect class="box" x="0" y="80" width="230" height="110"/><text class="ttl" x="115" y="145" text-anchor="middle">Input x</text>
+      <rect class="box" x="330" y="80" width="230" height="110"/><text class="ttl" x="445" y="145" text-anchor="middle">Layer 1</text>
+      <rect class="box" x="660" y="80" width="230" height="110"/><text class="ttl" x="775" y="145" text-anchor="middle">Layer 2</text>
+      <rect class="box" x="990" y="80" width="230" height="110"/><text class="ttl" x="1105" y="145" text-anchor="middle">Output ŷ</text>
+      <rect class="boxr" x="1320" y="80" width="380" height="110"/><text class="ttl w" x="1510" y="145" text-anchor="middle">Loss L(ŷ, y)</text>
+      <g class="ln"><path d="M230 112H318M560 112H648M890 112H978M1220 112H1308"/></g>
+      <g><path d="M330 112l-16-9v18zM660 112l-16-9v18zM990 112l-16-9v18zM1320 112l-16-9v18z"/></g>
+      <g class="lnr"><path d="M1320 160H1232M990 160H902M660 160H572"/></g>
+      <g style="fill:var(--red)"><path d="M1220 160l16-9v18zM890 160l16-9v18zM560 160l16-9v18z"/></g>
+      <text x="610" y="50" text-anchor="middle">Forward Pass: Werte fließen nach rechts →</text>
+      <text x="1080" y="250" text-anchor="middle" style="fill:var(--red);font-weight:700">← Backward Pass: Ableitungen fließen nach links</text>
+    </svg>
+    <div class="cols c3 mt">
+      <div class="card"><h3>Chain Rule</h3><p>Die Ableitung einer verketteten Funktion ist das Produkt der Ableitungen der Glieder. Mehr Mathematik steckt nicht dahinter.</p></div>
+      <div class="card step"><h3>Ein Durchlauf reicht</h3><p>Ein einziger Backward Pass liefert die Ableitung für <b>alle</b> Parameter – zum Preis von etwa einem zweiten Forward Pass.</p></div>
+      <div class="card fill step"><h3>Zwei Begriffe, zwei Vorgänge</h3><p>Backpropagation <b>berechnet</b> die Gradients. Gradient Descent <b>nutzt</b> sie für das Update.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     11 · NEXT-TOKEN PREDICTION
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Trainingsziel eines LLM</div>
+  <h2>Die eine Aufgabe: <em>Next-Token Prediction</em></h2>
+  <div class="body">
+    <p style="font-size:44px;line-height:1.5"><span class="tok">The</span><span class="tok b">·nightly</span><span class="tok c">·run</span><span class="tok d">·failed</span><span class="tok">·because</span><span class="tok b">·it</span><span class="tok hot">·?</span></p>
+    <div class="cols c3 mt">
+      <div class="card"><span class="tag">Self-Supervised Learning</span><p>Das Soll steht im Text selbst: nächstes Token verdecken, vorhersagen, vergleichen. Kein Mensch muss labeln – deshalb reicht „das Internet“ als Trainingsmaterial.</p></div>
+      <div class="card step"><span class="tag">Cross-Entropy Loss</span><p class="formula" style="font-size:30px">L = −log p(richtiges Token)</p><p class="mt-s">Bestraft hart, wenn das Modell dem tatsächlichen Token fast keine Wahrscheinlichkeit gab.</p></div>
+      <div class="card step"><span class="tag">Drei Phasen</span><p><b>Pretraining</b> liefert Wissen. <b>Fine-Tuning</b> lehrt das Frage-Antwort-Format. <b>RLHF</b> prägt Ton, Hilfsbereitschaft – und die Neigung zuzustimmen.</p></div>
+    </div>
+    <div class="take mt step">Trainiert wurde auf <b>plausible Fortsetzung</b>, nicht auf Wahrheit. Ausgaben sind plausibel, aber von niemandem geprüft.</div>
+  </div>
+</section>
+
+<!-- =====================================================
+     12 · TOKENIZATION (DEMO)
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Von Text zu Vorhersage · 1</div>
+  <h2>Tokenization: Das Modell sieht <em>keine Buchstaben</em></h2>
+  <div class="body cols w64">
+    <div class="demo" data-demo="tok"></div>
+    <div class="stack">
+      <p>Ein <b>Token</b> ist ein Textstück aus einem festen <b>Vocabulary</b> von etwa 100.000–200.000 Einträgen.</p>
+      <p class="small">Gebildet per <b>Byte-Pair Encoding</b>: häufige Zeichenfolgen werden zu einem Token verschmolzen. Häufig = ein Token, selten = viele.</p>
+      <div class="take step">Buchstaben zählen und exaktes Rechnen sind unzuverlässig. Kosten und Context werden in Tokens gemessen. Deutsch braucht mehr Tokens als Englisch.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     13 · EMBEDDINGS
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Von Text zu Vorhersage · 2</div>
+  <h2>Embeddings: Jedes Token wird <em>ein Vektor</em></h2>
+  <div class="body cols">
+    <svg class="dg" viewBox="0 0 800 560">
+      <rect class="boxt" x="0" y="0" width="800" height="560"/>
+      <g class="lnd"><path d="M400 0V560M0 280H800"/></g>
+      <g><circle class="node noder" cx="170" cy="130" r="13"/><text x="192" y="138">run</text>
+      <circle class="node noder" cx="230" cy="190" r="13"/><text x="252" y="198">job</text>
+      <circle class="node noder" cx="140" cy="230" r="13"/><text x="162" y="238">pipeline</text>
+      <circle class="node noder" cx="270" cy="110" r="13"/><text x="292" y="118">build</text></g>
+      <g><circle class="node" cx="560" cy="150" r="13" style="fill:var(--ink)"/><text x="582" y="158">failed</text>
+      <circle class="node" cx="620" cy="220" r="13" style="fill:var(--ink)"/><text x="642" y="228">error</text>
+      <circle class="node" cx="530" cy="240" r="13" style="fill:var(--ink)"/><text x="552" y="248">crashed</text></g>
+      <g><circle class="node" cx="250" cy="430" r="13"/><text x="272" y="438">Tuesday</text>
+      <circle class="node" cx="330" cy="480" r="13"/><text x="352" y="488">nightly</text>
+      <circle class="node" cx="180" cy="490" r="13"/><text x="202" y="498">weekly</text></g>
+      <g><circle class="node" cx="600" cy="440" r="13"/><text x="622" y="448">banana</text></g>
+    </svg>
+    <div class="stack">
+      <p>Erste Schicht = eine Tabelle: pro Token eine Zeile mit einigen tausend Zahlen. Das ist das <b>Embedding</b>.</p>
+      <p class="step">Training ordnet die Vektoren so an, dass ähnlich <b>verwendete</b> Tokens nah beieinander liegen. Bedeutung = Position im Raum.</p>
+      <p class="step small muted">Das Bild ist eine Projektion auf zwei von tausenden Dimensionen. Einzelne Dimensionen haben keine lesbare Bedeutung.</p>
+      <div class="take step">Auf demselben Prinzip beruhen Semantic Search und RAG: Text finden, der <b>ähnlich</b> ist, nicht Text, der gleich lautet.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     14 · ATTENTION (DEMO)
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Von Text zu Vorhersage · 3</div>
+  <h2>Attention: Bedeutung <em>aus dem Kontext</em></h2>
+  <div class="body cols w64">
+    <div class="demo" data-demo="att"></div>
+    <div class="stack">
+      <p>Worauf bezieht sich <span class="tok b">it</span>? Auf <span class="tok c">run</span>. Das Token holt sich diese Information selbst.</p>
+      <p class="small">Jede Position stellt eine <b>Query</b> („was brauche ich?“), bietet einen <b>Key</b> („was habe ich?“) und liefert einen <b>Value</b>. Ergebnis: eine gewichtete Mischung.</p>
+      <p class="formula" style="font-size:25px">Attention(Q,K,V) = softmax(QKᵀ/√dₖ)·V</p>
+      <div class="take step">Jedes Token schaut auf jedes andere: Aufwand wächst <b>quadratisch</b> mit der Länge. Lange Contexts sind teuer.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     15 · TRANSFORMER
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Von Text zu Vorhersage · 4</div>
+  <h2>Transformer: der gesamte <em>Forward Pass</em></h2>
+  <div class="body">
+    <svg class="dg" viewBox="0 0 1700 380">
+      <rect class="box" x="0" y="110" width="190" height="130"/><text class="ttl" x="95" y="168" text-anchor="middle">Text</text><text x="95" y="204" text-anchor="middle">„…it“</text>
+      <rect class="box" x="250" y="110" width="200" height="130"/><text class="ttl" x="350" y="168" text-anchor="middle">Tokens</text><text x="350" y="204" text-anchor="middle">IDs</text>
+      <rect class="box" x="510" y="110" width="220" height="130"/><text class="ttl" x="620" y="168" text-anchor="middle">Embeddings</text><text x="620" y="204" text-anchor="middle">Vektoren</text>
+      <rect class="boxf" x="790" y="40" width="420" height="270"/>
+      <text class="ttl w" x="1000" y="88" text-anchor="middle">Transformer Block</text>
+      <rect x="820" y="112" width="360" height="74" fill="none" stroke="#fff" stroke-width="2"/><text class="w" x="1000" y="157" text-anchor="middle">Multi-Head Attention</text>
+      <rect x="820" y="204" width="360" height="74" fill="none" stroke="#fff" stroke-width="2"/><text class="w" x="1000" y="249" text-anchor="middle">Feed-Forward Network</text>
+      <text class="ttl" x="1000" y="356" text-anchor="middle" style="fill:var(--red)">× N Layers (Dutzende)</text>
+      <rect class="box" x="1270" y="110" width="170" height="130"/><text class="ttl" x="1355" y="168" text-anchor="middle">Logits</text><text x="1355" y="204" text-anchor="middle">Rohwerte</text>
+      <rect class="boxr" x="1500" y="110" width="200" height="130"/><text class="ttl w" x="1600" y="168" text-anchor="middle">Softmax</text><text class="w" x="1600" y="204" text-anchor="middle">Σ = 100 %</text>
+      <g class="ln"><path d="M190 175H238M450 175H498M730 175H778M1210 175H1258M1440 175H1488"/></g>
+      <g><path d="M250 175l-16-9v18zM510 175l-16-9v18zM790 175l-16-9v18zM1270 175l-16-9v18zM1500 175l-16-9v18z"/></g>
+    </svg>
+    <div class="cols c3 mt-s">
+      <p><b>Attention</b> bewegt Information <b>zwischen</b> Positionen.</p>
+      <p class="step"><b>Feed-Forward</b> verarbeitet Information <b>an</b> einer Position. Hier steckt der Großteil der Parameter.</p>
+      <p class="step">Am Ende steht keine Antwort, sondern eine <b class="red">Wahrscheinlichkeit für jedes Token</b> im Vocabulary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     16 · SAMPLING / TEMPERATURE (DEMO)
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Von Text zu Vorhersage · 5</div>
+  <h2>Sampling: Das nächste Token wird <em>gezogen</em></h2>
+  <div class="body cols w64">
+    <div class="demo" data-demo="temp"></div>
+    <div class="stack">
+      <p><b>Temperature</b> teilt die Logits vor dem Softmax.</p>
+      <ul class="b tight small">
+        <li><b>T &lt; 1</b> schärft: der Favorit gewinnt fast immer</li>
+        <li><b>T &gt; 1</b> flacht ab: der riesige „Rest“ bekommt Gewicht</li>
+        <li><b>Top-p</b> schneidet den Rest vor dem Ziehen ab</li>
+      </ul>
+      <div class="take step">Dieselbe Anfrage kann verschiedene Antworten liefern. Ein einzelner Durchlauf beweist wenig: wichtiges mehrfach laufen lassen.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     17 · AUTOREGRESSION
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Von Text zu Vorhersage · 6</div>
+  <h2>Autoregression: Der Output wird <em>zum Input</em></h2>
+  <div class="body">
+    <svg class="dg" viewBox="0 0 1700 250">
+      <rect class="box" x="0" y="60" width="620" height="110"/><text class="ttl" x="310" y="125" text-anchor="middle">Context: alle bisherigen Tokens</text>
+      <rect class="boxf" x="740" y="60" width="330" height="110"/><text class="ttl w" x="905" y="125" text-anchor="middle">Forward Pass</text>
+      <rect class="boxr" x="1190" y="60" width="330" height="110"/><text class="ttl w" x="1355" y="125" text-anchor="middle">1 Token ziehen</text>
+      <g class="ln"><path d="M620 115H728M1070 115H1178"/></g><g><path d="M740 115l-16-9v18zM1190 115l-16-9v18z"/></g>
+      <path class="lnr" d="M1355 170V224H310V182"/><path d="M310 170l-11 18h22z" style="fill:var(--red)"/>
+      <text x="830" y="214" text-anchor="middle" style="fill:var(--red);font-weight:700">anhängen und alles von vorn</text>
+    </svg>
+    <div class="cols c3 mt">
+      <div class="card"><span class="tag">Kosten</span><p>Jedes neue Token braucht einen Durchlauf über den <b>gesamten</b> Context. Output ist deshalb teurer als Input.</p></div>
+      <div class="card step"><span class="tag">Fehler</span><p>Ein früher Fehler steht danach im Context und wird zur Grundlage für alles Weitere. Fehler <b>verstärken</b> sich.</p></div>
+      <div class="card step"><span class="tag">Herkunft</span><p>Im Context ist alles nur Text. Selbst Erzeugtes, Zugeliefertes und Anweisungen sind technisch <b>nicht unterscheidbar</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     18 · PARAMETER VS. CONTEXT
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Was das Modell weiß</div>
+  <h2>Zwei Wissensquellen: <em>Parameter</em> und <em>Context</em></h2>
+  <div class="body">
+    <div class="cols stretch">
+      <div class="card">
+        <span class="tag">Parameter · Langzeitwissen</span>
+        <h3>Im Training gelernt, danach eingefroren</h3>
+        <ul class="b tight">
+          <li>Endet am <b>Training Cutoff</b></li>
+          <li>Kennt nichts Internes: weder euren Code noch eure Prozesse</li>
+          <li>Unscharf: verdichtete Muster, kein Nachschlagewerk</li>
+        </ul>
+      </div>
+      <div class="card fill">
+        <span class="tag">Context · Arbeitsgedächtnis</span>
+        <h3>Was in diesem Request mitgeschickt wird</h3>
+        <ul class="b tight">
+          <li>Aktuell, exakt, wörtlich zitierbar</li>
+          <li>Begrenzt und kostet Tokens</li>
+          <li>Nach dem Request <b>weg</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="take mt step"><b>Inference</b> verändert kein einziges Weight. Das Modell lernt nicht aus eurer Nutzung. „Memory“ ist immer Text, den der Harness erneut in den Context legt.</div>
+  </div>
+</section>
+
+<!-- =====================================================
+     19 · CONTEXT WINDOW (DEMO)
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Was das Modell weiß</div>
+  <h2>Context Window: begrenzt, geteilt, <em>jedes Mal neu gesendet</em></h2>
+  <div class="body">
+    <div class="demo" data-demo="ctx"></div>
+    <div class="cols c3 mt">
+      <p class="small"><b>Voll heißt nicht Absturz.</b> Der Harness macht <b>Compaction</b>: Er ersetzt die History durch eine Zusammenfassung. Details gehen dabei verloren.</p>
+      <p class="small step"><b>Annehmen ≠ verwenden.</b> Je voller das Fenster, desto unzuverlässiger wird Material gefunden – am schwächsten in der Mitte („lost in the middle“).</p>
+      <p class="small step"><b>Geteilter Platz.</b> System Prompt, Tool-Definitionen und Instructions belegen Platz, bevor ihr ein Wort getippt habt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     20 · HALLUCINATION
+     ===================================================== -->
+<section class="slide hot" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Hallucination</div>
+  <div class="rv">
+    <p class="stmt s2">Kein Schritt im gesamten Verfahren prüft eine Aussage gegen die Wirklichkeit.</p>
+    <div class="cols mt" style="margin-top:56px">
+      <p style="font-size:34px">Eine Hallucination ist kein Defekt. Es ist <b>derselbe Mechanismus</b>, der richtige Antworten erzeugt – angewendet dort, wo die Trainingsdaten ihn nicht festgelegt haben.</p>
+      <div class="card" style="color:var(--ink);border-color:var(--ink)">
+        <span class="tag">Was wirklich hilft</span>
+        <ul class="b tight">
+          <li>Die Quelle in den <b>Context</b> legen (Datei, Doku, RAG)</li>
+          <li><b>Tools</b> rechnen, suchen, ausführen lassen</li>
+          <li>Belege verlangen und <b>prüfen</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     21 · REASONING
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Reasoning</div>
+  <h2>„Nachdenken“ heißt: <em>mehr Tokens erzeugen</em></h2>
+  <div class="body cols">
+    <div class="stack">
+      <p>Ein Forward Pass hat eine feste Rechentiefe. Für mehrstufige Probleme reicht das nicht.</p>
+      <p class="step"><b>Reasoning-Modelle</b> schreiben zuerst Zwischenschritte auf – ein Notizblatt – und lesen sie per Attention wieder ein. Dann erst kommt die Antwort.</p>
+      <p class="step">Der <b>Reasoning Effort</b> (Thinking Effort) ist eine Einstellung pro Aufgabe, keine feste Eigenschaft des Modells.</p>
+    </div>
+    <div class="stack">
+      <table class="t lg">
+        <tr><th>Aufgabe</th><th>Hoher Effort</th></tr>
+        <tr><td>Architekturentscheidung, Debugging über mehrere Dateien</td><td class="red"><b>lohnt sich</b></td></tr>
+        <tr><td>Mehrstufige Planung, Abwägungen</td><td class="red"><b>lohnt sich</b></td></tr>
+        <tr><td>Umformatieren, Nachschlagen, Boilerplate</td><td>kostet nur</td></tr>
+      </table>
+      <div class="take step">Thinking Tokens werden als <b>Output</b> abgerechnet – der teuersten Token-Art – und sind oft nicht sichtbar.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     22 · HARNESS / AGENTIC LOOP
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Modell ≠ System</div>
+  <h2>Der Harness: <em>Das Modell führt nichts selbst aus</em></h2>
+  <div class="body cols w64">
+    <svg class="dg" viewBox="0 0 1000 560">
+      <rect class="boxt" x="150" y="0" width="850" height="560"/><text class="ttl" x="176" y="42">Harness · z. B. GitHub Copilot in VS Code</text>
+      <rect class="box" x="0" y="150" width="120" height="90"/><text class="ttl" x="60" y="204" text-anchor="middle">Ihr</text>
+      <rect class="box" x="190" y="90" width="300" height="210"/><text class="ttl" x="340" y="134" text-anchor="middle">Context bauen</text>
+      <text x="340" y="174" text-anchor="middle">System Prompt</text><text x="340" y="206" text-anchor="middle">Instructions · Files</text><text x="340" y="238" text-anchor="middle">Tool-Definitionen</text><text x="340" y="270" text-anchor="middle">History</text>
+      <rect class="boxf" x="620" y="130" width="300" height="130"/><text class="ttl w" x="770" y="188" text-anchor="middle">Model</text><text class="w" x="770" y="224" text-anchor="middle">gibt nur Text aus</text>
+      <rect class="boxr" x="620" y="390" width="300" height="120"/><text class="ttl w" x="770" y="444" text-anchor="middle">Tool Call</text><text class="w" x="770" y="478" text-anchor="middle">{ name, arguments }</text>
+      <rect class="box" x="190" y="390" width="300" height="120"/><text class="ttl" x="340" y="436" text-anchor="middle">Harness führt aus</text><text x="340" y="470" text-anchor="middle">Permission · Run</text>
+      <g class="ln"><path d="M120 195H178M490 195H608M770 260V378M620 450H502M340 390V312"/></g>
+      <g><path d="M190 195l-16-9v18zM620 195l-16-9v18zM770 390l-9-16h18zM490 450l16-9v18zM340 300l-9 16h18z"/></g>
+      <text x="555" y="178" text-anchor="middle">Request</text><text x="555" y="434" text-anchor="middle">parse</text>
+      <text x="356" y="356" style="fill:var(--red);font-weight:700">Tool Result → Context</text>
+    </svg>
+    <div class="stack">
+      <p>Ein <b>Tool Call</b> ist nur strukturierter Text: Name plus Argumente. Der Harness entscheidet, ob er ausgeführt wird.</p>
+      <p class="step"><b>Agentic Loop:</b> beobachten → entscheiden → handeln → Ergebnis lesen → wiederholen, bis fertig.</p>
+      <div class="take step">Vieles, was man „der AI“ zuschreibt, ist eine Einstellung des Harness. Dasselbe Modell verhält sich in Copilot, Claude Code oder im Chat unterschiedlich.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================
+     23 · ZUSAMMENFASSUNG TEIL 1
+     ===================================================== -->
+<section class="slide" data-sec="Teil 1 · Mechanik">
+  <div class="kick">Zwischenfazit</div>
+  <h2>Was daraus folgt: <em>kann</em> und <em>kann nicht</em></h2>
+  <div class="body">
+    <table class="t">
+      <tr><th style="width:30%">Mechanismus</th><th style="width:35%">Stärke</th><th>Grenze</th></tr>
+      <tr><td>Aus Beispielen gelernt</td><td>Muster, Sprache, Stil, Code-Idiome</td><td>Können zeigt nur der Test, nicht die Spezifikation</td></tr>
+      <tr><td>Next-Token Prediction</td><td>Flüssige, plausible Texte in Sekunden</td><td>Plausibel ≠ wahr; nichts wird geprüft</td></tr>
+      <tr><td>Tokens statt Buchstaben</td><td>Jede Sprache, jedes Format</td><td>Zählen, Rechnen, exakte Zeichenarbeit</td></tr>
+      <tr><td>Sampling</td><td>Varianten, Kreativität</td><td>Nicht deterministisch, nicht reproduzierbar</td></tr>
+      <tr><td>Feste Parameter</td><td>Breites Weltwissen sofort verfügbar</td><td>Kein Lernen im Betrieb; nichts Aktuelles, nichts Internes</td></tr>
+      <tr><td>Begrenzter Context</td><td>Arbeitet exakt mit dem, was drinsteht</td><td>Vergisst, was herausfällt; verliert die Mitte</td></tr>
+      <tr><td>Harness + Tools</td><td>Kann handeln: lesen, schreiben, ausführen</td><td>Handelt auch auf falscher Grundlage</td></tr>
+    </table>
+  </div>
+</section>
