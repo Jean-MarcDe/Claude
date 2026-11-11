@@ -193,8 +193,8 @@ demos.gd = (root) => {
         <label>Learning Rate η</label>
         <input type="range" min="0.02" max="1.1" step="0.02" value="0.2">
         <output>0,20</output>
-        <button class="btn" data-a="step">1 Step</button>
-        <button class="btn" data-a="run">20 Steps</button>
+        <button class="btn" data-a="step">1 Schritt</button>
+        <button class="btn" data-a="run">20 Schritte</button>
         <button class="btn" data-a="reset">Reset</button>
       </div>
       <svg class="dg" viewBox="0 0 1000 430" style="margin-top:10px">
@@ -207,7 +207,7 @@ demos.gd = (root) => {
         <text x="500" y="40" text-anchor="middle" style="font-weight:700">Loss L(w) = w²</text>
         <text class="rd" x="500" y="78" text-anchor="middle"></text>
       </svg>
-      <p class="note">Jeder Step: <b>w ← w − η · ∂L/∂w</b>. Zu klein: zäh. Zu groß: jeder Schritt springt über das Minimum hinaus.</p>`;
+      <p class="note">Jeder Schritt: <b>w ← w − η · ∂L/∂w</b>. Ist η zu klein, nähert sich w nur langsam. Ist η zu groß, springt jeder Schritt über das Minimum hinaus.</p>`;
     const X = v => 500 + v * 115, Y = v => 390 - Math.min(v * v, 13.5) * 27;
     let d = ''; for (let v = -3.7; v <= 3.7; v += 0.1) d += (d ? 'L' : 'M') + X(v).toFixed(1) + ' ' + Y(v).toFixed(1);
     root.querySelector('path').setAttribute('d', d);
@@ -217,7 +217,7 @@ demos.gd = (root) => {
         root.querySelector('.pts').innerHTML = vis.map((v, i) =>
             `<circle cx="${X(v)}" cy="${Y(v)}" r="${i === vis.length - 1 ? 14 : 6}" class="node ${i === vis.length - 1 ? 'noder' : ''}"/>`).join('');
         const diverged = Math.abs(w) > 3.9;
-        root.querySelector('.rd').textContent = diverged ? 'divergiert!' : `Step ${trail.length - 1} · w = ${fmt(w, 3)} · L = ${fmt(w * w, 3)}`;
+        root.querySelector('.rd').textContent = diverged ? 'divergiert' : `Schritt ${trail.length - 1} · w = ${fmt(w, 3)} · L = ${fmt(w * w, 3)}`;
         root.querySelector('.rd').style.fill = diverged ? '#ff3300' : '';
     };
     const step = () => { if (Math.abs(w) < 50) { w = w - eta * 2 * w; trail.push(w); draw(); } };
@@ -257,7 +257,7 @@ demos.tok = (root) => {
       <div class="kpis"><div class="kpi"><div class="n" data-r="ch"></div><div class="l">Zeichen</div></div>
       <div class="kpi r"><div class="n" data-r="tk"></div><div class="l">Tokens</div></div>
       <div class="kpi"><div class="n" data-r="ra"></div><div class="l">Zeichen pro Token</div></div></div>
-      <p class="note">Illustrative Zerlegung. Die exakten Grenzen bestimmt der Tokenizer des jeweiligen Modells – das Prinzip ist bei allen gleich.</p>`;
+      <p class="note">Illustrative Zerlegung. Die exakten Grenzen bestimmt der Tokenizer des jeweiligen Modells; das Prinzip ist bei allen gleich.</p>`;
     const cls = ['', 'b', 'c', 'd'];
     const q = k => root.querySelector(`[data-r="${k}"]`);
     const draw = () => {
@@ -284,7 +284,7 @@ demos.att = (root) => {
         [.04, .08, .30, .24, .06, .34, .20, 0], [.04, .06, .18, .14, .06, .22, .56, .18]];
     let sel = 5;
     root.innerHTML = `<div class="row btns"></div><div class="bars"></div>
-      <p class="note">Illustrative Gewichte für einen Head in einem Layer. Reale Modelle haben viele Heads pro Layer; Attention-Gewichte zeigen, woher Information kommt – sie sind keine Erklärung der Ausgabe.</p>`;
+      <p class="note">Illustrative Gewichte für einen Head in einem Layer. Reale Modelle haben viele Heads pro Layer; Attention-Gewichte zeigen, woher Information stammt. Sie erklären die Ausgabe nicht.</p>`;
     const draw = () => {
         root.querySelector('.btns').innerHTML = T.map((t, i) => `<button class="btn ${i === sel ? 'sel' : ''}" data-i="${i}">${t}</button>`).join('');
         const row = W[sel].slice(0, sel + 1), sum = row.reduce((a, c) => a + c, 0);
@@ -308,7 +308,7 @@ demos.temp = (root) => {
         <input type="range" min="0.1" max="2" step="0.05" value="1"><output>1,00</output>
         <button class="btn" data-a="draw">Token ziehen</button><span class="mono" data-r="out" style="font-size:24px"></span></div>
       <div class="bars"></div>
-      <p class="note">Kontext: <span class="mono">„The nightly run failed because it“</span>. „Rest“ = die übrigen ${TAIL_N.toLocaleString('de-DE')} Tokens des Vocabulary zusammen. Feste, illustrative Logits.</p>`;
+      <p class="note">Kontext: <span class="mono">„The nightly run failed because it“</span>. „Rest“: die übrigen ${TAIL_N.toLocaleString('de-DE')} Tokens des Vocabulary zusammen. Feste, illustrative Logits.</p>`;
     const dist = t => {
         const zs = LOGIT.map(z => z / t), zt = TAIL_L / t, m = Math.max(...zs, zt);
         const ex = zs.map(z => Math.exp(z - m)), et = Math.exp(zt - m) * TAIL_N;
@@ -342,21 +342,21 @@ demos.ctx = (root) => {
     const CAP = 200, BASE = { sys: 14, ins: 4 };
     let msg = 0, tool = 0, sum = 0, turns = 0, compactions = 0;
     root.innerHTML = `<div class="row">
-        <button class="btn" data-a="chat">+ Chat-Turn</button>
-        <button class="btn" data-a="agent">+ Agent-Step (Tool Call)</button>
+        <button class="btn" data-a="chat">+ Chat-Nachricht</button>
+        <button class="btn" data-a="agent">+ Agent-Schritt (Tool Call)</button>
         <button class="btn" data-a="file">+ große Datei</button>
         <button class="btn" data-a="new">Neuer Chat</button></div>
       <div class="ctxbar" style="margin-top:22px"></div>
       <div class="kpis"><div class="kpi r"><div class="n" data-r="pc"></div><div class="l">Context belegt</div></div>
-      <div class="kpi"><div class="n" data-r="tn"></div><div class="l">Turns · Tokens Input je Request</div></div>
-      <div class="kpi"><div class="n" data-r="cp"></div><div class="l">Compactions (Detail geht verloren)</div></div></div>
-      <p class="note">Vereinfachtes Modell eines 200K-Fensters. Der gesamte Inhalt wird bei <b>jedem</b> Request erneut als Input gesendet. Ab ca. 80 % fasst der Harness die History zusammen.</p>`;
+      <div class="kpi"><div class="n" data-r="tn"></div><div class="l">Nachrichten · Input-Tokens je Request</div></div>
+      <div class="kpi"><div class="n" data-r="cp"></div><div class="l">Compactions (Details gehen verloren)</div></div></div>
+      <p class="note">Vereinfachtes Modell eines 200K-Fensters. Der gesamte Inhalt wird bei <b>jedem</b> Request erneut als Input gesendet. Ab etwa 80 % fasst der Harness den Verlauf zusammen.</p>`;
     const q = k => root.querySelector(`[data-r="${k}"]`);
     const draw = () => {
         const used = BASE.sys + BASE.ins + sum + msg + tool;
         const seg = (c, v, l) => v > 0 ? `<span class="${c}" style="width:${v / CAP * 100}%">${v / CAP > .07 ? l : ''}</span>` : '';
         root.querySelector('.ctxbar').innerHTML = seg('s-sys', BASE.sys, 'System + Tools') + seg('s-ins', BASE.ins, '') +
-            seg('s-sum', sum, 'Summary') + seg('s-msg', msg, 'Messages') + seg('s-tool', tool, 'Tool Results');
+            seg('s-sum', sum, 'Summary') + seg('s-msg', msg, 'Nachrichten') + seg('s-tool', tool, 'Tool Results');
         q('pc').textContent = fmt(used / CAP * 100, 0) + ' %';
         q('tn').textContent = turns + ' · ' + fmt(used, 0) + 'K';
         q('cp').textContent = compactions;
@@ -395,13 +395,13 @@ demos.cost = (root) => {
         <label>Modell</label><select class="sel">${M.map((m, i) => `<option value="${i}" ${i === 2 ? 'selected' : ''}>${m.n}</option>`).join('')}</select>
         <label style="margin-left:14px"><input type="checkbox" checked data-k="cache" style="width:24px;height:24px;vertical-align:-4px"> Prompt Caching</label></div>
       <div class="row" style="margin-top:20px"><label style="width:250px">Start-Context</label><input type="range" data-k="base" min="5" max="150" step="5" value="30"><output data-o="base"></output></div>
-      <div class="row" style="margin-top:14px"><label style="width:250px">Steps / Turns</label><input type="range" data-k="steps" min="1" max="60" step="1" value="20"><output data-o="steps"></output></div>
-      <div class="row" style="margin-top:14px"><label style="width:250px">Zuwachs je Step</label><input type="range" data-k="grow" min="0.5" max="12" step="0.5" value="4"><output data-o="grow"></output></div>
-      <div class="row" style="margin-top:14px"><label style="width:250px">Output je Step</label><input type="range" data-k="out" min="0.2" max="6" step="0.2" value="1"><output data-o="out"></output></div>
+      <div class="row" style="margin-top:14px"><label style="width:250px">Schritte</label><input type="range" data-k="steps" min="1" max="60" step="1" value="20"><output data-o="steps"></output></div>
+      <div class="row" style="margin-top:14px"><label style="width:250px">Zuwachs je Schritt</label><input type="range" data-k="grow" min="0.5" max="12" step="0.5" value="4"><output data-o="grow"></output></div>
+      <div class="row" style="margin-top:14px"><label style="width:250px">Output je Schritt</label><input type="range" data-k="out" min="0.2" max="6" step="0.2" value="1"><output data-o="out"></output></div>
       <div class="kpis"><div class="kpi"><div class="n" data-r="tin"></div><div class="l">Input-Tokens gesamt</div></div>
       <div class="kpi r"><div class="n" data-r="cr"></div><div class="l">AI Credits</div></div>
       <div class="kpi"><div class="n" data-r="pc"></div><div class="l">vom Monatskontingent (${POOL.toLocaleString('de-DE')})</div></div></div>
-      <p class="note">Listenpreise GitHub Docs, Stand 10.11.2026. Vereinfachung: Zuwachs = neue Messages + Tool Results; Cache-Write-Aufschlag und Compaction nicht modelliert.</p>`;
+      <p class="note">Listenpreise GitHub Docs, Stand 10.11.2026. Vereinfachung: Zuwachs = neue Nachrichten + Tool Results; Cache-Write-Aufschlag und Compaction nicht modelliert.</p>`;
     const g = k => root.querySelector(`[data-k="${k}"]`);
     const calc = () => {
         const m = M[+root.querySelector('select').value], cache = g('cache').checked;

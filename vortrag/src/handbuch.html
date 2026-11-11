@@ -72,7 +72,7 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
 <div class="cover">
   <div class="k">Handbuch zum Vortrag · Stand 10. November 2026</div>
   <h1><span>Vom</span><span class="h">Token</span><span class="b">zur</span><span class="c">Ent</span><span>scheid</span><span class="b">ung</span></h1>
-  <p>Alle Begriffe und Entscheidungsregeln des Vortrags zum Nachschlagen: wie ein LLM funktioniert, was daraus folgt, und wie man GitHub Copilot in VS Code wirksam und sparsam einsetzt. Fachbegriffe stehen so da, wie man sie in Doku und Tools findet: auf Englisch.</p>
+  <p>Alle Begriffe und Entscheidungsregeln des Vortrags zum Nachschlagen: wie ein LLM funktioniert, was daraus folgt, und wie man GitHub Copilot in VS Code wirksam und kostenbewusst einsetzt. Fachbegriffe stehen so da, wie sie in Dokumentation und Tools vorkommen: auf Englisch.</p>
 </div>
 
 <div class="toc">
@@ -81,7 +81,7 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
   <div><b>3</b> Von Text zu Vorhersage</div>
   <div><b>4</b> Wissen, Context, Hallucination</div>
   <div><b>5</b> Systeme um das Modell</div>
-  <div><b>6</b> Was aus der Mechanik folgt</div>
+  <div><b>6</b> Folgen der Funktionsweise</div>
   <div><b>7</b> Modellwahl</div>
   <div><b>8</b> Kosten und AI Credits</div>
   <div><b>9</b> Deutsch oder Englisch</div>
@@ -89,7 +89,7 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
   <div><b>11</b> Prompting</div>
   <div><b>12</b> Copilot anpassen: sieben Bausteine</div>
   <div><b>13</b> Autonomie und Kontrolle</div>
-  <div><b>14</b> Sicherheit und Verification</div>
+  <div><b>14</b> Sicherheit und Überprüfung</div>
   <div><b>15</b> Zehn Regeln</div>
   <div><b>16</b> Quellen und Stand</div>
 </div>
@@ -97,17 +97,17 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
 <div class="part"><span>01</span>Wie ein LLM funktioniert</div>
 
 <h2><i>1</i>Grundbegriffe</h2>
-<div class="sub">Was ist was</div>
+<div class="sub">Einordnung der Begriffe</div>
 <div class="terms">
-  <p><b>Artificial Intelligence (AI)</b> — Sammelbegriff für Systeme, die Aufgaben lösen, für die man Intelligenz erwarten würde. Sagt nichts über die Technik.</p>
+  <p><b>Artificial Intelligence (AI)</b> — Sammelbegriff für Systeme, die Aufgaben lösen, für die man Intelligenz voraussetzen würde. Der Begriff legt keine bestimmte Technik fest.</p>
   <p><b>Machine Learning (ML)</b> — Die Regeln werden nicht programmiert, sondern von einem Suchverfahren aus Beispielen ermittelt. Ergebnis ist ein <b>Model</b>: eine Funktion mit gelernten Zahlen.</p>
-  <p><b>Deep Learning</b> — Machine Learning mit vielschichtigen Neural Networks. Grundlage aller heutigen Sprach- und Bildmodelle.</p>
+  <p><b>Deep Learning</b> — Machine Learning mit Neural Networks aus vielen Layern. Grundlage aller heutigen Sprach- und Bildmodelle.</p>
   <p><b>Generative AI</b> — Modelle, die neue Inhalte erzeugen (Text, Code, Bilder, Audio) statt nur zu klassifizieren.</p>
   <p><b>Large Language Model (LLM)</b> — Ein sehr großes Neural Network in Transformer-Architektur, trainiert darauf, das nächste Token eines Textes vorherzusagen. Beispiele: Claude, GPT, Gemini.</p>
   <p><b>Supervised Learning</b> — Training mit Eingaben und von Menschen vorgegebenen Soll-Ausgaben (Labels).</p>
-  <p><b>Self-Supervised Learning</b> — Das Soll wird aus den Daten selbst gebildet: nächstes Token verdecken und vorhersagen. Kein Labeling nötig, deshalb praktisch unbegrenzt Trainingsmaterial. So werden LLMs trainiert.</p>
+  <p><b>Self-Supervised Learning</b> — Das Soll wird aus den Daten selbst gebildet: nächstes Token verdecken und vorhersagen. Labels von Menschen sind nicht nötig, daher steht sehr viel Trainingsmaterial zur Verfügung. So werden LLMs trainiert.</p>
   <p><b>Parameter</b> — Die gelernten Zahlen eines Modells: <b>Weights</b> und <b>Biases</b>. Ein aktuelles großes LLM hat größenordnungsmäßig 10¹¹ davon.</p>
-  <p><b>Hyperparameter</b> — Einstellungen, die ein Mensch vor dem Training festlegt und die nicht gelernt werden: Anzahl Layers, Learning Rate, Batch Size.</p>
+  <p><b>Hyperparameter</b> — Einstellungen, die ein Mensch vor dem Training festlegt und die nicht gelernt werden: Anzahl der Layer, Learning Rate, Batch Size.</p>
 </div>
 
 <h2><i>2</i>Neural Network und Training</h2>
@@ -116,46 +116,46 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
   <p><b>Neuron</b> — Die kleinste Einheit: bildet eine gewichtete Summe seiner Eingaben, addiert einen Bias und wendet eine Activation Function an.<span class="f">z = w₁x₁ + w₂x₂ + b &nbsp;&nbsp; ŷ = σ(z)</span></p>
   <p><b>Weight</b> — Faktor, mit dem eine Eingabe multipliziert wird. Bestimmt, wie stark sie zählt.</p>
   <p><b>Bias</b> — Konstante, die zur Summe addiert wird. Verschiebt die Schwelle des Neurons.</p>
-  <p><b>Activation Function</b> — Nichtlineare Funktion am Ausgang des Neurons (z. B. Sigmoid, ReLU). Ohne sie ließe sich jedes tiefe Netz zu einer einzigen linearen Schicht zusammenrechnen.</p>
-  <p><b>Layer</b> — Eine Schicht von Neuronen. Frühe Layers erkennen einfache Muster, spätere kombinieren sie.</p>
-  <p><b>Forward Pass</b> — Eine Eingabe läuft einmal durch alle Layers; am Ende steht die Vorhersage.</p>
+  <p><b>Activation Function</b> — Nichtlineare Funktion am Ausgang des Neurons (z. B. Sigmoid, ReLU). Ohne sie ließe sich jedes Netz, unabhängig von der Zahl der Layer, zu einem einzigen linearen Layer zusammenfassen.</p>
+  <p><b>Layer</b> — Eine Schicht von Neuronen. Frühe Layer erkennen einfache Muster, spätere kombinieren sie.</p>
+  <p><b>Forward Pass</b> — Eine Eingabe läuft einmal durch alle Layer; am Ende steht die Vorhersage.</p>
   <p><b>Loss</b> — Eine einzige Zahl, die sagt, wie falsch die Vorhersage war. Sie ist die vollständige Spezifikation des Trainingsziels: Was der Loss nicht misst, wird nicht gezielt gelernt.</p>
-  <p><b>Cross-Entropy Loss</b> — Der Loss für LLMs: −log der Wahrscheinlichkeit, die das Modell dem tatsächlich folgenden Token gegeben hat. Bestraft hart, wenn das Richtige für fast unmöglich gehalten wurde.</p>
-  <p><b>Gradient</b> — Die Steigung des Loss bezüglich eines Parameters: Wie ändert sich der Fehler, wenn ich diesen Parameter leicht erhöhe?</p>
-  <p><b>Gradient Descent</b> — Das Lernverfahren: jeden Parameter ein kleines Stück gegen seinen Gradient verschieben, sodass der Loss sinkt. Milliardenfach wiederholt.<span class="f">w ← w − η · ∂L/∂w</span></p>
-  <p><b>Learning Rate (η)</b> — Die Schrittweite. Zu klein: Training kriecht. Zu groß: Jeder Schritt springt über das Minimum, das Training divergiert.</p>
+  <p><b>Cross-Entropy Loss</b> — Der Loss für LLMs: −log der Wahrscheinlichkeit, die das Modell dem tatsächlich folgenden Token gegeben hat. Der Loss ist hoch, wenn das Modell dem richtigen Token eine sehr geringe Wahrscheinlichkeit gegeben hat.</p>
+  <p><b>Gradient</b> — Die Steigung des Loss bezüglich eines Parameters: Er gibt an, wie sich der Fehler ändert, wenn dieser Parameter leicht erhöht wird.</p>
+  <p><b>Gradient Descent</b> — Das Lernverfahren: Jeder Parameter wird ein kleines Stück gegen seinen Gradienten verändert, sodass der Loss sinkt. Der Schritt wird milliardenfach wiederholt.<span class="f">w ← w − η · ∂L/∂w</span></p>
+  <p><b>Learning Rate (η)</b> — Die Schrittweite. Ist sie zu klein, kommt das Training nur langsam voran. Ist sie zu groß, springt jeder Schritt über das Minimum, und das Training divergiert.</p>
   <p><b>Batch / Stochastic Gradient Descent</b> — Der Gradient wird nicht aus allen Daten berechnet, sondern aus einer kleinen zufälligen Stichprobe (Batch) geschätzt.</p>
-  <p><b>Backpropagation</b> — Der Algorithmus, der in einem einzigen Rückwärtsdurchlauf (Backward Pass) per Chain Rule die Gradients <b>aller</b> Parameter berechnet. Backpropagation <b>berechnet</b>, Gradient Descent <b>ändert</b> – zwei verschiedene Vorgänge.</p>
+  <p><b>Backpropagation</b> — Der Algorithmus, der in einem einzigen Rückwärtsdurchlauf (Backward Pass) per Chain Rule die Gradienten <b>aller</b> Parameter berechnet. Gradient Descent verwendet diese Gradienten anschließend, um die Parameter anzupassen.</p>
   <p><b>Overfitting / Generalization</b> — Ein Modell kann Trainingsdaten auswendig lernen und bei Neuem versagen. Entscheidend ist das Verhalten auf ungesehenen Daten (Test Set).</p>
-  <p><b>Pretraining</b> — Die lange, teure Phase: Next-Token Prediction auf riesigen Textmengen. Hier entsteht das Wissen.</p>
+  <p><b>Pretraining</b> — Die lange, teure Phase: Next-Token Prediction auf riesigen Textmengen. In dieser Phase entsteht das Wissen des Modells.</p>
   <p><b>Fine-Tuning</b> — Nachtrainieren auf kleineren, gezielten Daten. Bei Chat-Modellen: das Frage-Antwort-Format.</p>
-  <p><b>RLHF</b> (Reinforcement Learning from Human Feedback) — Nachtrainieren anhand menschlicher Bewertungen. Prägt Ton, Hilfsbereitschaft, Ablehnungsverhalten – und eine Neigung zuzustimmen.</p>
+  <p><b>RLHF</b> (Reinforcement Learning from Human Feedback) — Nachtrainieren anhand menschlicher Bewertungen. Prägt Ton, Hilfsbereitschaft und Ablehnungsverhalten, aber auch eine Neigung zuzustimmen.</p>
   <p><b>Training Cutoff</b> — Der Stichtag, an dem die Trainingsdaten enden. Alles danach kennt das Modell nur, wenn es im Context steht.</p>
-  <p><b>Inference</b> — Die Nutzung des fertig trainierten Modells. Die Parameter sind eingefroren: Nichts, was ihr tippt, verändert das Modell.</p>
+  <p><b>Inference</b> — Die Nutzung des fertig trainierten Modells. Die Parameter sind eingefroren: Eingaben verändern das Modell nicht.</p>
 </div>
-<div class="take">Ob ein Modell eine Aufgabe beherrscht, steht in keiner Spezifikation. Das zeigt nur ein Test mit bekannten Antworten.</div>
+<div class="take">Ob ein Modell eine Aufgabe beherrscht, lässt sich nur durch Tests mit bekannten Antworten feststellen.</div>
 
 <h2><i>3</i>Von Text zu Vorhersage</h2>
 <div class="sub">Was bei jedem einzelnen Token passiert</div>
 <div class="terms">
   <p><b>Token</b> — Ein Textstück aus einem festen Vocabulary: ein Wort, ein Wortteil, ein Satzzeichen. Das Modell sieht ausschließlich Token-IDs, keine Buchstaben.</p>
-  <p><b>Tokenizer / Byte-Pair Encoding (BPE)</b> — Zerlegt Text in Tokens. Das Vocabulary entsteht vor dem Training, indem häufige Zeichenfolgen schrittweise verschmolzen werden. Häufiges wird ein Token, Seltenes zerfällt in viele.</p>
+  <p><b>Tokenizer / Byte-Pair Encoding (BPE)</b> — Zerlegt Text in Tokens. Das Vocabulary entsteht vor dem Training, indem häufige Zeichenfolgen schrittweise verschmolzen werden. Häufige Wörter sind ein Token, seltene bestehen aus mehreren.</p>
   <p><b>Vocabulary</b> — Die Menge aller Tokens eines Modells, typischerweise 100.000–200.000 Einträge.</p>
   <p><b>Embedding</b> — Der Vektor (einige tausend Zahlen), der ein Token repräsentiert. Training ordnet die Vektoren so an, dass ähnlich verwendete Tokens nah beieinander liegen. Grundlage von Semantic Search und RAG.</p>
   <p><b>Attention</b> — Der Mechanismus, mit dem jedes Token Information von anderen Tokens holt. Jede Position stellt eine Query, bietet einen Key und liefert einen Value; das Ergebnis ist eine gewichtete Mischung.<span class="f">softmax(QKᵀ / √dₖ) · V</span>Aufwand wächst quadratisch mit der Länge.</p>
-  <p><b>Transformer</b> — Die Architektur aller aktuellen LLMs: Dutzende gestapelte Blöcke aus Multi-Head Attention (bewegt Information <i>zwischen</i> Positionen) und Feed-Forward Network (verarbeitet Information <i>an</i> einer Position).</p>
+  <p><b>Transformer</b> — Die Architektur aller aktuellen LLMs: mehrere Dutzend gestapelte Blöcke aus Multi-Head Attention (bewegt Information <i>zwischen</i> Positionen) und Feed-Forward Network (verarbeitet Information <i>an</i> einer Position).</p>
   <p><b>Logits</b> — Die Rohwerte am Ende des Forward Pass: eine Zahl pro Token im Vocabulary.</p>
   <p><b>Softmax</b> — Wandelt Logits in Wahrscheinlichkeiten um, die sich zu 100 % summieren.</p>
   <p><b>Sampling</b> — Das nächste Token wird aus dieser Verteilung <b>gezogen</b>, nicht einfach das wahrscheinlichste genommen. Deshalb liefert dieselbe Anfrage verschiedene Antworten.</p>
   <p><b>Temperature</b> — Teilt die Logits vor dem Softmax. T &lt; 1 schärft die Verteilung, T &gt; 1 flacht sie ab und gibt Unwahrscheinlichem mehr Gewicht.</p>
   <p><b>Top-p</b> — Beschränkt das Ziehen auf die kleinste Menge von Tokens, deren Wahrscheinlichkeiten zusammen p ergeben. Schneidet den langen Rest ab.</p>
-  <p><b>Autoregression</b> — Ein Token pro Forward Pass. Es wird an den Context angehängt, dann läuft alles erneut. Folgen: Output ist teuer, frühe Fehler pflanzen sich fort, und erzeugter Text ist von zugeliefertem nicht zu unterscheiden.</p>
-  <p><b>Reasoning / Thinking</b> — Das Modell erzeugt zuerst Zwischenschritte (ein Notizblatt) und liest sie per Attention wieder ein, bevor es antwortet. Hilft bei mehrstufigen Problemen.</p>
+  <p><b>Autoregression</b> — Ein Token pro Forward Pass. Es wird an den Context angehängt, dann läuft alles erneut. Daraus folgt: Output-Tokens sind teuer, frühe Fehler pflanzen sich fort, und erzeugter Text ist von zugeliefertem nicht zu unterscheiden.</p>
+  <p><b>Reasoning / Thinking</b> — Das Modell erzeugt zuerst Zwischenschritte, vergleichbar mit einem Notizblatt, und verarbeitet sie per Attention, bevor es antwortet. Hilft bei mehrstufigen Problemen.</p>
   <p><b>Reasoning Effort / Thinking Effort</b> — Einstellung pro Aufgabe, wie viele Thinking Tokens das Modell aufwenden darf. Thinking Tokens werden als Output abgerechnet und sind oft nicht sichtbar.</p>
 </div>
 
 <h2><i>4</i>Wissen, Context, Hallucination</h2>
-<div class="sub">Was das Modell weiß – und was nicht</div>
+<div class="sub">Herkunft und Grenzen des Wissens</div>
 <div class="two">
   <div>
     <h3>Zwei Wissensquellen</h3>
@@ -169,66 +169,66 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
     <p><b>Memory</b> gibt es im Modell nicht. Was wie Erinnerung wirkt, ist Text, den der Harness erneut in den Context legt.</p>
   </div>
   <div>
-    <p><b>Context Window</b> — Die maximale Eingabe in Tokens. Der Platz wird geteilt: System Prompt, Tool-Definitionen, Instructions, Files, History und euer Prompt konkurrieren. Der gesamte Inhalt wird bei <b>jedem</b> Request neu gesendet.</p>
-    <p><b>Lost in the Middle</b> — Je voller das Fenster, desto unzuverlässiger wird Material gefunden, am schwächsten in der Mitte. Annehmen heißt nicht verwenden.</p>
-    <p><b>Compaction</b> — Nähert sich der Context der Grenze, ersetzt der Harness die History durch eine Zusammenfassung. Details gehen dabei verloren. In der Copilot CLI startet das bei rund 80 %; die Schwellen variieren je Client.</p>
+    <p><b>Context Window</b> — Die maximale Eingabe in Tokens. Der Platz wird geteilt: System Prompt, Tool-Definitionen, Instructions, Dateien, Verlauf und Prompt teilen sich das Fenster. Der gesamte Inhalt wird bei <b>jedem</b> Request neu gesendet.</p>
+    <p><b>Lost in the Middle</b> — Je voller das Fenster, desto unzuverlässiger nutzt das Modell den Inhalt, am schlechtesten den in der Mitte. Was im Context steht, wird also nicht zwingend verwendet.</p>
+    <p><b>Compaction</b> — Nähert sich der Context der Grenze, ersetzt der Harness den bisherigen Verlauf durch eine Zusammenfassung. Details gehen dabei verloren. In der Copilot CLI startet das bei rund 80 %; die Schwellen variieren je Client.</p>
   </div>
 </div>
-<p><b>Hallucination</b> — Flüssige, aber falsche Ausgabe. Kein Schritt des Verfahrens prüft eine Aussage gegen die Wirklichkeit. Es ist derselbe Mechanismus, der richtige Antworten erzeugt, angewendet dort, wo die Trainingsdaten ihn nicht festgelegt haben. Gegenmittel sind strukturell: die Quelle in den Context legen, Tools rechnen und nachschlagen lassen, Belege verlangen und prüfen.</p>
+<p><b>Hallucination</b> — Flüssige, aber falsche Ausgabe. Kein Schritt des Verfahrens prüft eine Aussage gegen die Wirklichkeit. Es ist derselbe Mechanismus, der richtige Antworten erzeugt, angewendet dort, wo die Trainingsdaten ihn nicht festgelegt haben. Gegenmaßnahmen: die Quelle in den Context geben, Tools rechnen und nachschlagen lassen, Belege verlangen und prüfen.</p>
 
 <h2><i>5</i>Systeme um das Modell</h2>
-<div class="sub">Vom Modell zum Agent</div>
+<div class="sub">Harness, Tools und Agents</div>
 <div class="terms">
   <p><b>Harness</b> — Das Programm um das Modell: stellt den Context zusammen, liefert Tool-Definitionen, führt Tool Calls aus, entscheidet über Abbruch und Compaction. GitHub Copilot in VS Code ist ein Harness, Claude Code ein anderer. Dasselbe Modell verhält sich in verschiedenen Harnesses unterschiedlich.</p>
   <p><b>System Prompt</b> — Die Anweisungen des Harness-Herstellers, die vor allem anderen im Context stehen.</p>
   <p><b>Tool</b> — Eine Fähigkeit außerhalb von Text: Datei lesen, Terminalbefehl, Websuche, API-Aufruf. Beschrieben durch Name, Beschreibung und Parameter-Schema.</p>
   <p><b>Tool Call</b> — Das Modell gibt strukturierten Text aus (Tool-Name plus Argumente). Der Harness prüft die Permission, führt aus und hängt das <b>Tool Result</b> an den Context. Das Modell führt nie selbst etwas aus.</p>
-  <p><b>Agentic Loop</b> — Beobachten, entscheiden, handeln, Ergebnis lesen, wiederholen – bis die Aufgabe erledigt ist. Zuverlässig wird das vor allem durch Rückmeldung in der Schleife (Tests, Build).</p>
+  <p><b>Agentic Loop</b> — Beobachten, entscheiden, handeln, Ergebnis lesen, wiederholen, bis die Aufgabe erledigt ist. Zuverlässig wird das vor allem durch Rückmeldungen innerhalb der Schleife (Tests, Build).</p>
   <p><b>Agent</b> — Ein Modell in einem Harness mit Tools und einer Agentic Loop. Kann handeln, nicht nur antworten.</p>
-  <p><b>Subagent</b> — Ein Agent, den der Haupt-Agent für eine Teilaufgabe startet. Arbeitet in einem <b>eigenen Context</b> und liefert nur das Ergebnis zurück. Hält den Haupt-Context sauber.</p>
-  <p><b>RAG</b> (Retrieval-Augmented Generation) — Zu einer Frage werden passende Textstellen gesucht (meist über Embeddings) und in den Context gelegt. Wirksamstes Einzelmittel gegen Hallucination. Fehler sind dann meist Suchfehler: prüfen, was abgerufen wurde.</p>
+  <p><b>Subagent</b> — Ein Agent, den der Haupt-Agent für eine Teilaufgabe startet. Arbeitet in einem <b>eigenen Context</b> und liefert nur das Ergebnis zurück. Der Context des Haupt-Agent bleibt dadurch klein.</p>
+  <p><b>RAG</b> (Retrieval-Augmented Generation) — Zu einer Frage werden passende Textstellen gesucht (meist über Embeddings) und in den Context gelegt. Wirksamste einzelne Maßnahme gegen Hallucination. Verbleibende Fehler entstehen meist bei der Suche; daher prüfen, welche Textstellen abgerufen wurden.</p>
   <p><b>MCP</b> (Model Context Protocol) — Offener Standard, über den ein Harness externe Tools und Daten anbindet. Ein <b>MCP Server</b> ist ein Paket aus Tools.</p>
   <p><b>Prompt Injection</b> — Text in einem Dokument, einer Webseite oder einem Tool Result, der als Anweisung formuliert ist. Funktioniert, weil Anweisungen und Daten denselben Kanal benutzen.</p>
 </div>
 
-<h2><i>6</i>Was aus der Mechanik folgt</h2>
-<div class="sub">Kann und kann nicht</div>
+<h2><i>6</i>Folgen der Funktionsweise</h2>
+<div class="sub">Stärken und Grenzen</div>
 <table>
   <tr><th style="width:24%">Mechanismus</th><th style="width:34%">Stärke</th><th>Grenze</th></tr>
-  <tr><td>Aus Beispielen gelernt</td><td>Muster, Sprache, Stil, Code-Idiome</td><td>Können zeigt nur der Test, nicht die Spezifikation</td></tr>
-  <tr><td>Next-Token Prediction</td><td>Flüssige, plausible Texte in Sekunden</td><td>Plausibel ist nicht wahr; nichts wird geprüft</td></tr>
-  <tr><td>Tokens statt Buchstaben</td><td>Jede Sprache, jedes Format</td><td>Zählen, exaktes Rechnen, Zeichenarbeit</td></tr>
+  <tr><td>Aus Beispielen gelernt</td><td>Muster, Sprache, Stil, Code-Idiome</td><td>Fähigkeiten lassen sich nur durch Tests feststellen</td></tr>
+  <tr><td>Next-Token Prediction</td><td>Flüssige, plausible Texte in Sekunden</td><td>Plausibel heißt nicht richtig; eine Prüfung findet nicht statt</td></tr>
+  <tr><td>Tokens statt Buchstaben</td><td>Jede Sprache, jedes Format</td><td>Zählen, exaktes Rechnen, zeichengenaues Arbeiten</td></tr>
   <tr><td>Sampling</td><td>Varianten, Kreativität</td><td>Nicht deterministisch, nicht exakt reproduzierbar</td></tr>
   <tr><td>Feste Parameter</td><td>Breites Weltwissen sofort verfügbar</td><td>Kein Lernen im Betrieb; nichts Aktuelles, nichts Internes</td></tr>
-  <tr><td>Begrenzter Context</td><td>Arbeitet exakt mit dem, was drinsteht</td><td>Vergisst, was herausfällt; verliert die Mitte</td></tr>
+  <tr><td>Begrenzter Context</td><td>Arbeitet genau mit dem Inhalt des Context</td><td>Inhalte außerhalb des Fensters fehlen; Inhalte in der Mitte werden schlechter genutzt</td></tr>
   <tr><td>Harness und Tools</td><td>Kann lesen, schreiben, ausführen</td><td>Handelt auch auf falscher Grundlage</td></tr>
 </table>
 
-<div class="part pb"><span>02</span>Wie man es richtig einsetzt</div>
+<div class="part pb"><span>02</span>Wie man ein LLM einsetzt</div>
 
 <h2><i>7</i>Modellwahl</h2>
-<div class="sub">Das kleinste Modell, das die Aufgabe schafft</div>
+<div class="sub">Das kleinste Modell, das die Aufgabe löst</div>
 <table>
   <tr><th>Kategorie</th><th>Beispiele</th><th class="num">Input</th><th class="num">Cached</th><th class="num">Output</th><th>Geeignet für</th></tr>
   <tr><td>Lightweight</td><td>Claude Haiku 5.5<br>GPT-6 Luna</td><td class="num">$0.10<br>$0.10</td><td class="num">$0.01<br>$0.01</td><td class="num">$0.50<br>$0.50</td><td>Umformatieren, Boilerplate, Commit Messages, einfache Fragen</td></tr>
-  <tr><td>Versatile</td><td>Claude Sonnet 5.5<br>GPT-6.1 Terra</td><td class="num">$2.00<br>$1.00</td><td class="num">$0.10<br>$0.05</td><td class="num">$10.00<br>$5.00</td><td>Der Alltag: Coding, Agent Mode, Review, Tests, Doku</td></tr>
+  <tr><td>Versatile</td><td>Claude Sonnet 5.5<br>GPT-6.1 Terra</td><td class="num">$2.00<br>$1.00</td><td class="num">$0.10<br>$0.05</td><td class="num">$10.00<br>$5.00</td><td>Tägliche Arbeit: Programmieren, Agent Mode, Review, Tests, Dokumentation</td></tr>
   <tr><td>Powerful</td><td>Claude Opus 5.5<br>GPT-6.1 Sol<br>Claude Fable 5.2</td><td class="num">$4.00<br>$2.00<br>$8.00</td><td class="num">$0.20<br>$0.10<br>$0.20</td><td class="num">$20.00<br>$10.00<br>$40.00</td><td>Architektur, Debugging über viele Dateien, lange autonome Aufgaben</td></tr>
 </table>
-<p style="font-size:8pt;color:var(--muted)">US$ je 1 Mio. Tokens, Listenpreise und Kategorien laut GitHub Docs, abgerufen am 10.11.2026. Auswahl; welche Modelle freigeschaltet sind, entscheidet der Admin. Preise ändern sich – vor Entscheidungen die Quelle prüfen (Abschnitt 16).</p>
+<p style="font-size:8pt;color:var(--muted)">US$ je 1 Mio. Tokens, Listenpreise und Kategorien laut GitHub Docs, abgerufen am 10.11.2026. Auswahl; welche Modelle freigeschaltet sind, entscheidet die Administration. Preise ändern sich; vor Entscheidungen die Quelle prüfen (Abschnitt 16).</p>
 <div class="two">
   <div>
     <h3>Vorgehen</h3>
     <ol>
-      <li><b>Start mit Versatile</b> oder <b>Auto</b> (wählt je Request; wo angeboten, mit „Optimize for“ Efficiency, Balance oder Intelligence).</li>
-      <li><b>Runter auf Lightweight</b>, wenn die Aufgabe mechanisch ist und das Ergebnis sofort sichtbar.</li>
-      <li><b>Hoch auf Powerful</b>, wenn mehrstufig, ein früher Fehler teuer – oder zwei Versuche gescheitert sind.</li>
-      <li><b>Thinking Effort</b> nur erhöhen, wenn wirklich geschlussfolgert werden muss. Bei Nachschlagen und Umformatieren kostet es nur.</li>
+      <li><b>Ausgangspunkt: Versatile</b> oder <b>Auto</b> (wählt das Modell je Request; wo angeboten, mit „Optimize for“ Efficiency, Balance oder Intelligence).</li>
+      <li><b>Wechsel zu Lightweight</b>, wenn die Aufgabe mechanisch ist und sich das Ergebnis sofort beurteilen lässt.</li>
+      <li><b>Wechsel zu Powerful</b>, wenn die Aufgabe mehrstufig ist, ein früher Fehler teuer wird oder zwei Versuche gescheitert sind.</li>
+      <li><b>Thinking Effort</b> nur erhöhen, wenn die Aufgabe mehrere Schlussfolgerungen erfordert. Beim Nachschlagen und Umformatieren entstehen nur Mehrkosten.</li>
     </ol>
   </div>
   <div>
-    <h3>Benchmarks und eigene Eval</h3>
-    <p><b>Benchmarks</b> taugen als erster Filter, nicht als Entscheidung: Kein Leaderboard misst eure Aufgabe, Testbedingungen variieren, und veröffentlichte Tests landen in späteren Trainingsdaten.</p>
-    <p><b>Mini-Eval (ein halber Tag):</b> 5–10 echte Aufgaben mit bekanntem Sollergebnis. Kriterien vorher festlegen. Jede Aufgabe dreimal laufen lassen – ein einzelner Run misst den Zufall. Kosten und Dauer mit notieren.</p>
+    <h3>Benchmarks und eigene Evaluation</h3>
+    <p><b>Benchmarks</b> eignen sich zur Vorauswahl, nicht als alleinige Entscheidungsgrundlage: Keine Rangliste misst die eigene Aufgabe, Testbedingungen variieren, und veröffentlichte Tests landen in späteren Trainingsdaten.</p>
+    <p><b>Eigene Evaluation (ein halber Tag):</b> 5–10 echte Aufgaben mit bekanntem Sollergebnis. Kriterien vorher festlegen. Jede Aufgabe dreimal ausführen, weil ein einzelner Durchlauf wegen des Samplings nicht aussagekräftig ist. Kosten und Dauer ebenfalls notieren.</p>
   </div>
 </div>
 
@@ -237,59 +237,59 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
 <div class="two">
   <div>
     <table>
-      <tr><th>Fakt</th><th>Wert</th></tr>
+      <tr><th>Merkmal</th><th>Wert</th></tr>
       <tr><td>1 AI Credit</td><td>0,01 US$</td></tr>
-      <tr><td>Copilot Enterprise</td><td>3.900 Credits pro User und Monat</td></tr>
-      <tr><td>Copilot Business</td><td>1.900 Credits pro User und Monat</td></tr>
-      <tr><td>Pooling</td><td>Über alle Lizenzen der Abrechnungseinheit; kein Übertrag, Reset am 1. des Monats (UTC)</td></tr>
-      <tr><td>Gratis</td><td>Inline Completions und Next Edit Suggestions</td></tr>
+      <tr><td>Copilot Enterprise</td><td>3.900 Credits pro Nutzer und Monat</td></tr>
+      <tr><td>Copilot Business</td><td>1.900 Credits pro Nutzer und Monat</td></tr>
+      <tr><td>Gemeinsames Kontingent</td><td>Über alle Lizenzen der Abrechnungseinheit; kein Übertrag, neues Kontingent am 1. des Monats (UTC)</td></tr>
+      <tr><td>Kostenlos</td><td>Inline Completions und Next Edit Suggestions</td></tr>
       <tr><td>Verbraucht Credits</td><td>Chat, Agent, Copilot CLI, Cloud Agent, Spaces</td></tr>
-      <tr><td>Pool leer</td><td>Kostenpflichtige Weiternutzung (Default an) oder Sperre bis Monatswechsel, je nach Policy</td></tr>
-      <tr><td>Budgets</td><td>Pro User, Cost Center, Organisation, Enterprise</td></tr>
+      <tr><td>Kontingent aufgebraucht</td><td>Kostenpflichtige Weiternutzung (Voreinstellung) oder Sperre bis zum Monatswechsel, je nach Richtlinie</td></tr>
+      <tr><td>Budgets</td><td>Pro Nutzer, Cost Center, Organisation, Enterprise</td></tr>
     </table>
   </div>
   <div>
     <h3>Drei Token-Arten</h3>
     <p><b>Input</b> — alles, was gesendet wird: der gesamte Context, bei jedem Request.</p>
-    <p><b>Cached Input</b> — ein unveränderter Anfang des Context, den der Anbieter schon verarbeitet hat. Kostet etwa ein Zehntel bis ein Zwanzigstel. Stabile Instructions sparen also Geld; ein wechselnder Prefix zerstört den Cache.</p>
+    <p><b>Cached Input</b> — ein unveränderter Anfang des Context, den der Anbieter schon verarbeitet hat. Kostet etwa ein Zehntel bis ein Zwanzigstel. Gleichbleibende Instructions senken also die Kosten; ändert sich der Anfang, wird der Cache ungültig.</p>
     <p><b>Output</b> — alles Erzeugte, inklusive Thinking Tokens. Kostet typischerweise das Fünffache des Inputs.</p>
-    <div class="take plain"><b>Rechenbeispiel</b> (Sonnet 5.5, Start-Context 30K, 20 Agent-Steps, +4K je Step, 1K Output je Step): 1,55 Mio. Input-Tokens, rund <b>59 Credits</b> mit Caching, rund <b>330</b> ohne. Bei 40 Steps: 134 Credits.</div>
+    <div class="take plain"><b>Rechenbeispiel</b> (Sonnet 5.5, Start-Context 30K, 20 Agent-Schritte, +4K je Schritt, 1K Output je Schritt): 1,55 Mio. Input-Tokens, rund <b>59 Credits</b> mit Caching, rund <b>330</b> ohne. Bei 40 Schritten: 134 Credits.</div>
   </div>
 </div>
 <div class="two">
   <div>
-    <h3>Was Credits frisst</h3>
+    <h3>Kostentreiber</h3>
     <ul>
-      <li>Lange Sessions: Die History reist jedes Mal mit, die Input-Tokens wachsen quadratisch</li>
-      <li>Große Files und Tool Results im Context</li>
-      <li>Agent Loops mit vielen Steps</li>
-      <li>Hoher Thinking Effort für Routine</li>
-      <li>Powerful-Modell für Trivialaufgaben</li>
-      <li>Retries, weil die Aufgabe unklar war</li>
+      <li>Lange Sitzungen: Der Verlauf wird jedes Mal mitgesendet, die Input-Tokens wachsen quadratisch</li>
+      <li>Große Dateien und Tool Results im Context</li>
+      <li>Agentic Loops mit vielen Schritten</li>
+      <li>Hoher Thinking Effort für Routineaufgaben</li>
+      <li>Powerful-Modell für einfache Aufgaben</li>
+      <li>Wiederholungen wegen unklarer Aufgabenstellung</li>
     </ul>
   </div>
   <div>
-    <h3>Was hilft</h3>
+    <h3>Gegenmaßnahmen</h3>
     <ul>
       <li>Neuer Chat pro Aufgabe</li>
-      <li>Gezielte Files statt ganzer Ordner</li>
-      <li>Modell passend zur Aufgabe</li>
-      <li>Präziser Prompt: ein Run statt drei</li>
+      <li>Einzelne Dateien statt ganzer Ordner anhängen</li>
+      <li>Modell passend zur Aufgabe wählen</li>
+      <li>Präziser Prompt: ein Durchlauf statt drei</li>
       <li>Subagents für Recherche (eigener Context)</li>
-      <li>Kurze, stabile Instructions (Cache bleibt warm)</li>
+      <li>Kurze, gleichbleibende Instructions (der Cache bleibt gültig)</li>
     </ul>
   </div>
 </div>
-<div class="take">Die Modellkosten sind meist der kleinere Posten. Zwanzig Minuten Review kosten mehr als der Run. Am günstigsten ist der Weg mit den wenigsten Korrekturschleifen.</div>
+<div class="take">Die Modellkosten sind meist der kleinere Posten: Zwanzig Minuten Arbeitszeit für die Prüfung kosten mehr als der Durchlauf. Am günstigsten ist das Vorgehen mit den wenigsten Korrekturschleifen.</div>
 
 <h2><i>9</i>Deutsch oder Englisch</h2>
-<div class="sub">Kosten messbar, Qualität differenziert</div>
-<p><b>Kosten:</b> Das Vocabulary ist auf Englisch und Code optimiert. Deutsch braucht für denselben Inhalt mehr Tokens – als Richtwert das 1,3- bis 1,5-Fache, bei Komposita mehr. Das wirkt auf Kosten und auf den Platz im Context Window. Der Faktor hängt vom Tokenizer ab: für eigene Texte messen, nicht schätzen. <b>Qualität:</b> Aktuelle große Modelle verstehen und schreiben Deutsch sehr gut. Der Abstand wächst bei kleinen Modellen, bei Fachterminologie und dort, wo Doku, Code und Fehlermeldungen ohnehin englisch sind.</p>
+<div class="sub">Tokenbedarf, Qualität und Empfehlung je Verwendung</div>
+<p><b>Kosten:</b> Das Vocabulary ist auf Englisch und Code optimiert. Deutsch braucht für denselben Inhalt mehr Tokens, als Richtwert das 1,3- bis 1,5-Fache, bei Komposita mehr. Das wirkt auf Kosten und auf den Platz im Context Window. Der Faktor hängt vom Tokenizer ab und sollte für eigene Texte gemessen werden. <b>Qualität:</b> Aktuelle große Modelle verstehen und schreiben Deutsch sehr gut. Der Abstand zum Englischen wächst bei kleinen Modellen, bei Fachterminologie und dort, wo Dokumentation, Code und Fehlermeldungen ohnehin englisch sind.</p>
 <table>
-  <tr><th style="width:36%">Was</th><th>Empfehlung</th></tr>
+  <tr><th style="width:36%">Verwendung</th><th>Empfehlung</th></tr>
   <tr><td>Instructions, Skills, Agents, Prompt Files</td><td><b>Englisch.</b> Werden bei jedem Request gesendet; Begriffe sind eindeutig; teamübergreifend lesbar.</td></tr>
-  <tr><td>Code, Commits, Fachbegriffe</td><td><b>Englisch.</b> Fachbegriffe nie übersetzen (Gradient Descent, nicht „Gradientenabstieg“).</td></tr>
-  <tr><td>Ad-hoc im Chat</td><td>Die Sprache, in der ihr am präzisesten formuliert. Präzision schlägt Sprache.</td></tr>
+  <tr><td>Code, Commits, Fachbegriffe</td><td><b>Englisch.</b> Fachbegriffe nicht übersetzen (Gradient Descent, nicht „Gradientenabstieg“).</td></tr>
+  <tr><td>Einzelne Anfragen im Chat</td><td>Die Sprache, in der man am präzisesten formuliert. Die Genauigkeit ist wichtiger als die Sprache.</td></tr>
   <tr><td>Ausgabe</td><td>Explizit festlegen: <code>Answer in German.</code></td></tr>
 </table>
 
@@ -300,11 +300,11 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
     <h3>Was im Context steht (von oben nach unten)</h3>
     <ol>
       <li>System Prompt des Harness</li>
-      <li>Tool-Definitionen – Built-in und jeder MCP Server</li>
+      <li>Tool-Definitionen: integrierte Tools und jeder MCP Server</li>
       <li>Custom Instructions und Skill-Beschreibungen</li>
-      <li>Angehängte Files, geöffnete Datei, Selection</li>
-      <li>History und Tool Results (größter Posten in Agent-Sessions)</li>
-      <li>Euer Prompt – der kleinste Teil</li>
+      <li>Angehängte Dateien, geöffnete Datei, Markierung</li>
+      <li>Verlauf und Tool Results (größter Anteil in Agent-Sitzungen)</li>
+      <li>Prompt: der kleinste Teil</li>
     </ol>
     <p>In VS Code zeigt ein kleiner Kreis am Chat-Eingabefeld den Füllstand. In der Copilot CLI: <code>/context</code> und <code>/compact</code>.</p>
   </div>
@@ -312,46 +312,46 @@ ul, ol { margin: 0 0 6pt 13pt; } li { margin-bottom: 1.6pt; }
     <h3>Neuer Chat, wenn …</h3>
     <ul>
       <li>die Aufgabe wechselt</li>
-      <li>drei Korrekturen nichts gebracht haben (im Context stehen dann drei falsche Ansätze)</li>
-      <li>mehrere Compactions hinter euch liegen</li>
-      <li>ihr von Erkunden zu Umsetzen wechselt</li>
+      <li>drei Korrekturen erfolglos waren (im Context stehen dann drei falsche Ansätze)</li>
+      <li>bereits mehrere Compactions stattgefunden haben</li>
+      <li>die Arbeit vom Erkunden zum Umsetzen übergeht</li>
     </ul>
-    <p><b>Übergabenotiz:</b> Lange Arbeit am Ende einer Session in fünf Zeilen zusammenfassen lassen (Ziel, Stand, Entscheidungen, offene Punkte, nächster Schritt) und die neue Session damit beginnen.</p>
+    <p><b>Übergabenotiz:</b> Längere Arbeit am Ende einer Sitzung in fünf Zeilen zusammenfassen lassen (Ziel, Stand, Entscheidungen, offene Punkte, nächster Schritt) und die neue Sitzung damit beginnen.</p>
   </div>
 </div>
 
 <h2><i>11</i>Prompting</h2>
-<div class="sub">Sechs Bausteine, sechs Patterns</div>
+<div class="sub">Bausteine eines Prompts und bewährte Vorgehensweisen</div>
 <table>
-  <tr><th style="width:19%">Baustein</th><th style="width:20%">Schwach</th><th>Belastbar</th></tr>
-  <tr><td>Ziel</td><td>„Fix den Export“</td><td>„Der CSV-Export bricht ab 10.000 Zeilen ab. Ziel: läuft für 1 Mio. Zeilen durch.“</td></tr>
-  <tr><td>Hintergrund</td><td><i>fehlt</i></td><td>„Läuft nightly in CI mit 2 GB Speicherlimit. Streaming ist erlaubt.“</td></tr>
-  <tr><td>Constraints</td><td>„Mach es sauber“</td><td>„Public API nicht ändern. Keine neue Dependency.“</td></tr>
-  <tr><td>Output-Format</td><td>„Zeig mal“</td><td>„Erst Plan in fünf Punkten, dann Diff, dann offene Fragen.“</td></tr>
+  <tr><th style="width:19%">Baustein</th><th style="width:20%">Zu ungenau</th><th>Genau</th></tr>
+  <tr><td>Ziel</td><td>„Reparier den Export“</td><td>„Der CSV-Export bricht ab 10.000 Zeilen ab. Ziel: läuft für 1 Mio. Zeilen durch.“</td></tr>
+  <tr><td>Hintergrund</td><td><i>fehlt</i></td><td>„Läuft jede Nacht in der CI-Pipeline mit 2 GB Speicherlimit. Streaming ist erlaubt.“</td></tr>
+  <tr><td>Randbedingungen</td><td>„Mach es sauber“</td><td>„Öffentliche API nicht ändern. Keine neue Dependency.“</td></tr>
+  <tr><td>Ausgabeformat</td><td>„Zeig mal“</td><td>„Erst Plan in fünf Punkten, dann Diff, dann offene Fragen.“</td></tr>
   <tr><td style="color:var(--red)">Acceptance Criteria</td><td><i>fehlt</i></td><td>„Bestehende Tests grün, plus ein neuer Test mit 1 Mio. Zeilen.“</td></tr>
   <tr><td style="color:var(--red)">Umgang mit Lücken</td><td><i>fehlt</i></td><td>„Wenn etwas unklar ist: fragen, nicht raten. Annahmen auflisten.“</td></tr>
 </table>
 <p>Die beiden roten Bausteine fehlen am häufigsten und verändern das Ergebnis am stärksten.</p>
 <div class="terms">
-  <p><b>Beispiele zeigen (Few-Shot)</b> — Ein gutes Beispiel für den gewünschten Output schlägt drei Absätze Beschreibung.</p>
-  <p><b>Das Warum nennen</b> — „Keine neue Dependency, weil das Audit sechs Wochen dauert“ generalisiert besser als ein nacktes Verbot.</p>
-  <p><b>Positiv formulieren</b> — Sagen, was passieren soll. Aktuelle Modelle nehmen Anweisungen wörtlich.</p>
-  <p><b>Erst Plan, dann Ausführung</b> — Der Plan kostet einen Bruchteil und zeigt Missverständnisse, bevor Code entsteht.</p>
-  <p><b>Verify-Loop mitgeben</b> — Tests, Build, Linter, Typecheck: Ein Agent, der sein Ergebnis selbst prüfen kann, wird deutlich zuverlässiger.</p>
-  <p><b>Neu starten statt flicken</b> — Nach zwei Fehlversuchen: neuer Chat mit besserem Prompt, nicht die fünfte Korrektur.</p>
-  <p><b>Prompting Guides</b> — Anthropic, OpenAI und Google veröffentlichen eigene, modellspezifische Guides. Den Guide für das meistgenutzte Modell einmal lesen (Abschnitt 16).</p>
+  <p><b>Beispiele zeigen (Few-Shot)</b> — Ein gutes Beispiel für die gewünschte Ausgabe wirkt besser als eine lange Beschreibung.</p>
+  <p><b>Begründung angeben</b> — „Keine neue Dependency, weil das Audit sechs Wochen dauert“ wird zuverlässiger auf ähnliche Fälle übertragen als ein Verbot ohne Begründung.</p>
+  <p><b>Positiv formulieren</b> — Angeben, was geschehen soll, statt nur, was zu unterlassen ist. Aktuelle Modelle befolgen Anweisungen wörtlich.</p>
+  <p><b>Erst Plan, dann Ausführung</b> — Ein Plan kostet wenige Tokens und macht Missverständnisse sichtbar, bevor Code entsteht.</p>
+  <p><b>Prüfschleife vorgeben</b> — Tests, Build, Linter, Typecheck: Ein Agent, der sein Ergebnis selbst prüfen kann, arbeitet deutlich zuverlässiger.</p>
+  <p><b>Neu beginnen statt nachbessern</b> — Nach zwei Fehlversuchen ist ein neuer Chat mit einem besseren Prompt wirksamer als weitere Korrekturen.</p>
+  <p><b>Prompting Guides</b> — Anthropic, OpenAI und Google veröffentlichen eigene, modellspezifische Guides. Es lohnt sich, den Guide für das meistgenutzte Modell zu lesen (Abschnitt 16).</p>
 </div>
 
 <h2 class="pb"><i>12</i>Copilot anpassen: sieben Bausteine</h2>
-<div class="sub">Alles Dateien im Repo: versioniert, reviewbar, fürs ganze Team</div>
+<div class="sub">Dateien im Repository: versioniert, im Review prüfbar, für das ganze Team verfügbar</div>
 <table>
   <tr><th style="width:17%">Baustein</th><th style="width:34%">Datei</th><th style="width:21%">Wird geladen</th><th>Wofür</th></tr>
   <tr><td>Custom Instructions</td><td class="mono">.github/copilot-instructions.md<br>.github/instructions/*.instructions.md<br>AGENTS.md</td><td>automatisch, immer</td><td>Konventionen, Projektwissen</td></tr>
   <tr><td>Prompt Files</td><td class="mono">.github/prompts/*.prompt.md</td><td>manuell, per <code>/name</code></td><td>Wiederkehrende Anfrage</td></tr>
-  <tr><td>Agent Skills</td><td class="mono">.github/skills/&lt;name&gt;/SKILL.md<br>~/.copilot/skills/&lt;name&gt;/SKILL.md</td><td>automatisch, wenn relevant</td><td>Verfahren mit Scripts und Vorlagen</td></tr>
+  <tr><td>Agent Skills</td><td class="mono">.github/skills/&lt;name&gt;/SKILL.md<br>~/.copilot/skills/&lt;name&gt;/SKILL.md</td><td>automatisch, wenn relevant</td><td>Verfahren mit Skripten und Vorlagen</td></tr>
   <tr><td>Custom Agents</td><td class="mono">.github/agents/&lt;name&gt;.agent.md</td><td>manuell, Agent-Dropdown; oder als Subagent</td><td>Rolle mit eigenen Tools</td></tr>
   <tr><td>MCP Servers</td><td class="mono">mcp.json (z. B. .vscode/mcp.json)</td><td>Tools stehen bereit</td><td>Externe Systeme und Daten</td></tr>
-  <tr><td>Hooks (Preview)</td><td class="mono">.github/hooks/*.json</td><td>deterministisch, an Lifecycle-Events</td><td>Garantien statt Bitten</td></tr>
+  <tr><td>Hooks (Preview)</td><td class="mono">.github/hooks/*.json</td><td>deterministisch, bei Lifecycle-Ereignissen</td><td>Regeln, die immer gelten</td></tr>
   <tr><td>Agent Plugins (Preview)</td><td>Marketplace</td><td>nach Installation</td><td>Bündel aus Skills, Agents, Hooks, MCP</td></tr>
 </table>
 
@@ -375,10 +375,10 @@ Order service. Java 21, Spring Boot 3, Gradle.
 <span class="c">---</span>
 Use explicit column lists. No `SELECT *`.</pre>
     <ul>
-      <li>Entscheidungen benennen, nicht guten Stil beschreiben</li>
-      <li>Engster Scope, der noch alle Fälle erfasst</li>
-      <li>Widersprüche entfernen – es gibt keine verlässliche Rangfolge</li>
-      <li>Quartalsweise kürzen: Jede Zeile wird bei jedem Request bezahlt</li>
+      <li>Konkrete Entscheidungen festhalten, keine allgemeinen Stilregeln</li>
+      <li>Engster Geltungsbereich, der noch alle Fälle erfasst</li>
+      <li>Widersprüche entfernen; es gibt keine verlässliche Rangfolge zwischen Regeln</li>
+      <li>Regelmäßig kürzen: Jede Zeile wird bei jedem Request abgerechnet</li>
     </ul>
   </div>
   <div>
@@ -397,22 +397,22 @@ Use explicit column lists. No `SELECT *`.</pre>
 
 Approved terms: references/word-list.md
 After writing, run scripts/check_terms.py.</pre>
-    <p><b>Progressive Disclosure:</b> (1) <code>name</code> und <code>description</code> stehen immer im Context, rund 100 Tokens. (2) Die SKILL.md wird erst geladen, wenn das Modell den Skill für relevant hält. (3) <code>references/</code> und <code>scripts/</code> nur bei Bedarf.</p>
-    <p>Die <b>description</b> trägt die Hauptlast: Sie ist alles, was das Modell bei der Entscheidung sieht. Hineinschreiben, <i>was</i> der Skill tut und <i>wann</i> er greifen soll.</p>
+    <p><b>Progressive Disclosure:</b> (1) <code>name</code> und <code>description</code> stehen immer im Context, rund 100 Tokens. (2) Die SKILL.md wird erst geladen, wenn das Modell den Skill als passend einstuft. (3) <code>references/</code> und <code>scripts/</code> nur bei Bedarf.</p>
+    <p>Die <b>description</b> ist entscheidend: Nur sie liegt dem Modell bei der Auswahl vor. Sie sollte angeben, <i>was</i> der Skill tut und <i>wann</i> er verwendet werden soll.</p>
   </div>
 </div>
 
 <div class="two">
   <div>
-    <h3>Eigenen Skill bauen – fünf Schritte</h3>
+    <h3>Eigenen Skill erstellen in fünf Schritten</h3>
     <ol>
-      <li>Aufgabe dreimal von Hand im Chat lösen</li>
-      <li>Was war jedes Mal gleich? Vom Agent in eine SKILL.md schreiben lassen</li>
-      <li>Alles Exakte in Scripts auslagern: rechnen, validieren, formatieren</li>
-      <li>description schärfen: wann greifen, wann nicht</li>
-      <li>An drei echten Fällen testen, dann per Pull Request ins Repo</li>
+      <li>Die Aufgabe dreimal von Hand im Chat lösen</li>
+      <li>Die gleichbleibenden Teile vom Agent in eine SKILL.md schreiben lassen</li>
+      <li>Exakte Teilschritte in Skripte auslagern: rechnen, validieren, formatieren</li>
+      <li>description präzisieren: wann der Skill verwendet werden soll und wann nicht</li>
+      <li>An drei echten Fällen testen, dann per Pull Request ins Repository aufnehmen</li>
     </ol>
-    <p><b>Gute Kandidaten:</b> Styleguides (Google developer documentation style guide, Microsoft Writing Style Guide), Design-Vorlagen (Corporate Design, Slide-Templates), reproduzierbare Abläufe (Release Notes, Incident Report, Migrations- und Review-Checklisten).</p>
+    <p><b>Gute Kandidaten:</b> Styleguides (Google developer documentation style guide, Microsoft Writing Style Guide), Design-Vorlagen (Corporate Design, Folienvorlagen), reproduzierbare Abläufe (Release Notes, Incident Report, Migrations- und Review-Checklisten).</p>
     <p>Agent Skills sind ein offener Standard: Derselbe Ordner funktioniert in Copilot, Claude Code und anderen Agents. Copilot liest auch <code>.claude/skills/</code> und <code>.agents/skills/</code>.</p>
   </div>
   <div>
@@ -432,7 +432,7 @@ Review the code supplied in the request.
 Report findings with file and line references.
 Do not edit files or run terminal commands.</pre>
     <p><b>tools</b> begrenzt, was der Agent tun <i>kann</i>. <b>handoffs</b> verketten Rollen (Plan → Implement → Review). Anlegen über <b>Chat: New Custom Agent</b>.</p>
-    <p><b>Skill oder Agent?</b> Skill = Wissen und Verfahren, das jeder Agent nutzen kann. Agent = Rolle mit eigenem Auftrag und eingeschränkten Tools.</p>
+    <p><b>Abgrenzung:</b> Ein Skill enthält Wissen und Verfahren, die jeder Agent nutzen kann. Ein Agent ist eine Rolle mit eigenem Auftrag und eingeschränkten Tools.</p>
   </div>
 </div>
 
@@ -449,9 +449,9 @@ Do not edit files or run terminal commands.</pre>
   }
 }</pre>
     <ul>
-      <li>Ein MCP Server ist fremder Code mit euren Zugangsdaten: Herausgeber prüfen, Version pinnen, Credentials beschränken</li>
-      <li>Tool-Beschreibungen sind Teil des Prompts: einmal lesen</li>
-      <li>Jede Tool-Definition kostet bei jedem Request Context: nur aktivieren, was die Aufgabe braucht</li>
+      <li>Ein MCP Server ist fremder Code mit eigenen Zugangsdaten: Herausgeber prüfen, Version pinnen, Credentials beschränken</li>
+      <li>Tool-Beschreibungen lesen: Sie werden Teil des Context</li>
+      <li>Jede Tool-Definition belegt bei jedem Request Platz im Context: nur aktivieren, was die Aufgabe erfordert</li>
     </ul>
   </div>
   <div>
@@ -467,109 +467,109 @@ Do not edit files or run terminal commands.</pre>
     }]
   }
 }</pre>
-    <p>Ein Hook ist ein Shell-Befehl, der deterministisch an einem Lifecycle-Event läuft. Er bekommt das Event als JSON auf stdin; ein <code>preToolUse</code>-Hook kann einen Tool Call mit <code>"permissionDecision": "deny"</code> ablehnen.</p>
-    <p><b>Events:</b> <span class="mono">sessionStart, userPromptSubmitted, preToolUse, postToolUse, preCompact, subagentStart, subagentStop, agentStop, sessionEnd</span>. In VS Code noch Preview; Hooks ersetzen keine Sandbox und keine Org-Policy.</p>
+    <p>Ein Hook ist ein Shell-Befehl, der deterministisch bei einem Lifecycle-Ereignis ausgeführt wird. Er erhält das Ereignis als JSON über stdin; ein <code>preToolUse</code>-Hook kann einen Tool Call mit <code>"permissionDecision": "deny"</code> ablehnen.</p>
+    <p><b>Ereignisse:</b> <span class="mono">sessionStart, userPromptSubmitted, preToolUse, postToolUse, preCompact, subagentStart, subagentStop, agentStop, sessionEnd</span>. In VS Code noch im Preview-Status; Hooks ersetzen weder eine Sandbox noch die Richtlinien der Organisation.</p>
   </div>
 </div>
 
 <h3>Prompt Files und Agent Plugins</h3>
 <p><b>Prompt File</b> — eine gespeicherte Anfrage mit Platzhaltern unter <code>.github/prompts/</code>, aufgerufen per <code>/name</code> im Chat. Richtig, wenn dieselbe Anfrage regelmäßig wiederkommt, aber kein mehrstufiges Verfahren ist. <b>Agent Plugin</b> — ein installierbares Bündel aus Skills, Custom Agents, Hooks, MCP Servers und Slash Commands, verteilt über Marketplaces. Richtig, wenn ein Setup über Teams hinweg geteilt werden soll. Vor der Installation Herausgeber und Inhalt prüfen: Ein Plugin ist ausführbarer Code.</p>
 
-<h3>So wenig Struktur wie nötig</h3>
+<h3>Auswahl der Stufe: nur so viel Struktur wie nötig</h3>
 <table>
   <tr><th style="width:30%">Stufe</th><th style="width:22%">Aufwand</th><th>Angemessen, wenn …</th></tr>
   <tr><td>Einzelne Anfrage im Chat</td><td>keiner</td><td>einmalig, oder das Ziel ist noch offen</td></tr>
-  <tr><td>Prompt mit sechs Bausteinen</td><td>Minuten</td><td>es darauf ankommt</td></tr>
+  <tr><td>Prompt mit sechs Bausteinen</td><td>Minuten</td><td>das Ergebnis weiterverwendet wird</td></tr>
   <tr><td>Prompt File</td><td>unter einer Stunde</td><td>dieselbe Anfrage wiederkommt</td></tr>
   <tr><td>Custom Instructions</td><td>eine Stunde plus Pflege</td><td>eine Regel für viele Aufgaben gilt</td></tr>
   <tr><td>Skill</td><td>halber Tag plus Pflege</td><td>ein mehrstufiges Verfahren regelmäßig läuft</td></tr>
-  <tr><td>Custom Agent, MCP, Hooks</td><td>Einrichtung und Security-Review</td><td>gehandelt werden muss und Garantien nötig sind</td></tr>
+  <tr><td>Custom Agent, MCP, Hooks</td><td>Einrichtung und Sicherheitsprüfung</td><td>Aktionen ausgeführt werden und Regeln verbindlich gelten müssen</td></tr>
   <tr><td>Agent Plugin</td><td>Paketierung</td><td>das Setup teamübergreifend geteilt werden soll</td></tr>
-  <tr><td>Klassische Software</td><td>oft kleiner als gedacht</td><td>das Verfahren exakt ist und die Eingaben strukturiert sind</td></tr>
+  <tr><td>Klassische Software</td><td>oft geringer als erwartet</td><td>das Verfahren exakt ist und die Eingaben strukturiert sind</td></tr>
 </table>
 
 <h2><i>13</i>Autonomie und Kontrolle</h2>
-<div class="sub">Ask, Plan, Agent – und was wirklich garantiert ist</div>
+<div class="sub">Ask, Plan, Agent und drei Arten von Kontrolle</div>
 <div class="two">
   <div>
     <table>
-      <tr><th>Agent</th><th>Ihr beurteilt</th><th>Geeignet für</th></tr>
+      <tr><th>Agent</th><th>Geprüft wird</th><th>Geeignet für</th></tr>
       <tr><td>Ask</td><td>jede Antwort</td><td>Verstehen, Optionen abwägen</td></tr>
       <tr><td>Plan</td><td>den Plan</td><td>Größeres und Unklares</td></tr>
-      <tr><td>Agent</td><td>Aktionen – oder nur das Ergebnis</td><td>Umsetzen; mit Einzelfreigabe interaktiv, mit Auto-Approve autonom</td></tr>
+      <tr><td>Agent</td><td>jede Aktion oder nur das Ergebnis</td><td>Umsetzen; mit Einzelfreigabe interaktiv, mit Auto-Approve autonom</td></tr>
     </table>
-    <p><b>Fünf Fragen vor mehr Autonomie:</b> Ist die Aufgabe eindeutig? Sind die Aktionen umkehrbar? Was kostet ein Fehler? Lässt sich Erfolg automatisch prüfen? Worauf haben die Tools Zugriff?</p>
-    <p>Mit der geringsten Autonomie beginnen, die die Aufgabe erfüllt. Jeder erste Durchlauf interaktiv – auch nach einem Modellwechsel.</p>
+    <p><b>Fragen vor der Wahl einer höheren Stufe:</b> Ist die Aufgabe eindeutig? Sind die Aktionen umkehrbar? Was kostet ein Fehler? Lässt sich Erfolg automatisch prüfen? Worauf haben die Tools Zugriff?</p>
+    <p>Mit der geringsten Autonomie beginnen, mit der sich die Aufgabe erledigen lässt. Den ersten Durchlauf immer interaktiv ausführen, auch nach einem Modellwechsel.</p>
   </div>
   <div>
     <table>
       <tr><th>Art der Kontrolle</th><th>Bestimmt, was …</th></tr>
-      <tr><td>Guidance<br><span style="font-weight:400">Instructions, Prompts, Skills</span></td><td><b>wahrscheinlich</b> passiert</td></tr>
-      <tr><td>Orchestration<br><span style="font-weight:400">Agents, Handoffs, Plan-Schritt</span></td><td><b>üblicherweise</b> passiert</td></tr>
-      <tr><td style="color:var(--red)">Enforcement<br><span style="font-weight:400;color:var(--ink)">Tool Approval, Hooks, Permissions, Sandbox</span></td><td><b>möglich</b> ist</td></tr>
+      <tr><td>Anweisung<br><span style="font-weight:400">Instructions, Prompts, Skills</span></td><td><b>wahrscheinlich</b> passiert</td></tr>
+      <tr><td>Orchestrierung<br><span style="font-weight:400">Agents, Handoffs, Planungsschritt</span></td><td><b>üblicherweise</b> passiert</td></tr>
+      <tr><td style="color:var(--red)">Technische Beschränkung<br><span style="font-weight:400;color:var(--ink)">Tool Approval, Hooks, Permissions, Sandbox</span></td><td><b>möglich</b> ist</td></tr>
     </table>
-    <div class="take plain">„Ändere nichts unter <code>prod/</code>“ in einer Instruction kann verdrängt werden. Ein fehlendes Schreibrecht oder ein <code>preToolUse</code>-Hook mit <code>deny</code> nicht. Alles Teure und Unumkehrbare gehört in die dritte Zeile.</div>
+    <div class="take plain">„Ändere nichts unter <code>prod/</code>“ in einer Instruction kann das Modell übergehen. Ein fehlendes Schreibrecht oder einen <code>preToolUse</code>-Hook mit <code>deny</code> kann es nicht umgehen. Teure und nicht umkehrbare Aktionen sind daher über die dritte Art abzusichern.</div>
   </div>
 </div>
 
-<h2><i>14</i>Sicherheit und Verification</h2>
-<div class="sub">Prüfen ist euer Job – macht ihn euch leicht</div>
+<h2><i>14</i>Sicherheit und Überprüfung</h2>
+<div class="sub">Prompt Injection, vertrauliche Daten, Prüfung der Ergebnisse</div>
 <div class="two">
   <div>
     <h3>Prompt Injection</h3>
-    <p>Im Context ist alles Text. Das Modell kann nicht sicher unterscheiden, ob ein Satz von euch stammt oder aus einem README, Issue, PDF oder Tool Result. Das ist eine Eigenschaft der Architektur; eine allgemeine Lösung gibt es derzeit nicht.</p>
-    <div class="take plain"><b>Gefährliche Dreierkombination:</b> vertrauliche Daten + nicht vertrauenswürdiger Inhalt + ausgehender Kanal. Treffen alle drei zusammen, kann ein Angreifer Daten abziehen. Eines der drei entfernen.</div>
-    <p><b>Gehört nicht in den Prompt:</b> gültige Secrets, Tokens, Passwörter; personenbezogene Daten identifizierbarer Personen; Vertrauliches von Dritten. Gelangt ein Secret in einen Chat: rotieren.</p>
-    <p>Tool Approvals nicht reflexhaft auf „Always allow“ stellen, vor allem nicht für Terminal und Netzwerk.</p>
+    <p>Der Context besteht nur aus Text. Das Modell kann nicht sicher unterscheiden, ob ein Satz vom Nutzer stammt oder aus einem README, Issue, PDF oder Tool Result. Das ist eine Eigenschaft der Architektur; eine allgemeine Lösung gibt es derzeit nicht.</p>
+    <div class="take plain"><b>Riskante Kombination:</b> vertrauliche Daten + nicht vertrauenswürdiger Inhalt + ausgehender Kanal. Treffen alle drei zusammen, kann ein Angreifer Daten abgreifen. Mindestens eines der drei ist auszuschließen.</div>
+    <p><b>Gehört nicht in den Prompt:</b> gültige Secrets, Tokens, Passwörter; personenbezogene Daten identifizierbarer Personen; Vertrauliches von Dritten. Gelangt ein Secret in einen Chat, muss es ersetzt werden.</p>
+    <p>Tool Approvals nicht pauschal auf „Always allow“ stellen, vor allem nicht für Terminal und Netzwerk.</p>
   </div>
   <div>
-    <h3>Verification</h3>
-    <p><b>Vorher:</b> Acceptance Criteria festlegen, bevor die Arbeit beginnt. <b>Währenddessen:</b> dem Agent einen Verify-Loop geben. <b>Danach:</b> Prüfbarkeit einfordern – Diff statt Prosa, Quelle zu jeder Aussage, Liste der Annahmen.</p>
+    <h3>Überprüfung</h3>
+    <p><b>Vorher:</b> Acceptance Criteria festlegen, bevor die Arbeit beginnt. <b>Währenddessen:</b> dem Agent eine Prüfschleife vorgeben. <b>Danach:</b> prüfbare Ergebnisse verlangen: Diff statt Beschreibung, Quelle zu jeder Aussage, Liste der Annahmen.</p>
     <table>
-      <tr><th>Wohin geht das Ergebnis?</th><th>Prüftiefe</th></tr>
+      <tr><th>Verwendung des Ergebnisses</th><th>Prüftiefe</th></tr>
       <tr><td>Erkunden, Prototyp</td><td>Durchsicht</td></tr>
       <tr><td>Eigene Meinungsbildung</td><td>Stichproben</td></tr>
       <tr><td>Pull Request, Kollegen</td><td>Jede Änderung gelesen und verstanden</td></tr>
-      <tr><td style="color:var(--red)">Production, Vertrag, extern</td><td>Vollständig; Zahlen unabhängig nachgerechnet</td></tr>
+      <tr><td style="color:var(--red)">Produktion, Vertrag, extern</td><td>Vollständig; Zahlen unabhängig nachgerechnet</td></tr>
     </table>
-    <p><b>Besondere Sorgfalt:</b> alles Unumkehrbare (Senden, Deployen, Löschen), Schreibzugriff auf Geteiltes, erste Durchläufe nach Modell- oder Konfigurationswechsel.</p>
+    <p><b>Besondere Sorgfalt:</b> alle nicht umkehrbaren Aktionen (Senden, Deployen, Löschen), Schreibzugriff auf Geteiltes, erste Durchläufe nach Modell- oder Konfigurationswechsel.</p>
   </div>
 </div>
 
 <h2><i>15</i>Zehn Regeln</h2>
-<div class="sub">Für morgen früh</div>
+<div class="sub">Für die tägliche Arbeit</div>
 <ol class="rules">
-  <li>Das Modell sagt Tokens vorher. <b>Geprüft wird nichts</b> – außer von euch.</li>
-  <li>Was nicht im <b>Context</b> steht, existiert nicht.</li>
-  <li><b>Neuer Chat</b> pro Aufgabe.</li>
-  <li>Das <b>kleinste Modell</b>, das die Aufgabe schafft.</li>
-  <li>Ziel, Constraints, <b>Acceptance Criteria</b> – vor dem Start.</li>
-  <li>Erst <b>Plan</b>, dann Agent.</li>
-  <li>Gebt dem Agent einen <b>Verify-Loop</b>.</li>
-  <li>Was sich wiederholt, wird ein <b>Skill</b>.</li>
-  <li>Instructions bitten, <b>Hooks und Permissions</b> garantieren.</li>
-  <li>Dauerhaftes auf <b>Englisch</b>: kurz und widerspruchsfrei.</li>
+  <li>Das Modell sagt Tokens vorher. <b>Die Prüfung</b> der Ergebnisse bleibt Aufgabe des Menschen.</li>
+  <li>Das Modell kennt nur, was im <b>Context</b> steht.</li>
+  <li>Für jede Aufgabe einen <b>neuen Chat</b> beginnen.</li>
+  <li>Das <b>kleinste Modell</b> wählen, das die Aufgabe löst.</li>
+  <li>Ziel, Randbedingungen und <b>Acceptance Criteria</b> vorab festlegen.</li>
+  <li>Zuerst einen <b>Plan</b> erstellen lassen, dann den Agent starten.</li>
+  <li>Dem Agent eine <b>Prüfschleife</b> vorgeben.</li>
+  <li>Wiederkehrende Abläufe als <b>Skill</b> ablegen.</li>
+  <li>Verbindliche Regeln über <b>Hooks und Permissions</b> durchsetzen.</li>
+  <li>Dauerhafte Dateien auf <b>Englisch</b>, kurz und widerspruchsfrei.</li>
 </ol>
 
 <h2><i>16</i>Quellen und Stand</h2>
-<div class="sub">Alles Produktbezogene ändert sich – hier nachsehen</div>
+<div class="sub">Produktbezogene Angaben ändern sich; maßgeblich sind diese Quellen</div>
 <div class="two">
   <div>
-    <h3>Offizielle Doku (abgerufen am 10.11.2026)</h3>
+    <h3>Offizielle Dokumentation (abgerufen am 10.11.2026)</h3>
     <ul>
       <li>GitHub Docs: <i>Usage-based billing for organizations and enterprises</i></li>
       <li>GitHub Docs: <i>Models and pricing for GitHub Copilot</i></li>
       <li>GitHub Docs: <i>Supported AI models in Copilot</i></li>
       <li>GitHub Docs: <i>Customization cheat sheet</i></li>
       <li>GitHub Docs: <i>Context management</i></li>
-      <li>VS Code Docs: <i>Customization</i> – Custom Agents, Agent Skills, Hooks, Agent Plugins, Language Models</li>
+      <li>VS Code Docs: <i>Customization</i>: Custom Agents, Agent Skills, Hooks, Agent Plugins, Language Models</li>
       <li>modelcontextprotocol.io · agentskills.io</li>
     </ul>
   </div>
   <div>
     <h3>Zum Vertiefen</h3>
     <ul>
-      <li><b>3Blue1Brown</b>, Neural Networks und Transformers – die anschaulichste visuelle Erklärung</li>
+      <li><b>3Blue1Brown</b>, Neural Networks und Transformers: visuelle Erklärung der Mechanismen</li>
       <li><b>Andrej Karpathy</b>, <i>Deep Dive into LLMs like ChatGPT</i></li>
       <li><b>Anthropic</b>, <i>Building effective agents</i> und der Prompt Engineering Guide</li>
       <li><b>OpenAI</b> und <b>Google</b>: die jeweiligen Prompting Guides</li>
